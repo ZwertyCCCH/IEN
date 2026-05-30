@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reading A1 – Exercises | Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--white:#fff;--light:#f4f7fb;
+  --green:#1a7a4a;--green2:#e8f7ef;--red:#a02020;--red2:#fdecea;
+  --gray:#6b7a90;--border:#dde4ee;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Source Sans 3',sans-serif;
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 40%,#0d3060 100%);
+  min-height:100vh;color:#1a2a3a;
+}
+
+/* ── TOP BAR ── */
+#topbar{
+  position:sticky;top:0;z-index:200;
+  background:var(--navy);border-bottom:3px solid var(--gold);
+  padding:12px 24px;display:flex;align-items:center;gap:14px;
+}
+#topbar .logo{font-size:1.6rem;}
+#topbar h1{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.25rem;font-weight:700;flex:1;
+}
+#topbar h1 span{color:var(--gold);}
+#score-pill{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;padding:5px 14px;border-radius:20px;white-space:nowrap;
+}
+
+/* ── PROGRESS BAR ── */
+#prog-wrap{background:rgba(255,255,255,.08);height:6px;}
+#prog-fill{height:100%;background:var(--gold);transition:width .4s;width:0%;}
+
+/* ── MAIN CONTAINER ── */
+#main{max-width:900px;margin:0 auto;padding:28px 20px 120px;}
+
+
+
+/* ── INTRO CARD (before starting) ── */
+#intro-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.25);
+  animation:fadeUp .5s ease forwards;
+  margin-bottom:24px;
+}
+#intro-card .anchor{font-size:3rem;margin-bottom:12px;}
+#intro-card h2{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--navy);margin-bottom:10px;}
+#intro-card p{color:var(--gray);font-size:1rem;line-height:1.7;margin-bottom:24px;}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;}
+.tag{background:var(--light);border:1px solid var(--border);border-radius:20px;padding:4px 14px;font-size:.82rem;color:var(--navy);font-weight:600;}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  border:none;cursor:pointer;border-radius:10px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.95rem;padding:11px 24px;transition:all .2s;
+}
+.btn-gold{background:var(--gold);color:var(--navy);}
+.btn-gold:hover{background:var(--gold2);transform:scale(1.03);}
+.btn-sky{background:var(--sky);color:var(--white);}
+.btn-sky:hover{background:var(--sky2);transform:scale(1.03);}
+.btn-green{background:var(--green);color:var(--white);}
+.btn-green:hover{background:#15653d;transform:scale(1.03);}
+.btn-red{background:var(--red);color:var(--white);}
+.btn-red:hover{background:#8a1a1a;transform:scale(1.03);}
+.btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold);}
+.btn-outline:hover{background:rgba(200,168,75,.12);}
+
+/* ── QUESTION CARDS ── */
+#questions-wrap{display:none;flex-direction:column;gap:20px;}
+.q-card{
+  background:var(--white);border-radius:16px;padding:22px 26px;
+  box-shadow:0 4px 16px rgba(0,0,0,.12);
+  border-left:5px solid var(--border);
+  transition:border-color .2s;
+  animation:fadeUp .4s ease both;
+}
+.q-card.answered-correct{border-left-color:var(--green);}
+.q-card.answered-wrong{border-left-color:var(--red);}
+
+.q-num{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  color:var(--gray);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase;
+}
+.q-text{font-size:1rem;font-weight:600;color:var(--navy);line-height:1.6;margin-bottom:14px;}
+.q-text em{font-style:normal;color:var(--sky);font-family:'JetBrains Mono',monospace;}
+
+/* options */
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt{
+  display:flex;align-items:center;gap:12px;
+  border:2px solid var(--border);border-radius:10px;
+  padding:10px 14px;cursor:pointer;transition:all .18s;
+  background:var(--light);user-select:none;
+}
+.opt:hover:not(.locked){border-color:var(--sky);background:#e8f4fb;}
+.opt.selected{border-color:var(--sky);background:#dbeeff;}
+.opt.correct{border-color:var(--green);background:var(--green2);}
+.opt.wrong{border-color:var(--red);background:var(--red2);}
+.opt.locked{cursor:default;}
+.opt-letter{
+  width:26px;height:26px;border-radius:50%;border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;
+  color:var(--gray);flex-shrink:0;transition:all .18s;background:var(--white);
+}
+.opt.selected .opt-letter{border-color:var(--sky);color:var(--sky);background:#dbeeff;}
+.opt.correct .opt-letter{border-color:var(--green);color:var(--green);background:var(--green2);}
+.opt.wrong .opt-letter{border-color:var(--red);color:var(--red);background:var(--red2);}
+.opt-text{font-size:.93rem;color:#1a2a3a;line-height:1.4;}
+
+/* feedback */
+.q-feedback{display:none;margin-top:10px;font-size:.88rem;font-weight:600;padding:7px 12px;border-radius:8px;}
+.q-feedback.correct{display:flex;align-items:center;gap:6px;color:var(--green);background:var(--green2);}
+.q-feedback.wrong{display:flex;align-items:center;gap:6px;color:var(--red);background:var(--red2);}
+
+/* submit bar */
+#submit-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:var(--navy);border-top:2px solid var(--gold);
+  padding:10px 24px;display:flex;align-items:center;gap:14px;
+  justify-content:space-between;
+}
+#answered-count{color:#a0b8d0;font-family:'JetBrains Mono',monospace;font-size:.8rem;}
+
+/* results */
+#results-wrap{display:none;animation:fadeUp .5s ease forwards;}
+#results-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  box-shadow:0 12px 40px rgba(0,0,0,.25);margin-bottom:28px;text-align:center;
+}
+.score-ring{
+  width:140px;height:140px;border-radius:50%;margin:0 auto 20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;
+  border:8px solid var(--gold);background:var(--light);
+}
+.score-ring .score-num{font-size:2.8rem;font-weight:900;color:var(--navy);line-height:1;}
+.score-ring .score-of{font-size:.9rem;color:var(--gray);}
+#result-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--navy);margin-bottom:8px;}
+#result-msg{color:var(--gray);font-size:1rem;line-height:1.6;margin-bottom:24px;}
+.result-stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+.stat-box{background:var(--light);border-radius:12px;padding:12px 22px;text-align:center;border:1px solid var(--border);}
+.stat-box .sv{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;}
+.stat-box .sl{font-size:.78rem;color:var(--gray);margin-top:2px;}
+.stat-box.ok .sv{color:var(--green);}
+.stat-box.err .sv{color:var(--red);}
+.stat-box.skip .sv{color:var(--gold);}
+
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+
+#review-wrap{display:flex;flex-direction:column;gap:16px;}
+.review-title{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.3rem;font-weight:700;margin-bottom:6px;
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:600px){
+  #main{padding:16px 12px 100px;}
+  #intro-card,#results-card{padding:24px 18px;}
+  .result-actions{flex-direction:column;}
+  .btn{justify-content:center;}
+}
+/* ─── MODAL LATERAL (READING TEXT) ─── */
+.reading-modal {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: 400px;
+  height: 100vh;
+  background: var(--white);
+  box-shadow: -5px 0 30px rgba(0,0,0,0.3);
+  z-index: 1000;
+  transition: right 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-left: 3px solid var(--gold);
+}
+
+.reading-modal.open {
+  right: 0;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+  display: none;
+  backdrop-filter: blur(2px);
+}
+
+.modal-overlay.show {
+  display: block;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, var(--navy), var(--navy2));
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--gold);
+}
+
+.modal-header h3 {
+  font-family: 'Playfair Display', serif;
+  color: var(--white);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--gold2);
+  transition: transform 0.2s;
+}
+
+.modal-close:hover {
+  transform: scale(1.1);
+  color: var(--gold);
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.modal-body .reading-text {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: #1a2a3a;
+}
+
+.modal-body .reading-text p {
+  margin-bottom: 12px;
+}
+
+
+
+/* Botón flotante para abrir el texto */
+.reading-btn-floating {
+  position: fixed;
+  right: 20px;
+  bottom: 80px;
+  background: var(--gold);
+  color: var(--navy);
+  border: none;
+  border-radius: 50px;
+  padding: 12px 20px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+.reading-btn-floating:hover {
+  background: var(--gold2);
+  transform: scale(1.05);
+}
+
+@media(max-width: 500px){
+  .reading-modal { width: 85%; right: -85%; }
+  .reading-btn-floating { bottom: 70px; padding: 8px 14px; font-size: 0.75rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <span class="logo">📖</span>
+  <h1>Reading A1 — <span>Escuela Naval</span></h1>
+  <div id="score-pill">20 preguntas · Basado en texto</div>
+</div>
+<div id="prog-wrap"><div id="prog-fill"></div></div>
+
+<div id="main">
+
+  <!-- INTRO -->
+  <div id="intro-card">
+    <div class="anchor">📖</div>
+    <h2>Reading Comprehension Test</h2>
+    <p>Lee el texto de arriba cuidadosamente. Luego responde <strong>20 preguntas aleatorias</strong> de un banco de 50. Cada pregunta evalúa tu comprensión del texto: detalles, vocabulario, inferencias y propósito.</p>
+    <div class="tag-row">
+      <span class="tag">🔍 Detalles específicos</span>
+      <span class="tag">📝 Vocabulario en contexto</span>
+      <span class="tag">🧠 Inferencia</span>
+      <span class="tag">🎯 Idea principal</span>
+      <span class="tag">✅ Verdadero/Falso</span>
+    </div>
+    <button class="btn btn-gold" onclick="startTest()">🚀 Iniciar Test (20 preguntas)</button>
+  </div>
+
+  <!-- QUESTIONS (dynamic) -->
+  <div id="questions-wrap"></div>
+
+  <!-- RESULTS -->
+  <div id="results-wrap">
+    <div id="results-card">
+      <div class="score-ring">
+        <div class="score-num" id="r-score">0</div>
+        <div class="score-of" id="r-of">/ 20</div>
+      </div>
+      <div id="result-title"></div>
+      <div id="result-msg"></div>
+      <div class="result-stats">
+        <div class="stat-box ok"><div class="sv" id="r-correct">0</div><div class="sl">✅ Correctas</div></div>
+        <div class="stat-box err"><div class="sv" id="r-wrong">0</div><div class="sl">❌ Incorrectas</div></div>
+        <div class="stat-box skip"><div class="sv" id="r-skip">0</div><div class="sl">⚪ Sin responder</div></div>
+      </div>
+      <div class="result-actions">
+        <button class="btn btn-gold" onclick="restartTest()">🔄 Nuevo Test</button>
+        <button class="btn btn-sky" onclick="window.location.href='index.html'">📖 Course</button>
+        <button class="btn btn-green" onclick="window.location.href='C2.html'">🎓 Volver a la Clase</button>
+      </div>
+    </div>
+    <div class="review-title">📋 Revisión de Respuestas</div>
+    <div id="review-wrap"></div>
+  </div>
+
+</div>
+
+<!-- SUBMIT BAR -->
+<div id="submit-bar" style="display:none">
+  <div id="answered-count">Respondidas: 0 / 20</div>
+  <div style="display:flex;gap:10px">
+    <button class="btn btn-outline" onclick="window.location.href='C2.html'">← Clase</button>
+    <button class="btn btn-gold" onclick="submitTest()">Finalizar Test ✓</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  POOL DE 50 PREGUNTAS basadas en el texto de Emma
+//  Tipos: detalles, vocabulario, inferencia, verdadero/falso(alternativas), propósito
+// ═══════════════════════════════════════════════════════════════
+const POOL = [
+  // ── DETALLES EXPLÍCITOS ──
+  {q:`How old is Emma?`, opts:["20 years old","21 years old","22 years old","23 years old"], ans:2},
+  {q:`What is the name of the town where Emma lives?`, opts:["Greenville","Greenfield","Greentown","Grassfield"], ans:1},
+  {q:`What is the name of the café where Emma works?`, opts:["The Sunny Spoon","The Silver Spoon","The Golden Cup","The Sunny Cafe"], ans:0},
+  {q:`What time does the café open?`, opts:["6:00 am","6:30 am","7:00 am","7:30 am"], ans:2},
+  {q:`How many days a week is the café open?`, opts:["5 days","6 days","7 days","4 days"], ans:1},
+  {q:`What time does Emma wake up every morning?`, opts:["5:00 am","5:30 am","6:00 am","6:30 am"], ans:1},
+  {q:`How does Emma get to work?`, opts:["By bus","By car","She walks","By bike"], ans:2},
+  {q:`How long does it take Emma to walk to the café?`, opts:["10 minutes","15 minutes","20 minutes","25 minutes"], ans:2},
+  {q:`What is Emma's favorite part of her job?`, opts:["Cooking food","Cleaning tables","Talking to customers","Making coffee"], ans:2},
+  {q:`Who came to the café yesterday?`, opts:["A famous actor","A famous singer","A famous writer","A famous athlete"], ans:1},
+  {q:`What is the singer's name?`, opts:["Liam","Leo","Luis","Luke"], ans:1},
+  {q:`What did the singer order?`, opts:["Tea and a cookie","Coffee and a piece of chocolate cake","Orange juice and a sandwich","Hot chocolate and a muffin"], ans:1},
+  {q:`What did the singer give Emma?`, opts:["A flower","A big tip","A ticket to his concert","A photograph"], ans:1},
+  {q:`What does Emma like to read in her free time?`, opts:["Romance novels","Mystery novels","Science fiction","Historical books"], ans:1},
+  {q:`What is the name of Emma's cat?`, opts:["Whiskers","Snowball","Luna","Simba"], ans:0},
+  {q:`What color is Emma's cat?`, opts:["Orange and white","Black and white","Gray and white","Brown and white"], ans:1},
+  {q:`How does Emma visit her parents?`, opts:["By car","By train","By bus","By bike"], ans:2},
+  {q:`How long is the bus ride to her parents' town?`, opts:["20 minutes","25 minutes","30 minutes","35 minutes"], ans:2},
+  
+  // ── VERDADERO / FALSO (convertidas a alternativas) ──
+  {q:`Which statement about the café is correct?`, opts:["The café is open 7 days a week.","The café is closed on Sundays.","The café opens at 8:00 am.","The café is far from the park."], ans:1},
+  {q:`What does Emma do before going to work?`, opts:["She goes to the gym.","She takes a shower and has breakfast.","She reads a book.","She watches TV."], ans:1},
+  {q:`How did the singer treat Emma?`, opts:["He was rude and impolite.","He ignored her completely.","He was kind and gave her a big tip.","He complained about the coffee."], ans:2},
+  {q:`What is Whiskers?`, opts:["A dog","A cat","A bird","A fish"], ans:1},
+  {q:`Where does Emma live?`, opts:["With her parents","With her sister","With her cat, alone","With her friends"], ans:2},
+  {q:`Where is the café located?`, opts:["Near the hospital","Near the school","Near the park","Near the supermarket"], ans:2},
+  {q:`What is Emma's job at the café?`, opts:["Chef","Waitress","Manager","Cashier"], ans:1},
+  {q:`What does Emma like to do in her free time?`, opts:["She only reads books.","She only watches movies.","She reads mystery novels and watches movies.","She plays soccer."], ans:2},
+  {q:`What did the singer order at the café?`, opts:["A salad and water","A sandwich and juice","Coffee and chocolate cake","Tea and a cookie"], ans:2},
+  {q:`How did Emma feel when the singer arrived?`, opts:["Happy","Angry","Nervous","Bored"], ans:2},
+  
+  // ── VOCABULARIO EN CONTEXTO ──
+  {q:`In the text, the word "waitress" means...`, opts:["A person who cooks food","A person who serves food and drinks","A person who cleans the café","A person who manages the café"], ans:1},
+  {q:`What does "tip" mean in the story?`, opts:["Advice","Extra money given for good service","The end of something","A small piece of paper"], ans:1},
+  {q:`The word "colleagues" refers to...`, opts:["Customers","Friends","People who work together","Family members"], ans:2},
+  {q:`What does "playful" mean when describing the cat?`, opts:["Aggressive","Sleepy","Loving to play","Quiet"], ans:2},
+  {q:`The word "simple" in "I love my simple life" means...`, opts:["Complicated","Boring","Easy and uncomplicated","Rich"], ans:2},
+  
+  // ── INFERENCIA ──
+  {q:`How does Emma probably feel about her job?`, opts:["She hates it","She is bored","She likes it","She wants to quit"], ans:2},
+  {q:`Why was Emma nervous when the singer arrived?`, opts:["Because she was sick","Because he was famous","Because he ordered a lot of food","Because she didn't like him"], ans:1},
+  {q:`What can you infer about the singer's personality?`, opts:["He was mean","He was kind and friendly","He was very shy","He was in a hurry"], ans:1},
+  {q:`Why does Emma remember that day?`, opts:["Because it was her birthday","Because a famous person visited","Because she broke a cup","Because it was raining"], ans:1},
+  {q:`What does Emma probably do after work?`, opts:["She goes to the gym","She goes home and reads or watches movies","She goes to parties","She works another job"], ans:1},
+  {q:`How does Emma feel about her cat?`, opts:["She doesn't like it","She loves it","She is scared of it","She wants to sell it"], ans:1},
+  
+  // ── IDEA PRINCIPAL / PROPÓSITO ──
+  {q:`What is the main purpose of the text?`, opts:["To describe a famous singer","To talk about Emma's daily life and a special experience","To explain how to work at a café","To describe the town Greenfield"], ans:1},
+  {q:`What is the best title for this text?`, opts:["A Day at the Café","Emma's Simple Life and a Famous Visitor","My Cat Whiskers","How to Be a Waitress"], ans:1},
+  
+  // ── PREGUNTAS DE ORDEN / SECUENCIA ──
+  {q:`What does Emma do first in the morning?`, opts:["She walks to work","She has breakfast","She takes a shower","She wakes up"], ans:3},
+  {q:`What happened AFTER the singer left?`, opts:["Emma gave him a tip","Emma cried","Emma's colleagues asked her about him","Emma called her parents"], ans:2},
+  
+  // ── PRONOMBRES Y REFERENCIAS ──
+  {q:`In the sentence "He ordered a cup of coffee", who does "He" refer to?`, opts:["Emma's father","The singer Leo","A customer","Emma's colleague"], ans:1},
+  {q:`In "they always say 'good morning' to me", who does "they" refer to?`, opts:["Emma's colleagues","The customers","Emma's parents","The café owners"], ans:1},
+  {q:`In "I will never forget that day", what does "that day" refer to?`, opts:["The day she started her job","The day the singer visited","Her birthday","The day she got her cat"], ans:1},
+  
+  // ── NEGACIONES ──
+  {q:`What does Emma NOT do in the morning?`, opts:["Take a shower","Have breakfast","Drive to work","Wake up"], ans:2},
+  {q:`Which of these does Emma NOT like?`, opts:["Reading mystery novels","Watching movies","Working on Sundays","Talking to customers"], ans:2},
+  
+  // ── COMPARACIONES ──
+  {q:`Where does Emma live compared to her parents?`, opts:["In the same town","In a different town 30 minutes away","In a different country","In the same house"], ans:1}
+];
+
+const TOTAL_QUESTIONS = 20;
+let selected = [];        // 20 preguntas seleccionadas del pool
+let shuffled = [];        // cada item con opciones mezcladas
+let userAns = [];         // respuesta del usuario (null o índice)
+let submitted = false;
+
+// ─── UTILS ───
+function shuffleArray(arr){
+  const a = [...arr];
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getRandomQuestions(pool, n){
+  return shuffleArray(pool).slice(0, n);
+}
+
+function shuffleOptions(q){
+  // q tiene {q, opts, ans}
+  const indices = [0,1,2,3];
+  const shuffledIndices = shuffleArray(indices);
+  const newOpts = shuffledIndices.map(i => q.opts[i]);
+  const newAns = shuffledIndices.indexOf(q.ans);
+  return {q: q.q, opts: newOpts, ansIdx: newAns};
+}
+
+function buildTest(){
+  selected = getRandomQuestions(POOL, TOTAL_QUESTIONS);
+  shuffled = selected.map(q => shuffleOptions(q));
+  userAns = Array(TOTAL_QUESTIONS).fill(null);
+}
+
+// ─── START ───
+function startTest(){
+  buildTest();
+  submitted = false;
+  document.getElementById('intro-card').style.display = 'none';
+  document.getElementById('results-wrap').style.display = 'none';
+  renderQuestions();
+  document.getElementById('questions-wrap').style.display = 'flex';
+  document.getElementById('submit-bar').style.display = 'flex';
+  updateProgress();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function letters(){ return ['a','b','c','d']; }
+
+function renderQuestions(){
+  const wrap = document.getElementById('questions-wrap');
+  wrap.innerHTML = '';
+  shuffled.forEach((item, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `qcard-${qi}`;
+    card.style.animationDelay = (qi * 0.03) + 's';
+    
+    const qText = item.q.replace(/\n/g,'<br>').replace(/_+/g,'<em>_______</em>');
+    
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      optsHtml += `
+        <div class="opt" id="opt-${qi}-${oi}" onclick="selectOpt(${qi},${oi})">
+          <div class="opt-letter">${letters()[oi]}</div>
+          <div class="opt-text">${opt}</div>
+        </div>`;
+    });
+    
+    card.innerHTML = `
+      <div class="q-num">Pregunta ${qi+1} de ${TOTAL_QUESTIONS}</div>
+      <div class="q-text">${qText}</div>
+      <div class="options">${optsHtml}</div>
+      <div class="q-feedback" id="qfb-${qi}"></div>`;
+    wrap.appendChild(card);
+  });
+}
+
+function selectOpt(qi, oi){
+  if(submitted) return;
+  if(userAns[qi] !== null){
+    document.getElementById(`opt-${qi}-${userAns[qi]}`).classList.remove('selected');
+  }
+  userAns[qi] = oi;
+  document.getElementById(`opt-${qi}-${oi}`).classList.add('selected');
+  updateProgress();
+}
+
+function updateProgress(){
+  const answered = userAns.filter(v => v !== null).length;
+  document.getElementById('answered-count').textContent = `Respondidas: ${answered} / ${TOTAL_QUESTIONS}`;
+  document.getElementById('prog-fill').style.width = (answered / TOTAL_QUESTIONS * 100) + '%';
+}
+
+function submitTest(){
+  submitted = true;
+  const answered = userAns.filter(v => v !== null).length;
+  if(answered < TOTAL_QUESTIONS){
+    const rem = TOTAL_QUESTIONS - answered;
+    if(!confirm(`Tienes ${rem} pregunta(s) sin responder. ¿Deseas finalizar igual?`)) return;
+  }
+  
+  let correct = 0;
+  shuffled.forEach((item, qi) => {
+    const chosen = userAns[qi];
+    const right = item.ansIdx;
+    const card = document.getElementById(`qcard-${qi}`);
+    const fb = document.getElementById(`qfb-${qi}`);
+    
+    // lock all options
+    item.opts.forEach((_, oi) => {
+      document.getElementById(`opt-${qi}-${oi}`).classList.add('locked');
+    });
+    
+    if(chosen === null){
+      document.getElementById(`opt-${qi}-${right}`).classList.add('correct');
+      card.classList.add('answered-wrong');
+      fb.className = 'q-feedback wrong';
+      fb.innerHTML = `⚪ Sin responder — La respuesta correcta era: <strong>${letters()[right]}) ${item.opts[right]}</strong>`;
+    } 
+    else if(chosen === right){
+      correct++;
+      document.getElementById(`opt-${qi}-${chosen}`).classList.remove('selected');
+      document.getElementById(`opt-${qi}-${chosen}`).classList.add('correct');
+      card.classList.add('answered-correct');
+      fb.className = 'q-feedback correct';
+      fb.innerHTML = `✅ ¡Correcto!`;
+    } 
+    else {
+      document.getElementById(`opt-${qi}-${chosen}`).classList.remove('selected');
+      document.getElementById(`opt-${qi}-${chosen}`).classList.add('wrong');
+      document.getElementById(`opt-${qi}-${right}`).classList.add('correct');
+      card.classList.add('answered-wrong');
+      fb.className = 'q-feedback wrong';
+      fb.innerHTML = `❌ Incorrecto — La respuesta correcta era: <strong>${letters()[right]}) ${item.opts[right]}</strong>`;
+    }
+  });
+  
+  const wrong = userAns.filter((v,i) => v !== null && v !== shuffled[i].ansIdx).length;
+  const skipped = userAns.filter(v => v === null).length;
+  const pct = Math.round(correct / TOTAL_QUESTIONS * 100);
+  
+  document.getElementById('r-score').textContent = correct;
+  document.getElementById('r-of').textContent = '/ ' + TOTAL_QUESTIONS;
+  document.getElementById('r-correct').textContent = correct;
+  document.getElementById('r-wrong').textContent = wrong;
+  document.getElementById('r-skip').textContent = skipped;
+  
+  let title, msg;
+  if(pct >= 85){ title = '🏆 ¡Excelente comprensión!'; msg = 'Leíste el texto con mucha atención. Dominas la comprensión lectora A1.'; }
+  else if(pct >= 65){ title = '👍 ¡Buen trabajo!'; msg = 'Tienes buena comprensión. Revisa las preguntas que fallaste y vuelve a leer el texto.'; }
+  else if(pct >= 45){ title = '📚 Sigue practicando'; msg = 'Lee el texto otra vez con calma. Las respuestas están todas allí.'; }
+  else { title = '💪 No te rindas'; msg = 'Vuelve a leer el texto cuidadosamente. Practica buscando detalles específicos.'; }
+  
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-msg').textContent = msg;
+  
+  const ring = document.querySelector('.score-ring');
+  ring.style.borderColor = pct >= 70 ? 'var(--green)' : pct >= 50 ? 'var(--gold)' : 'var(--red)';
+  
+  document.getElementById('submit-bar').style.display = 'none';
+  document.getElementById('prog-fill').style.width = '100%';
+  document.getElementById('results-wrap').style.display = 'block';
+  
+  document.getElementById('results-wrap').scrollIntoView({behavior: 'smooth'});
+}
+
+function restartTest(){
+  document.getElementById('results-wrap').style.display = 'none';
+  document.getElementById('questions-wrap').style.display = 'none';
+  startTest();
+}
+// ─── MODAL LATERAL FUNCTIONS ───
+function openReadingModal() {
+  document.getElementById('readingModal').classList.add('open');
+  document.getElementById('modalOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeReadingModal() {
+  document.getElementById('readingModal').classList.remove('open');
+  document.getElementById('modalOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// Cerrar con tecla ESC
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeReadingModal();
+  }
+});
+</script>
+<!-- MODAL LATERAL CON EL TEXTO DE LECTURA -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeReadingModal()"></div>
+<div class="reading-modal" id="readingModal">
+  <div class="modal-header">
+    <h3>📖 <span>Texto de lectura</span></h3>
+    <button class="modal-close" onclick="closeReadingModal()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="reading-text">
+      <p><strong>My name is Emma. I am 22 years old and I live in a small town called Greenfield. I work as a waitress at a café called "The Sunny Spoon". The café is near the park, and it opens at 7:00 am from Monday to Saturday. On Sundays, the café is closed.</strong></p>
+      <p><strong>Every morning, I wake up at 5:30 am. I take a shower, have breakfast, and then I walk to work. It takes me 20 minutes to walk to the café. My favorite part of the job is talking to customers. Many customers are friendly and they always say "good morning" to me.</strong></p>
+      <p><strong>Yesterday was a special day. A famous singer came to the café. His name is Leo. He ordered a cup of coffee and a piece of chocolate cake. I was very nervous, but he was very kind. He said "thank you" and gave me a big tip. After he left, all my colleagues asked me about him. I will never forget that day!</strong></p>
+      <p><strong>In my free time, I like reading mystery novels and watching movies. I live with my cat, Whiskers. He is black and white and very playful. On weekends, I visit my parents. They live in the next town, about 30 minutes by bus. I love my simple life.</strong></p>
+    </div>
+    <div class="word-count">📊 Total: ~210 palabras · Nivel A1</div>
+  </div>
+</div>
+
+<!-- BOTÓN FLOTANTE PARA ABRIR EL TEXTO -->
+<button class="reading-btn-floating" id="openReadingBtn" onclick="openReadingModal()">
+  📖 Ver texto de lectura
+</button>
+</body>
+</html>
