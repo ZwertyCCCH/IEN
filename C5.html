@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inglés A2 – Future Tenses & Adverbs of Manner | Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --accent:#e63946;--teal:#0d7377;--orange:#e67e22;--purple:#7a3a9a;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+.s-body{padding-bottom:16px !important;}
+
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--teal) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--sky);}
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box.teal{border-left-color:var(--teal);}
+.rule-box.orange{border-left-color:var(--orange);}
+.rule-box.purple{border-left-color:var(--purple);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--sky);font-weight:700;}
+.ex span.orange{color:var(--orange);font-weight:700;}
+.ex span.purple{color:var(--purple);font-weight:700;}
+.ex .trans{color:var(--gray);font-size:.75rem;font-family:'Source Sans 3',sans-serif;}
+
+.vocab-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;
+}
+.vocab-card{
+  background:var(--white);border-radius:10px;padding:10px 12px;
+  border:1px solid #dde4ee;display:flex;align-items:center;gap:10px;
+}
+.vocab-card .emoji{font-size:1.2rem;width:30px;text-align:center;}
+.vocab-card .word{font-weight:700;font-size:.88rem;color:var(--navy);}
+.vocab-card .trans{font-size:.72rem;color:var(--gray);}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+mark{background:#fef3c7;color:#92400e;border-radius:4px;padding:1px 5px;font-weight:600;}
+
+.wh-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;}
+.wh-table th{background:var(--navy);color:var(--gold);padding:8px 14px;text-align:left;font-size:.85rem;}
+.wh-table td{background:var(--white);padding:8px 14px;font-size:.88rem;border-bottom:1px solid #eef1f5;}
+.wh-table tr:nth-child(even) td{background:#f8fafc;}
+.wh-table td:first-child{font-weight:700;color:var(--sky);font-family:'JetBrains Mono',monospace;font-size:.95rem;}
+
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,#0d3060 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+.summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px;}
+.summary-card{background:var(--white);border-radius:12px;padding:14px;border-left:4px solid var(--gold);}
+.summary-card h4{color:var(--navy);font-size:.95rem;margin-bottom:6px;}
+
+.dialogue{background:var(--white);border-radius:12px;overflow:hidden;border:1px solid #dde4ee;}
+.dialogue-line{padding:10px 16px;display:flex;gap:10px;align-items:flex-start;border-bottom:1px solid #eef1f5;}
+.dialogue-line:last-child{border-bottom:none;}
+.dialogue-line.a{background:#f0f7ff;}
+.dialogue-line .speaker{font-weight:700;font-size:.75rem;color:var(--sky);min-width:70px;margin-top:2px;}
+.dialogue-line.b .speaker{color:var(--teal);}
+.dialogue-line .text{font-size:.9rem;color:#1a2a3a;line-height:1.5;}
+.dialogue-line .text .key{color:var(--sky);font-weight:700;}
+
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- SLIDE 1 – COVER -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">🔮</div>
+    <div class="cover-level">CEFR Level A2</div>
+    <div class="cover-title">Future Tenses &<br><span>Adverbs of Manner</span></div>
+    <div class="cover-sub">Aprende a hablar del futuro con WILL y GOING TO. Domina los adverbios de modo para describir cómo se realizan las acciones. Expresa promesas e intenciones en inglés.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">🔮 WILL</span>
+      <span class="cover-tag">📋 GOING TO</span>
+      <span class="cover-tag">⚖️ WILL vs GOING TO</span>
+      <span class="cover-tag">📝 Adverbs of Manner</span>
+      <span class="cover-tag">🤝 Making Promises</span>
+      <span class="cover-tag">🎯 Future Intentions</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 1: FUTURE WITH WILL ========== -->
+
+<!-- SLIDE 2 – WILL: Introducción -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>WILL – Introducción</h2>
+    <span class="s-num">02 / 38</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text"><strong>WILL</strong> es un verbo modal que se usa para hablar del <strong>futuro</strong>. Se utiliza en tres situaciones principales:</p>
+    <div class="three-col">
+      <div class="rule-box green">
+        <div class="title">🔮 Predicciones</div>
+        <p>Cuando hacemos una <strong>suposición</strong> sobre el futuro.</p>
+        <div class="ex" style="margin-top:6px">I think it <span class="key">will</span> rain tomorrow.<br><span class="trans">Creo que lloverá mañana.</span></div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🤝 Promesas</div>
+        <p>Cuando <strong>prometemos</strong> hacer algo.</p>
+        <div class="ex" style="margin-top:6px">I <span class="key">will</span> call you later.<br><span class="trans">Te llamaré más tarde.</span></div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">⚡ Decisiones espontáneas</div>
+        <p>Cuando <strong>decidimos</strong> algo en el momento de hablar.</p>
+        <div class="ex" style="margin-top:6px">"I'm thirsty." – "I <span class="key">will</span> get you a drink."<br><span class="trans">"Tengo sed." – "Te traeré una bebida."</span></div>
+      </div>
+    </div>
+    <div class="formula" style="margin-top:8px">
+      <mark>Sujeto + WILL + verbo (base form)</mark><br>
+      <span class="trans">Sujeto + WILL + verbo (forma base)</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3 – WILL: Formación -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>WILL – Formación</h2>
+    <span class="s-num">03 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">✅ Afirmativo</div>
+        <div class="ex">
+          I <span class="key">will</span> help you.<br>
+          You <span class="key">will</span> pass the exam.<br>
+          She <span class="key">will</span> arrive at 8 pm.<br>
+          We <span class="key">will</span> be there.<br>
+          They <span class="key">will</span> call you.
+        </div>
+        <div class="ex" style="margin-top:8px">
+          <strong>Contracción:</strong> <span class="key">'ll</span><br>
+          I'll, you'll, she'll, we'll, they'll
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">❌ Negativo</div>
+        <div class="ex">
+          I <span class="key">will not</span> (won't) help you.<br>
+          You <span class="key">won't</span> fail the exam.<br>
+          She <span class="key">won't</span> be late.<br>
+          We <span class="key">won't</span> forget.<br>
+          They <span class="key">won't</span> tell anyone.
+        </div>
+        <div class="ex" style="margin-top:8px">
+          <strong>Contracción:</strong> <span class="key">won't</span> = will not
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      ❓ <strong>Pregunta:</strong> <span class="key">Will</span> you help me? – Yes, I <span class="key">will</span>.<br>
+      <span class="trans">¿Me ayudarás? – Sí, lo haré.</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4 – WILL: Predicciones -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>WILL – Predicciones</h2>
+    <span class="s-num">04 / 38</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Usamos <strong>WILL</strong> para hacer <strong>predicciones</strong> sobre el futuro, a menudo con expresiones como <strong>I think</strong>, <strong>I believe</strong>, <strong>probably</strong>, <strong>maybe</strong>.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🌤️ Predicciones del clima</div>
+        <div class="ex">
+          It <span class="key">will</span> be sunny tomorrow.<br>
+          <span class="trans">Hará sol mañana.</span><br><br>
+          I think it <span class="key">will</span> rain later.<br>
+          <span class="trans">Creo que lloverá más tarde.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">👤 Predicciones sobre personas</div>
+        <div class="ex">
+          She <span class="key">will</span> become a doctor.<br>
+          <span class="trans">Ella se convertirá en doctora.</span><br><br>
+          He <span class="key">won't</span> pass the test.<br>
+          <span class="trans">Él no aprobará el examen.</span>
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Expresiones comunes para predicciones:</strong><br>
+      I <span class="key">think</span> ... (Creo que...) / I <span class="key">believe</span> ... (Creo que...) / <span class="key">Probably</span> ... (Probablemente...) / <span class="key">Maybe</span> ... (Quizás...)
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5 – WILL: Promesas -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>WILL – Promesas</h2>
+    <span class="s-num">05 / 38</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Usamos <strong>WILL</strong> para hacer <strong>promesas</strong> o <strong>compromisos</strong>.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🤝 Promesas comunes</div>
+        <div class="ex">
+          I <span class="key">will</span> call you tomorrow.<br>
+          <span class="trans">Te llamaré mañana.</span><br><br>
+          I <span class="key">will</span> always love you.<br>
+          <span class="trans">Siempre te amaré.</span><br><br>
+          I <span class="key">won't</span> forget your birthday.<br>
+          <span class="trans">No olvidaré tu cumpleaños.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🗣️ Ejemplos en contexto</div>
+        <div class="ex">
+          "I'm so tired." – "I <span class="key">will</span> make you some coffee."<br>
+          <span class="trans">"Estoy muy cansado." – "Te haré café."</span><br><br>
+          "Don't worry, I <span class="key">will</span> be there on time."<br>
+          <span class="trans">"No te preocupes, llegaré a tiempo."</span>
+        </div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>I promise</strong> que + WILL: <em>I promise I <span class="key">will</span> study harder.</em> (Prometo que estudiaré más.)</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6 – WILL: Decisiones espontáneas -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>WILL – Decisiones Espontáneas</h2>
+    <span class="s-num">06 / 38</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Usamos <strong>WILL</strong> para decisiones que tomamos <strong>en el momento de hablar</strong>, sin haberlas planeado antes.</p>
+    <div class="dialogue">
+      <div class="dialogue-line a"><span class="speaker">Persona A:</span><span class="text">"I'm hungry." <span class="trans">(Tengo hambre.)</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Persona B:</span><span class="text">"I <span class="key">will</span> make you a sandwich." <span class="trans">(Te haré un sándwich.)</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Persona A:</span><span class="text">"The phone is ringing." <span class="trans">(Está sonando el teléfono.)</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Persona B:</span><span class="text">"I <span class="key">will</span> answer it." <span class="trans">(Lo contestaré.)</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Persona A:</span><span class="text">"I don't know how to do this." <span class="trans">(No sé cómo hacer esto.)</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Persona B:</span><span class="text">"Don't worry, I <span class="key">will</span> help you." <span class="trans">(No te preocupes, te ayudaré.)</span></span></div>
+    </div>
+    <div class="tip" style="margin-top:8px">
+      <span class="icon">⚡</span>
+      <div class="content"><strong>Decisión espontánea:</strong> La persona B <strong>no había planeado</strong> hacer un sándwich, contestar el teléfono o ayudar. ¡La decisión se tomó en ese momento!</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7 – WILL: Ejemplos completos -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>WILL – Todos los usos</h2>
+    <span class="s-num">07 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="three-col">
+      <div class="rule-box green">
+        <div class="title">🔮 Predicciones</div>
+        <div class="ex">
+          I think it <span class="key">will</span> be cold tonight.<br>
+          <span class="trans">Creo que hará frío esta noche.</span><br><br>
+          She <span class="key">will</span> be a great singer.<br>
+          <span class="trans">Ella será una gran cantante.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🤝 Promesas</div>
+        <div class="ex">
+          I <span class="key">will</span> buy you a gift.<br>
+          <span class="trans">Te compraré un regalo.</span><br><br>
+          I <span class="key">won't</span> tell anyone.<br>
+          <span class="trans">No se lo diré a nadie.</span>
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">⚡ Decisiones espontáneas</div>
+        <div class="ex">
+          "I'm tired." – "I <span class="key">will</span> cook dinner."<br>
+          <span class="trans">"Estoy cansado." – "Cocinaré la cena."</span><br><br>
+          "Wait! I <span class="key">will</span> come with you."<br>
+          <span class="trans">"¡Espera! Iré contigo."</span>
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      ❓ <strong>Pregunta con WILL:</strong> <span class="key">Will</span> you help me with my homework? – Yes, I <span class="key">will</span>.<br>
+      <span class="trans">¿Me ayudarás con mi tarea? – Sí, lo haré.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 2: FUTURE WITH GOING TO ========== -->
+
+<!-- SLIDE 8 – GOING TO: Introducción -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>GOING TO – Introducción</h2>
+    <span class="s-num">08 / 38</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text"><strong>GOING TO</strong> se usa para hablar del futuro en dos situaciones principales:</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📋 Planes e intenciones</div>
+        <p>Cuando ya <strong>hemos decidido</strong> hacer algo antes de hablar.</p>
+        <div class="ex" style="margin-top:6px">I <span class="key">am going to</span> study medicine.<br><span class="trans">Voy a estudiar medicina.</span></div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🔮 Predicciones con evidencia</div>
+        <p>Cuando hay <strong>señales</strong> de que algo va a pasar.</p>
+        <div class="ex" style="margin-top:6px">Look at those clouds! It <span class="key">is going to</span> rain.<br><span class="trans">¡Mira esas nubes! Va a llover.</span></div>
+      </div>
+    </div>
+    <div class="formula" style="margin-top:8px">
+      <mark>Sujeto + verbo TO BE (am/is/are) + GOING TO + verbo (base form)</mark><br>
+      <span class="trans">Sujeto + verbo TO BE + GOING TO + verbo (forma base)</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9 – GOING TO: Formación -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>GOING TO – Formación</h2>
+    <span class="s-num">09 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">✅ Afirmativo</div>
+        <div class="ex">
+          I <span class="key">am going to</span> study.<br>
+          You <span class="key">are going to</span> pass.<br>
+          She <span class="key">is going to</span> travel.<br>
+          We <span class="key">are going to</span> win.<br>
+          They <span class="key">are going to</span> call.
+        </div>
+        <div class="ex" style="margin-top:8px">
+          <strong>Contracción:</strong><br>
+          I'm going to, you're going to, she's going to, we're going to, they're going to
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">❌ Negativo</div>
+        <div class="ex">
+          I <span class="key">am not going to</span> study.<br>
+          You <span class="key">aren't going to</span> fail.<br>
+          She <span class="key">isn't going to</span> be late.<br>
+          We <span class="key">aren't going to</span> forget.<br>
+          They <span class="key">aren't going to</span> tell.
+        </div>
+        <div class="ex" style="margin-top:8px">
+          ❓ <strong>Pregunta:</strong> <span class="key">Are</span> you <span class="key">going to</span> help me? – Yes, I <span class="key">am</span>.<br>
+          <span class="trans">¿Vas a ayudarme? – Sí.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10 – GOING TO: Planes e intenciones -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>GOING TO – Planes e Intenciones</h2>
+    <span class="s-num">10 / 38</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Usamos <strong>GOING TO</strong> para hablar de <strong>planes</strong> que ya hemos <strong>decidido</strong> hacer.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📋 Planes personales</div>
+        <div class="ex">
+          I <span class="key">am going to</span> study English this summer.<br>
+          <span class="trans">Voy a estudiar inglés este verano.</span><br><br>
+          She <span class="key">is going to</span> travel to Europe next year.<br>
+          <span class="trans">Ella va a viajar a Europa el próximo año.</span><br><br>
+          We <span class="key">are going to</span> buy a new car.<br>
+          <span class="trans">Vamos a comprar un auto nuevo.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📋 Intenciones</div>
+        <div class="ex">
+          I <span class="key">am going to</span> become a doctor.<br>
+          <span class="trans">Voy a convertirme en médico.</span><br><br>
+          He <span class="key">is going to</span> apply for that job.<br>
+          <span class="trans">Él va a postular a ese trabajo.</span>
+        </div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content">Cuando hablamos de planes, a menudo usamos expresiones de tiempo como <strong>tomorrow, next week, next month, next year, this summer, in the future</strong>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11 – GOING TO: Predicciones con evidencia -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>GOING TO – Predicciones con Evidencia</h2>
+    <span class="s-num">11 / 38</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Usamos <strong>GOING TO</strong> para hacer predicciones cuando hay <strong>señales visibles</strong> de que algo va a pasar.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🌧️ Señales del clima</div>
+        <div class="ex">
+          Look at those dark clouds! It <span class="key">is going to</span> rain.<br>
+          <span class="trans">¡Mira esas nubes oscuras! Va a llover.</span><br><br>
+          The sky is very clear. It <span class="key">is going to</span> be a beautiful day.<br>
+          <span class="trans">El cielo está muy despejado. Va a ser un día hermoso.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🏃 Otras señales</div>
+        <div class="ex">
+          The car is going too fast. It <span class="key">is going to</span> crash!<br>
+          <span class="trans">El auto va demasiado rápido. ¡Va a chocar!</span><br><br>
+          She looks very tired. She <span class="key">is going to</span> fall asleep.<br>
+          <span class="trans">Ella se ve muy cansada. Se va a quedar dormida.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12 – GOING TO: Ejemplos completos -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>GOING TO – Todos los usos</h2>
+    <span class="s-num">12 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📋 Planes</div>
+        <div class="ex">
+          We <span class="key">are going to</span> watch a movie tonight.<br>
+          <span class="trans">Vamos a ver una película esta noche.</span><br><br>
+          She <span class="key">is going to</span> start a new job next month.<br>
+          <span class="trans">Ella va a comenzar un nuevo trabajo el próximo mes.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🔮 Predicciones con evidencia</div>
+        <div class="ex">
+          Look at that man! He <span class="key">is going to</span> fall.<br>
+          <span class="trans">¡Mira a ese hombre! Se va a caer.</span><br><br>
+          The test is tomorrow. I <span class="key">am going to</span> study all night.<br>
+          <span class="trans">El examen es mañana. Voy a estudiar toda la noche.</span>
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      ❓ <strong>Pregunta con GOING TO:</strong> <span class="key">What are</span> you <span class="key">going to</span> do this weekend?<br>
+      <span class="trans">¿Qué vas a hacer este fin de semana?</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 3: WILL vs GOING TO ========== -->
+
+<!-- SLIDE 13 – WILL vs GOING TO: Comparación -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>WILL vs GOING TO – Comparación</h2>
+    <span class="s-num">13 / 38</span>
+  </div>
+  <div class="s-body">
+    <table class="wh-table">
+      <thead><tr><th>Uso</th><th>WILL</th><th>GOING TO</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Predicciones</strong></td><td>Sin evidencia (opinión)</td><td>Con evidencia (señales)</td></tr>
+        <tr><td><strong>Planes</strong></td><td>No se usa para planes</td><td>Planes decididos antes</td></tr>
+        <tr><td><strong>Decisiones</strong></td><td>Espontáneas (en el momento)</td><td>No se usa</td></tr>
+        <tr><td><strong>Promesas</strong></td><td>Sí, se usa WILL</td><td>No se usa</td></tr>
+        <tr><td><strong>Estructura</strong></td><td>will + verbo</td><td>am/is/are + going to + verbo</td></tr>
+      </tbody>
+    </table>
+    <div class="ex" style="margin-top:10px">
+      💡 <strong>Diferencia clave:</strong><br>
+      <span class="key">WILL</span> = decisión en el momento / predicción sin evidencia<br>
+      <span class="key">GOING TO</span> = plan ya hecho / predicción con evidencia
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 14 – WILL vs GOING TO: Ejemplos comparados -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>WILL vs GOING TO – Ejemplos</h2>
+    <span class="s-num">14 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🔮 Predicciones</div>
+        <div class="ex">
+          <strong>WILL</strong> (sin evidencia)<br>
+          I think it <span class="key">will</span> rain tomorrow.<br>
+          <span class="trans">Creo que lloverá mañana.</span><br><br>
+          <strong>GOING TO</strong> (con evidencia)<br>
+          Look at those clouds! It <span class="key">is going to</span> rain.<br>
+          <span class="trans">¡Mira esas nubes! Va a llover.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📋 Planes / decisiones</div>
+        <div class="ex">
+          <strong>WILL</strong> (decisión espontánea)<br>
+          "I'm hungry." – "I <span class="key">will</span> cook dinner."<br>
+          <span class="trans">"Tengo hambre." – "Cocinaré la cena."</span><br><br>
+          <strong>GOING TO</strong> (plan ya hecho)<br>
+          I bought ingredients. I <span class="key">am going to</span> cook dinner.<br>
+          <span class="trans">Compré ingredientes. Voy a cocinar la cena.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 15 – WILL vs GOING TO: Más ejemplos -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>WILL vs GOING TO – Más ejemplos</h2>
+    <span class="s-num">15 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="three-col">
+      <div class="rule-box green">
+        <div class="title">✅ WILL</div>
+        <div class="ex">
+          "The phone is ringing."<br>
+          "I <span class="key">will</span> answer it."<br>
+          <span class="trans">"Contestaré."</span><br><br>
+          I promise I <span class="key">will</span> help you.<br>
+          <span class="trans">Prometo que te ayudaré.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">✅ GOING TO</div>
+        <div class="ex">
+          I <span class="key">am going to</span> visit my grandparents this weekend.<br>
+          <span class="trans">Voy a visitar a mis abuelos este fin de semana.</span><br><br>
+          She <span class="key">is going to</span> study law at university.<br>
+          <span class="trans">Ella va a estudiar derecho en la universidad.</span>
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">⚠️ Ambos son posibles</div>
+        <div class="ex">
+          <strong>WILL:</strong> "I think I <span class="key">will</span> stay home."<br>
+          <span class="trans">Creo que me quedaré en casa.</span><br><br>
+          <strong>GOING TO:</strong> "I <span class="key">am going to</span> stay home."<br>
+          <span class="trans">Voy a quedarme en casa.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 16 – WILL vs GOING TO: Resumen visual -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>WILL vs GOING TO – Resumen</h2>
+    <span class="s-num">16 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🔮 WILL</div>
+        <ul>
+          <li><strong>Predicción</strong> sin evidencia: <em>I think she will come.</em></li>
+          <li><strong>Promesa</strong>: <em>I will always love you.</em></li>
+          <li><strong>Decisión espontánea</strong>: <em>"I'm tired." – "I will rest."</em></li>
+          <li><strong>Ofrecimiento</strong>: <em>I will help you with that.</em></li>
+        </ul>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📋 GOING TO</div>
+        <ul>
+          <li><strong>Plan</strong> ya decidido: <em>I am going to travel next year.</em></li>
+          <li><strong>Intención</strong>: <em>She is going to become a doctor.</em></li>
+          <li><strong>Predicción</strong> con evidencia: <em>Look at those clouds! It's going to rain.</em></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Pregunta clave para decidir:</strong><br>
+      ¿La decisión se tomó <span class="key">antes</span> de hablar? → <strong>GOING TO</strong><br>
+      ¿La decisión se toma <span class="key">ahora</span>? → <strong>WILL</strong>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 4: ADVERBS OF MANNER ========== -->
+
+<!-- SLIDE 17 – Adverbs of Manner: Introducción -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Adverbs of Manner – Introducción</h2>
+    <span class="s-num">17 / 38</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los <strong>adverbios de modo</strong> describen <strong>cómo</strong> se realiza una acción. Responden a la pregunta: <strong>How?</strong> (¿Cómo?).</p>
+    <div class="formula">
+      <mark>Verbo + adverbio de modo</mark><br>
+      <span class="trans">Verbo + adverbio de modo</span>
+    </div>
+    <div class="ex">
+      ✅ She sings <span class="key">beautifully</span>.<br>
+      <span class="trans">Ella canta hermosamente.</span><br><br>
+      ✅ He drives <span class="key">carefully</span>.<br>
+      <span class="trans">Él conduce con cuidado.</span><br><br>
+      ✅ They speak English <span class="key">well</span>.<br>
+      <span class="trans">Ellos hablan inglés bien.</span>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>Regla general:</strong> La mayoría de los adverbios de modo se forman agregando <strong>-ly</strong> al adjetivo: <em>quick → quickly, careful → carefully, happy → happily</em>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 18 – Adverbs of Manner: Lista completa -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Adverbs of Manner – Lista</h2>
+    <span class="s-num">18 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">⭐</span><div><div class="word">well</div><div class="trans">bien</div></div></div>
+      <div class="vocab-card"><span class="emoji">⭐</span><div><div class="word">badly</div><div class="trans">mal</div></div></div>
+      <div class="vocab-card"><span class="emoji">⚡</span><div><div class="word">fast</div><div class="trans">rápido</div></div></div>
+      <div class="vocab-card"><span class="emoji">🐢</span><div><div class="word">slowly</div><div class="trans">lentamente</div></div></div>
+      <div class="vocab-card"><span class="emoji">🔍</span><div><div class="word">carefully</div><div class="trans">cuidadosamente</div></div></div>
+      <div class="vocab-card"><span class="emoji">😊</span><div><div class="word">happily</div><div class="trans">felizmente</div></div></div>
+      <div class="vocab-card"><span class="emoji">😢</span><div><div class="word">sadly</div><div class="trans">tristemente</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎵</span><div><div class="word">beautifully</div><div class="trans">hermosamente</div></div></div>
+      <div class="vocab-card"><span class="emoji">🤫</span><div><div class="word">quietly</div><div class="trans">silenciosamente</div></div></div>
+      <div class="vocab-card"><span class="emoji">📢</span><div><div class="word">loudly</div><div class="trans">ruidosamente</div></div></div>
+      <div class="vocab-card"><span class="emoji">🏃</span><div><div class="word">quickly</div><div class="trans">rápidamente</div></div></div>
+      <div class="vocab-card"><span class="emoji">😡</span><div><div class="word">angrily</div><div class="trans">enojadamente</div></div></div>
+      <div class="vocab-card"><span class="emoji">🤗</span><div><div class="word">kindly</div><div class="trans">amablemente</div></div></div>
+      <div class="vocab-card"><span class="emoji">😌</span><div><div class="word">calmly</div><div class="trans">calmadamente</div></div></div>
+      <div class="vocab-card"><span class="emoji">🤔</span><div><div class="word">wisely</div><div class="trans">sabiamente</div></div></div>
+      <div class="vocab-card"><span class="emoji">💪</span><div><div class="word">bravely</div><div class="trans">valientemente</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎶</span><div><div class="word">easily</div><div class="trans">fácilmente</div></div></div>
+      <div class="vocab-card"><span class="emoji">🔄</span><div><div class="word">hard</div><div class="trans">duro / con esfuerzo</div></div></div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">⚠️</span>
+      <div class="content"><strong>Excepciones:</strong> <em>fast</em> (rápido) y <em>hard</em> (duro) son iguales como adjetivo y adverbio. No usamos <em>fastly</em> ni <em>hardly</em> (hardly = casi no).</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 19 – Adverbs of Manner: Formación -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Adverbs of Manner – Formación</h2>
+    <span class="s-num">19 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="three-col">
+      <div class="rule-box green">
+        <div class="title">📝 Regla 1: + ly</div>
+        <p>Adjetivo + <strong>-ly</strong></p>
+        <div class="ex">
+          quick → quick<strong>ly</strong><br>
+          careful → careful<strong>ly</strong><br>
+          quiet → quiet<strong>ly</strong><br>
+          loud → loud<strong>ly</strong><br>
+          kind → kind<strong>ly</strong>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Regla 2: y → ily</div>
+        <p>Terminan en <strong>-y</strong> → cambian a <strong>-ily</strong></p>
+        <div class="ex">
+          happy → happ<strong>ily</strong><br>
+          easy → eas<strong>ily</strong><br>
+          angry → angr<strong>ily</strong><br>
+          lucky → luck<strong>ily</strong>
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">📝 Regla 3: Irregulares</div>
+        <p>No siguen las reglas</p>
+        <div class="ex">
+          good → <strong>well</strong><br>
+          fast → <strong>fast</strong><br>
+          hard → <strong>hard</strong><br>
+          early → <strong>early</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 20 – Adverbs of Manner: Posición -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Adverbs of Manner – Posición</h2>
+    <span class="s-num">20 / 38</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los adverbios de modo generalmente van <strong>después del verbo</strong>.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">✅ Posición correcta</div>
+        <div class="ex">
+          She sings <span class="key">beautifully</span>.<br>
+          <span class="trans">Ella canta hermosamente.</span><br><br>
+          He drives <span class="key">carefully</span>.<br>
+          <span class="trans">Él conduce con cuidado.</span><br><br>
+          They speak English <span class="key">well</span>.<br>
+          <span class="trans">Ellos hablan inglés bien.</span>
+        </div>
+      </div>
+      <div class="rule-box red">
+        <div class="title">❌ Posición incorrecta</div>
+        <div class="ex">
+          ❌ She <span class="key">beautifully</span> sings.<br>
+          ❌ He <span class="key">carefully</span> drives.<br>
+          ❌ They <span class="key">well</span> speak English.
+        </div>
+        <div class="tip" style="margin-top:8px;background:#fffbec;border:1px solid #f0d080;border-radius:8px;padding:8px 12px;">
+          <span class="icon">📌</span>
+          <div class="content"><strong>Excepción:</strong> Con el verbo TO BE, el adverbio va <strong>después</strong> del verbo: <em>She is <span class="key">extremely</span> talented.</em></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 21 – Adverbs of Manner: Ejemplos extensos -->
+<div class="slide" id="s21">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Adverbs of Manner – Ejemplos</h2>
+    <span class="s-num">21 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">✅ Acciones positivas</div>
+        <div class="ex">
+          She danced <span class="key">beautifully</span> at the show.<br>
+          <span class="trans">Ella bailó hermosamente en el espectáculo.</span><br><br>
+          He answered the questions <span class="key">wisely</span>.<br>
+          <span class="trans">Él respondió las preguntas sabiamente.</span><br><br>
+          They worked <span class="key">hard</span> to finish the project.<br>
+          <span class="trans">Ellos trabajaron duro para terminar el proyecto.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">⚠️ Acciones negativas</div>
+        <div class="ex">
+          He spoke to me <span class="key">angrily</span>.<br>
+          <span class="trans">Él me habló enojadamente.</span><br><br>
+          She walked <span class="key">slowly</span> because she was tired.<br>
+          <span class="trans">Ella caminó lentamente porque estaba cansada.</span><br><br>
+          I did the test <span class="key">badly</span> and failed.<br>
+          <span class="trans">Hice el examen mal y reprobé.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 22 – Adverbs of Manner: Contraste adjetivo vs adverbio -->
+<div class="slide" id="s22">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Adjetivo vs Adverbio – Diferencia</h2>
+    <span class="s-num">22 / 38</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Un <strong>adjetivo</strong> describe un <strong>sustantivo</strong>. Un <strong>adverbio</strong> describe un <strong>verbo</strong> (cómo se hace algo).</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📝 Adjetivo (describe sustantivo)</div>
+        <div class="ex">
+          She is a <span class="key">careful</span> driver.<br>
+          <span class="trans">Ella es una conductora cuidadosa.</span><br>
+          (careful describe a driver)<br><br>
+          He is a <span class="key">fast</span> runner.<br>
+          <span class="trans">Él es un corredor rápido.</span><br>
+          (fast describe a runner)
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Adverbio (describe verbo)</div>
+        <div class="ex">
+          She drives <span class="key">carefully</span>.<br>
+          <span class="trans">Ella conduce cuidadosamente.</span><br>
+          (carefully describe cómo conduce)<br><br>
+          He runs <span class="key">fast</span>.<br>
+          <span class="trans">Él corre rápido.</span><br>
+          (fast describe cómo corre)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 5: FUNCTIONAL LANGUAGE – MAKING PROMISES & FUTURE INTENTIONS ========== -->
+
+<!-- SLIDE 23 – Making Promises: Expressions -->
+<div class="slide" id="s23">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A2</span>
+    <h2>Making Promises – Expresiones</h2>
+    <span class="s-num">23 / 38</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para hacer <strong>promesas</strong> en inglés, usamos WILL con expresiones como <strong>I promise</strong>, <strong>I swear</strong> o simplemente la estructura de futuro.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🤝 Promesas comunes</div>
+        <div class="ex">
+          I <span class="key">promise</span> I <span class="key">will</span> be there.<br>
+          <span class="trans">Prometo que estaré allí.</span><br><br>
+          I swear I <span class="key">will</span> never do that again.<br>
+          <span class="trans">Juro que nunca haré eso de nuevo.</span><br><br>
+          I <span class="key">will</span> always be your friend.<br>
+          <span class="trans">Siempre seré tu amigo.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">💪 Promesas en contexto</div>
+        <div class="ex">
+          "Don't worry, I <span class="key">will</span> help you."<br>
+          <span class="trans">"No te preocupes, te ayudaré."</span><br><br>
+          "I <span class="key">won't</span> forget your birthday."<br>
+          <span class="trans">"No olvidaré tu cumpleaños."</span><br><br>
+          "Trust me, I <span class="key">will</span> do my best."<br>
+          <span class="trans">"Confía en mí, haré mi mejor esfuerzo."</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 24 – Talking about Future Intentions -->
+<div class="slide" id="s24">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A2</span>
+    <h2>Talking about Future Intentions</h2>
+    <span class="s-num">24 / 38</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para hablar de <strong>intenciones y planes futuros</strong>, usamos <strong>GOING TO</strong> y expresiones como <strong>I plan to</strong>, <strong>I want to</strong>, <strong>I hope to</strong>.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📋 Expresando intenciones</div>
+        <div class="ex">
+          I <span class="key">am going to</span> study medicine.<br>
+          <span class="trans">Voy a estudiar medicina.</span><br><br>
+          I <span class="key">plan to</span> travel around the world.<br>
+          <span class="trans">Planeo viajar alrededor del mundo.</span><br><br>
+          I <span class="key">want to</span> become a teacher.<br>
+          <span class="trans">Quiero convertirme en profesor.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">💭 Esperanzas y deseos</div>
+        <div class="ex">
+          I <span class="key">hope to</span> see you soon.<br>
+          <span class="trans">Espero verte pronto.</span><br><br>
+          I <span class="key">would like to</span> visit Japan one day.<br>
+          <span class="trans">Me gustaría visitar Japón algún día.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 25 – Functional Language: Diálogo completo -->
+<div class="slide" id="s25">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A2</span>
+    <h2>Making Promises & Intentions – Diálogo</h2>
+    <span class="s-num">25 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="dialogue">
+      <div class="dialogue-line a"><span class="speaker">Ana:</span><span class="text">Hi Tomás! <span class="key">What are you going to do</span> this summer? <span class="trans">¿Qué vas a hacer este verano?</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Tomás:</span><span class="text">I <span class="key">am going to</span> travel to the beach with my family. <span class="trans">Voy a viajar a la playa con mi familia.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Ana:</span><span class="text">That sounds great! <span class="key">Will</span> you send me photos? <span class="trans">¿Me enviarás fotos?</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Tomás:</span><span class="text">Of course! I <span class="key">promise</span> I <span class="key">will</span> send you many photos. <span class="trans">¡Claro! Prometo que te enviaré muchas fotos.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Ana:</span><span class="text">Great! I <span class="key">am going to</span> stay home and study English. <span class="trans">Voy a quedarme en casa y estudiar inglés.</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Tomás:</span><span class="text">That's a good plan. I <span class="key">will</span> help you if you need it. <span class="trans">Es un buen plan. Te ayudaré si lo necesitas.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Ana:</span><span class="text">Really? Thank you! <span class="key">Will</span> you be free next week? <span class="trans">¿En serio? ¡Gracias! ¿Estarás libre la próxima semana?</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Tomás:</span><span class="text">Yes, I <span class="key">will</span>. I <span class="key">am going to</span> stay home too. <span class="trans">Sí, lo estaré. Yo también voy a quedarme en casa.</span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDES DE REPASO ========== -->
+
+<!-- SLIDE 26 – WILL vs GOING TO: Cuándo usar cada uno -->
+<div class="slide" id="s26">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>WILL vs GOING TO – Guía rápida</h2>
+    <span class="s-num">26 / 38</span>
+  </div>
+  <div class="s-body">
+    <table class="wh-table">
+      <thead><tr><th>Situación</th><th>Usa</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td>Decisión en el momento</td><td><strong>WILL</strong></td><td>"I'm hungry." – "I'll cook."</td></tr>
+        <tr><td>Plan ya hecho</td><td><strong>GOING TO</strong></td><td>I bought ingredients. I'm going to cook.</td></tr>
+        <tr><td>Predicción sin evidencia</td><td><strong>WILL</strong></td><td>I think it will be sunny tomorrow.</td></tr>
+        <tr><td>Predicción con evidencia</td><td><strong>GOING TO</strong></td><td>Look at the clouds! It's going to rain.</td></tr>
+        <tr><td>Promesa</td><td><strong>WILL</strong></td><td>I promise I will help you.</td></tr>
+        <tr><td>Ofrecimiento</td><td><strong>WILL</strong></td><td>I will carry that for you.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SLIDE 27 – Adverbs of Manner: Ejemplos de contraste -->
+<div class="slide" id="s27">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Adverbs of Manner – Contraste</h2>
+    <span class="s-num">27 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">✅ Bueno</div>
+        <div class="ex">
+          She sings <span class="key">well</span>.<br>
+          <span class="trans">Ella canta bien.</span><br><br>
+          He drives <span class="key">carefully</span>.<br>
+          <span class="trans">Él conduce con cuidado.</span><br><br>
+          They work <span class="key">hard</span>.<br>
+          <span class="trans">Ellos trabajan duro.</span>
+        </div>
+      </div>
+      <div class="rule-box red">
+        <div class="title">❌ Malo</div>
+        <div class="ex">
+          She sings <span class="key">badly</span>.<br>
+          <span class="trans">Ella canta mal.</span><br><br>
+          He drives <span class="key">dangerously</span>.<br>
+          <span class="trans">Él conduce peligrosamente.</span><br><br>
+          They work <span class="key">slowly</span>.<br>
+          <span class="trans">Ellos trabajan lentamente.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 28 – Adverbs of Manner: Ejemplos con diferentes verbos -->
+<div class="slide" id="s28">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Adverbs of Manner – Más ejemplos</h2>
+    <span class="s-num">28 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="three-col">
+      <div class="rule-box green">
+        <div class="title">🚶 Caminar</div>
+        <div class="ex">
+          walk <span class="key">slowly</span><br>
+          walk <span class="key">quickly</span><br>
+          walk <span class="key">quietly</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🗣️ Hablar</div>
+        <div class="ex">
+          speak <span class="key">clearly</span><br>
+          speak <span class="key">loudly</span><br>
+          speak <span class="key">softly</span>
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">📖 Estudiar</div>
+        <div class="ex">
+          study <span class="key">hard</span><br>
+          study <span class="key">carefully</span><br>
+          study <span class="key">effectively</span>
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Recuerda:</strong> El adverbio siempre describe <strong>cómo</strong> se hace la acción. ¡No confundas con el adjetivo que describe el sustantivo!
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 29 – Future Intentions: Expresiones útiles -->
+<div class="slide" id="s29">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Future Intentions – Expresiones útiles</h2>
+    <span class="s-num">29 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📋 Planes e intenciones</div>
+        <div class="ex">
+          I <span class="key">am going to</span> ...<br>
+          I <span class="key">plan to</span> ...<br>
+          I <span class="key">want to</span> ...<br>
+          I <span class="key">would like to</span> ...<br>
+          I <span class="key">hope to</span> ...<br>
+          I <span class="key">intend to</span> ...
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🗣️ Ejemplos</div>
+        <div class="ex">
+          I <span class="key">am going to</span> travel next year.<br>
+          <span class="trans">Voy a viajar el próximo año.</span><br><br>
+          I <span class="key">plan to</span> study engineering.<br>
+          <span class="trans">Planeo estudiar ingeniería.</span><br><br>
+          I <span class="key">hope to</span> see you soon.<br>
+          <span class="trans">Espero verte pronto.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 30 – Making Promises: Expresiones útiles -->
+<div class="slide" id="s30">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Making Promises – Expresiones útiles</h2>
+    <span class="s-num">30 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🤝 Promesas</div>
+        <div class="ex">
+          I <span class="key">promise</span> I <span class="key">will</span> ...<br>
+          I swear I <span class="key">will</span> ...<br>
+          I <span class="key">will</span> definitely ...<br>
+          I <span class="key">won't</span> forget to ...<br>
+          You have my word. I <span class="key">will</span> ...
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🗣️ Ejemplos</div>
+        <div class="ex">
+          I <span class="key">promise</span> I <span class="key">will</span> call you.<br>
+          <span class="trans">Prometo que te llamaré.</span><br><br>
+          I <span class="key">will</span> definitely help you.<br>
+          <span class="trans">Definitivamente te ayudaré.</span><br><br>
+          I <span class="key">won't</span> forget your birthday.<br>
+          <span class="trans">No olvidaré tu cumpleaños.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 31 – Common Time Expressions for Future -->
+<div class="slide" id="s31">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Time Expressions for the Future</h2>
+    <span class="s-num">31 / 38</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Estas expresiones de tiempo te ayudarán a identificar cuándo usar el futuro:</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📅 Expresiones de tiempo</div>
+        <div class="ex">
+          <strong>tomorrow</strong> – mañana<br>
+          <strong>next week / month / year</strong> – la próxima semana / mes / año<br>
+          <strong>in + período de tiempo</strong> – en ... (in two days, in five years)<br>
+          <strong>later</strong> – más tarde<br>
+          <strong>soon</strong> – pronto<br>
+          <strong>in the future</strong> – en el futuro
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🗣️ Ejemplos</div>
+        <div class="ex">
+          I'll see you <span class="key">tomorrow</span>.<br>
+          <span class="trans">Te veré mañana.</span><br><br>
+          We are going to travel <span class="key">next month</span>.<br>
+          <span class="trans">Vamos a viajar el próximo mes.</span><br><br>
+          She will call you <span class="key">later</span>.<br>
+          <span class="trans">Ella te llamará más tarde.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 32 – Common Mistakes with Future -->
+<div class="slide" id="s32">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Common Mistakes – Future</h2>
+    <span class="s-num">32 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box red">
+        <div class="title">❌ Errores comunes con WILL</div>
+        <div class="ex">
+          ❌ I <span class="wrong">will to</span> go.<br>
+          ✅ I <span class="correct">will</span> go.<br><br>
+          ❌ She <span class="wrong">will not to</span> come.<br>
+          ✅ She <span class="correct">won't</span> come.<br><br>
+          ❌ <span class="wrong">Will he to</span> call?<br>
+          ✅ <span class="correct">Will he</span> call?
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">❌ Errores comunes con GOING TO</div>
+        <div class="ex">
+          ❌ I <span class="wrong">go to</span> study.<br>
+          ✅ I <span class="correct">am going to</span> study.<br><br>
+          ❌ She <span class="wrong">is go to</span> travel.<br>
+          ✅ She <span class="correct">is going to</span> travel.<br><br>
+          ❌ <span class="wrong">Are you go to</span> help?<br>
+          ✅ <span class="correct">Are you going to</span> help?
+        </div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">⚠️</span>
+      <div class="content"><strong>Recuerda:</strong> Después de WILL y GOING TO, el verbo <strong>siempre va en forma base</strong> (sin "to").</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 33 – Common Mistakes with Adverbs of Manner -->
+<div class="slide" id="s33">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Common Mistakes – Adverbs of Manner</h2>
+    <span class="s-num">33 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box red">
+        <div class="title">❌ Errores comunes</div>
+        <div class="ex">
+          ❌ She sings <span class="wrong">beautiful</span>.<br>
+          ✅ She sings <span class="correct">beautifully</span>.<br><br>
+          ❌ He runs <span class="wrong">fastly</span>.<br>
+          ✅ He runs <span class="correct">fast</span>.<br><br>
+          ❌ I speak English <span class="wrong">good</span>.<br>
+          ✅ I speak English <span class="correct">well</span>.<br><br>
+          ❌ He worked <span class="wrong">hardly</span>.<br>
+          ✅ He worked <span class="correct">hard</span>.
+        </div>
+      </div>
+      <div class="rule-box green">
+        <div class="title">✅ Recordatorio</div>
+        <div class="ex">
+          <strong>Adjetivo</strong> → describe <strong>sustantivo</strong>: a beautiful song<br>
+          <strong>Adverbio</strong> → describe <strong>verbo</strong>: she sings beautifully<br><br>
+          <strong>Excepciones:</strong> fast, hard, early, well
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 34 – Resumen: WILL -->
+<div class="slide" id="s34">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>WILL – Resumen</h2>
+    <span class="s-num">34 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box green">
+      <div class="title">🔮 WILL</div>
+      <ul>
+        <li><strong>Estructura:</strong> will + verbo (base)</li>
+        <li><strong>Negativo:</strong> will not / won't + verbo</li>
+        <li><strong>Pregunta:</strong> Will + sujeto + verbo?</li>
+        <li><strong>Usos:</strong>
+          <ul>
+            <li>Predicciones sin evidencia: <em>I think it will rain.</em></li>
+            <li>Promesas: <em>I will always love you.</em></li>
+            <li>Decisiones espontáneas: <em>"I'm hungry." – "I'll cook."</em></li>
+            <li>Ofrecimientos: <em>I will help you.</em></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 35 – Resumen: GOING TO -->
+<div class="slide" id="s35">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>GOING TO – Resumen</h2>
+    <span class="s-num">35 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold">
+      <div class="title">📋 GOING TO</div>
+      <ul>
+        <li><strong>Estructura:</strong> am/is/are + going to + verbo (base)</li>
+        <li><strong>Negativo:</strong> am/is/are not + going to + verbo</li>
+        <li><strong>Pregunta:</strong> Am/Is/Are + sujeto + going to + verbo?</li>
+        <li><strong>Usos:</strong>
+          <ul>
+            <li>Planes ya decididos: <em>I am going to travel next year.</em></li>
+            <li>Intenciones: <em>She is going to become a doctor.</em></li>
+            <li>Predicciones con evidencia: <em>Look at those clouds! It's going to rain.</em></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 36 – Resumen: Adverbs of Manner -->
+<div class="slide" id="s36">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>Adverbs of Manner – Resumen</h2>
+    <span class="s-num">36 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box purple">
+      <div class="title">📝 Adverbs of Manner</div>
+      <ul>
+        <li><strong>Función:</strong> Describen <strong>cómo</strong> se realiza una acción (How?)</li>
+        <li><strong>Posición:</strong> Generalmente <strong>después del verbo</strong></li>
+        <li><strong>Formación:</strong>
+          <ul>
+            <li>Adjetivo + <strong>-ly</strong>: quick → quickly</li>
+            <li>Terminan en <strong>-y</strong> → <strong>-ily</strong>: happy → happily</li>
+            <li><strong>Irregulares</strong>: good → well, fast → fast, hard → hard</li>
+          </ul>
+        </li>
+        <li><strong>Diferencia clave:</strong> Adjetivo describe sustantivo / Adverbio describe verbo</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 37 – Resumen: Functional Language -->
+<div class="slide" id="s37">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>Functional Language – Resumen</h2>
+    <span class="s-num">37 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🤝 Making Promises</div>
+        <div class="ex">
+          I <span class="key">promise</span> I <span class="key">will</span> ...<br>
+          I swear I <span class="key">will</span> ...<br>
+          I <span class="key">will</span> definitely ...<br>
+          I <span class="key">won't</span> forget to ...
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📋 Future Intentions</div>
+        <div class="ex">
+          I <span class="key">am going to</span> ...<br>
+          I <span class="key">plan to</span> ...<br>
+          I <span class="key">want to</span> ...<br>
+          I <span class="key">hope to</span> ...
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Diferencias clave:</strong><br>
+      <strong>Promises</strong> → siempre con <span class="key">WILL</span><br>
+      <strong>Intentions/Plans</strong> → generalmente con <span class="key">GOING TO</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 38 – Resumen Final -->
+<div class="slide" id="s38">
+  <div class="s-header">
+    <span class="badge">RESUMEN A2</span>
+    <h2>¡Has completado la clase C5!</h2>
+    <span class="s-num">38 / 38</span>
+  </div>
+  <div class="s-body">
+    <div class="summary-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+      <div class="summary-card"><h4>🔮 WILL</h4><p>Predicciones, promesas, decisiones espontáneas</p></div>
+      <div class="summary-card"><h4>📋 GOING TO</h4><p>Planes, intenciones, predicciones con evidencia</p></div>
+      <div class="summary-card"><h4>⚖️ WILL vs GOING TO</h4><p>Espontáneo vs planeado / Sin evidencia vs con evidencia</p></div>
+      <div class="summary-card"><h4>📝 Adverbs of Manner</h4><p>well, fast, slowly, carefully, happily, badly, etc.</p></div>
+      <div class="summary-card"><h4>🤝 Making Promises</h4><p>I promise I will... / I swear I will... / I won't forget...</p></div>
+      <div class="summary-card"><h4>📋 Future Intentions</h4><p>I'm going to... / I plan to... / I want to... / I hope to...</p></div>
+    </div>
+    <div class="tip" style="margin-top:12px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>¡Listo para practicar!</strong> Ahora dirígete a los <strong>Ejercicios A2</strong> para poner a prueba todo lo que has aprendido en esta clase.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:2.6%"></div></div>
+    <div id="slide-label">Slide 1 / 38</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Course</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E5.html'">✏️ Exercises</button>
+  </div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+</script>
+</body>
+</html>
