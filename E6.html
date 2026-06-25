@@ -179,7 +179,7 @@ body{
   <div id="intro-card">
     <div class="anchor">⭐</div>
     <h2>Present Perfect & Functional Language — Practice Test</h2>
-    <p>Este test selecciona <strong>30 preguntas aleatorias</strong> de un banco de 100, con alternativas en orden aleatorio. Cubre todos los temas vistos en la clase C6: Present Perfect, EVER/NEVER, ALREADY/YET, irregular verbs (past participles), food vocabulary, ordering food y describing past experiences.</p>
+    <p>Este test selecciona <strong>30 preguntas aleatorias</strong> de un banco de 100, con alternativas en orden aleatorio. Cubre todos los temas vistos en la clase: Present Perfect, EVER/NEVER, ALREADY/YET, irregular verbs (past participles), food vocabulary, ordering food y describing past experiences.</p>
     <div class="tag-row">
       <span class="tag">⭐ Present Perfect</span>
       <span class="tag">❓ EVER</span>
@@ -261,7 +261,7 @@ const POOL = [
   {q:`_______ they ever _______ to Japan?`, opts:["Have / been","Has / been","Have / went","Has / went"], ans:0},
   {q:`This is the best cake I _______ ever _______.`, opts:["have / eaten","has / eaten","have / ate","has / ate"], ans:0},
   {q:`_______ your sister ever _______ a famous person?`, opts:["Has / met","Have / met","Has / meet","Have / meet"], ans:0},
-  {q:`I _______ ever _______ to a wedding.`, opts:["have / been","has / been","have / went","has / went"], ans:0},
+  {q:`_______ you ever _______ to a wedding?`, opts:["have / been","has / been","have / went","has / went"], ans:0},
   {q:`_______ you ever _______ a ghost?`, opts:["Have / seen","Has / seen","Have / saw","Has / saw"], ans:0},
 
   // ========== NEVER (8 preguntas) ==========
@@ -313,17 +313,17 @@ const POOL = [
   {q:`Which of these is a dessert?`, opts:["pizza","ice cream","burger","soup"], ans:1},
   {q:`What do you drink when you are thirsty?`, opts:["water","rice","bread","meat"], ans:0},
   {q:`Which of these is a type of pasta?`, opts:["rice","spaghetti","bread","potato"], ans:1},
-  {q:`You eat _______ for lunch.`, opts:["breakfast","dinner","lunch","supper"], ans:2},
+  {q:`You eat _______ in the middle of the day.`, opts:["breakfast","dinner","lunch","supper"], ans:2},
   {q:`Which of these is a celebration?`, opts:["birthday","breakfast","lunch","dinner"], ans:0},
   {q:`What do you blow out on a birthday cake?`, opts:["candles","balloons","gifts","flowers"], ans:0},
   {q:`Which of these is a Christmas decoration?`, opts:["balloon","candle","Christmas tree","fireworks"], ans:2},
 
   // ========== ORDERING FOOD (8 preguntas) ==========
   {q:`"_______ I have the menu, please?" – "Of course!"`, opts:["Can","Will","Do","Am"], ans:0},
-  {q:`"I _______ a pizza, please." – "Anything else?"`, opts:["like","want","would","will"], ans:2},
+  {q:`"I _______ a pizza, please." – "Anything else?"`, opts:["like","would like","would","want"], ans:1},
   {q:`"What do you _______?" – "The pasta is very good."`, opts:["want","recommend","like","have"], ans:1},
   {q:`"_______ you like something to drink?" – "Yes, a coffee, please."`, opts:["Are","Do","Would","Will"], ans:2},
-  {q:`"Can I have the _______ , please?" – "Here you are."`, opts:["menu","bill","food","drink"], ans:1},
+  {q:`"Can I have the _______ , please?" – "Here you are."`, opts:["order","bill","food","drink"], ans:1},
   {q:`"What's the _______ today?" – "We have fresh fish."`, opts:["menu","special","bill","drink"], ans:1},
   {q:`"I'll _______ the chicken, please." – "Good choice!"`, opts:["have","want","like","need"], ans:0},
   {q:`"I'd like to _______ , please." – "What would you like?"`, opts:["eat","order","drink","cook"], ans:1},
@@ -500,7 +500,7 @@ function submitTest(){
   let title, msg;
   if(pct >= 85){ title = '🏆 ¡Excelente!'; msg = 'Dominas el Present Perfect y el lenguaje funcional. ¡Sigue así!'; }
   else if(pct >= 65){ title = '👍 ¡Buen trabajo!'; msg = 'Tienes una buena base. Repasa los temas donde fallaste.'; }
-  else if(pct >= 45){ title = '📚 Sigue practicando'; msg = 'Vuelve a revisar la clase C6 y presta atención a la diferencia entre ever y never.'; }
+  else if(pct >= 45){ title = '📚 Sigue practicando'; msg = 'Vuelve a revisar la clase y presta atención a la diferencia entre ever y never.'; }
   else { title = '💪 No te rindas'; msg = 'Repasa la clase completa y vuelve a intentarlo. ¡Puedes lograrlo!'; }
   
   document.getElementById('result-title').textContent = title;
