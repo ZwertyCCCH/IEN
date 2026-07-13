@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Ejercicios: Función Cuadrática | PAES M1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<!-- KaTeX CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<style>
+:root{
+  --primary:#1a2a4a;
+  --primary2:#1e3a6a;
+  --primary3:#1a4a7a;
+  --math-blue:#1a5a8a;
+  --math-blue2:#2a7aaa;
+  --gold:#d4a84a;
+  --gold2:#e8c86a;
+  --white:#ffffff;
+  --light:#f0f4f8;
+  --lighter:#f7f9fc;
+  --green:#1a7a4a;
+  --green2:#e8f7ef;
+  --green3:#0f5c37;
+  --red:#b02a2a;
+  --red2:#fde8e8;
+  --gray:#5a6a7a;
+  --border:#d0dce8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Source Sans 3',sans-serif;
+  background:linear-gradient(160deg,var(--primary) 0%,var(--primary2) 40%,var(--primary3) 100%);
+  min-height:100vh;color:#1a2a3a;
+}
+
+/* ── TOP BAR ── */
+#topbar{
+  position:sticky;top:0;z-index:200;
+  background:var(--primary);border-bottom:3px solid var(--gold);
+  padding:12px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+#topbar .logo{font-size:1.6rem;}
+#topbar h1{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.25rem;font-weight:700;flex:1;
+}
+#topbar h1 span{color:var(--gold);}
+#score-pill{
+  background:rgba(212,168,74,.15);border:1px solid var(--gold);
+  color:var(--gold2);font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;padding:5px 14px;border-radius:20px;white-space:nowrap;
+}
+
+/* ── PROGRESS BAR ── */
+#prog-wrap{background:rgba(255,255,255,.08);height:6px;}
+#prog-fill{height:100%;background:var(--gold);transition:width .4s;width:0%;}
+
+/* ── MAIN ── */
+#main{max-width:820px;margin:0 auto;padding:28px 20px 120px;}
+
+/* ── INTRO CARD ── */
+#intro-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.25);
+  animation:fadeUp .5s ease forwards;
+}
+#intro-card .anchor{font-size:3rem;margin-bottom:12px;}
+#intro-card h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--primary);margin-bottom:10px;}
+#intro-card p{color:var(--gray);font-size:1rem;line-height:1.7;margin-bottom:24px;}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;}
+.tag{
+  background:var(--light);border:1px solid var(--border);border-radius:20px;
+  padding:4px 14px;font-size:.82rem;color:var(--primary);font-weight:600;
+}
+.info-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;
+  background:var(--light);border-radius:16px;padding:16px;margin-top:16px;
+}
+.info-item{text-align:center;}
+.info-item .num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--primary);}
+.info-item .label{font-size:.75rem;color:var(--gray);}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  border:none;cursor:pointer;border-radius:10px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.95rem;padding:11px 24px;transition:all .2s;
+}
+.btn-gold{background:var(--gold);color:var(--primary);}
+.btn-gold:hover{background:var(--gold2);transform:scale(1.03);}
+.btn-sky{background:var(--math-blue);color:var(--white);}
+.btn-sky:hover{background:var(--math-blue2);transform:scale(1.03);}
+.btn-green{background:var(--green);color:var(--white);}
+.btn-green:hover{background:var(--green3);transform:scale(1.03);}
+.btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold);}
+.btn-outline:hover{background:rgba(212,168,74,.12);}
+.btn-red{background:var(--red);color:var(--white);}
+.btn-red:hover{background:#8a1a1a;transform:scale(1.03);}
+
+/* ── QUESTION CARDS ── */
+#questions-wrap{display:none;flex-direction:column;gap:20px;}
+.q-card{
+  background:var(--white);border-radius:16px;padding:22px 26px;
+  box-shadow:0 4px 16px rgba(0,0,0,.12);
+  border-left:5px solid var(--border);
+  transition:border-color .2s;
+  animation:fadeUp .4s ease both;
+}
+.q-card.answered-correct{border-left-color:var(--green);}
+.q-card.answered-wrong{border-left-color:var(--red);}
+
+.q-num{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  color:var(--gray);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase;
+}
+.q-text{
+  font-size:1rem;font-weight:600;color:var(--primary);line-height:1.8;margin-bottom:14px;
+}
+.q-text .katex{font-size:1.05rem;}
+.q-text .math{background:var(--light);padding:2px 6px;border-radius:6px;font-family:'JetBrains Mono',monospace;}
+.q-text img{max-width:220px;height:auto;display:block;margin:10px 0;border-radius:8px;}
+
+/* options */
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt{
+  display:flex;align-items:center;gap:12px;
+  border:2px solid var(--border);border-radius:10px;
+  padding:10px 14px;cursor:pointer;transition:all .18s;
+  background:var(--light);user-select:none;
+}
+.opt:hover:not(.locked){border-color:var(--math-blue);background:#e8f0fc;}
+.opt.selected{border-color:var(--math-blue);background:#dbe8ff;}
+.opt.correct{border-color:var(--green);background:var(--green2);}
+.opt.wrong{border-color:var(--red);background:var(--red2);}
+.opt.locked{cursor:default;}
+.opt-letter{
+  width:26px;height:26px;border-radius:50%;border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;
+  color:var(--gray);flex-shrink:0;transition:all .18s;background:var(--white);
+}
+.opt.selected .opt-letter{border-color:var(--math-blue);color:var(--math-blue);background:#dbe8ff;}
+.opt.correct .opt-letter{border-color:var(--green);color:var(--green);background:var(--green2);}
+.opt.wrong .opt-letter{border-color:var(--red);color:var(--red);background:var(--red2);}
+.opt-text{font-size:.93rem;color:#1a2a3a;line-height:1.4;}
+.opt-text img{max-width:160px;height:auto;border-radius:6px;vertical-align:middle;}
+
+/* feedback */
+.q-feedback{display:none;margin-top:10px;font-size:.88rem;font-weight:600;padding:7px 12px;border-radius:8px;}
+.q-feedback.correct{display:flex;align-items:center;gap:6px;color:var(--green);background:var(--green2);}
+.q-feedback.wrong{display:flex;align-items:center;gap:6px;color:var(--red);background:var(--red2);}
+
+/* ── SUBMIT BAR ── */
+#submit-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:var(--primary);border-top:2px solid var(--gold);
+  padding:10px 24px;display:flex;align-items:center;gap:14px;
+  justify-content:space-between;flex-wrap:wrap;
+}
+#answered-count{color:#a0b8d0;font-family:'JetBrains Mono',monospace;font-size:.8rem;}
+
+/* ── RESULTS ── */
+#results-wrap{display:none;animation:fadeUp .5s ease forwards;}
+#results-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  box-shadow:0 12px 40px rgba(0,0,0,.25);margin-bottom:28px;text-align:center;
+}
+.score-ring{
+  width:140px;height:140px;border-radius:50%;margin:0 auto 20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;
+  border:8px solid var(--gold);background:var(--light);
+  transition:border-color .4s;
+}
+.score-ring .score-num{font-size:2.8rem;font-weight:900;color:var(--primary);line-height:1;}
+.score-ring .score-of{font-size:.9rem;color:var(--gray);}
+#result-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--primary);margin-bottom:8px;}
+#result-msg{color:var(--gray);font-size:1rem;line-height:1.6;margin-bottom:24px;}
+.result-stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+.stat-box{background:var(--light);border-radius:12px;padding:12px 22px;text-align:center;border:1px solid var(--border);}
+.stat-box .sv{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;}
+.stat-box .sl{font-size:.78rem;color:var(--gray);margin-top:2px;}
+.stat-box.ok .sv{color:var(--green);}
+.stat-box.err .sv{color:var(--red);}
+.stat-box.skip .sv{color:var(--gold);}
+.stat-box.grade .sv{color:var(--math-blue);}
+
+.grade-box{
+  font-size:1.2rem;text-align:center;padding:12px;
+  border-radius:40px;margin-top:16px;font-weight:700;
+}
+.approved{background:var(--green2);color:var(--green3);border:2px solid var(--green);}
+.failed{background:var(--red2);color:var(--red);border:2px solid var(--red);}
+
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px;}
+
+#review-wrap{display:flex;flex-direction:column;gap:16px;}
+.review-title{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.3rem;font-weight:700;margin-bottom:6px;
+}
+.review-card{
+  background:var(--white);border-radius:16px;padding:16px 20px;
+  border-left:4px solid var(--border);
+}
+.review-card.correct{border-left-color:var(--green);background:var(--green2);}
+.review-card.wrong{border-left-color:var(--red);background:var(--red2);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:600px){
+  #main{padding:16px 12px 100px;}
+  #intro-card,#results-card{padding:24px 18px;}
+  .result-actions{flex-direction:column;}
+  .btn{justify-content:center;}
+  .q-card{padding:16px;}
+  .q-text img{max-width:160px;}
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <span class="logo">📐</span>
+  <h1>Ejercicios M1 — <span>Función Cuadrática</span></h1>
+  <div id="score-pill">25 preguntas · 1 punto cada pregunta</div>
+</div>
+<div id="prog-wrap"><div id="prog-fill"></div></div>
+
+<div id="main">
+
+  <!-- INTRO -->
+  <div id="intro-card">
+    <div class="anchor">📝</div>
+    <h2>Función Cuadrática — Práctica PAES M1</h2>
+    <p>Este test selecciona <strong>25 preguntas aleatorias</strong> de un banco de 54, con alternativas en orden aleatorio. Al finalizar verás tu puntaje, tu nota y una revisión completa.</p>
+    <div class="tag-row">
+      <span class="tag">📈 Concavidad</span>
+      <span class="tag">🎯 Vértice</span>
+      <span class="tag">📐 Eje de simetría</span>
+      <span class="tag">🔢 Raíces</span>
+      <span class="tag">📊 Discriminante</span>
+      <span class="tag">🔄 Transformaciones</span>
+    </div>
+    <div class="info-grid">
+      <div class="info-item"><div class="num">54</div><div class="label">Preguntas en banco</div></div>
+      <div class="info-item"><div class="num">25</div><div class="label">Preguntas por test</div></div>
+      <div class="info-item"><div class="num">1 punto</div><div class="label">Por respuesta correcta</div></div>
+    </div>
+    <button class="btn btn-gold" onclick="startTest()">🚀 Iniciar Test</button>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="questions-wrap"></div>
+
+  <!-- RESULTS -->
+  <div id="results-wrap">
+    <div id="results-card">
+      <div class="score-ring">
+        <div class="score-num" id="r-score">0</div>
+        <div class="score-of" id="r-of">/ 25</div>
+      </div>
+      <div id="result-title"></div>
+      <div id="result-msg"></div>
+      <div class="result-stats">
+        <div class="stat-box ok"><div class="sv" id="r-correct">0</div><div class="sl">✅ Correctas</div></div>
+        <div class="stat-box err"><div class="sv" id="r-wrong">0</div><div class="sl">❌ Incorrectas</div></div>
+        <div class="stat-box skip"><div class="sv" id="r-skip">0</div><div class="sl">⚪ Sin responder</div></div>
+      </div>
+      <div class="grade-box" id="grade-box"></div>
+      <div class="result-actions">
+        <button class="btn btn-gold" onclick="restartTest()">🔄 Nuevo Test</button>
+        <button class="btn btn-sky" onclick="window.location.href='index.html'">📘 Volver al curso</button>
+        <button class="btn btn-green" onclick="window.location.href='C14.html'">📖 Volver a la clase</button>
+      </div>
+    </div>
+    <div class="review-title">📋 Revisión de Respuestas</div>
+    <div id="review-wrap"></div>
+  </div>
+
+</div>
+
+<!-- SUBMIT BAR -->
+<div id="submit-bar" style="display:none">
+  <div id="answered-count">Respondidas: 0 / 25</div>
+  <div style="display:flex;gap:10px">
+    <button class="btn btn-outline" onclick="cancelTest()">← Cancelar</button>
+    <button class="btn btn-gold" onclick="submitTest()">Finalizar Test ✓</button>
+  </div>
+</div>
+
+<script>
+
+// ============================================================
+// POOL DE PREGUNTAS - Función Cuadrática (Aplicaciones)
+// Fuente: Matemática Para Nacional, Capítulo 13
+// 65 preguntas con respuestas del solucionario
+// Adaptado con KaTeX y formato consistente
+// ============================================================
+
+const POOL = [
+  // Pregunta 1
+  {
+    q: 'Se sabe que una pastelería presenta una función que representa sus ganancias $(G)$, que depende de la cantidad de pasteles producidos $(x)$:<br><br>$G(x) = -0,2x^2 + 50x + 8$<br><br>¿Cuántas unidades le conviene producir a esta pastelería para maximizar sus ganancias?',
+    opts: ['$100$', '$85$', '$25$', '$125$'],
+    ans: 3
+  },
+  // Pregunta 2
+  {
+    q: 'Una persona decidió decorar para su cumpleaños con un arco de globos. Dicho arreglo tendrá forma parabólica, donde la función que representa al arco es $f(x) = -x^2$. Si se desea lograr que la altura del arco sea de $4$ metros, ¿cuál es la distancia que deben estar separadas las bases del arco?',
+    opts: ['$1$ m', '$2$ m', '$3$ m', '$4$ m'],
+    ans: 3
+  },
+  // Pregunta 3
+  {
+    q: 'Una pelota de béisbol tiene una trayectoria parabólica, la cual se golpea inicialmente desde una altura de $1$ metro, alcanza una altura máxima de $97$ m a los $4$ segundos. ¿Cuál será la altura de la pelota a los $6$ segundos?',
+    opts: ['$1$ m', '$73$ m', '$43$ m', '$91$ m'],
+    ans: 1
+  },
+  // Pregunta 4
+  {
+    q: 'Felipe tiene un conejo que al momento de saltar se puede graficar su salto con la función $f(x) = -0,3x^2 + 0,39x + 0,4$, donde $f(x)$ representa la altura del conejo, y $x$ representa el tiempo transcurrido. Con esta información, la función presenta su eje simétrico en:',
+    opts: ['$y = 0,32$', '$x = 0,6$', '$x = 0,65$', '$y = 0,55$'],
+    ans: 2
+  },
+  // Pregunta 5
+  {
+    q: 'Javier compró un chocolate con forma de cubo, sin embargo, se tropezó y este cayó al piso. Su trayectoria se describe mediante la función $f(x) = -0,5x^2 - x + 1,7$, donde $f(x)$ representa la altura del chocolate (en metros) y $x$ la distancia recorrida horizontalmente (en metros). ¿Qué altura tenía el chocolate cuando comenzó a caerse?',
+    opts: ['$1,5$ metros', '$1,7$ metros', '$0,5$ metros', '$1$ metro'],
+    ans: 1
+  },
+  // Pregunta 6
+  {
+    q: 'Durante el ciclo ovárico, la hormona luteinizante (LH) entre los días $10$ y $17$ se puede modelar mediante $LH(x) = -4,375(x - 14)^2 + 80$, donde $LH(x)$ es la concentración (mUI/ml) y $x$ el día del ciclo. ¿Cuál es la mayor concentración de hormona LH dentro del dominio correspondiente?',
+    opts: ['$80$ mUI/ml', '$14$ mUI/ml', '$4,375$ mUI/ml', '$8,75$ mUI/ml'],
+    ans: 0
+  },
+  // Pregunta 7
+  {
+    q: 'Al lanzar una pelota en un juego de golf, su altura en metros, desde que se lanza hasta que cae al suelo, se modela a través de la función $H(t) = -0,86t(t - 6)$, donde $t$ es la cantidad de segundos transcurridos desde que ésta fue lanzada. ¿Cuál de las siguientes afirmaciones es <strong>FALSA</strong>?',
+    opts: [
+      'La pelota cae al suelo a los $6$ segundos de haber sido lanzada.',
+      'La máxima altura que alcanza la pelota es $3$ metros.',
+      'La pelota se lanza desde el nivel del suelo.',
+      'La forma de su gráfica es no convexa.'
+    ],
+    ans: 1
+  },
+  // Pregunta 8
+  {
+    q: 'La ley de Poiseville es muy importante en hemodinámica, ya que permite calcular la velocidad de la sangre en un punto ubicado a $r$ centímetros del eje central de un vaso sanguíneo y esta ley está dada por la función $V(r) = C(R^2 - r^2)$ en centímetros por segundo, en que $C$ es una constante y $R$ es el radio del vaso sanguíneo. Suponiendo que para un determinado vaso sanguíneo se tiene que $C = 1,4 \\cdot 10^4$ y $R = 10^{-2}$ cm, ¿cuál es la velocidad de la sangre en el eje central de este vaso?',
+    opts: ['$0,14$ cm/s', '$1,4$ cm/s', '$14$ cm/s', '$140$ cm/s'],
+    ans: 1
+  },
+  // Pregunta 9
+  {
+    q: 'Suponga que en un período de $45$ días, el saldo bancario de una persona que tiene cuenta corriente en dólares puede ser descrito por la función $S(t) = 10t^2 - 240t + 1.400$, siendo $S(t)$ el saldo en dólares en el día $t$, donde $t$ puede tomar valores de $1$ a $45$. Según esta información, ¿cuál de las siguientes proposiciones es verdadera?',
+    opts: [
+      'El menor saldo en el período ocurrió en $t = 12$',
+      'El saldo aumentó en todos los días del período',
+      'El menor saldo en el período fue de $12$ dólares',
+      'El saldo fue positivo en todos los días del período'
+    ],
+    ans: 0
+  },
+  // Pregunta 10
+  {
+    q: 'Con respecto al gráfico de la función cuadrática $h(t) = 8t - t^2$ ($h$ = altura en metros, $t$ = tiempo en segundos, $0 \\leq t \\leq 8$), ¿cuál(es) de las siguientes aseveraciones es (son) verdadera(s)?<br><br>I) Los ceros de la función son $t_1 = 0$ y $t_2 = 8$.<br>II) A $3$ segundos corresponde una altura de $12$ metros.<br>III) La altura máxima se obtiene a los $4$ segundos.',
+    opts: ['Solo I', 'Solo II', 'Solo I y II', 'Solo I y III'],
+    ans: 3
+  },
+  // Pregunta 11
+  {
+    q: 'Se puede calcular la altura que alcanza cierto proyectil que es lanzado hacia arriba, mediante la fórmula $h = 200t - 5t^2$, donde $h$ es la altura en metros, alcanzada después de $t$ segundos de ser lanzado. Se puede afirmar correctamente que el proyectil se encuentra a una altura de $1.875$ metros:',
+    opts: [
+      'A los $11$ segundos y va ascendiendo',
+      'A los $15$ segundos y viene descendiendo',
+      'A los $15$ segundos y va ascendiendo',
+      'A los $30$ segundos cuando viene descendiendo'
+    ],
+    ans: 2
+  },
+  // Pregunta 12
+  {
+    q: 'Se tiene una piscina con forma rectangular de $4$ m de ancho y $10$ m de largo. Se desea colocar un borde de pasto de ancho $x$ metros alrededor de la piscina. Si el área de la superficie total que ocupa la piscina y el borde del pasto es de $112$ m², ¿cuál de las siguientes ecuaciones permite determinar el valor de $x$?',
+    opts: [
+      '$x^2 + 40 = 112$',
+      '$x^2 + 14x = 72$',
+      '$2x^2 + 7x = 18$',
+      '$x^2 + 7x = 18$'
+    ],
+    ans: 3
+  },
+  // Pregunta 13
+  {
+    q: 'Un fabricante de cajas de cartón quiere construir cajas abiertas por arriba a partir de piezas cuadradas de $30$ cm de lado, cortando cuadrados iguales en las esquinas y doblando los lados hacia arriba. Si el volumen de la caja está dado por $V(x) = x(30 - 2x)^2$, donde $x$ es la altura de la caja, ¿cuál es el volumen máximo que puede tener la caja?',
+    opts: ['$1.500$ cm³', '$2.000$ cm³', '$2.500$ cm³', '$3.000$ cm³'],
+    ans: 1
+  },
+  // Pregunta 14
+  {
+    q: 'La trayectoria de una pelota lanzada hacia arriba está dada por la función $h(t) = -5t^2 + 20t + 2$, donde $h$ es la altura en metros y $t$ es el tiempo en segundos. ¿Cuál es la altura máxima que alcanza la pelota?',
+    opts: ['$20$ m', '$22$ m', '$24$ m', '$26$ m'],
+    ans: 1
+  },
+  // Pregunta 15
+  {
+    q: 'El ingreso diario de una empresa por la venta de $x$ artículos está dado por $I(x) = -2x^2 + 100x$. ¿Cuántos artículos debe vender para maximizar su ingreso?',
+    opts: ['$20$', '$25$', '$30$', '$35$'],
+    ans: 1
+  },
+  // Pregunta 16
+  {
+    q: 'La ganancia mensual de una fábrica de juguetes está modelada por $G(x) = -0,5x^2 + 40x - 200$, donde $x$ es la cantidad de juguetes producidos (en cientos). ¿Cuál es la ganancia máxima que puede obtener la fábrica?',
+    opts: ['$400.000$ pesos', '$600.000$ pesos', '$800.000$ pesos', '$1.000.000$ pesos'],
+    ans: 1
+  },
+  // Pregunta 17
+  {
+    q: 'Un puente colgante tiene forma parabólica. La altura de los cables sobre el nivel del agua está dada por $h(x) = 0,01x^2 - 0,2x + 5$, donde $x$ es la distancia horizontal desde uno de los pilares. ¿Cuál es la altura mínima de los cables?',
+    opts: ['$3$ m', '$4$ m', '$5$ m', '$6$ m'],
+    ans: 1
+  },
+  // Pregunta 18
+  {
+    q: 'Un agricultor quiere cercar un terreno rectangular junto a un río, por lo que solo necesita cercar tres lados. Si dispone de $100$ m de cerca, el área del terreno está dada por $A(x) = x(100 - 2x)$, donde $x$ es el ancho del terreno. ¿Cuál es el área máxima que puede cercar?',
+    opts: ['$1.200$ m²', '$1.250$ m²', '$1.300$ m²', '$1.350$ m²'],
+    ans: 1
+  },
+  // Pregunta 19
+  {
+    q: 'La temperatura diaria en una ciudad durante el verano está modelada por $T(h) = -2h^2 + 24h - 40$, donde $T$ es la temperatura en grados Celsius y $h$ es la hora del día (con $h=0$ correspondiente a la medianoche). ¿A qué hora se alcanza la temperatura máxima?',
+    opts: ['4:00', '6:00', '8:00', '10:00'],
+    ans: 1
+  },
+  // Pregunta 20
+  {
+    q: 'Un proyectil es lanzado desde el suelo con una velocidad inicial de $40$ m/s. Su altura está dada por $h(t) = -5t^2 + 40t$. ¿En qué instante el proyectil vuelve a tocar el suelo?',
+    opts: ['$4$ s', '$6$ s', '$8$ s', '$10$ s'],
+    ans: 2
+  },
+  // Pregunta 21
+  {
+    q: 'El costo de producción de $x$ unidades de un producto está dado por $C(x) = 0,5x^2 - 10x + 200$. ¿Cuál es la cantidad de unidades que minimiza el costo?',
+    opts: ['$5$', '$10$', '$15$', '$20$'],
+    ans: 1
+  },
+  // Pregunta 22
+  {
+    q: 'La demanda de un producto está dada por $p(x) = -2x + 100$, donde $p$ es el precio en pesos y $x$ es la cantidad demandada. El ingreso total es $I(x) = x \\cdot p(x)$. ¿Cuál es el ingreso máximo?',
+    opts: ['$1.000$ pesos', '$1.200$ pesos', '$1.250$ pesos', '$1.300$ pesos'],
+    ans: 2
+  },
+  // Pregunta 23
+  {
+    q: 'Un cohete de juguete es lanzado desde una plataforma de $5$ m de altura. Su altura está dada por $h(t) = -5t^2 + 30t + 5$. ¿Cuánto tiempo tarda en alcanzar su altura máxima?',
+    opts: ['$2$ s', '$3$ s', '$4$ s', '$5$ s'],
+    ans: 1
+  },
+  // Pregunta 24
+  {
+    q: 'La utilidad de una empresa está dada por $U(x) = -x^2 + 60x - 500$, donde $x$ es la cantidad de unidades vendidas. ¿Cuál es la utilidad máxima?',
+    opts: ['$300$', '$400$', '$500$', '$600$'],
+    ans: 1
+  },
+  // Pregunta 25
+  {
+    q: 'Un rectángulo tiene un perímetro de $40$ cm. Si su área está dada por $A(x) = x(20 - x)$, donde $x$ es el largo del rectángulo, ¿cuál es el área máxima posible?',
+    opts: ['$80$ cm²', '$100$ cm²', '$120$ cm²', '$140$ cm²'],
+    ans: 1
+  },
+  // Pregunta 26
+  {
+    q: 'La concentración de un medicamento en la sangre, $t$ horas después de ser administrado, está dada por $C(t) = -0,5t^2 + 3t$. ¿Después de cuántas horas la concentración es máxima?',
+    opts: ['$2$ h', '$3$ h', '$4$ h', '$5$ h'],
+    ans: 1
+  },
+  // Pregunta 27
+  {
+    q: 'Un terreno rectangular de $800$ m² debe ser cercado. Si uno de los lados ya tiene una pared, la función que representa el largo de la cerca necesaria es $L(x) = x + \\frac{1600}{x}$, donde $x$ es el ancho del terreno. ¿Cuál es el valor de $x$ que minimiza la cantidad de cerca necesaria?',
+    opts: ['$20$ m', '$30$ m', '$40$ m', '$50$ m'],
+    ans: 2
+  },
+  // Pregunta 28
+  {
+    q: 'La ganancia semanal de un pequeño negocio está dada por $G(x) = -2x^2 + 80x - 600$, donde $x$ es el precio de venta de cada producto. ¿Cuál debe ser el precio para obtener la ganancia máxima?',
+    opts: ['$10$ pesos', '$20$ pesos', '$30$ pesos', '$40$ pesos'],
+    ans: 1
+  },
+  // Pregunta 29
+  {
+    q: 'Un jugador de fútbol patea una pelota cuya trayectoria está dada por $h(x) = -0,02x^2 + 0,8x$, donde $h$ es la altura en metros y $x$ es la distancia horizontal desde el punto de lanzamiento. ¿A qué distancia del punto de lanzamiento la pelota alcanza su altura máxima?',
+    opts: ['$10$ m', '$20$ m', '$30$ m', '$40$ m'],
+    ans: 1
+  },
+  // Pregunta 30
+  {
+    q: 'El número de bacterias en un cultivo está dado por $N(t) = -2t^2 + 40t + 100$, donde $t$ es el tiempo en horas. ¿Cuál es la máxima cantidad de bacterias que alcanza el cultivo?',
+    opts: ['$200$', '$250$', '$300$', '$350$'],
+    ans: 2
+  },
+  // Pregunta 31
+  {
+    q: 'Un arquitecto diseña un arco parabólico de $10$ m de altura y $8$ m de ancho en la base. Si el vértice está en la parte superior del arco, ¿cuál es la ecuación que modela la forma del arco?',
+    opts: [
+      '$y = -0,625x^2 + 10$',
+      '$y = -1,25x^2 + 10$',
+      '$y = -0,3125x^2 + 10$',
+      '$y = -2,5x^2 + 10$'
+    ],
+    ans: 0
+  },
+  // Pregunta 32
+  {
+    q: 'La función que modela el lanzamiento de una piedra es $h(t) = -5t^2 + 15t + 2$. ¿Cuál es la altura inicial desde la que se lanza la piedra?',
+    opts: ['$1$ m', '$2$ m', '$3$ m', '$4$ m'],
+    ans: 1
+  },
+  // Pregunta 33
+  {
+    q: 'Un fabricante determina que el costo de producir $x$ artículos es $C(x) = 0,1x^2 - 5x + 200$. ¿Cuál es el costo mínimo de producción?',
+    opts: ['$137,5$', '$138,5$', '$139,5$', '$140,5$'],
+    ans: 0
+  },
+  // Pregunta 34
+  {
+    q: 'La altura de un puente parabólico está dada por $h(x) = -0,05x^2 + 4$, donde $x$ es la distancia horizontal desde el centro del puente. ¿Cuál es la altura máxima del puente?',
+    opts: ['$2$ m', '$3$ m', '$4$ m', '$5$ m'],
+    ans: 2
+  },
+  // Pregunta 35
+  {
+    q: 'Un balón de fútbol es pateado y su trayectoria está dada por $h(x) = -0,04x^2 + 0,8x$, donde $x$ es la distancia horizontal. ¿Cuál es el alcance máximo del balón (distancia hasta que toca el suelo)?',
+    opts: ['$10$ m', '$15$ m', '$20$ m', '$25$ m'],
+    ans: 2
+  },
+  // Pregunta 36
+  {
+    q: 'La utilidad de una empresa por la venta de $x$ artículos está dada por $U(x) = -3x^2 + 120x - 500$. ¿Cuál es la cantidad de artículos que debe vender para maximizar su utilidad?',
+    opts: ['$10$', '$15$', '$20$', '$25$'],
+    ans: 2
+  },
+  // Pregunta 37
+  {
+    q: 'Un objeto es lanzado hacia arriba desde el suelo con una velocidad inicial de $30$ m/s. Su altura está dada por $h(t) = -5t^2 + 30t$. ¿Durante cuánto tiempo permanece el objeto en el aire?',
+    opts: ['$3$ s', '$4$ s', '$5$ s', '$6$ s'],
+    ans: 3
+  },
+  // Pregunta 38
+  {
+    q: 'Sea $f(x) = x^2$. Si se traslada la gráfica de $f$ $3$ unidades hacia la derecha y $2$ unidades hacia arriba, se obtiene la función $g(x)$. ¿Cuál es la expresión de $g(x)$?',
+    opts: [
+      '$g(x) = (x - 3)^2 + 2$',
+      '$g(x) = (x + 3)^2 + 2$',
+      '$g(x) = (x - 3)^2 - 2$',
+      '$g(x) = (x + 3)^2 - 2$'
+    ],
+    ans: 0
+  },
+  // Pregunta 39
+  {
+    q: 'La función cuadrática $f(x) = x^2 - 4x + 3$ se traslada $2$ unidades hacia la izquierda y $1$ unidad hacia abajo. ¿Cuál es la ecuación de la nueva función?',
+    opts: [
+      '$g(x) = x^2 - 2$',
+      '$g(x) = x^2 - 8x + 14$',
+      '$g(x) = x^2 - 8x + 16$',
+      '$g(x) = (x + 2)^2 - 4x + 2$'
+    ],
+    ans: 0
+  },
+  // Pregunta 40
+  {
+    q: 'La gráfica de la función $f(x) = 2x^2 - 3$ se traslada de modo que su nuevo vértice es $(2, 1)$. ¿Cuál es la ecuación de la función trasladada?',
+    opts: [
+      '$g(x) = 2(x - 2)^2 + 1$',
+      '$g(x) = 2(x + 2)^2 + 1$',
+      '$g(x) = 2x^2 - 8x + 9$',
+      '$g(x) = 2x^2 - 8x + 7$'
+    ],
+    ans: 2
+  },
+  // Pregunta 41
+  {
+    q: 'Si la parábola $y = -x^2 + 4x - 1$ se traslada $1$ unidad hacia la izquierda y $3$ unidades hacia abajo, ¿cuál es la nueva ecuación?',
+    opts: [
+      '$y = -x^2 + 2x - 1$',
+      '$y = -x^2 + 6x - 7$',
+      '$y = -(x + 1)^2 + 4(x + 1) - 4$',
+      '$y = -x^2 + 2x - 5$'
+    ],
+    ans: 0
+  },
+  // Pregunta 42
+  {
+    q: 'La función cuadrática $f(x) = (x - 2)^2 + 3$ se traslada de modo que su vértice ahora está en $(-1, 5)$. ¿Cuál de las siguientes funciones representa esta traslación?',
+    opts: [
+      '$g(x) = (x - 1)^2 + 8$',
+      '$g(x) = (x + 1)^2 + 5$',
+      '$g(x) = (x + 1)^2 + 8$',
+      '$g(x) = (x - 1)^2 + 5$'
+    ],
+    ans: 1
+  },
+  // Pregunta 43
+  {
+    q: 'Un objeto se lanza verticalmente hacia arriba desde el suelo con una velocidad inicial de $30$ m/s. Su altura $h(t)$ en metros después de $t$ segundos está dada por $h(t) = -5t^2 + 30t$. ¿Cuánto tiempo tarda en alcanzar su altura máxima?',
+    opts: ['$2$ segundos', '$3$ segundos', '$4$ segundos', '$5$ segundos'],
+    ans: 1
+  },
+  // Pregunta 44
+  {
+    q: 'El costo de producción $C(x)$ en pesos de $x$ artículos está dado por $C(x) = 0,2x^2 + 8x + 500$. Si cada artículo se vende a $50$ pesos, ¿cuál es la función utilidad $U(x)$?',
+    opts: [
+      '$U(x) = -0,2x^2 + 42x - 500$',
+      '$U(x) = 0,2x^2 - 42x + 500$',
+      '$U(x) = -0,2x^2 + 58x - 500$',
+      '$U(x) = 0,2x^2 + 58x - 500$'
+    ],
+    ans: 0
+  },
+  // Pregunta 45
+  {
+    q: 'Un fabricante de cajas quiere construir cajas abiertas por arriba a partir de piezas cuadradas de $40$ cm de lado, cortando cuadrados de lado $x$ en las esquinas y doblando los lados. El volumen $V(x)$ de la caja está dado por $V(x) = x(40 - 2x)^2$. ¿Cuál es el dominio de esta función en el contexto del problema?',
+    opts: ['$[0, 20]$', '$[0, 40]$', '$[0, \\infty[$', '$[20, 40]$'],
+    ans: 0
+  },
+  // Pregunta 46
+  {
+    q: 'Una empresa de telefonía móvil cobra un cargo fijo mensual de $\\$8.000$ y $\\$50$ por cada minuto de llamada. ¿Cuál es la función que representa el costo mensual $C(x)$ en pesos, donde $x$ son los minutos de llamada?',
+    opts: [
+      '$C(x) = 4.000x + 50$',
+      '$C(x) = 50x + 8.000$',
+      '$C(x) = 8.050x$',
+      '$C(x) = 8.000 + 50x$'
+    ],
+    ans: 1
+  },
+  // Pregunta 47
+  {
+    q: 'La utilidad diaria $U(x)$ en miles de pesos de una panadería está modelada por $U(x) = -2x^2 + 48x - 100$, donde $x$ es la cantidad de hornadas horneadas. ¿Cuántas hornadas deben prepararse para maximizar la utilidad?',
+    opts: ['$8$', '$10$', '$12$', '$14$'],
+    ans: 2
+  },
+  // Pregunta 48
+  {
+    q: 'Una parábola tiene vértice en $(3, -2)$ y pasa por el punto $(1, 2)$. ¿Cuál es su ecuación?',
+    opts: [
+      '$y = (x - 3)^2 - 2$',
+      '$y = 2(x - 3)^2 - 2$',
+      '$y = (x + 3)^2 - 2$',
+      '$y = (x - 3)^2 + 2$'
+    ],
+    ans: 0
+  },
+  // Pregunta 49
+  {
+    q: 'El ingreso diario $I(x)$ de una empresa por la venta de $x$ artículos está dado por $I(x) = -x^2 + 100x$. ¿Cuántos artículos debe vender para maximizar su ingreso?',
+    opts: ['$40$', '$45$', '$50$', '$55$'],
+    ans: 2
+  },
+  // Pregunta 50
+  {
+    q: 'La función $f(x) = (x - 2)^2 + 1$ se traslada $4$ unidades hacia la derecha. ¿Cuál es la ecuación de la nueva función?',
+    opts: [
+      '$g(x) = (x - 6)^2 + 1$',
+      '$g(x) = (x + 2)^2 + 1$',
+      '$g(x) = (x - 2)^2 + 5$',
+      '$g(x) = (x - 6)^2 - 3$'
+    ],
+    ans: 0
+  },
+  // Pregunta 51
+  {
+    q: 'Un terreno rectangular tiene $800$ m² de área. Si el largo es $20$ m mayor que el ancho, ¿cuál es la ecuación que permite determinar el ancho $x$ del terreno?',
+    opts: [
+      '$x(x + 20) = 800$',
+      '$x(x - 20) = 800$',
+      '$2x + 2(x + 20) = 800$',
+      '$x^2 + 20x + 800 = 0$'
+    ],
+    ans: 0
+  },
+  // Pregunta 52
+  {
+    q: 'La función cuadrática $f(x) = ax^2 + bx + c$ tiene vértice en $(2, 3)$ y pasa por el punto $(0, -1)$. ¿Cuál es el valor de $a$?',
+    opts: ['$-1$', '$1$', '$-2$', '$2$'],
+    ans: 0
+  },
+  // Pregunta 53
+  {
+    q: 'Un objeto es lanzado desde una altura de $5$ m con una velocidad inicial de $20$ m/s hacia arriba. Su altura está dada por $h(t) = -5t^2 + 20t + 5$. ¿En qué instante el objeto alcanza su altura máxima?',
+    opts: ['$1$ s', '$2$ s', '$3$ s', '$4$ s'],
+    ans: 1
+  },
+  // Pregunta 54
+  {
+    q: 'La función $f(x) = 2(x - 1)^2 - 3$ se traslada $2$ unidades hacia la izquierda y $4$ unidades hacia arriba. ¿Cuál es el vértice de la nueva función?',
+    opts: ['$(-1, 1)$', '$(1, 1)$', '$(-3, -7)$', '$(3, 1)$'],
+    ans: 0
+  },
+  // Pregunta 55
+  {
+    q: 'Un agricultor quiere cercar un terreno rectangular junto a un río, por lo que solo necesita cercar tres lados. Si dispone de $80$ m de cerca, el área del terreno está dada por $A(x) = x(80 - 2x)$, donde $x$ es el ancho. ¿Cuál es el área máxima posible?',
+    opts: ['$600$ m²', '$700$ m²', '$800$ m²', '$900$ m²'],
+    ans: 2
+  },
+  // Pregunta 56
+  {
+    q: 'La ganancia $G(x)$ de una empresa (en miles de pesos) está dada por $G(x) = -x^2 + 60x - 500$, donde $x$ es la cantidad de unidades vendidas. ¿Cuál es la ganancia máxima?',
+    opts: ['$300.000$', '$350.000$', '$400.000$', '$450.000$'],
+    ans: 2
+  },
+  // Pregunta 57
+  {
+    q: 'La función $f(x) = -2x^2 + 12x - 10$ se traslada de modo que su vértice ahora está en $(2, 4)$. ¿Cuál es la nueva función?',
+    opts: [
+      '$g(x) = -2(x - 2)^2 + 4$',
+      '$g(x) = -2(x - 4)^2 + 2$',
+      '$g(x) = -2(x - 2)^2 + 8$',
+      '$g(x) = -2x^2 + 8x - 4$'
+    ],
+    ans: 0
+  },
+  // Pregunta 58
+  {
+    q: 'Un móvil se desplaza con velocidad constante de $80$ km/h. ¿Cuál es la función que representa la distancia $d(t)$ recorrida en función del tiempo $t$ (en horas)?',
+    opts: [
+      '$d(t) = 80t$',
+      '$d(t) = 80 + t$',
+      '$d(t) = \\frac{80}{t}$',
+      '$d(t) = \\frac{t}{80}$'
+    ],
+    ans: 0
+  },
+  // Pregunta 59
+  {
+    q: 'La parábola $y = x^2 - 4x + 5$ tiene su vértice en $(2, 1)$. Si se traslada $3$ unidades hacia abajo, ¿cuál es la nueva ecuación?',
+    opts: [
+      '$y = x^2 - 4x + 2$',
+      '$y = x^2 - 4x + 8$',
+      '$y = x^2 - 4x - 2$',
+      '$y = (x - 2)^2 - 2$'
+    ],
+    ans: 0
+  },
+  // Pregunta 60
+  {
+    q: 'Un vendedor recibe un sueldo base de $\\$250.000$, más una comisión del $5\\%$ sobre sus ventas. Si en un mes realizó ventas por $V$ pesos, ¿cuál es la función que representa su sueldo $S(V)$?',
+    opts: [
+      '$S(V) = 250.000 + 0,05V$',
+      '$S(V) = 0,05(250.000 + V)$',
+      '$S(V) = 250.000V + 0,05$',
+      '$S(V) = 250.000 + 5V$'
+    ],
+    ans: 0
+  },
+  // Pregunta 61
+  {
+    q: 'La altura de un proyectil lanzado desde el suelo está dada por $h(t) = -5t^2 + 40t$. ¿Durante cuánto tiempo permanece el proyectil en el aire?',
+    opts: ['$4$ s', '$6$ s', '$8$ s', '$10$ s'],
+    ans: 2
+  },
+  // Pregunta 62
+  {
+    q: 'La función $f(x) = (x + 3)^2 - 2$ se traslada $5$ unidades hacia la izquierda. ¿Cuál es la ecuación de la nueva función?',
+    opts: [
+      '$g(x) = (x + 8)^2 - 2$',
+      '$g(x) = (x - 2)^2 - 2$',
+      '$g(x) = (x + 3)^2 + 3$',
+      '$g(x) = (x - 2)^2 - 7$'
+    ],
+    ans: 0
+  },
+  // Pregunta 63
+  {
+    q: 'El costo de alquilar un auto es de $\\$15.000$ por día más $\\$200$ por kilómetro recorrido. Si se alquila por $3$ días y se recorren $x$ kilómetros, ¿cuál es la función que representa el costo total $C(x)$?',
+    opts: [
+      '$C(x) = 45.000 + 200x$',
+      '$C(x) = 15.000 + 200x + 3$',
+      '$C(x) = 3(15.000 + 200x)$',
+      '$C(x) = 45.000x + 200$'
+    ],
+    ans: 0
+  },
+  // Pregunta 64
+  {
+    q: 'La función cuadrática $f(x) = x^2 - 6x + 8$ tiene su vértice en $(3, -1)$. Si se traslada de modo que su vértice ahora está en $(5, 2)$, ¿cuál es la nueva función?',
+    opts: [
+      '$g(x) = (x - 5)^2 + 2$',
+      '$g(x) = (x - 3)^2 + 3$',
+      '$g(x) = x^2 - 10x + 27$',
+      '$g(x) = x^2 - 10x + 23$'
+    ],
+    ans: 0
+  },
+  // Pregunta 65
+  {
+    q: 'Un depósito de agua tiene $1.000$ litros. Se abre una llave que vierte $25$ litros por minuto. ¿Cuál es la función que representa la cantidad de agua $Q(t)$ después de $t$ minutos?',
+    opts: [
+      '$Q(t) = 1.000 - 25t$',
+      '$Q(t) = 25t + 1.000$',
+      '$Q(t) = 1.000t + 25$',
+      '$Q(t) = 1.000 - \\frac{t}{25}$'
+    ],
+    ans: 0
+  },
+  // Pregunta 66
+  {
+    q: 'La función $f(x) = -x^2 + 2x + 3$ se traslada $2$ unidades hacia la derecha y $1$ unidad hacia arriba. ¿Cuál es el vértice de la nueva función?',
+    opts: [
+      '$(2, 3)$',
+      '$(3, 5)$',
+      '$(0, 4)$',
+      '$(4, 4)$'
+    ],
+    ans: 1
+  }
+];
+
+
+// ============================================================
+// CONFIGURACIÓN DEL TEST
+// ============================================================
+const TOTAL_QUESTIONS = 25;
+let selectedQuestions = [];
+let shuffledOptions = [];
+let userAnswers = [];
+let submitted = false;
+
+// ============================================================
+// UTILIDADES
+// ============================================================
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getRandomQuestions() {
+  const shuffledPool = shuffleArray([...POOL]);
+  return shuffledPool.slice(0, TOTAL_QUESTIONS);
+}
+
+function shuffleOptionsForQuestion(q) {
+  const indices = [0, 1, 2, 3];
+  const shuffledIndices = shuffleArray(indices);
+  const newOpts = shuffledIndices.map(i => q.opts[i]);
+  const newAns = shuffledIndices.indexOf(q.ans);
+  return { opts: newOpts, ansIdx: newAns };
+}
+
+function buildTest() {
+  selectedQuestions = getRandomQuestions();
+  shuffledOptions = selectedQuestions.map(q => shuffleOptionsForQuestion(q));
+  userAnswers = Array(TOTAL_QUESTIONS).fill(null);
+}
+
+// ============================================================
+// RENDERIZADO
+// ============================================================
+function renderQuestions() {
+  const wrap = document.getElementById('questions-wrap');
+  wrap.innerHTML = '';
+  
+  selectedQuestions.forEach((q, idx) => {
+    const optData = shuffledOptions[idx];
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `qcard-${idx}`;
+    card.style.animationDelay = `${idx * 0.02}s`;
+    
+    let optsHtml = '';
+    const letters = ['a', 'b', 'c', 'd'];
+    optData.opts.forEach((opt, optIdx) => {
+      optsHtml += `
+        <div class="opt" id="opt-${idx}-${optIdx}" onclick="selectOption(${idx}, ${optIdx})">
+          <div class="opt-letter">${letters[optIdx]}</div>
+          <div class="opt-text">${opt}</div>
+        </div>
+      `;
+    });
+    
+    card.innerHTML = `
+      <div class="q-num">Pregunta ${idx + 1} de ${TOTAL_QUESTIONS}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">${optsHtml}</div>
+      <div class="q-feedback" id="qfb-${idx}"></div>
+    `;
+    wrap.appendChild(card);
+  });
+  
+  // Re-renderizar KaTeX en las nuevas preguntas
+  setTimeout(function() {
+    renderKaTeX(wrap);
+  }, 300);
+}
+
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  if (userAnswers[qIdx] !== null) {
+    const prevOpt = document.getElementById(`opt-${qIdx}-${userAnswers[qIdx]}`);
+    if (prevOpt) prevOpt.classList.remove('selected');
+  }
+  userAnswers[qIdx] = optIdx;
+  const selectedOpt = document.getElementById(`opt-${qIdx}-${optIdx}`);
+  if (selectedOpt) selectedOpt.classList.add('selected');
+  updateProgress();
+}
+
+function updateProgress() {
+  const answered = userAnswers.filter(a => a !== null).length;
+  document.getElementById('answered-count').textContent = `Respondidas: ${answered} / ${TOTAL_QUESTIONS}`;
+  document.getElementById('prog-fill').style.width = `${(answered / TOTAL_QUESTIONS) * 100}%`;
+}
+
+function calculateGrade(correct, total) {
+  // Nota = cantidad de respuestas correctas (1 punto cada una)
+  const grade = correct;
+  const percentage = Math.round((correct / total) * 100);
+  return { grade, percentage };
+}
+
+function submitTest() {
+  if (submitted) return;
+  
+  const answered = userAnswers.filter(a => a !== null).length;
+  if (answered < TOTAL_QUESTIONS) {
+    if (!confirm(`Tienes ${TOTAL_QUESTIONS - answered} pregunta(s) sin responder. ¿Deseas finalizar igual?`)) {
+      return;
+    }
+  }
+  
+  submitted = true;
+  
+  let correctCount = 0;
+  selectedQuestions.forEach((_, idx) => {
+    const chosen = userAnswers[idx];
+    const correctAns = shuffledOptions[idx].ansIdx;
+    const card = document.getElementById(`qcard-${idx}`);
+    const fb = document.getElementById(`qfb-${idx}`);
+    const letters = ['a', 'b', 'c', 'd'];
+    
+    // Bloquear todas las opciones
+    for (let i = 0; i < 4; i++) {
+      const opt = document.getElementById(`opt-${idx}-${i}`);
+      if (opt) opt.classList.add('locked');
+    }
+    
+    if (chosen === null) {
+      // Sin responder: marcar la correcta
+      const correctOpt = document.getElementById(`opt-${idx}-${correctAns}`);
+      if (correctOpt) correctOpt.classList.add('correct');
+      card.classList.add('answered-wrong');
+      fb.className = 'q-feedback wrong';
+      fb.innerHTML = `⚪ Sin responder — La respuesta correcta era: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    } else if (chosen === correctAns) {
+      correctCount++;
+      const chosenOpt = document.getElementById(`opt-${idx}-${chosen}`);
+      if (chosenOpt) {
+        chosenOpt.classList.remove('selected');
+        chosenOpt.classList.add('correct');
+      }
+      card.classList.add('answered-correct');
+      fb.className = 'q-feedback correct';
+      fb.innerHTML = '✅ ¡Correcto!';
+    } else {
+      const chosenOpt = document.getElementById(`opt-${idx}-${chosen}`);
+      const correctOpt = document.getElementById(`opt-${idx}-${correctAns}`);
+      if (chosenOpt) {
+        chosenOpt.classList.remove('selected');
+        chosenOpt.classList.add('wrong');
+      }
+      if (correctOpt) correctOpt.classList.add('correct');
+      card.classList.add('answered-wrong');
+      fb.className = 'q-feedback wrong';
+      fb.innerHTML = `❌ Incorrecto — La respuesta correcta era: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    }
+  });
+  
+  const wrongCount = userAnswers.filter((v, i) => v !== null && v !== shuffledOptions[i].ansIdx).length;
+  const skippedCount = userAnswers.filter(v => v === null).length;
+  const { grade, percentage } = calculateGrade(correctCount, TOTAL_QUESTIONS);
+  const isApproved = grade >= 4.0;
+  
+  // Mostrar resultados
+// Mostrar resultados
+document.getElementById('r-score').textContent = correctCount;
+document.getElementById('r-of').textContent = `/ ${TOTAL_QUESTIONS}`;
+document.getElementById('r-correct').textContent = correctCount;
+document.getElementById('r-wrong').textContent = wrongCount;
+document.getElementById('r-skip').textContent = skippedCount;
+
+const gradeBox = document.getElementById('grade-box');
+// La nota ahora es simplemente la cantidad de correctas
+gradeBox.className = `grade-box ${correctCount >= 13 ? 'approved' : 'failed'}`;
+gradeBox.innerHTML = `<strong>${correctCount >= 13 ? '🎉 APROBADO 🎉' : '📖 REPROBADO 📖'}</strong><br>Puntaje: ${correctCount} / ${TOTAL_QUESTIONS} correctas (${percentage}% de logro)`;
+
+let title, msg;
+if (percentage >= 90) {
+  title = '🏆 ¡Excelente!';
+  msg = 'Dominas la función cuadrática con solidez. ¡Sigue así!';
+} else if (percentage >= 70) {
+  title = '👍 ¡Muy bien!';
+  msg = 'Tienes un buen dominio. Repasa los temas donde fallaste para mejorar.';
+} else if (percentage >= 50) {
+  title = '📚 Sigue practicando';
+  msg = 'Vas por buen camino, pero necesitas repasar más la materia.';
+} else {
+  title = '💪 No te rindas';
+  msg = 'Revisa la clase y vuelve a intentarlo. ¡Puedes mejorar!';
+}
+document.getElementById('result-title').textContent = title;
+document.getElementById('result-msg').textContent = msg;
+  
+  // Cambiar color del anillo
+  const ring = document.querySelector('.score-ring');
+  if (ring) ring.style.borderColor = percentage >= 70 ? 'var(--green)' : percentage >= 50 ? 'var(--gold)' : 'var(--red)';
+  
+  // Ocultar preguntas y mostrar resultados
+  document.getElementById('questions-wrap').style.display = 'none';
+  document.getElementById('submit-bar').style.display = 'none';
+  document.getElementById('results-wrap').style.display = 'block';
+  document.getElementById('prog-fill').style.width = '100%';
+  
+  // Generar revisión de respuestas
+  renderReview();
+  
+  // Re-renderizar KaTeX en los resultados
+  setTimeout(function() {
+    renderKaTeX(document.getElementById('results-wrap'));
+  }, 300);
+  
+  // Scroll a resultados
+  document.getElementById('results-wrap').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderReview() {
+  const reviewWrap = document.getElementById('review-wrap');
+  reviewWrap.innerHTML = '';
+  
+  selectedQuestions.forEach((q, idx) => {
+    const chosen = userAnswers[idx];
+    const correctAns = shuffledOptions[idx].ansIdx;
+    const isCorrect = chosen === correctAns;
+    const letters = ['a', 'b', 'c', 'd'];
+    
+    const reviewCard = document.createElement('div');
+    reviewCard.className = `review-card ${isCorrect ? 'correct' : 'wrong'}`;
+    
+    let answerStatus = '';
+    if (chosen === null) {
+      answerStatus = `<span style="color:var(--gold);">⚪ Sin responder</span> — Respuesta correcta: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    } else if (isCorrect) {
+      answerStatus = `<span style="color:var(--green);">✅ Correcta</span> — Elegiste: <strong>${letters[chosen]}) ${shuffledOptions[idx].opts[chosen]}</strong>`;
+    } else {
+      answerStatus = `<span style="color:var(--red);">❌ Incorrecta</span> — Elegiste: <strong>${letters[chosen]}) ${shuffledOptions[idx].opts[chosen]}</strong> — Respuesta correcta: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    }
+    
+    reviewCard.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+        <strong style="color:var(--primary);">Pregunta ${idx + 1}</strong>
+        <span style="font-size:.7rem;color:var(--gray);">${isCorrect ? '✓ Correcta' : (chosen === null ? '○ Sin responder' : '✗ Incorrecta')}</span>
+      </div>
+      <div style="font-size:.85rem;margin-bottom:8px;">${q.q.substring(0, 120)}${q.q.length > 120 ? '...' : ''}</div>
+      <div style="font-size:.8rem;">${answerStatus}</div>
+    `;
+    reviewWrap.appendChild(reviewCard);
+  });
+}
+
+// ============================================================
+// FUNCIONES DE CONTROL
+// ============================================================
+function startTest() {
+  buildTest();
+  submitted = false;
+  document.getElementById('intro-card').style.display = 'none';
+  document.getElementById('results-wrap').style.display = 'none';
+  renderQuestions();
+  document.getElementById('questions-wrap').style.display = 'flex';
+  document.getElementById('submit-bar').style.display = 'flex';
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartTest() {
+  buildTest();
+  submitted = false;
+  document.getElementById('results-wrap').style.display = 'none';
+  renderQuestions();
+  document.getElementById('questions-wrap').style.display = 'flex';
+  document.getElementById('submit-bar').style.display = 'flex';
+  updateProgress();
+  document.getElementById('intro-card').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelTest() {
+  if (confirm('¿Estás seguro de que quieres cancelar el test? Perderás tu progreso.')) {
+    document.getElementById('questions-wrap').style.display = 'none';
+    document.getElementById('submit-bar').style.display = 'none';
+    document.getElementById('intro-card').style.display = 'block';
+    document.getElementById('prog-fill').style.width = '0%';
+    submitted = false;
+  }
+}
+// ─── FUNCIÓN PARA RENDERIZAR KATEX ───
+function renderKaTeX(element) {
+  if (typeof renderMathInElement === 'function') {
+    try {
+      renderMathInElement(element || document.body, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '\\[', right: '\\]', display: true},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+      });
+    } catch(e) {
+      console.warn('KaTeX render error:', e);
+    }
+  }
+}
+// ─── INICIALIZACIÓN ───
+document.addEventListener("DOMContentLoaded", function() {
+  // Esperar a que KaTeX esté completamente cargado
+  setTimeout(function() {
+    renderKaTeX(document.body);
+  }, 500);
+  
+  // Configurar eventos de los botones
+  document.getElementById('submitTestBtn')?.addEventListener('click', submitTest);
+  document.getElementById('cancelTestBtn')?.addEventListener('click', cancelTest);
+  document.getElementById('restartTestBtn')?.addEventListener('click', restartTest);
+  document.getElementById('goToCourseBtn')?.addEventListener('click', () => window.location.href = 'index.html');
+  document.getElementById('goToClassBtn')?.addEventListener('click', () => window.location.href = 'C14.html');
+});
+</script>
+</body>
+</html>

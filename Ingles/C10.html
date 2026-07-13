@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inglés B1 – Third Conditional, Verb Patterns, Question Tags & Vocabulary | Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --accent:#e63946;--teal:#0d7377;--orange:#e67e22;--purple:#7a3a9a;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+.s-body{padding-bottom:16px !important;}
+
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--teal) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--sky);}
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box.teal{border-left-color:var(--teal);}
+.rule-box.orange{border-left-color:var(--orange);}
+.rule-box.purple{border-left-color:var(--purple);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--sky);font-weight:700;}
+.ex span.orange{color:var(--orange);font-weight:700;}
+.ex span.purple{color:var(--purple);font-weight:700;}
+.ex span.teal{color:var(--teal);font-weight:700;}
+.ex .trans{color:var(--gray);font-size:.75rem;font-family:'Source Sans 3',sans-serif;}
+
+.vocab-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;
+}
+.vocab-card{
+  background:var(--white);border-radius:10px;padding:10px 12px;
+  border:1px solid #dde4ee;display:flex;align-items:center;gap:10px;
+}
+.vocab-card .emoji{font-size:1.2rem;width:30px;text-align:center;}
+.vocab-card .word{font-weight:700;font-size:.88rem;color:var(--navy);}
+.vocab-card .trans{font-size:.72rem;color:var(--gray);}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+mark{background:#fef3c7;color:#92400e;border-radius:4px;padding:1px 5px;font-weight:600;}
+
+.wh-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;}
+.wh-table th{background:var(--navy);color:var(--gold);padding:8px 14px;text-align:left;font-size:.85rem;}
+.wh-table td{background:var(--white);padding:8px 14px;font-size:.88rem;border-bottom:1px solid #eef1f5;}
+.wh-table tr:nth-child(even) td{background:#f8fafc;}
+.wh-table td:first-child{font-weight:700;color:var(--sky);font-family:'JetBrains Mono',monospace;font-size:.95rem;}
+
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,#0d3060 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+.dialogue{background:var(--white);border-radius:12px;overflow:hidden;border:1px solid #dde4ee;}
+.dialogue-line{padding:10px 16px;display:flex;gap:10px;align-items:flex-start;border-bottom:1px solid #eef1f5;}
+.dialogue-line:last-child{border-bottom:none;}
+.dialogue-line.a{background:#f0f7ff;}
+.dialogue-line .speaker{font-weight:700;font-size:.75rem;color:var(--sky);min-width:70px;margin-top:2px;}
+.dialogue-line.b .speaker{color:var(--teal);}
+.dialogue-line .text{font-size:.9rem;color:#1a2a3a;line-height:1.5;}
+.dialogue-line .text .key{color:var(--sky);font-weight:700;}
+.dialogue-line .text .trans{color:var(--gray);font-size:.7rem;font-family:'Source Sans 3',sans-serif;}
+
+.story-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;
+}
+.story-card{
+  background:var(--white);border-radius:8px;padding:10px;
+  border:1px solid #dde4ee;text-align:center;
+}
+.story-card .word{font-weight:700;color:var(--purple);}
+.story-card .trans{color:var(--gray);font-size:.78rem;}
+
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col,.story-grid{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- SLIDE 1 – COVER -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">📖</div>
+    <div class="cover-level">CEFR Level B1</div>
+    <div class="cover-title">Third Conditional, Verb Patterns &<br><span>Vocabulary for Life</span></div>
+    <div class="cover-sub">Aprende a expresar arrepentimiento con el Third Conditional. Domina los verb patterns y las question tags. Amplía tu vocabulario sobre descripción física, personalidad y compras. Practica cómo dar consejos y contar historias.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">🔄 Third Conditional</span>
+      <span class="cover-tag">📝 Verb Patterns</span>
+      <span class="cover-tag">❓ Question Tags</span>
+      <span class="cover-tag">⚖️ As...as</span>
+      <span class="cover-tag">👤 Physical Description</span>
+      <span class="cover-tag">🛍️ Shopping</span>
+      <span class="cover-tag">💬 Giving Advice</span>
+      <span class="cover-tag">📖 Storytelling</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 1: THIRD CONDITIONAL ========== -->
+
+<!-- SLIDE 2 – Third Conditional: Introducción -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Third Conditional – Introducción</h2>
+    <span class="s-num">02 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El <strong>Third Conditional</strong> se usa para hablar de <strong>situaciones pasadas hipotéticas</strong> que <strong>no ocurrieron</strong>. Expresa <strong>arrepentimiento</strong> o <strong>crítica</strong> sobre el pasado.</p>
+    <div class="formula">
+      <mark>IF + past perfect, WOULD HAVE + past participle</mark><br>
+      <span class="trans">SI + pasado perfecto, WOULD HAVE + participio pasado</span>
+    </div>
+    <div class="ex">
+      ✅ <span class="key">If I had studied</span> more, I <span class="key">would have passed</span> the exam.<br>
+      <span class="trans">Si hubiera estudiado más, habría aprobado el examen.</span><br><br>
+      ✅ <span class="key">If she had left</span> earlier, she <span class="key">wouldn't have missed</span> the train.<br>
+      <span class="trans">Si ella hubiera salido antes, no habría perdido el tren.</span><br><br>
+      ✅ <span class="key">If I had known</span> about the party, I <span class="key">would have gone</span>.<br>
+      <span class="trans">Si hubiera sabido lo de la fiesta, habría ido.</span>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>Diferencia con First y Second:</strong> First = posible, Second = imaginario, Third = pasado hipotético (ya no se puede cambiar).</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3 – Third Conditional: Formación -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Third Conditional – Formación</h2>
+    <span class="s-num">03 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">✅ Afirmativo</div>
+        <div class="ex">
+          If I <span class="key">had known</span>, I <span class="key">would have come</span>.<br>
+          If she <span class="key">had studied</span>, she <span class="key">would have passed</span>.<br>
+          If we <span class="key">had left</span> earlier, we <span class="key">would have arrived</span> on time.<br>
+          If he <span class="key">had taken</span> the medicine, he <span class="key">would have felt</span> better.
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">❌ Negativo</div>
+        <div class="ex">
+          If I <span class="key">hadn't known</span>, I <span class="key">wouldn't have come</span>.<br>
+          If she <span class="key">hadn't studied</span>, she <span class="key">wouldn't have passed</span>.<br>
+          If we <span class="key">hadn't left</span> earlier, we <span class="key">wouldn't have arrived</span> on time.<br>
+          If he <span class="key">hadn't taken</span> the medicine, he <span class="key">wouldn't have felt</span> better.
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      ❓ <strong>Pregunta:</strong> <span class="key">Would you have gone</span> if you <span class="key">had known</span> about the party?<br>
+      <span class="trans">¿Habrías ido si hubieras sabido lo de la fiesta?</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4 – Third Conditional: Usos -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Third Conditional – Usos</h2>
+    <span class="s-num">04 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="three-col">
+      <div class="rule-box green">
+        <div class="title">😔 Arrepentimiento</div>
+        <p>Expresar que lamentamos algo que pasó.</p>
+        <div class="ex" style="margin-top:6px">
+          If I <span class="key">had studied</span> more, I <span class="key">would have passed</span>.<br>
+          <span class="trans">Si hubiera estudiado más, habría aprobado.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🔍 Crítica</div>
+        <p>Criticar una acción pasada.</p>
+        <div class="ex" style="margin-top:6px">
+          If you <span class="key">had listened</span> to me, you <span class="key">wouldn't have made</span> that mistake.<br>
+          <span class="trans">Si me hubieras escuchado, no habrías cometido ese error.</span>
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">🤔 Reflexión</div>
+        <p>Reflexionar sobre cómo pudieron ser las cosas.</p>
+        <div class="ex" style="margin-top:6px">
+          If we <span class="key">had taken</span> a taxi, we <span class="key">would have arrived</span> earlier.<br>
+          <span class="trans">Si hubiéramos tomado un taxi, habríamos llegado más temprano.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5 – Third Conditional: Ejemplos extensos -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Third Conditional – Ejemplos</h2>
+    <span class="s-num">05 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🎒 Contexto adolescente</div>
+        <div class="ex">
+          ✅ If I <span class="key">had studied</span> harder, I <span class="key">would have gotten</span> a better grade.<br>
+          <span class="trans">Si hubiera estudiado más, habría obtenido una mejor nota.</span><br><br>
+          ✅ If she <span class="key">had gone</span> to the party, she <span class="key">would have met</span> him.<br>
+          <span class="trans">Si ella hubiera ido a la fiesta, lo habría conocido.</span><br><br>
+          ✅ If we <span class="key">had bought</span> the tickets earlier, they <span class="key">wouldn't have been</span> so expensive.<br>
+          <span class="trans">Si hubiéramos comprado los boletos antes, no habrían sido tan caros.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🌍 Contexto global</div>
+        <div class="ex">
+          ✅ If people <span class="key">had recycled</span> more, the planet <span class="key">would have been</span> cleaner.<br>
+          <span class="trans">Si la gente hubiera reciclado más, el planeta habría estado más limpio.</span><br><br>
+          ✅ If the government <span class="key">had acted</span> earlier, the crisis <span class="key">wouldn't have been</span> so bad.<br>
+          <span class="trans">Si el gobierno hubiera actuado antes, la crisis no habría sido tan grave.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 2: VERB PATTERNS ========== -->
+
+<!-- SLIDE 6 – Verb Patterns: Introducción -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Verb Patterns – Introducción</h2>
+    <span class="s-num">06 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los <strong>verb patterns</strong> son las estructuras que siguen a ciertos verbos. Algunos verbos requieren <strong>-ing</strong>, otros <strong>to + infinitive</strong>, y otros <strong>object + infinitive</strong>.</p>
+    <div class="three-col">
+      <div class="rule-box green">
+        <div class="title">📝 Verbo + -ing</div>
+        <p>Verbos como: <strong>like, love, hate, enjoy, finish, stop, avoid</strong></p>
+        <div class="ex" style="margin-top:6px">
+          I <span class="key">like</span> <span class="key">swimming</span>.<br>
+          She <span class="key">enjoys</span> <span class="key">reading</span>.
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Verbo + to + infinitive</div>
+        <p>Verbos como: <strong>want, need, hope, plan, decide, promise, would like</strong></p>
+        <div class="ex" style="margin-top:6px">
+          I <span class="key">want</span> <span class="key">to travel</span>.<br>
+          She <span class="key">needs</span> <span class="key">to study</span>.
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">📝 Verbo + object + infinitive</div>
+        <p>Verbos como: <strong>make, let, want, ask, tell, advise</strong></p>
+        <div class="ex" style="margin-top:6px">
+          He <span class="key">made</span> me <span class="key">cry</span>.<br>
+          I <span class="key">asked</span> her <span class="key">to help</span>.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7 – Verb Patterns: Ejemplos -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Verb Patterns – Ejemplos</h2>
+    <span class="s-num">07 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📝 Verbo + -ing</div>
+        <div class="ex">
+          I <span class="key">like</span> <span class="key">playing</span> football.<br>
+          She <span class="key">hates</span> <span class="key">getting</span> up early.<br>
+          We <span class="key">enjoy</span> <span class="key">watching</span> movies.<br>
+          He <span class="key">finished</span> <span class="key">eating</span> dinner.<br>
+          They <span class="key">avoid</span> <span class="key">eating</span> meat.
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Verbo + to + infinitive</div>
+        <div class="ex">
+          I <span class="key">want</span> <span class="key">to travel</span> to Europe.<br>
+          She <span class="key">needs</span> <span class="key">to study</span> more.<br>
+          We <span class="key">hope</span> <span class="key">to see</span> you soon.<br>
+          He <span class="key">decided</span> <span class="key">to stay</span> home.<br>
+          They <span class="key">promised</span> <span class="key">to help</span>.
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Diferencia clave:</strong><br>
+      <span class="key">Stop + -ing</span> = dejar de hacer algo<br>
+      <span class="key">Stop + to</span> = parar para hacer algo<br>
+      ✅ I stopped <span class="key">smoking</span>. (Dejé de fumar.)<br>
+      ✅ I stopped <span class="key">to smoke</span>. (Paré para fumar.)
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8 – Verb Patterns: Make y Let -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Verb Patterns – MAKE y LET</h2>
+    <span class="s-num">08 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text"><strong>MAKE</strong> y <strong>LET</strong> tienen una estructura especial: <strong>verbo + objeto + infinitive sin "to"</strong>.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🔨 MAKE (obligar / hacer que)</div>
+        <div class="ex">
+          My mom <span class="key">made</span> me <span class="key">clean</span> my room.<br>
+          <span class="trans">Mi mamá me hizo limpiar mi habitación.</span><br><br>
+          The movie <span class="key">made</span> me <span class="key">cry</span>.<br>
+          <span class="trans">La película me hizo llorar.</span><br><br>
+          He <span class="key">made</span> her <span class="key">laugh</span>.<br>
+          <span class="trans">Él la hizo reír.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🔓 LET (permitir)</div>
+        <div class="ex">
+          My parents <span class="key">let</span> me <span class="key">go</span> to the party.<br>
+          <span class="trans">Mis padres me dejaron ir a la fiesta.</span><br><br>
+          Please <span class="key">let</span> me <span class="key">explain</span>.<br>
+          <span class="trans">Por favor, déjame explicar.</span><br><br>
+          She <span class="key">let</span> him <span class="key">drive</span> her car.<br>
+          <span class="trans">Ella le permitió conducir su auto.</span>
+        </div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content">¡<strong>MAKE</strong> y <strong>LET</strong> no usan "to" después del objeto! <em>Make me <span class="correct">cry</span></em> (no "to cry").</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 3: QUESTION TAGS ========== -->
+
+<!-- SLIDE 9 – Question Tags: Introducción -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Question Tags – Introducción</h2>
+    <span class="s-num">09 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Las <strong>question tags</strong> son pequeñas preguntas al final de una oración para <strong>confirmar información</strong> o <strong>buscar acuerdo</strong>.</p>
+    <div class="formula">
+      <mark>Oración afirmativa + tag negativa</mark><br>
+      <mark>Oración negativa + tag afirmativa</mark>
+    </div>
+    <div class="ex">
+      ✅ You're a student, <span class="key">aren't you</span>?<br>
+      <span class="trans">Eres estudiante, ¿verdad?</span><br><br>
+      ✅ She can swim, <span class="key">can't she</span>?<br>
+      <span class="trans">Ella sabe nadar, ¿verdad?</span><br><br>
+      ✅ He doesn't like coffee, <span class="key">does he</span>?<br>
+      <span class="trans">A él no le gusta el café, ¿verdad?</span>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>Regla:</strong> Si la oración es <span class="key">afirmativa</span>, la tag es <span class="key">negativa</span>. Si la oración es <span class="key">negativa</span>, la tag es <span class="key">afirmativa</span>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10 – Question Tags: Verbos auxiliares -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Question Tags – Verbos auxiliares</h2>
+    <span class="s-num">10 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">✅ Afirmativa + Tag negativa</div>
+        <div class="ex">
+          You are tired, <span class="key">aren't you</span>?<br>
+          She can drive, <span class="key">can't she</span>?<br>
+          He has a car, <span class="key">doesn't he</span>?<br>
+          They went to Paris, <span class="key">didn't they</span>?<br>
+          You will help me, <span class="key">won't you</span>?
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">❌ Negativa + Tag afirmativa</div>
+        <div class="ex">
+          You aren't tired, <span class="key">are you</span>?<br>
+          She can't drive, <span class="key">can she</span>?<br>
+          He doesn't have a car, <span class="key">does he</span>?<br>
+          They didn't go to Paris, <span class="key">did they</span>?<br>
+          You won't help me, <span class="key">will you</span>?
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11 – Question Tags: Casos especiales -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Question Tags – Casos especiales</h2>
+    <span class="s-num">11 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">👤 I AM → AREN'T I</div>
+        <div class="ex">
+          I'm a good student, <span class="key">aren't I</span>?<br>
+          <span class="trans">Soy un buen estudiante, ¿verdad?</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 LET'S → SHALL WE</div>
+        <div class="ex">
+          Let's go to the park, <span class="key">shall we</span>?<br>
+          <span class="trans">Vamos al parque, ¿vale?</span>
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">📝 IMPERATIVO → WILL YOU</div>
+        <div class="ex">
+          Open the window, <span class="key">will you</span>?<br>
+          <span class="trans">Abre la ventana, ¿quieres?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 4: AS...AS ========== -->
+
+<!-- SLIDE 12 – As...as: Introducción -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>As...as – Comparaciones de igualdad</h2>
+    <span class="s-num">12 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text"><strong>AS...AS</strong> se usa para comparar dos cosas que son <strong>iguales</strong> en algún aspecto.</p>
+    <div class="formula">
+      <mark>As + adjetivo/adverbio + as</mark>
+    </div>
+    <div class="ex">
+      ✅ She is <span class="key">as tall as</span> her sister.<br>
+      <span class="trans">Ella es tan alta como su hermana.</span><br><br>
+      ✅ He runs <span class="key">as fast as</span> me.<br>
+      <span class="trans">Él corre tan rápido como yo.</span><br><br>
+      ✅ This book is <span class="key">as interesting as</span> that one.<br>
+      <span class="trans">Este libro es tan interesante como ese.</span>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      ❌ <strong>Negativo:</strong> <span class="key">not as...as</span> (no tan...como)<br>
+      She is <span class="key">not as tall as</span> her sister.<br>
+      <span class="trans">Ella no es tan alta como su hermana.</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 13 – As...as: Ejemplos -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>As...as – Ejemplos</h2>
+    <span class="s-num">13 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">✅ Igualdad</div>
+        <div class="ex">
+          My brother is <span class="key">as old as</span> me.<br>
+          <span class="trans">Mi hermano es tan viejo como yo.</span><br><br>
+          This movie is <span class="key">as good as</span> the book.<br>
+          <span class="trans">Esta película es tan buena como el libro.</span><br><br>
+          She sings <span class="key">as beautifully as</span> a professional.<br>
+          <span class="trans">Ella canta tan hermosamente como una profesional.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">❌ Desigualdad</div>
+        <div class="ex">
+          I am <span class="key">not as tall as</span> my father.<br>
+          <span class="trans">No soy tan alto como mi padre.</span><br><br>
+          This phone is <span class="key">not as expensive as</span> that one.<br>
+          <span class="trans">Este teléfono no es tan caro como ese.</span><br><br>
+          He doesn't run <span class="key">as fast as</span> his brother.<br>
+          <span class="trans">Él no corre tan rápido como su hermano.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 5: VOCABULARY – PHYSICAL DESCRIPTION & PERSONALITY ========== -->
+
+<!-- SLIDE 14 – Physical Description: Appearance -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B1</span>
+    <h2>Physical Description – Appearance</h2>
+    <span class="s-num">14 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">👤</span><div><div class="word">tall</div><div class="trans">alto</div></div></div>
+      <div class="vocab-card"><span class="emoji">👤</span><div><div class="word">short</div><div class="trans">bajo</div></div></div>
+      <div class="vocab-card"><span class="emoji">🏋️</span><div><div class="word">slim / thin</div><div class="trans">delgado</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍔</span><div><div class="word">overweight</div><div class="trans">con sobrepeso</div></div></div>
+      <div class="vocab-card"><span class="emoji">💪</span><div><div class="word">strong</div><div class="trans">fuerte</div></div></div>
+      <div class="vocab-card"><span class="emoji">👩‍🦰</span><div><div class="word">curly hair</div><div class="trans">pelo rizado</div></div></div>
+      <div class="vocab-card"><span class="emoji">👩‍🦱</span><div><div class="word">straight hair</div><div class="trans">pelo lacio</div></div></div>
+      <div class="vocab-card"><span class="emoji">👩‍🦳</span><div><div class="word">wavy hair</div><div class="trans">pelo ondulado</div></div></div>
+      <div class="vocab-card"><span class="emoji">👩</span><div><div class="word">blonde</div><div class="trans">rubio</div></div></div>
+      <div class="vocab-card"><span class="emoji">👩</span><div><div class="word">brunette</div><div class="trans">moreno</div></div></div>
+      <div class="vocab-card"><span class="emoji">👩</span><div><div class="word">red hair</div><div class="trans">pelo rojo</div></div></div>
+      <div class="vocab-card"><span class="emoji">👀</span><div><div class="word">blue eyes / brown eyes</div><div class="trans">ojos azules / marrones</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 15 – Personality Traits -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B1</span>
+    <h2>Personality Traits</h2>
+    <span class="s-num">15 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">😊</span><div><div class="word">friendly</div><div class="trans">amigable</div></div></div>
+      <div class="vocab-card"><span class="emoji">😳</span><div><div class="word">shy</div><div class="trans">tímido</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎉</span><div><div class="word">outgoing</div><div class="trans">extrovertido</div></div></div>
+      <div class="vocab-card"><span class="emoji">🧠</span><div><div class="word">intelligent / smart</div><div class="trans">inteligente</div></div></div>
+      <div class="vocab-card"><span class="emoji">😂</span><div><div class="word">funny</div><div class="trans">gracioso</div></div></div>
+      <div class="vocab-card"><span class="emoji">❤️</span><div><div class="word">kind</div><div class="trans">amable</div></div></div>
+      <div class="vocab-card"><span class="emoji">💪</span><div><div class="word">hard-working</div><div class="trans">trabajador</div></div></div>
+      <div class="vocab-card"><span class="emoji">📚</span><div><div class="word">responsible</div><div class="trans">responsable</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎁</span><div><div class="word">generous</div><div class="trans">generoso</div></div></div>
+      <div class="vocab-card"><span class="emoji">😤</span><div><div class="word">lazy</div><div class="trans">perezoso</div></div></div>
+      <div class="vocab-card"><span class="emoji">😡</span><div><div class="word">bossy</div><div class="trans">mandón</div></div></div>
+      <div class="vocab-card"><span class="emoji">😐</span><div><div class="word">honest</div><div class="trans">honesto</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 16 – Physical Description & Personality: Ejemplos -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B1</span>
+    <h2>Physical Description & Personality – Ejemplos</h2>
+    <span class="s-num">16 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">👤 Descripción física</div>
+        <div class="ex">
+          She is <span class="key">tall</span> with <span class="key">long curly hair</span> and <span class="key">blue eyes</span>.<br>
+          <span class="trans">Ella es alta con pelo largo y rizado y ojos azules.</span><br><br>
+          He is <span class="key">short</span> and <span class="key">slim</span> with <span class="key">brown eyes</span>.<br>
+          <span class="trans">Él es bajo y delgado con ojos marrones.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🧠 Personalidad</div>
+        <div class="ex">
+          My best friend is very <span class="key">friendly</span> and <span class="key">outgoing</span>.<br>
+          <span class="trans">Mi mejor amigo es muy amigable y extrovertido.</span><br><br>
+          She is <span class="key">smart</span> and <span class="key">hard-working</span>.<br>
+          <span class="trans">Ella es inteligente y trabajadora.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 6: VOCABULARY – SHOPPING & CUSTOMER SERVICE ========== -->
+
+<!-- SLIDE 17 – Shopping Vocabulary -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B1</span>
+    <h2>Shopping & Customer Service</h2>
+    <span class="s-num">17 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">🛍️</span><div><div class="word">buy</div><div class="trans">comprar</div></div></div>
+      <div class="vocab-card"><span class="emoji">💰</span><div><div class="word">sell</div><div class="trans">vender</div></div></div>
+      <div class="vocab-card"><span class="emoji">🔄</span><div><div class="word">return</div><div class="trans">devolver</div></div></div>
+      <div class="vocab-card"><span class="emoji">💰</span><div><div class="word">refund</div><div class="trans">reembolso</div></div></div>
+      <div class="vocab-card"><span class="emoji">🧾</span><div><div class="word">receipt</div><div class="trans">recibo / boleta</div></div></div>
+      <div class="vocab-card"><span class="emoji">📏</span><div><div class="word">size</div><div class="trans">talla / tamaño</div></div></div>
+      <div class="vocab-card"><span class="emoji">🌈</span><div><div class="word">color</div><div class="trans">color</div></div></div>
+      <div class="vocab-card"><span class="emoji">🏷️</span><div><div class="word">price</div><div class="trans">precio</div></div></div>
+      <div class="vocab-card"><span class="emoji">💳</span><div><div class="word">credit card</div><div class="trans">tarjeta de crédito</div></div></div>
+      <div class="vocab-card"><span class="emoji">💵</span><div><div class="word">cash</div><div class="trans">efectivo</div></div></div>
+      <div class="vocab-card"><span class="emoji">🛍️</span><div><div class="word">customer</div><div class="trans">cliente</div></div></div>
+      <div class="vocab-card"><span class="emoji">👩‍💼</span><div><div class="word">cashier</div><div class="trans">cajero</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 18 – Shopping: Ejemplos -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B1</span>
+    <h2>Shopping – Ejemplos</h2>
+    <span class="s-num">18 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🛍️ En la tienda</div>
+        <div class="ex">
+          I would like to <span class="key">return</span> this shirt.<br>
+          <span class="trans">Me gustaría devolver esta camisa.</span><br><br>
+          Can I get a <span class="key">refund</span>?<br>
+          <span class="trans">¿Puedo obtener un reembolso?</span><br><br>
+          Do you have this in a larger <span class="key">size</span>?<br>
+          <span class="trans">¿Tienes esto en una talla más grande?</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🧾 Frases útiles</div>
+        <div class="ex">
+          Can I pay by <span class="key">credit card</span>?<br>
+          <span class="trans">¿Puedo pagar con tarjeta de crédito?</span><br><br>
+          Could I have a <span class="key">receipt</span>, please?<br>
+          <span class="trans">¿Podría tener un recibo, por favor?</span><br><br>
+          How much does this <span class="key">cost</span>?<br>
+          <span class="trans">¿Cuánto cuesta esto?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 7: FUNCTIONAL LANGUAGE – GIVING ADVICE & WARNINGS ========== -->
+
+<!-- SLIDE 19 – Giving Advice: Introducción -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL B1</span>
+    <h2>Giving Advice – Introducción</h2>
+    <span class="s-num">19 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para <strong>dar consejos</strong> en inglés, usa expresiones como <strong>should, ought to, why don't you, if I were you</strong>.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">💡 Expresiones para dar consejos</div>
+        <div class="ex">
+          You <span class="key">should</span> study more.<br>
+          <span class="trans">Deberías estudiar más.</span><br><br>
+          You <span class="key">ought to</span> apologize.<br>
+          <span class="trans">Deberías disculparte.</span><br><br>
+          <span class="key">Why don't you</span> talk to her?<br>
+          <span class="trans">¿Por qué no hablas con ella?</span><br><br>
+          <span class="key">If I were you</span>, I would accept the offer.<br>
+          <span class="trans">Si fuera tú, aceptaría la oferta.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">⚠️ Advertencias</div>
+        <div class="ex">
+          <span class="key">Be careful!</span> The floor is wet.<br>
+          <span class="trans">¡Ten cuidado! El piso está mojado.</span><br><br>
+          <span class="key">Watch out!</span> There's a car coming.<br>
+          <span class="trans">¡Cuidado! Viene un auto.</span><br><br>
+          <span class="key">Don't</span> touch that! It's hot.<br>
+          <span class="trans">¡No toques eso! Está caliente.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 20 – Giving Advice: Diálogo -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL B1</span>
+    <h2>Giving Advice – Diálogo</h2>
+    <span class="s-num">20 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="dialogue">
+      <div class="dialogue-line a"><span class="speaker">María:</span><span class="text">I don't know what to do. I'm really stressed about the exam. <span class="trans">No sé qué hacer. Estoy muy estresada por el examen.</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Carlos:</span><span class="text"><span class="key">You should</span> take a break and relax. <span class="trans">Deberías tomar un descanso y relajarte.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">María:</span><span class="text">But I haven't studied enough! <span class="trans">¡Pero no he estudiado lo suficiente!</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Carlos:</span><span class="text"><span class="key">If I were you</span>, I would make a study plan. <span class="trans">Si fuera tú, haría un plan de estudio.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">María:</span><span class="text">That's a good idea. <span class="trans">Eso es una buena idea.</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Carlos:</span><span class="text">And remember, <span class="key">you should</span> get enough sleep before the exam. <span class="trans">Y recuerda, deberías dormir lo suficiente antes del examen.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">María:</span><span class="text">Thanks for the advice! <span class="trans">¡Gracias por el consejo!</span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 8: FUNCTIONAL LANGUAGE – STORYTELLING ========== -->
+
+<!-- SLIDE 21 – Storytelling: Introducción -->
+<div class="slide" id="s21">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL B1</span>
+    <h2>Storytelling – Introducción</h2>
+    <span class="s-num">21 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para <strong>contar historias</strong> en inglés, usa conectores de secuencia como <strong>once upon a time, first, then, after that, suddenly, in the end</strong>.</p>
+    <div class="story-grid">
+      <div class="story-card"><span class="word">Once upon a time</span><br><span class="trans">Érase una vez</span></div>
+      <div class="story-card"><span class="word">First</span><br><span class="trans">Primero</span></div>
+      <div class="story-card"><span class="word">Then</span><br><span class="trans">Luego / Entonces</span></div>
+      <div class="story-card"><span class="word">After that</span><br><span class="trans">Después de eso</span></div>
+      <div class="story-card"><span class="word">Suddenly</span><br><span class="trans">De repente</span></div>
+      <div class="story-card"><span class="word">In the end</span><br><span class="trans">Al final</span></div>
+      <div class="story-card"><span class="word">Finally</span><br><span class="trans">Finalmente</span></div>
+      <div class="story-card"><span class="word">At the beginning</span><br><span class="trans">Al principio</span></div>
+      <div class="story-card"><span class="word">Meanwhile</span><br><span class="trans">Mientras tanto</span></div>
+      <div class="story-card"><span class="word">Eventually</span><br><span class="trans">Finalmente / Con el tiempo</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 22 – Storytelling: Ejemplo -->
+<div class="slide" id="s22">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL B1</span>
+    <h2>Storytelling – Ejemplo</h2>
+    <span class="s-num">22 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="ex" style="font-family:'Source Sans 3',sans-serif;font-size:.95rem;line-height:1.8;">
+      <span class="key">Once upon a time</span>, there was a young boy named Tom.<br>
+      <span class="trans">Érase una vez, había un niño llamado Tom.</span><br><br>
+      <span class="key">First</span>, he was very shy and didn't have many friends.<br>
+      <span class="trans">Primero, era muy tímido y no tenía muchos amigos.</span><br><br>
+      <span class="key">Then</span>, one day, a new student arrived at his school.<br>
+      <span class="trans">Luego, un día, un nuevo estudiante llegó a su escuela.</span><br><br>
+      <span class="key">Suddenly</span>, everything changed. He started to make friends.<br>
+      <span class="trans">De repente, todo cambió. Comenzó a hacer amigos.</span><br><br>
+      <span class="key">In the end</span>, he became the most popular kid in class.<br>
+      <span class="trans">Al final, se convirtió en el niño más popular de la clase.</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 23 – Storytelling: Diálogo -->
+<div class="slide" id="s23">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL B1</span>
+    <h2>Storytelling – Diálogo</h2>
+    <span class="s-num">23 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="dialogue">
+      <div class="dialogue-line a"><span class="speaker">Ana:</span><span class="text">Tell me about your vacation! <span class="trans">¡Cuéntame sobre tus vacaciones!</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Tomás:</span><span class="text">Well, <span class="key">first</span>, we arrived at the beach house. <span class="trans">Bueno, primero, llegamos a la casa de playa.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Ana:</span><span class="text">And then? <span class="trans">¿Y luego?</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Tomás:</span><span class="text"><span class="key">Then</span>, we went to the beach and swam in the sea. <span class="trans">Luego, fuimos a la playa y nadamos en el mar.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Ana:</span><span class="text">That sounds fun! <span class="trans">¡Suena divertido!</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Tomás:</span><span class="text">It was! <span class="key">Suddenly</span>, it started to rain, so we went back to the house. <span class="trans">¡Lo fue! De repente, empezó a llover, así que volvimos a la casa.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Ana:</span><span class="text">Oh no! <span class="trans">¡Oh no!</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Tomás:</span><span class="text"><span class="key">In the end</span>, we played board games all afternoon. It was great! <span class="trans">Al final, jugamos juegos de mesa toda la tarde. ¡Fue genial!</span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDES DE REPASO ========== -->
+
+<!-- SLIDE 24 – Third Conditional: Resumen -->
+<div class="slide" id="s24">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Third Conditional – Resumen</h2>
+    <span class="s-num">24 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box orange">
+      <div class="title">🔄 Third Conditional</div>
+      <ul>
+        <li><strong>Estructura:</strong> IF + past perfect, WOULD HAVE + past participle</li>
+        <li><strong>Uso:</strong> Situaciones <strong>pasadas hipotéticas</strong> que <strong>no ocurrieron</strong></li>
+        <li><strong>Expresa:</strong> Arrepentimiento, crítica o reflexión sobre el pasado</li>
+      </ul>
+      <div class="ex" style="margin-top:8px">
+        If I had studied more, I would have passed.<br>
+        If she had left earlier, she wouldn't have missed the train.<br>
+        If I had known, I would have come.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 25 – Verb Patterns: Resumen -->
+<div class="slide" id="s25">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Verb Patterns – Resumen</h2>
+    <span class="s-num">25 / 44</span>
+  </div>
+  <div class="s-body">
+    <table class="wh-table">
+      <thead><tr><th>Patrón</th><th>Verbos</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td>Verbo + <strong>-ing</strong></td><td>like, love, hate, enjoy, finish, stop, avoid</td><td>I like <strong>swimming</strong>.</td></tr>
+        <tr><td>Verbo + <strong>to + inf</strong></td><td>want, need, hope, plan, decide, promise</td><td>I want <strong>to travel</strong>.</td></tr>
+        <tr><td>Verbo + <strong>object + inf</strong></td><td>want, ask, tell, advise</td><td>I asked her <strong>to help</strong>.</td></tr>
+        <tr><td><strong>MAKE</strong> + object + inf</td><td>make (obligar)</td><td>He made me <strong>cry</strong>.</td></tr>
+        <tr><td><strong>LET</strong> + object + inf</td><td>let (permitir)</td><td>She let me <strong>go</strong>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SLIDE 26 – Question Tags: Resumen -->
+<div class="slide" id="s26">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Question Tags – Resumen</h2>
+    <span class="s-num">26 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">✅ Afirmativa + Tag negativa</div>
+        <div class="ex">
+          You are tired, <span class="key">aren't you</span>?<br>
+          She can swim, <span class="key">can't she</span>?<br>
+          They went, <span class="key">didn't they</span>?<br>
+          You will help, <span class="key">won't you</span>?
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">❌ Negativa + Tag afirmativa</div>
+        <div class="ex">
+          You aren't tired, <span class="key">are you</span>?<br>
+          She can't swim, <span class="key">can she</span>?<br>
+          They didn't go, <span class="key">did they</span>?<br>
+          You won't help, <span class="key">will you</span>?
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 27 – As...as: Resumen -->
+<div class="slide" id="s27">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>As...as – Resumen</h2>
+    <span class="s-num">27 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box teal">
+      <div class="title">⚖️ As...as</div>
+      <ul>
+        <li><strong>Función:</strong> Comparar dos cosas <strong>iguales</strong></li>
+        <li><strong>Estructura:</strong> as + adjetivo/adverbio + as</li>
+        <li><strong>Negativo:</strong> not as...as (no tan...como)</li>
+      </ul>
+      <div class="ex" style="margin-top:8px">
+        She is <span class="key">as tall as</span> her sister.<br>
+        He runs <span class="key">as fast as</span> me.<br>
+        This book is <span class="key">not as interesting as</span> that one.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 28 – Physical Description & Personality: Resumen -->
+<div class="slide" id="s28">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Physical Description & Personality</h2>
+    <span class="s-num">28 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">👤 Physical Appearance</div>
+        <div class="ex">
+          tall, short, slim, overweight<br>
+          curly hair, straight hair, wavy hair<br>
+          blonde, brunette, red hair<br>
+          blue eyes, brown eyes, green eyes
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🧠 Personality</div>
+        <div class="ex">
+          friendly, shy, outgoing<br>
+          intelligent, funny, kind<br>
+          hard-working, responsible<br>
+          generous, honest, lazy, bossy
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 29 – Shopping: Resumen -->
+<div class="slide" id="s29">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Shopping – Resumen</h2>
+    <span class="s-num">29 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🛍️ Verbos y sustantivos</div>
+        <div class="ex">
+          buy (comprar), sell (vender)<br>
+          return (devolver), refund (reembolso)<br>
+          receipt (recibo), size (talla)<br>
+          price (precio), cost (costar)<br>
+          credit card (tarjeta), cash (efectivo)
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🗣️ Frases útiles</div>
+        <div class="ex">
+          I'd like to return this.<br>
+          Can I get a refund?<br>
+          Do you have this in a larger size?<br>
+          Can I pay by credit card?<br>
+          How much does this cost?
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 30 – Giving Advice & Warnings: Resumen -->
+<div class="slide" id="s30">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Giving Advice & Warnings – Resumen</h2>
+    <span class="s-num">30 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">💡 Consejos</div>
+        <div class="ex">
+          You should + infinitive<br>
+          You ought to + infinitive<br>
+          Why don't you + infinitive?<br>
+          If I were you, I would + infinitive
+        </div>
+        <div class="ex" style="margin-top:6px">
+          You should study more.<br>
+          If I were you, I would talk to her.
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">⚠️ Advertencias</div>
+        <div class="ex">
+          Be careful!<br>
+          Watch out!<br>
+          Don't + infinitive!<br>
+          Be careful + not to + infinitive
+        </div>
+        <div class="ex" style="margin-top:6px">
+          Watch out! There's a car coming.<br>
+          Don't touch that! It's hot.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 31 – Storytelling: Resumen -->
+<div class="slide" id="s31">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Storytelling – Resumen</h2>
+    <span class="s-num">31 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📖 Conectores de secuencia</div>
+        <div class="ex">
+          Once upon a time (Érase una vez)<br>
+          First (Primero)<br>
+          Then / After that (Luego / Después)<br>
+          Suddenly (De repente)<br>
+          In the end / Finally (Al final / Finalmente)
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Ejemplo de historia</div>
+        <div class="ex">
+          <span class="key">Once upon a time</span>, there was a girl.<br>
+          <span class="key">First</span>, she was sad.<br>
+          <span class="key">Then</span>, she met a friend.<br>
+          <span class="key">In the end</span>, she was happy.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 32 – Common Mistakes: Third Conditional -->
+<div class="slide" id="s32">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Common Mistakes – Third Conditional</h2>
+    <span class="s-num">32 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box red">
+        <div class="title">❌ Errores comunes</div>
+        <div class="ex">
+          ❌ If I <span class="wrong">would have studied</span>, I would have passed.<br>
+          ✅ If I <span class="correct">had studied</span>, I would have passed.<br><br>
+          ❌ If I had studied, I <span class="wrong">would passed</span>.<br>
+          ✅ If I had studied, I <span class="correct">would have passed</span>.<br><br>
+          ❌ If I <span class="wrong">had</span> study, I would have passed.<br>
+          ✅ If I <span class="correct">had studied</span>, I would have passed.
+        </div>
+      </div>
+      <div class="rule-box green">
+        <div class="title">✅ Recordatorio</div>
+        <div class="ex">
+          <strong>IF</strong> + <span class="correct">past perfect</span><br>
+          <strong>WOULD HAVE</strong> + <span class="correct">past participle</span><br><br>
+          ¡No uses WOULD en la condición!
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 33 – Common Mistakes: Question Tags -->
+<div class="slide" id="s33">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Common Mistakes – Question Tags</h2>
+    <span class="s-num">33 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box red">
+        <div class="title">❌ Errores comunes</div>
+        <div class="ex">
+          ❌ You're a student, <span class="wrong">are you</span>?<br>
+          ✅ You're a student, <span class="correct">aren't you</span>?<br><br>
+          ❌ She doesn't like coffee, <span class="wrong">doesn't she</span>?<br>
+          ✅ She doesn't like coffee, <span class="correct">does she</span>?<br><br>
+          ❌ They went to Paris, <span class="wrong">wentn't they</span>?<br>
+          ✅ They went to Paris, <span class="correct">didn't they</span>?
+        </div>
+      </div>
+      <div class="rule-box green">
+        <div class="title">✅ Recordatorio</div>
+        <div class="ex">
+          <strong>Afirmativa</strong> → tag <span class="correct">negativa</span><br>
+          <strong>Negativa</strong> → tag <span class="correct">afirmativa</span><br>
+          Usa el <strong>mismo auxiliar</strong> que en la oración.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 34 – Common Mistakes: As...as -->
+<div class="slide" id="s34">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Common Mistakes – As...as</h2>
+    <span class="s-num">34 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box red">
+        <div class="title">❌ Errores comunes</div>
+        <div class="ex">
+          ❌ She is <span class="wrong">as taller as</span> me.<br>
+          ✅ She is <span class="correct">as tall as</span> me.<br><br>
+          ❌ He runs <span class="wrong">so fast as</span> me.<br>
+          ✅ He runs <span class="correct">as fast as</span> me.<br><br>
+          ❌ This book is <span class="wrong">not as interesting</span> that one.<br>
+          ✅ This book is <span class="correct">not as interesting as</span> that one.
+        </div>
+      </div>
+      <div class="rule-box green">
+        <div class="title">✅ Recordatorio</div>
+        <div class="ex">
+          <strong>As</strong> + adjetivo <span class="correct">base</span> + <strong>as</strong><br>
+          ¡No uses comparativos (taller, faster)!<br>
+          ¡No olvides el segundo "as"!
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 35 – Resumen Final -->
+<div class="slide" id="s35">
+  <div class="s-header">
+    <span class="badge">RESUMEN B1</span>
+    <h2>¡Has completado la clase C10!</h2>
+    <span class="s-num">35 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="summary-grid">
+      <div class="summary-card"><h4>🔄 Third Conditional</h4><p>If + past perfect, would have + past participle</p></div>
+      <div class="summary-card"><h4>📝 Verb Patterns</h4><p>like + ing / want + to / make/let + object + inf</p></div>
+      <div class="summary-card"><h4>❓ Question Tags</h4><p>Afirmativa + negativa / Negativa + afirmativa</p></div>
+      <div class="summary-card"><h4>⚖️ As...as</h4><p>Comparaciones de igualdad</p></div>
+      <div class="summary-card"><h4>👤 Physical Description</h4><p>tall, short, slim, curly hair, etc.</p></div>
+      <div class="summary-card"><h4>🧠 Personality Traits</h4><p>friendly, shy, outgoing, smart, kind</p></div>
+      <div class="summary-card"><h4>🛍️ Shopping</h4><p>buy, sell, return, refund, receipt, size</p></div>
+      <div class="summary-card"><h4>💬 Giving Advice</h4><p>should, ought to, why don't you, if I were you</p></div>
+      <div class="summary-card"><h4>⚠️ Warnings</h4><p>Be careful!, Watch out!, Don't...</p></div>
+      <div class="summary-card"><h4>📖 Storytelling</h4><p>Once upon a time, First, Then, Suddenly, In the end</p></div>
+    </div>
+    <div class="tip" style="margin-top:12px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>¡Listo para practicar!</strong> Ahora dirígete a los <strong>Ejercicios B1 (E10.html)</strong> para poner a prueba todo lo que has aprendido en esta clase.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:2.3%"></div></div>
+    <div id="slide-label">Slide 1 / 35</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Course</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E10.html'">✏️ Exercises</button>
+  </div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+</script>
+</body>
+</html>

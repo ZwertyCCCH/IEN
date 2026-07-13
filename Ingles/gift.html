@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Ensayo PAES Matemática M1 | Preparación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<!-- KaTeX CSS y JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --deep-green: #0a2f1f;
+  --pine: #145c33;
+  --mint: #2a7f49;
+  --lime: #9bcd6c;
+  --gold-soft: #d4b87a;
+  --green-light: #e8f5e9;
+  --green-bg: #f1f8f0;
+  --white: #ffffff;
+  --dark-text: #1a2e22;
+  --gray: #5a6e5e;
+  --border: #c8e0cf;
+  --accent: #3c9e5c;
+  --red: #c0392b;
+  --orange: #e67e22;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Source Sans 3',sans-serif;
+  background: linear-gradient(135deg, var(--deep-green) 0%, var(--pine) 50%, var(--mint) 100%);
+  min-height:100vh;
+}
+
+/* ── HEADER ── */
+.header{
+  background:var(--deep-green);
+  border-bottom:3px solid var(--lime);
+  padding:16px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.header h1{
+  font-family:'Playfair Display',serif;
+  color:var(--white);
+  font-size:1.3rem;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.header h1 span{color:var(--lime);}
+.timer{
+  background:rgba(0,0,0,0.3);
+  padding:8px 20px;
+  border-radius:40px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:1.2rem;
+  font-weight:700;
+  color:var(--lime);
+}
+.timer.timer-naranja{color:var(--orange);}
+.timer.timer-rojo{color:var(--red);}
+.timer.timer-urgente{animation:pulse 1s infinite;}
+
+@keyframes pulse{
+  0%,100%{opacity:1;}
+  50%{opacity:0.6;}
+}
+
+/* ── PROGRESS BAR ── */
+.progress-container{
+  background:rgba(0,0,0,0.3);
+  height:6px;
+}
+.progress-bar{
+  height:100%;
+  background:var(--lime);
+  width:0%;
+  transition:width .3s;
+}
+
+/* ── MAIN CONTAINER ── */
+.main-container{
+  max-width:900px;
+  margin:0 auto;
+  padding:28px 20px 100px;
+}
+
+/* ── QUESTION CARD ── */
+.question-card{
+  background:var(--white);
+  border-radius:24px;
+  padding:28px 32px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.2);
+  margin-bottom:24px;
+}
+.question-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  padding-bottom:12px;
+  border-bottom:2px solid var(--border);
+}
+.question-number{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;
+  color:var(--gray);
+  letter-spacing:.1em;
+}
+.question-status{
+  font-size:.7rem;
+  padding:4px 10px;
+  border-radius:20px;
+  background:var(--green-light);
+  color:var(--pine);
+}
+.question-text{
+  font-size:1rem;
+  line-height:1.6;
+  color:var(--dark-text);
+  margin-bottom:24px;
+}
+.question-text .math-expr{font-family:'JetBrains Mono',monospace;background:var(--green-light);padding:2px 6px;border-radius:6px;}
+.question-text .fraction{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;}
+.question-text .fraction .num{border-bottom:1px solid var(--dark-text);padding:0 4px;}
+.question-text .fraction .den{padding:0 4px;}
+.question-text .table{font-size:.85rem;margin:10px auto;}
+.question-text img{max-width:100%;border-radius:12px;margin:10px 0;}
+
+/* ── OPTIONS ── */
+.options{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.option{
+  background:var(--green-light);
+  border:2px solid var(--border);
+  border-radius:16px;
+  padding:14px 20px;
+  cursor:pointer;
+  transition:all .2s;
+  font-size:.95rem;
+  color:var(--dark-text);
+}
+.option:hover:not(.locked){
+  border-color:var(--accent);
+  background:#d4efdf;
+  transform:translateX(4px);
+}
+.option.selected{
+  border-color:var(--accent);
+  background:#c8e6d5;
+}
+.option.locked{cursor:default;opacity:0.9;}
+.option.correct{
+  border-color:var(--accent);
+  background:var(--green-light);
+}
+.option.wrong{
+  border-color:var(--red);
+  background:#fdeaea;
+}
+.option img{max-width:200px;border-radius:8px;vertical-align:middle;}
+
+/* ── NAV BUTTONS ── */
+.nav-buttons{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  margin-top:16px;
+}
+.nav-btn{
+  background:var(--pine);
+  color:var(--white);
+  border:none;
+  border-radius:40px;
+  padding:12px 28px;
+  font-family:'Source Sans 3',sans-serif;
+  font-weight:700;
+  font-size:.9rem;
+  cursor:pointer;
+  transition:all .2s;
+}
+.nav-btn:hover:not(:disabled){
+  background:var(--mint);
+  transform:scale(1.02);
+}
+.nav-btn:disabled{
+  background:var(--gray);
+  cursor:not-allowed;
+  opacity:0.5;
+}
+.nav-btn.next{background:var(--accent);}
+.nav-btn.next:hover:not(:disabled){background:#2d7a45;}
+
+/* ─── RESULTS ─── */
+.results-container{
+  background:var(--white);
+  border-radius:24px;
+  padding:32px;
+  margin-bottom:24px;
+}
+.score-display{
+  text-align:center;
+  padding:24px;
+  background:linear-gradient(135deg, var(--green-light), var(--white));
+  border-radius:20px;
+  margin-bottom:24px;
+}
+.score-number{
+  font-family:'Playfair Display',serif;
+  font-size:3.5rem;
+  font-weight:900;
+  color:var(--pine);
+}
+.score-description{
+  color:var(--gray);
+  font-size:.9rem;
+  margin-top:8px;
+}
+.excluded-questions{
+  background:var(--green-light);
+  padding:16px 20px;
+  border-radius:16px;
+  margin-bottom:24px;
+  border-left:4px solid var(--gold-soft);
+}
+.results-list{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.result-item{
+  background:var(--green-light);
+  border-radius:16px;
+  padding:16px 20px;
+}
+.result-item.correct{border-left:4px solid var(--accent);}
+.result-item.incorrect{border-left:4px solid var(--red);}
+.result-item.excluded{border-left:4px solid var(--gold-soft);opacity:0.8;}
+.result-item .q-title{
+  font-weight:700;
+  color:var(--deep-green);
+  margin-bottom:8px;
+}
+.result-item .answer{
+  font-size:.85rem;
+  color:var(--gray);
+  margin-top:6px;
+}
+.restart-btn{
+  background:var(--accent);
+  color:var(--white);
+  border:none;
+  border-radius:40px;
+  padding:14px 32px;
+  font-size:1rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .2s;
+  display:block;
+  margin:20px auto 0;
+}
+.restart-btn:hover{
+  background:#2d7a45;
+  transform:scale(1.02);
+}
+
+/* ── UTILS ── */
+.hidden{display:none;}
+.text-center{text-align:center;}
+
+@media(max-width:600px){
+  .header{padding:12px 16px;}
+  .header h1{font-size:1rem;}
+  .timer{font-size:.9rem;padding:4px 12px;}
+  .question-card{padding:20px;}
+  .option{padding:10px 16px;}
+  .nav-btn{padding:8px 20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📐 Ensayo PAES <span>Matemática M1</span></h1>
+  <div class="timer" id="timer">02:20:00</div>
+</div>
+<div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+
+<div class="main-container" id="mainContainer">
+  <div id="quizContent"></div>
+  <div class="nav-buttons" id="navButtons">
+    <button class="nav-btn" id="prevBtn" onclick="previousQuestion()">← Anterior</button>
+    <button class="nav-btn next" id="nextBtn" onclick="nextQuestion()">Siguiente →</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// POOL DE PREGUNTAS - 60 preguntas
+// ============================================================
+const questions = [
+{
+    pregunta: `Un bus tiene sus 30 asientos de capacidad ocupados, cada uno por una persona y además, lleva 10 personas de pie. Si en un paradero se baja el 20% de las personas que van sentadas y el 30% de las personas que van de pie y suben, en ese paradero, 2 personas, ¿cuántas personas quedarían de pie si se ocupan todos los asientos con una persona?`,
+    opciones: [
+        "3",
+        "1",
+        "7",
+        "9"
+    ],
+    correcta: 0
+    },
+    {
+        pregunta: `Se define la operación a # b = <span class="math-expr"><span class="fraction"><span class="num">a<sup>2</sup> + b<sup>2</sup></span><span class="den">a + b</span></span></span> para a ≠ -b. ¿Cuál es el valor de (5 # 3) + (4 # 2)?`,
+        opciones: ["5", "6", "7", "8"],
+        correcta: 2
+    },
+    {
+        pregunta: `Un comerciante compra un producto a x pesos. Lo vende con una ganancia del 30% sobre el precio de compra. Luego, sobre ese precio de venta, ofrece un descuento del 20%. Si finalmente recibe 104.000 pesos, ¿cuál es el valor de x?`,
+        opciones: ["80.000", "90.000", "100.000", "110.000"],
+        correcta: 2
+    },
+    {
+    pregunta: "\\((0,1 : 0,01) + 0,001 =\\)",
+    opciones: [
+        "0,101",
+        "9,09",
+        "0,002",
+        "10,001"
+    ],
+    correcta: 3
+    },
+    {
+    pregunta: "Si \\(M = 1,4 + 4,05\\); \\(P = 5,\\overline{6} - 0,2\\overline{1}\\) y \\(Q = 3,\\overline{21} + 2,\\overline{24}\\), ¿cuál de las siguientes relaciones es verdadera?",
+    opciones: [
+        "\\(P > Q > M\\)",
+        "\\(M = Q > P\\)",
+        "\\(Q > P > M\\)",
+        "\\(P > M > Q\\)",
+    ],
+    correcta: 0
+    },
+    {
+    pregunta: `Un técnico cobró, en total, 48.000 pesos por la reparación de un computador. Si en repuestos gastó 24.000 pesos y cobra 7.500 pesos por hora de trabajo, ¿cuánto tiempo demoró en realizar la reparación de ese computador?`,
+    opciones: [
+        "6 horas y 40 minutos",
+        "3 horas y 12 minutos",
+        "6 horas y 24 minutos",
+        "3 horas y 20 minutos",
+    ],
+    correcta: 1
+    },
+    {
+        pregunta: `¿Cuál es el 15% del 40% de 500?`,
+        opciones: ["20", "30", "40", "50"],
+        correcta: 1
+    },
+    {
+    pregunta: "Si el a% del 5% de b es c y el b% del 10% de c es a, entonces la relación entre a y c es",
+    opciones: [
+        "\\(a^2 = 2c^2\\)",
+        "\\(a^2 = 2c\\)",
+        "\\(a = 2c\\)",
+        "\\(a = c\\)"
+    ],
+    correcta: 0
+    },
+    {
+        pregunta: `Un número de tres dígitos es tal que la suma de sus dígitos es 18, el dígito de las centenas es el doble del dígito de las unidades, y el número es 198 unidades mayor que el número formado al invertir sus dígitos. ¿Cuál es el producto de los dígitos?`,
+        opciones: ["120", "140", "160", "180"],
+        correcta: 2
+    },
+    {
+    pregunta: "Si \\(P = 3 + \\sqrt{5}\\), \\(Q = \\sqrt{14}\\) y \\(R = \\sqrt{30} - 4\\), entonces",
+    opciones: [
+        "\\(R < Q < P\\)",
+        "\\(P < Q < R\\)",
+        "\\(P < R < Q\\)",
+        "\\(R < P < Q\\)",
+    ],
+    correcta: 0
+    },
+    {
+        pregunta: `Una persona gasta <span class="math-expr"><span class="fraction"><span class="num">3</span><span class="den">8</span></span></span> de su dinero en arriendo, luego <span class="math-expr"><span class="fraction"><span class="num">2</span><span class="den">5</span></span></span> del resto en alimentación, luego <span class="math-expr"><span class="fraction"><span class="num">1</span><span class="den">3</span></span></span> del nuevo resto en transporte y finalmente le quedan $42.000. ¿Cuánto dinero tenía inicialmente?`,
+        opciones: ["112.000", "126.000", "140.000", "168.000"],
+        correcta: 3
+    },
+    {
+    pregunta: "Si el precio de un helado es $500, ¿cuál de las siguientes expresiones representa el valor del helado aumentado en su 120%?",
+    opciones: [
+        "\\(500 + 120 \\cdot 500\\)",
+        "\\(500 + 20 \\cdot 500\\)",
+        "\\(1,20 \\cdot 500\\)",
+        "\\(2,20 \\cdot 500\\)"
+    ],
+    correcta: 3
+    },
+    {
+    pregunta: `Los cuadrados congruentes de las cuadrículas de 5 por 5 que aparecen en las opciones sirven para contar el puntaje que se ha obtenido en cierto juego con cartas.<br><br>
+    Una persona inicialmente tiene 8 puntos de un total de 25. Luego de una buena jugada, el juego la bonifica con un aumento del 25% respecto de los puntos que tiene en ese momento.<br><br>
+    ¿Cuál de las siguientes opciones presenta de forma correcta el cambio entre la situación inicial de 8 puntos y el puntaje final luego de la bonificación?`,
+    opciones: [
+        "<img src='https://i.ibb.co/YThBbX3g/image.png' alt='Cuadrícula 5x5 opción A' style='width: 200px; height: auto;'>",
+        "<img src='https://i.ibb.co/9m7kQJK8/image.png' alt='Cuadrícula 5x5 opción B' style='width: 200px; height: auto;'>",
+        "<img src='https://i.ibb.co/3m6fL32R/image.png' alt='Cuadrícula 5x5 opción C' style='width: 200px; height: auto;'>",
+        "<img src='https://i.ibb.co/Kzc2fv8h/image.png' alt='Cuadrícula 5x5 opción D' style='width: 200px; height: auto;'>"
+    ],
+    correcta: 2
+    },
+    {
+    pregunta: `En una tienda se muestra una tabla incompleta como la adjunta. ¿Cuáles son los valores, en pesos, de M y N, respectivamente?<br><br>
+    <table class='table' style='border-collapse: collapse; width: 80%; margin: 10px auto; text-align: center;'>
+        <thead>
+            <tr style='background-color: #f2f2f2;'>
+                <th style='border: 1px solid #999; padding: 8px;'>Artículo</th>
+                <th style='border: 1px solid #999; padding: 8px;'>Precio Original ($)</th>
+                <th style='border: 1px solid #999; padding: 8px;'>Descuento 20% ($)</th>
+                <th style='border: 1px solid #999; padding: 8px;'>Precio Final ($)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style='border: 1px solid #999; padding: 8px;'>Camiseta</td>
+                <td style='border: 1px solid #999; padding: 8px;'>2.000</td>
+                <td style='border: 1px solid #999; padding: 8px;'>400</td>
+                <td style='border: 1px solid #999; padding: 8px;'>1.600</td>
+            </tr>
+            <tr>
+                <td style='border: 1px solid #999; padding: 8px;'>Pantalón</td>
+                <td style='border: 1px solid #999; padding: 8px;'>8.000</td>
+                <td style='border: 1px solid #999; padding: 8px;'></td>
+                <td style='border: 1px solid #999; padding: 8px;'>M</td>
+            </tr>
+            <tr>
+                <td style='border: 1px solid #999; padding: 8px;'>Chaqueta</td>
+                <td style='border: 1px solid #999; padding: 8px;'>N</td>
+                <td style='border: 1px solid #999; padding: 8px;'></td>
+                <td style='border: 1px solid #999; padding: 8px;'>7.200</td>
+            </tr>
+        </tbody>
+    </table>
+    ¿Cuáles son los valores, en pesos, de M y N, respectivamente?`,
+    opciones: [
+        "6.400 y 9.000",
+        "6.400 y 8.800",
+        "7.600 y 9.000",
+        "7.600 y 7.600",
+    ],
+    correcta: 0
+    },
+    {
+    pregunta: `Un profesor ve algunos resultados de una encuesta por internet realizada a 100 personas un determinado día, de las cuales el 25% omitió la última pregunta. Una semana después se realiza la misma encuesta a otras 100 personas, de las cuales un 35% omitió la última pregunta.<br><br>
+    El profesor le pide a cuatro de sus estudiantes que realicen conclusiones de estos datos.<br><br>
+    • Sebastián señala: del total de personas encuestadas un 60% omitió la última pregunta.<br>
+    • Angélica señala: en la segunda encuesta la omisión total tuvo un aumento de 10 puntos porcentuales con respecto a la omisión total de la primera encuesta.<br>
+    • Luisa señala: del total de personas encuestadas 60 personas omitieron la última pregunta.<br>
+    • Manuel señala: en la segunda encuesta la pregunta más omitida fue la última.<br><br>
+    ¿Cuál de ellos está en lo correcto?`,
+    opciones: [
+        "Sebastián",
+        "Angélica",
+        "Luisa",
+        "Manuel"
+    ],
+    correcta: 2
+},
+    {
+    pregunta: `La edad actual (x) de Pedro es al menos el doble de la edad que tenía hace 10 años y es menor que la mitad de la edad que tendrá en 15 años más. ¿Cuál de los siguientes sistemas de inecuaciones es la traducción del enunciado?`,
+    opciones: [
+        "\\(x \\geq 2(x - 10)\\), \\(x < \\frac{1}{2}(x + 15)\\)",
+        "\\(x < 2(x - 10)\\), \\(x < \\frac{1}{2}(x + 15)\\)",
+        "\\(x < 2(x + 10)\\), \\(x \\leq \\frac{1}{2}(x - 15)\\)",
+        "\\(x \\geq 2(x + 10)\\), \\(x < \\frac{1}{2}(x - 15)\\)",
+    ],
+    correcta: 0
+    },
+    {
+    pregunta: `En la tabla adjunta se presentan las equivalencias de las medidas de almacenamiento de información de una computadora, cuya unidad básica es el bit.<br><br>
+    <table class='table' style='border-collapse: collapse; width: 80%; margin: 10px auto; text-align: center;'>
+        <thead>
+            <tr style='background-color: #f2f2f2;'>
+                <th style='border: 1px solid #999; padding: 8px;'>Medida</th>
+                <th style='border: 1px solid #999; padding: 8px;'>Simbología</th>
+                <th style='border: 1px solid #999; padding: 8px;'>Equivalencia</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Byte</td><td style='border: 1px solid #999; padding: 8px;'>B</td><td style='border: 1px solid #999; padding: 8px;'>8 bits</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Kilobyte</td><td style='border: 1px solid #999; padding: 8px;'>KB</td><td style='border: 1px solid #999; padding: 8px;'>1024 B</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Megabyte</td><td style='border: 1px solid #999; padding: 8px;'>MB</td><td style='border: 1px solid #999; padding: 8px;'>1024 KB</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Gigabyte</td><td style='border: 1px solid #999; padding: 8px;'>GB</td><td style='border: 1px solid #999; padding: 8px;'>1024 MB</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Terabyte</td><td style='border: 1px solid #999; padding: 8px;'>TB</td><td style='border: 1px solid #999; padding: 8px;'>1024 GB</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Petabyte</td><td style='border: 1px solid #999; padding: 8px;'>PB</td><td style='border: 1px solid #999; padding: 8px;'>1024 TB</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Exabyte</td><td style='border: 1px solid #999; padding: 8px;'>EB</td><td style='border: 1px solid #999; padding: 8px;'>1024 PB</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Zettabyte</td><td style='border: 1px solid #999; padding: 8px;'>ZB</td><td style='border: 1px solid #999; padding: 8px;'>1024 EB</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Yottabyte</td><td style='border: 1px solid #999; padding: 8px;'>YB</td><td style='border: 1px solid #999; padding: 8px;'>1024 ZB</td></tr>
+        </tbody>
+    </table>
+    ¿Cuántos Gigabytes equivalen a un Zettabyte?`,
+    opciones: [
+        "\\(2^{10}\\)",
+        "\\(2^{12}\\)",
+        "\\(2^{40}\\)",
+        "\\(2^{50}\\)"
+    ],
+    correcta: 2
+    },
+    {
+    pregunta: `¿En cuál de las siguientes tablas, las variables P y Q son directamente proporcionales?`,
+    opciones: [
+        "<table class='table' style='border-collapse: collapse; width: 80%; margin: 10px auto; text-align: center;'><thead><tr style='background-color: #f2f2f2;'><th style='border: 1px solid #999; padding: 8px;'>P</th><th style='border: 1px solid #999; padding: 8px;'>Q</th></tr></thead><tbody><tr><td style='border: 1px solid #999; padding: 8px;'>1</td><td style='border: 1px solid #999; padding: 8px;'>4</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>2</td><td style='border: 1px solid #999; padding: 8px;'>5</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>3</td><td style='border: 1px solid #999; padding: 8px;'>6</td></tr></tbody></table>",
+        "<table class='table' style='border-collapse: collapse; width: 80%; margin: 10px auto; text-align: center;'><thead><tr style='background-color: #f2f2f2;'><th style='border: 1px solid #999; padding: 8px;'>P</th><th style='border: 1px solid #999; padding: 8px;'>Q</th></tr></thead><tbody><tr><td style='border: 1px solid #999; padding: 8px;'>1</td><td style='border: 1px solid #999; padding: 8px;'>2</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>2</td><td style='border: 1px solid #999; padding: 8px;'>4</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>3</td><td style='border: 1px solid #999; padding: 8px;'>4</td></tr></tbody></table>",
+        "<table class='table' style='border-collapse: collapse; width: 80%; margin: 10px auto; text-align: center;'><thead><tr style='background-color: #f2f2f2;'><th style='border: 1px solid #999; padding: 8px;'>P</th><th style='border: 1px solid #999; padding: 8px;'>Q</th></tr></thead><tbody><tr><td style='border: 1px solid #999; padding: 8px;'>1</td><td style='border: 1px solid #999; padding: 8px;'>3</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>2</td><td style='border: 1px solid #999; padding: 8px;'>2</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>3</td><td style='border: 1px solid #999; padding: 8px;'>1</td></tr></tbody></table>",
+        "<table class='table' style='border-collapse: collapse; width: 80%; margin: 10px auto; text-align: center;'><thead><tr style='background-color: #f2f2f2;'><th style='border: 1px solid #999; padding: 8px;'>P</th><th style='border: 1px solid #999; padding: 8px;'>Q</th></tr></thead><tbody><tr><td style='border: 1px solid #999; padding: 8px;'>1</td><td style='border: 1px solid #999; padding: 8px;'>3</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>2</td><td style='border: 1px solid #999; padding: 8px;'>6</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>3</td><td style='border: 1px solid #999; padding: 8px;'>9</td></tr></tbody></table>"
+    ],
+    correcta: 3
+    },
+    {
+    pregunta: "Si \\(\\frac{(p - b)}{5} = \\frac{3(p + b)}{20}\\), entonces p es siempre igual a",
+    opciones: [
+        "\\(7b\\)",
+        "\\(-\\frac{b}{7}\\)",
+        "\\(2b\\)",
+        "0"
+    ],
+    correcta: 0
+    },
+    {
+    pregunta: `El precio de un artículo es M, el cual es cancelado con 16 monedas de dos tipos, x de un tipo e y del otro tipo, cuyos valores son de p y q, respectivamente. ¿Cuál de los siguientes sistemas, al resolverlo, da como solución siempre la cantidad de monedas de cada valor utilizadas para cancelar el artículo?`,
+    opciones: [
+        "\\((p + q) · (x + y) = M\\)<br>\\(x + y = 16\\)",
+        "\\(px + qy = M\\)<br>\\((p + q) · (x + y) = 16\\)",
+        "\\(xp + yq = M\\)<br>\\(x + y = 16\\)",
+        "\\(x + y = M\\)<br>\\(xp + yq = 16\\)"
+    ],
+    correcta: 2
+    },
+    {
+    pregunta: `Jorge retira del banco 6.540.000 pesos en billetes de 5.000 y de 20.000. Si le entregaron en total 450 billetes, ¿cuántos billetes de $20.000 recibió?`,
+    opciones: [
+        "170",
+        "286",
+        "280",
+        "225",
+    ],
+    correcta: 1
+    },
+    {
+    pregunta: "En el sistema <p style='text-align: center;'>\\(3x - my = 9\\)<br>\\(nx + 4y = 11\\)</p>¿qué valor debe tener \\(m\\) y \\(n\\), respectivamente, para que la solución del sistema sea \\(x = -1\\) e \\(y = 3\\)?",
+    opciones: [
+        "-4 y 1",
+        "4 y 1",
+        "4 y -1",
+        "-4 y -1",
+    ],
+    correcta: 0
+    },
+    {
+    pregunta: "¿Cuál de los siguientes gráficos representa mejor a la función real \\(f(x) = -(x + 1)^2 + 1\\)?",
+    opciones: [
+        "<img src='https://i.ibb.co/Tx7RXwrT/image.png' alt='Gráfico opción A' style='width: 160px; height: auto;'>",
+        "<img src='https://i.ibb.co/gMZtr3gD/image.png' alt='Gráfico opción B' style='width: 160px; height: auto;'>",
+        "<img src='https://i.ibb.co/qG8B6FD/image.png' alt='Gráfico opción C' style='width: 160px; height: auto;'>",
+        "<img src='https://i.ibb.co/KpfyRwtJ/image.png' alt='Gráfico opción D' style='width: 160px; height: auto;'>"
+    ],
+    correcta: 3
+    },
+    {
+        pregunta: `¿Cuál de los siguientes pares ordenados es solución del sistema? <p style='text-align: center;'>x<sup>2</sup> + y<sup>2</sup> = 17<br>xy = 4</p>`,
+        opciones: ["(1, 4)", "(4, 1)", "(-1, -4)", "Todas las anteriores"],
+        correcta: 3
+    },
+    {
+    pregunta: "La intersección de las rectas \\(y = 5 - x\\) e \\(y = x - 1\\) es el punto",
+    opciones: [
+        "\\((3, 2)\\)",
+        "\\((2, 1)\\)",
+        "\\((3, -2)\\)",
+        "\\((0, 2)\\)",
+    ],
+    correcta: 0
+    },
+    {
+    pregunta: "¿Cuál de las siguientes afirmaciones es FALSA, con respecto a la función \\(f(x) = -(x^2 - 4)\\), cuando x recorre todos los números reales?",
+    opciones: [
+        "La función toma un valor máximo.",
+        "Las ramas de la parábola asociada a la función se abren hacia abajo.",
+        "La gráfica de la función intersecta al eje de las ordenadas en el punto (0, -4).",
+        "La gráfica de la función intersecta al eje de las abscisas en los puntos (2, 0) y (-2, 0).",
+    ],
+    correcta: 2
+    },
+    {
+    pregunta: `En un terreno rectangular de largo 4x metros y ancho (2x + 2) metros se construye una piscina rectangular de (3x + 2) metros de largo y (2x - 2) metros de ancho y se embaldosa el resto del terreno. Si x > 2 y el área de la región embaldosada es 136 metros cuadrados, ¿cuál de las siguientes ecuaciones permite determinar el valor de x?`,
+    opciones: [
+        "\\((8x^2 + 8x) - (6x^2 - 4) = 136\\)",
+        "\\((8x^2 + 2) - (6x^2 - 4) = 136\\)",
+        "\\((8x^2 + 8x) - (6x^2 - 2x - 4) = 136\\)",
+        "\\((8x^2 + 2) - (6x^2 + 10x - 4) = 136\\)",
+    ],
+    correcta: 2
+    },
+    {
+    pregunta: "Si la ecuación \\((p - 1)x^2 + 2(p - 3)x + p - 3 = 0\\), en x, con p un número real distinto de 1, tiene dos soluciones reales distintas, entonces",
+    opciones: [
+        "\\(p > 1\\)",
+        "\\(p = 3\\)",
+        "\\(p < 3\\)",
+        "\\(p > 3\\)",
+    ],
+    correcta: 2
+    },
+    {
+    pregunta: `Una bomba comienza a llenar con agua un estanque cilíndrico de base horizontal y plana, a caudal constante. Si inicialmente el estanque contenía 2 m³ de agua, ¿cuál de los siguientes gráficos representa mejor la altura h(t), en m, que alcanza el nivel de agua en el estanque, después de t segundos desde que se comenzó a llenar?`,
+    opciones: [
+        "<img src='https://i.ibb.co/RTMHdD8g/image.png' alt='Gráfico opción A' style='width: 160px; height: auto;'>",
+        "<img src='https://i.ibb.co/3YW2vd9r/image.png' alt='Gráfico opción B' style='width: 160px; height: auto;'>",
+        "<img src='https://i.ibb.co/LdF2q2CS/image.png' alt='Gráfico opción C' style='width: 160px; height: auto;'>",
+        "<img src='https://i.ibb.co/ZbqXvwd/image.png' alt='Gráfico opción D' style='width: 160px; height: auto;'>"
+    ],
+    correcta: 3
+    },
+    {
+    pregunta: `En un partido de básquetbol, un jugador tiene la posibilidad de hacer anotaciones que valen dos o tres puntos, dependiendo del lugar desde el que lanzó el balón al anotar. Un jugador marcó37 puntos en el último partido haciendo cinco anotaciones de dos puntos yx anotaciones de tres puntos. ¿Cuál de las siguientes ecuaciones permite determinar la cantidad de anotaciones de tres puntos que hizo el jugador?`,
+    opciones: [
+        "x + 5 = 37",
+        "x + 10 = 37",
+        "3x + 5 = 37",
+        "3x + 10 = 37"
+    ],
+    correcta: 3
+    },
+    {
+    pregunta: `La parábola que representa a la gráfica de una función cuadrática, cuyo dominio es el conjunto de los números reales, intersecta al eje de las ordenadas en el punto A(0, 2) y tiene su vértice en el punto B(2, -2). ¿Cuál de las siguientes funciones, con dominio el conjunto de los números reales, está asociada a esta parábola?`,
+    opciones: [
+        "\\(g(x) = x^2 - 4x + 2\\)",
+        "\\(h(x) = x^2 + 4x + 2\\)",
+        "\\(p(x) = \\frac{x^2}{2} - 2x + 2\\)",
+        "\\(m(x) = x^2 + 4x + 3\\)"
+    ],
+    correcta: 0
+    },
+    {
+    pregunta: `Considera las variables directamente proporcionales m y n, con n ≥ 3. Cuando m = 121 se tiene que n = 363. ¿Cuál de los siguientes gráficos representa mejor la relación entre m y n?`,
+    opciones: [
+        "<img src='https://i.ibb.co/Y7HPw62G/image.png' alt='Gráfico opción A' style='width: 90px; height: auto;'>",
+        "<img src='https://i.ibb.co/GvKF343x/image.png' alt='Gráfico opción B' style='width: 90px; height: auto;'>",
+        "<img src='https://i.ibb.co/sdXLKT07/image.png' alt='Gráfico opción C' style='width: 130px; height: auto;'>",
+        "<img src='https://i.ibb.co/PZVgKpvV/image.png' alt='Gráfico opción D' style='width: 130px; height: auto;'>"
+    ],
+    correcta: 0
+    },
+    {
+    pregunta: "¿Cuál de las siguientes expresiones es igual que \\((a + (b + c)) \\cdot (a + (b - c))\\)?",
+    opciones: [
+        "\\(a^2 + b^2 - c^2\\)",
+        "\\(a^2 + 2ab + b^2 - c^2\\)",
+        "\\(a^2 + a^2b^2 + b^2 - c^2\\)",
+        "\\(a^2 + (b - c)^2\\)"
+    ],
+    correcta: 1
+    },
+    {
+        pregunta: `La suma de dos números es 18 y la suma de sus cuadrados es 164. ¿Cuál es el producto de los números?`,
+        opciones: ["64", "72", "80", "88"],
+        correcta: 2
+    },
+    {
+        pregunta: `¿Cuál de las siguientes funciones representa una relación de proporcionalidad directa entre x e y?`,
+        opciones: ["y = <span class='math-expr'><span class='fraction'><span class='num'>2</span><span class='den'>x</span></span></span>", "y = 3x", "y = 4x + 1", "y = x<sup>2</sup>"],
+        correcta: 1
+    },
+    {
+        pregunta: `Si f(x) = x<sup>2</sup> - 8x + 7, ¿cuál es el valor de f(4 + h) - f(4) en términos de h?`,
+        opciones: ["h<sup>2</sup> - 8h", "h<sup>2</sup>", "h<sup>2</sup> + 8h", "h<sup>2</sup> - 8"],
+        correcta: 1
+    },
+    {
+    pregunta: `El cuadrado ABCD de lado a se ha dividido en 9 cuadrados congruentes entre sí, como se muestra en la figura adjunta. El área del cuadrado PQRS es<br><br>
+    <p style='text-align: center;'><img src='https://i.ibb.co/fdrPRXkh/image.png' alt='Cuadrado ABCD dividido en 9 cuadrados congruentes con cuadrado interior PQRS' style='width: 300px; height: auto;'></p>`,
+    opciones: [
+        "\\(\\frac{4a^2}{9}\\)",
+        "\\(\\frac{5a^2}{3}\\)",
+        "\\(\\frac{3a^2}{4}\\)",
+        "\\(\\frac{5a^2}{9}\\)",
+    ],
+    correcta: 3
+    },
+    {
+    pregunta: `El volumen del paralelepípedo de la figura adjunta, en metros cúbicos, es \\(2x^3 - 15x^2 - x\\), con x un número real mayor que 5.<br><br>
+    <p style='text-align: center;'><img src='https://i.ibb.co/sdW1Z2tP/image.png' alt='Paralelepípedo con dimensiones: (x+3), (2x-1), p' style='width: 250px; height: auto;'></p>
+    ¿Cuál de las siguientes expresiones representa el valor de p?`,
+    opciones: [
+        "\\(3x - 1\\)",
+        "\\(x - 5\\)",
+        "\\(2x - 1\\)",
+        "\\(x + 3\\)"
+    ],
+    correcta: 1
+    },
+    {
+    pregunta: `Para cierta actividad se aconseja beber diariamente al menos 1 L de agua por cada 35 kg de masa corporal.<br><br>
+    Para una persona de masa corporal P kg que tiene una botella de forma cilíndrica de diámetro 6 cm y altura 20 cm, ¿cuál de las siguientes expresiones permite determinar la cantidad de veces, en un día, que debe consumir el contenido de la botella llena de agua, para cumplir lo que se aconseja?`,
+    opciones: [
+        "\\(\\frac{P}{\\pi \\cdot 36 \\cdot 20}\\)",
+        "\\(\\frac{\\frac{P}{35} \\cdot 1000}{\\pi \\cdot 36 \\cdot 20}\\)",
+        "\\(\\frac{\\frac{P}{35} \\cdot 1000}{\\pi \\cdot 9 \\cdot 20}\\)",
+        "\\(\\frac{P}{35\\pi \\cdot 9 \\cdot 20}\\)"
+    ],
+    correcta: 2
+    },
+    {
+    pregunta: `Una empresa vende crema para las manos en envases con forma de cilindros rectos de 20 cm de altura y de distintos diámetros.<br>
+    Por una promoción se decide aumentar en su 20% la capacidad de cada envase, manteniendo la altura de los envases cilíndricos.<br><br>
+    ¿Cuál de las siguientes funciones permite determinar el volumen de los nuevos envases, en cm³, con r el radio del envase sin promoción, en cm?`,
+    opciones: [
+        "\\(p(r) = 16 \\cdot r^2 \\cdot \\pi\\)",
+        "\\(g(r) = 24 \\cdot r^2 \\cdot \\pi\\)",
+        "\\(f(r) = 28,8 \\cdot r^2 \\cdot \\pi\\)",
+        "\\(h(r) = 576 \\cdot r^2 \\cdot \\pi\\)"
+    ],
+    correcta: 1
+    },
+    {
+    pregunta: `Una piscina con forma de paralelepípedo recto, cuyas medidas son 8 m de ancho por 20 m de largo y una profundidad de 1,7 m, tiene agua hasta una marca ubicada 20 cm antes del borde superior.<br><br>
+    Para aplicar un producto limpiador, una persona desea conocer la cantidad de agua en la piscina.<br><br>
+    ¿Cuál es el volumen de agua contenido en la piscina?`,
+    opciones: [
+        "240 m³",
+        "265,2 m³",
+        "269,28 m³",
+        "272 m³"
+    ],
+    correcta: 0
+    },
+        {
+    pregunta: `En la figura adjunta, ABFG y BCDF son cuadrados congruentes, con F el punto medio de BE. Si el polígono ACDEFG se hace girar indefinidamente en torno a BE, entonces se obtiene un cuerpo formado por<br><br>
+    <p style='text-align: center;'><img src='https://i.ibb.co/pvSCKgvx/image.png' alt='Figura con cuadrados ABFG y BCDF congruentes, F punto medio de BE' style='width: 250px; height: auto;'></p>`,
+    opciones: [
+        "dos cubos y un prisma triangular.",
+        "un cilindro y un cono.",
+        "un tronco de cono.",
+        "dos cilindros y un cono.",
+    ],
+    correcta: 1
+    },
+    {
+        pregunta: `Un cubo tiene una diagonal de 4√3 cm. ¿Cuál es su volumen?`,
+        opciones: ["27 cm³", "64 cm³", "125 cm³", "216 cm³"],
+        correcta: 1
+    },
+    {
+    pregunta: `El círculo de centro (0, 0, 0) y radio 6 cm de la figura adjunta está totalmente contenido en el plano yz. Si este círculo se desplaza según el vector (10, 0, 0), entonces el volumen del cuerpo generado por el barrido de este círculo es<br><br>
+    <p style='text-align: center;'><img src='https://i.ibb.co/Rp6XhhMp/image.png' alt='Círculo de radio 6 cm en el plano yz' style='width: 200px; height: auto;'></p>`,
+    opciones: [
+        "\\(120\\pi \\, \\text{cm}^3\\)",
+        "\\(60\\pi \\, \\text{cm}^3\\)",
+        "\\(360\\pi \\, \\text{cm}^3\\)",
+        "\\(216\\pi \\, \\text{cm}^3\\)"
+    ],
+    correcta: 2
+    },
+    {
+        pregunta: `En la figura adjunta la circunferencia de centro T se traslada según un vector a la circunferencia punteada de centro P. ¿Cuáles son las coordenadas del vector de traslación? <p style='text-align: center;'><img src='https://i.ibb.co/jkBSjgrd/image.png' alt='Plano cartesiano con puntos A y B, donde A parece estar en (3,5) y B en (6,2)' style='width: 300px; height: auto;'></p> `,
+        opciones: ["(2, 3)", "(-2, 3)", "(-12, 1)", "(2, -3)"],
+        correcta: 0
+    },
+    {
+    pregunta: "Considere los vectores \\(\\vec{p}(6, -4)\\), \\(\\vec{q}(2, 9)\\), \\(\\vec{r}(5, -2)\\) y \\(\\vec{s}(3, 7)\\). ¿Cuál(es) de las siguientes afirmaciones es (son) verdadera(s)?<br><br>I) El vector \\((\\vec{q} - \\vec{r})\\) se encuentra en el segundo cuadrante.<br><br>II) El vector \\((\\vec{s} - 2\\vec{p})\\) se encuentra en el tercer cuadrante.<br><br>III) \\(\\vec{p} + \\vec{q} = \\vec{r} + \\vec{s}\\)",
+    opciones: [
+        "Solo I",
+        "Solo I y II",
+        "Solo I y III",
+        "Solo II y III"
+    ],
+    correcta: 2
+    },
+    {
+        pregunta: `¿Cuál de las siguientes imágenes tiene más de dos ejes de simetría?`,
+        opciones: ["<img src='https://i.ibb.co/DH4XqdM4/image.png' alt='imagen' style='width: 170px; height: auto;'>", "<img src='https://i.ibb.co/RkB2nFKs/image.png' alt='imagen' style='width: 170px; height: auto;'>", "<img src='https://i.ibb.co/8DqDL0bH/image.png' alt='imagen' style='width: 170px; height: auto;'>", "<img src='https://i.ibb.co/xdHwwHR/image.png' alt='imagen' style='width: 170px; height: auto;'>"],
+        correcta: 2
+    },
+    {
+    pregunta: `En la figura adjunta, al punto B se le aplica una rotación en 90° con respecto al punto A, en el sentido horario. Las nuevas coordenadas del punto B son<br><br>
+    <p style='text-align: center;'><img src='https://i.ibb.co/cK43QdKH/image.png' alt='Plano cartesiano con puntos A y B, donde A parece estar en (3,5) y B en (6,2)' style='width: 300px; height: auto;'></p>`,
+    opciones: [
+        "(6, 2)",
+        "(-3, 6)",
+        "(6, -7)",
+        "(6, -3)",
+    ],
+    correcta: 3
+    },
+    {
+    pregunta: `En la figura adjunta, ¿cuál es el punto simétrico del punto A(-1, -2) con respecto a la recta y = 3?<br><br>
+    <p style='text-align: center;'><img src='https://i.ibb.co/XkfjMRZz/image.png' alt='Plano cartesiano con punto A(-1,-2) y recta horizontal y=3' style='width: 250px; height: auto;'></p>`,
+    opciones: [
+        "(-1, 8)",
+        "(1, 8)",
+        "(-1, 6)",
+        "(7, -2)",
+    ],
+    correcta: 0
+    },
+    {
+        pregunta: `Se aplica una rotación de 90° en sentido horario alrededor del origen al punto (-4, 2). ¿Cuáles son las coordenadas de la imagen?`,
+        opciones: ["(2, 4)", "(-2, -4)", "(4, -2)", "(-4, -2)"],
+        correcta: 0
+    },
+    {
+        pregunta: `¿En cuál de los siguientes cuadriláteros las rectas punteadas corresponden a sus ejes de simetría?`,
+        opciones: ["<img src='https://i.ibb.co/0yR070rq/image.png' alt='imagen' style='width: 170px; height: auto;'>", "<img src='https://i.ibb.co/wZgKRmgp/image.png' alt='imagen' style='width: 170px; height: auto;'>", "<img src='https://i.ibb.co/dsPbMxdG/image.png' alt='imagen' style='width: 170px; height: auto;'>", "<img src='https://i.ibb.co/vCkWJ4d3/image.png' alt='imagen' style='width: 170px; height: auto;'>"],
+        correcta: 1
+    },
+    {
+        pregunta: `En el siguiente tablero de ajedrez, el rey se ubica inicialmente en la casilla e2 <p style='text-align: center;'><img src='https://i.ibb.co/KpZ8wfX1/image.png' alt='Plano cartesiano con puntos A y B, donde A parece estar en (3,5) y B en (6,2)' style='width: 180px; height: auto;'></p> El rey puede moverse en cualquier dirección y sentido, una casilla a la vez. Cada uno de estos movimientos se puede representar con una flecha que indica la dirección del movimiento con respecto al tablero anterior, por ejemplo, a la flecha <img src='https://i.ibb.co/hRNG2s5j/image.png' alt='Plano cartesiano con puntos A y B, donde A parece estar en (3,5) y B en (6,2)' style='width: 20px; height: auto;'>le corresponde el siguiente movimiento:<p style='text-align: center;'><img src='https://i.ibb.co/6RK1z8Q7/image.png' alt='Plano cartesiano con puntos A y B, donde A parece estar en (3,5) y B en (6,2)' style='width: 180px; height: auto;'></p>¿Cuál de las siguientes series de movimientos permite que la pieza quede ubicada en la casilla c7, partiendo de e2?`,
+        opciones: ["<img src='https://i.ibb.co/ksQByvSh/image.png' alt='flechas' style='width: 300px; height: auto;'>", "<img src='https://i.ibb.co/Hf4kfFmX/image.png' alt='flechas' style='width: 300px; height: auto;'>", "<img src='https://i.ibb.co/fYvg0byB/image.png' alt='flechas' style='width: 300px; height: auto;'>", "<img src='https://i.ibb.co/LhdNYSsw/image.png' alt='flechas' style='width: 300px; height: auto;'>"],
+        correcta: 2
+    },
+    {
+        pregunta: `Se realiza una encuesta a un grupo de personas, sobre la cantidad de plantas que tiene cada una en su casa. Los resultados se presentan en el gráfico adjunto. <p style='text-align: center;'><img src='https://i.ibb.co/tprD5qXn/image.png' alt='graficos' style='width: 300px; height: auto;'></p>¿Cuál de los siguientes argumentos respalda que la respuesta mayoritaria de los encuestados fue 3 plantas?`,
+        opciones: ["Porque hay 3 barras que llegan al mismo número.", "Porque el 3 tiene la barra más alta.", "Porque la diferencia entre la barra más alta y la más baja es 3.", "Porque la barra del medio tiene frecuencia 3."],
+        correcta: 1
+    },
+    {
+    pregunta: "En un grupo de datos la mediana es \\(m\\) y la media es \\(\\overline{x}\\). ¿Cuál de las siguientes afirmaciones es siempre verdadera?",
+    opciones: [
+        "El percentil 75 es mayor que \\(\\overline{x}\\).",
+        "El percentil 25 es \\(\\frac{m}{2}\\).",
+        "El percentil 15 es menor o igual a m.",
+        "La mitad de los datos es menor o igual a \\(\\overline{x}\\)."
+    ],
+    correcta: 2
+    },
+    {
+        pregunta: `Los datos: 12, 24, 36, 48, 60, 72, 84, 96, 108, 120 tienen percentil P igual a 84. ¿Cuál es el valor de P?`,
+        opciones: ["70", "75", "80", "85"],
+        correcta: 0
+    },
+    {
+    pregunta: `Un estudiante debe rendir cuatro pruebas en un semestre, de las cuales ya tiene tres notas, estas son 5, 6 y 4.<br><br>
+    ¿Cuál de las siguientes expresiones permite determinar el promedio que tendría el estudiante con su cuarta nota x?`,
+    opciones: [
+        "\\(\\frac{15 + x}{4}\\)",
+        "\\(\\frac{15 + x}{2}\\)",
+        "\\(\\frac{5 + x}{2}\\)",
+        "\\(\\frac{15 + x}{3}\\)"
+    ],
+    correcta: 0
+    },
+    {
+    pregunta: `En el diagrama de cajón adjunto se presenta la distribución de los tiempos que un grupo de 100 personas logró mantenerse en postura de sentadilla con la espalda apoyada en la pared en un gimnasio.<br>
+    <p style='text-align: center;'><img src='https://i.ibb.co/JRw3qPYC/image.png' alt='Diagrama de caja con valores: 15, 25, 30, 46, 70' style='width: 300px; height: auto;'></p>
+    Las instructoras del gimnasio garantizan que después de tomar el entrenamiento básico por una semana, las personas cuyos tiempos son menores al segundo cuartil aumentarán su tiempo en 30 s y el resto de las personas aumentarán su tiempo en 15 s.<br><br>
+    Si estas 100 personas toman el entrenamiento y la promesa de las instructoras es efectiva, ¿cuál de las siguientes afirmaciones es verdadera luego de una semana de entrenamiento?`,
+    opciones: [
+        "Exactamente 2 personas durarán más de 60 s.",
+        "A lo más 3 personas durarán más de 60 s.",
+        "Al menos 25 personas durarán más de 60 s.",
+        "Exactamente 50 personas durarán más de 60 s."
+    ],
+    correcta: 2
+    },
+    {
+        pregunta: `Se lanzan dos dados comunes. ¿Cuál es la probabilidad de que la suma de los resultados sea un número par y menor que 8?`,
+        opciones: ["<span class='math-expr'><span class='fraction'><span class='num'>1</span><span class='den'>4</span></span></span>", "<span class='math-expr'><span class='fraction'><span class='num'>5</span><span class='den'>18</span></span></span>", "<span class='math-expr'><span class='fraction'><span class='num'>1</span><span class='den'>3</span></span></span>", "<span class='math-expr'><span class='fraction'><span class='num'>5</span><span class='den'>12</span></span></span>"],
+        correcta: 0
+    },
+    {
+    pregunta: `En la tabla adjunta se presentan los resultados de una encuesta realizada a 50 personas sobre su fruta preferida.<br><br>
+    <table class='table' style='border-collapse: collapse; width: 60%; margin: 10px auto; text-align: center;'>
+        <thead>
+            <tr style='background-color: #f2f2f2;'>
+                <th style='border: 1px solid #999; padding: 8px;'>Fruta</th>
+                <th style='border: 1px solid #999; padding: 8px;'>Cantidad de personas</th>
+            <tr>
+        </thead>
+        <tbody>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Uva</td><td style='border: 1px solid #999; padding: 8px;'>13</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Pera</td><td style='border: 1px solid #999; padding: 8px;'>6</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Manzana</td><td style='border: 1px solid #999; padding: 8px;'>12</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Naranja</td><td style='border: 1px solid #999; padding: 8px;'>8</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Frutilla</td><td style='border: 1px solid #999; padding: 8px;'>11</td></tr>
+        </tbody>
+    </table>
+    Si se elige a una de estas personas al azar, ¿cuál es la probabilidad de que la persona elegida tenga como fruta preferida la pera o la naranja?`,
+    opciones: [
+        "\\(\\frac{1}{14}\\)",
+        "\\(\\frac{7}{25}\\)",
+        "\\(\\frac{7}{24}\\)",
+        "\\(\\frac{1}{7}\\)"
+    ],
+    correcta: 1
+    },
+    {
+        pregunta: `Los resultados de las elecciones del centro de estudiantes de un colegio estarán muy estrechos. Para tratar de predecir el resultado, se encuesta a algunos estudiantes por su intención de voto. En los gráficos adjuntos se presentan los resultados.
+        <p style='text-align: center;'><img src='https://i.ibb.co/TqMR5HMT/image.png' alt='graficos' style='width: 550px; height: auto;'></p>
+        Si la cantidad de hombres y mujeres que respondieron la encuesta es la misma, ¿cuál de las siguientes tablas presenta la intención de todos los votos?`,
+        opciones: [
+    "<table class='table' style='border-collapse: collapse; width: 60%; margin: 10px auto; text-align: center;'><thead><tr style='background-color: #f2f2f2;'><th style='border: 1px solid #999; padding: 8px;'></th><th style='border: 1px solid #999; padding: 8px;'>Frecuencia</th></tr></thead><tbody><tr><td style='border: 1px solid #999; padding: 8px;'>Ana</td><td style='border: 1px solid #999; padding: 8px;'>61</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>Juan</td><td style='border: 1px solid #999; padding: 8px;'>62</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>Sofía</td><td style='border: 1px solid #999; padding: 8px;'>71</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>Carlos</td><td style='border: 1px solid #999; padding: 8px;'>56</td></tr></tbody></table>",
+    "<table class='table' style='border-collapse: collapse; width: 60%; margin: 10px auto; text-align: center;'><thead><tr style='background-color: #f2f2f2;'><th style='border: 1px solid #999; padding: 8px;'></th><th style='border: 1px solid #999; padding: 8px;'>Frecuencia</th></tr></thead><tbody><tr><td style='border: 1px solid #999; padding: 8px;'>Ana</td><td style='border: 1px solid #999; padding: 8px;'>46</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>Juan</td><td style='border: 1px solid #999; padding: 8px;'>49</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>Sofía</td><td style='border: 1px solid #999; padding: 8px;'>59</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>Carlos</td><td style='border: 1px solid #999; padding: 8px;'>45</td></tr></tbody></table>",
+    "<table class='table' style='border-collapse: collapse; width: 60%; margin: 10px auto; text-align: center;'><thead><tr style='background-color: #f2f2f2;'><th style='border: 1px solid #999; padding: 8px;'></th><th style='border: 1px solid #999; padding: 8px;'>Frecuencia</th></tr></thead><tbody><tr><td style='border: 1px solid #999; padding: 8px;'>Ana</td><td style='border: 1px solid #999; padding: 8px;'>69</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>Juan</td><td style='border: 1px solid #999; padding: 8px;'>143</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>Sofía</td><td style='border: 1px solid #999; padding: 8px;'>232</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>Carlos</td><td style='border: 1px solid #999; padding: 8px;'>300</td></tr></tbody></table>",
+    "<table class='table' style='border-collapse: collapse; width: 60%; margin: 10px auto; text-align: center;'><thead><tr style='background-color: #f2f2f2;'><th style='border: 1px solid #999; padding: 8px;'></th><th style='border: 1px solid #999; padding: 8px;'>Frecuencia</th></tr></thead><tbody><tr><td style='border: 1px solid #999; padding: 8px;'>Ana</td><td style='border: 1px solid #999; padding: 8px;'>69</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>Juan</td><td style='border: 1px solid #999; padding: 8px;'>74</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>Sofía</td><td style='border: 1px solid #999; padding: 8px;'>89</td></tr><tr><td style='border: 1px solid #999; padding: 8px;'>Carlos</td><td style='border: 1px solid #999; padding: 8px;'>68</td></tr></tbody></table>"
+    ],
+        correcta: 3
+    },
+    {
+        pregunta: `Se lanzan tres monedas al aire. ¿Cuál es la probabilidad de obtener al menos dos caras?`,
+        opciones: ["<span class='math-expr'><span class='fraction'><span class='num'>1</span><span class='den'>4</span></span></span>", "<span class='math-expr'><span class='fraction'><span class='num'>1</span><span class='den'>2</span></span></span>", "<span class='math-expr'><span class='fraction'><span class='num'>3</span><span class='den'>8</span></span></span>", "<span class='math-expr'><span class='fraction'><span class='num'>5</span><span class='den'>8</span></span></span>"],
+        correcta: 1
+    },
+    {
+        pregunta: `Se lanza un dado común dos veces. ¿Cuál es la probabilidad de que el primer resultado sea impar sabiendo que la suma es menor que 6?`,
+        opciones: ["<span class='math-expr'><span class='fraction'><span class='num'>1</span><span class='den'>3</span></span></span>", "<span class='math-expr'><span class='fraction'><span class='num'>1</span><span class='den'>2</span></span></span>", "<span class='math-expr'><span class='fraction'><span class='num'>2</span><span class='den'>3</span></span></span>", "<span class='math-expr'><span class='fraction'><span class='num'>3</span><span class='den'>4</span></span></span>"],
+        correcta: 2
+    },
+    {
+    pregunta: "Si se lanzan tres monedas, ¿cuál es la probabilidad de obtener al menos un sello?",
+    opciones: [
+        "<span class='math-expr'><span class='fraction'><span class='num'>1</span><span class='den'>3</span></span></span>",
+        "<span class='math-expr'><span class='fraction'><span class='num'>7</span><span class='den'>8</span></span></span>",
+        "<span class='math-expr'><span class='fraction'><span class='num'>1</span><span class='den'>8</span></span></span>",
+        "<span class='math-expr'><span class='fraction'><span class='num'>1</span><span class='den'>2</span></span></span>"
+    ],
+    correcta: 1
+    },
+    {
+    pregunta: `Una caja contiene seis tarjetas todas del mismo tipo y en cada una de ellas hay una palabra escrita. Las palabras escritas en cuatro de las tarjetas son: CLASE, SOL, TEMPRANO y LEON.<br><br>
+    Se sabe que al extraer al azar una tarjeta de la caja la probabilidad de que la palabra escrita en ella tenga menos de tres letras vocales es <span class='math-expr'><span class='fraction'><span class='num'>2</span><span class='den'>3</span></span></span>.<br><br>
+    ¿Cuáles de las siguientes palabras podrían estar escritas en las otras dos tarjetas?`,
+    opciones: [
+        "VASO y RED",
+        "CINCO y SEIS",
+        "CUADRILATERO y CANTO",
+        "PARALELOGRAMO y GIGANTESCO"
+    ],
+    correcta: 2
+    },
+    {
+        pregunta: `Se lanzan dos dados comunes. ¿Cuál es la probabilidad de que el producto de los resultados sea un número mayor que 10?`,
+        opciones: ["<span class='math-expr'><span class='fraction'><span class='num'>1</span><span class='den'>3</span></span></span>", "<span class='math-expr'><span class='fraction'><span class='num'>5</span><span class='den'>12</span></span></span>", "<span class='math-expr'><span class='fraction'><span class='num'>1</span><span class='den'>2</span></span></span>", "<span class='math-expr'><span class='fraction'><span class='num'>7</span><span class='den'>12</span></span></span>"],
+        correcta: 3
+    }
+];
+
+const paesScores = [100, 170, 194, 216, 236, 256, 275, 292, 307, 320, 334, 349, 365, 380, 393, 403, 412, 421, 432, 446, 460, 474, 486, 495, 502, 508, 516, 526, 539, 553, 567, 579, 587, 595, 601, 609, 618, 631, 645, 660, 672, 682, 690, 699, 710, 723, 738, 753, 767, 780, 793, 807, 824, 842, 861, 880, 900, 923, 948, 975, 1000];
+
+// ============================================================
+// CONFIGURACIÓN
+// ============================================================
+let currentQuestion = 0;
+let userAnswers = {};
+let excludedQuestions = [];
+let startTime;
+let timerInterval;
+let totalSeconds = 0;
+let submitted = false;
+let shuffledOptions = [];
+
+const MAX_TIME_SECONDS = 140 * 60;
+
+// ============================================================
+// UTILIDADES
+// ============================================================
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function selectRandomExcludedQuestions() {
+  const indices = Array.from({ length: questions.length }, (_, i) => i);
+  const shuffled = shuffleArray(indices);
+  excludedQuestions = shuffled.slice(0, 5).sort((a, b) => a - b);
+}
+
+function shuffleOptionsForQuestion(q) {
+  const indices = [0, 1, 2, 3];
+  const shuffledIndices = shuffleArray(indices);
+  const newOpts = shuffledIndices.map(i => q.opciones[i]);
+  const newAns = shuffledIndices.indexOf(q.correcta);
+    return { 
+        opts: [...q.opciones], 
+        ansIdx: q.correcta 
+    };
+}
+
+function buildTest() {
+  shuffledOptions = questions.map(q => shuffleOptionsForQuestion(q));
+  userAnswers = {};
+  currentQuestion = 0;
+  submitted = false;
+}
+
+// ============================================================
+// TIMER
+// ============================================================
+function startTimer() {
+  startTime = new Date();
+  totalSeconds = 0;
+  timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+  if (submitted) return;
+  totalSeconds = Math.floor((new Date() - startTime) / 1000);
+  const tiempoRestante = MAX_TIME_SECONDS - totalSeconds;
+  const timerEl = document.getElementById('timer');
+
+  if (tiempoRestante <= 0) {
+    clearInterval(timerInterval);
+    timerEl.textContent = '00:00';
+    timerEl.className = 'timer timer-rojo timer-urgente';
+    showResults();
+    return;
+  }
+
+  const hours = Math.floor(tiempoRestante / 3600);
+  const minutes = Math.floor((tiempoRestante % 3600) / 60);
+  const seconds = tiempoRestante % 60;
+  
+  if (hours > 0) {
+    timerEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  } else {
+    timerEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
+
+  if (tiempoRestante <= 300) {
+    timerEl.className = 'timer timer-rojo timer-urgente';
+  } else if (tiempoRestante <= 900) {
+    timerEl.className = 'timer timer-naranja';
+  } else {
+    timerEl.className = 'timer';
+  }
+}
+
+function formatTime(seconds) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+  if (hours > 0) return `${hours}h ${minutes}m ${secs}s`;
+  if (minutes > 0) return `${minutes}m ${secs}s`;
+  return `${secs}s`;
+}
+
+// ============================================================
+// RENDERIZADO
+// ============================================================
+function renderQuestion() {
+  const q = questions[currentQuestion];
+  const optData = shuffledOptions[currentQuestion];
+  const progress = ((currentQuestion + 1) / questions.length) * 100;
+  document.getElementById('progressBar').style.width = `${progress}%`;
+
+  let optionsHtml = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  optData.opts.forEach((opt, idx) => {
+    const isSelected = userAnswers[currentQuestion] === idx;
+    optionsHtml += `
+      <div class="option ${isSelected ? 'selected' : ''}" onclick="selectOption(${idx})">
+        <strong>${letters[idx]}.</strong> ${opt}
+      </div>
+    `;
+  });
+
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-card">
+      <div class="question-header">
+        <div class="question-number">PREGUNTA ${currentQuestion + 1} de ${questions.length}</div>
+        <div class="question-status">${userAnswers[currentQuestion] !== undefined ? '✓ Respondida' : '⚪ Sin responder'}</div>
+      </div>
+      <div class="question-text">${q.pregunta}</div>
+      <div class="options">${optionsHtml}</div>
+    </div>
+  `;
+  
+  updateNavigationButtons();
+  setTimeout(() => {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.getElementById('quizContent'), {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '\\[', right: '\\]', display: true},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+      });
+    }
+  }, 50);
+}
+
+function selectOption(index) {
+  if (submitted) return;
+  userAnswers[currentQuestion] = index;
+  renderQuestion();
+}
+
+function updateNavigationButtons() {
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  prevBtn.disabled = currentQuestion === 0;
+  nextBtn.textContent = currentQuestion === questions.length - 1 ? 'Ver Resultados' : 'Siguiente →';
+}
+
+function previousQuestion() {
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    renderQuestion();
+  }
+}
+
+function nextQuestion() {
+  if (currentQuestion === questions.length - 1) {
+    showResults();
+  } else {
+    currentQuestion++;
+    renderQuestion();
+  }
+}
+
+// ============================================================
+// RESULTADOS
+// ============================================================
+function showResults() {
+  if (submitted) return;
+  submitted = true;
+  clearInterval(timerInterval);
+  
+  let correct = 0;
+  let resultsHtml = '';
+
+  questions.forEach((question, index) => {
+    const isExcluded = excludedQuestions.includes(index);
+    if (!isExcluded) {
+      if (userAnswers[index] === shuffledOptions[index].ansIdx) correct++;
+    }
+  });
+
+  const paesScore = paesScores[correct] || paesScores[paesScores.length - 1];
+
+  // Preguntas excluidas
+  let excludedHtml = `
+    <div class="excluded-questions">
+      <strong>⚠️ Preguntas NO consideradas para el puntaje:</strong><br>
+      Las siguientes 5 preguntas fueron seleccionadas aleatoriamente y no afectan tu puntaje:
+      <ul style="margin-top:8px; margin-left:20px;">
+  `;
+  excludedQuestions.forEach(i => {
+    excludedHtml += `<li>Pregunta ${i + 1}</li>`;
+  });
+  excludedHtml += `</ul></div>`;
+
+  // Detalle de todas las preguntas
+  questions.forEach((question, index) => {
+    const userAnswer = userAnswers[index];
+    const isExcluded = excludedQuestions.includes(index);
+    const optData = shuffledOptions[index];
+    const isCorrect = userAnswer === optData.ansIdx;
+    const letters = ['A', 'B', 'C', 'D'];
+    
+    let userAnswerText = '';
+    if (userAnswer === undefined) {
+      userAnswerText = '<em>Sin respuesta</em>';
+    } else {
+      userAnswerText = `${letters[userAnswer]}) ${optData.opts[userAnswer]}`;
+    }
+    
+    const correctAnswerText = `${letters[optData.ansIdx]}) ${optData.opts[optData.ansIdx]}`;
+
+    if (isExcluded) {
+      resultsHtml += `
+        <div class="result-item excluded">
+          <div class="q-title">Pregunta ${index + 1} (NO CONSIDERADA)</div>
+          <div>${question.pregunta.replace(/<[^>]*>/g, '').substring(0, 120)}${question.pregunta.replace(/<[^>]*>/g, '').length > 120 ? '...' : ''}</div>          <div class="answer">Tu respuesta: ${userAnswerText}</div>
+          <div class="answer">Respuesta correcta: ${correctAnswerText}</div>
+          <div class="answer"><em>⚠️ Esta pregunta no se consideró para el cálculo del puntaje</em></div>
+        </div>
+      `;
+    } else {
+      resultsHtml += `
+        <div class="result-item ${isCorrect ? 'correct' : 'incorrect'}">
+          <div class="q-title">Pregunta ${index + 1}</div>
+          <div>${question.pregunta.replace(/<[^>]*>/g, '').substring(0, 120)}${question.pregunta.replace(/<[^>]*>/g, '').length > 120 ? '...' : ''}</div>          <div class="answer">Tu respuesta: ${userAnswerText}</div>
+          ${!isCorrect ? `<div class="answer">Respuesta correcta: ${correctAnswerText}</div>` : ''}
+        </div>
+      `;
+    }
+  });
+
+  document.getElementById('quizContent').innerHTML = `
+    <div class="results-container">
+      <div class="score-display">
+        <h3>📊 Tu Puntaje PAES</h3>
+        <div class="score-number">${paesScore} puntos</div>
+        <div class="score-description">✅ Correctas: ${correct} de ${questions.length - 5} preguntas consideradas</div>
+        <div class="score-description">⏱️ Tiempo total: ${formatTime(totalSeconds)}</div>
+      </div>
+      ${excludedHtml}
+      <div class="results-list">${resultsHtml}</div>
+      <button class="restart-btn" onclick="restartExam()">🔄 Reiniciar Ensayo</button>
+    </div>
+  `;
+  
+  document.getElementById('navButtons').style.display = 'none';
+  document.getElementById('progressBar').style.width = '100%';
+  
+  setTimeout(() => {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.getElementById('quizContent'), {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '\\[', right: '\\]', display: true},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+      });
+    }
+  }, 50);
+}
+
+function restartExam() {
+  clearInterval(timerInterval);
+  selectRandomExcludedQuestions();
+  buildTest();
+  currentQuestion = 0;
+  submitted = false;
+  startTimer();
+  renderQuestion();
+  document.getElementById('navButtons').style.display = 'flex';
+  document.getElementById('progressBar').style.width = '0%';
+}
+
+// ============================================================
+// INICIALIZACIÓN
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  selectRandomExcludedQuestions();
+  buildTest();
+  startTimer();
+  renderQuestion();
+  setTimeout(() => {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.getElementById('quizContent'), {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '\\[', right: '\\]', display: true},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+      });
+    }
+  }, 100);
+});
+</script>
+</body>
+</html>

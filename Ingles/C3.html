@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inglés A1→A2 – Puente | Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --accent:#e63946;--teal:#0d7377;--orange:#e67e22;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+.s-body{padding-bottom:16px !important;}
+
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--teal) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--sky);}
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box.teal{border-left-color:var(--teal);}
+.rule-box.orange{border-left-color:var(--orange);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--sky);font-weight:700;}
+.ex span.navy{color:var(--navy);font-weight:700;}
+
+.conj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.conj-cell{
+  background:var(--white);border-radius:10px;padding:10px 14px;
+  border:1px solid #dde4ee;
+}
+.conj-cell .label{font-size:.7rem;color:var(--gray);font-family:'JetBrains Mono',monospace;}
+.conj-cell .form{font-size:1rem;font-weight:700;color:var(--navy);}
+
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
+.vocab-card{
+  background:var(--white);border-radius:10px;padding:10px 12px;
+  border:1px solid #dde4ee;display:flex;align-items:center;gap:10px;
+}
+.vocab-card .emoji{font-size:1.3rem;width:32px;text-align:center;}
+.vocab-card .word{font-weight:700;font-size:.9rem;color:var(--navy);}
+.vocab-card .trans{font-size:.75rem;color:var(--gray);}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+mark{background:#fef3c7;color:#92400e;border-radius:4px;padding:1px 5px;font-weight:600;}
+
+.wh-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;}
+.wh-table th{background:var(--navy);color:var(--gold);padding:8px 14px;text-align:left;font-size:.85rem;}
+.wh-table td{background:var(--white);padding:8px 14px;font-size:.88rem;border-bottom:1px solid #eef1f5;}
+.wh-table tr:nth-child(even) td{background:#f8fafc;}
+.wh-table td:first-child{font-weight:700;color:var(--sky);font-family:'JetBrains Mono',monospace;font-size:.95rem;}
+
+.pronoun-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
+.compare-item{background:var(--white);border-radius:8px;padding:10px;border:1px solid #dde4ee;}
+.compare-item .adj{color:var(--sky);font-weight:700;}
+.compare-item .pron{color:var(--teal);font-weight:700;}
+
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,#0d3060 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+.summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px;}
+.summary-card{background:var(--white);border-radius:12px;padding:14px;border-left:4px solid var(--gold);}
+.summary-card h4{color:var(--navy);font-size:.95rem;margin-bottom:6px;}
+
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- SLIDE 1 – COVER -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">⚓</div>
+    <div class="cover-level">A1 → A2 Bridge</div>
+    <div class="cover-title">Puente A1–A2<br><span>Escuela Naval</span></div>
+    <div class="cover-sub">Completa tu nivel A1 y comienza con los contenidos fundamentales de A2. Gramática, vocabulario y lenguaje funcional para el Concurso de Admisión 2027.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">📌 Possessive Pronouns</span>
+      <span class="cover-tag">⏰ Prepositions IN/ON/AT</span>
+      <span class="cover-tag">🔗 Connectors</span>
+      <span class="cover-tag">📖 Past Simple</span>
+      <span class="cover-tag">🔄 Present Continuous</span>
+      <span class="cover-tag">💼 Jobs & Food</span>
+      <span class="cover-tag">🏥 Health</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== BLOQUE 1: CIERRE DE A1 ========== -->
+
+<!-- SLIDE 2 – Possessive Pronouns: Introducción -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A1 (REVIEW)</span>
+    <h2>Possessive Pronouns</h2>
+    <span class="s-num">02 / 32</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los <strong>pronombres posesivos</strong> indican pertenencia <strong>sin necesidad de repetir el sustantivo</strong>. Responden a la pregunta: ¿De quién es?</p>
+    <div class="pronoun-compare">
+      <div class="compare-item"><span class="adj">Adjetivo posesivo</span> + sustantivo<br>→ <em>This is <mark>my</mark> book.</em></div>
+      <div class="compare-item"><span class="pron">Pronombre posesivo</span> (reemplaza todo)<br>→ <em>This book is <mark>mine</mark>.</em></div>
+    </div>
+    <table class="wh-table" style="margin-top:10px">
+      <thead><tr><th>Sujeto</th><th>Adj. Posesivo</th><th>Pron. Posesivo</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td>I</td><td>my</td><td><mark>mine</mark></td><td>This uniform is mine.</td></tr>
+        <tr><td>You</td><td>your</td><td><mark>yours</mark></td><td>Is this phone yours?</td></tr>
+        <tr><td>He</td><td>his</td><td><mark>his</mark></td><td>The backpack is his.</td></tr>
+        <tr><td>She</td><td>her</td><td><mark>hers</mark></td><td>That idea was hers.</td></tr>
+        <tr><td>It</td><td>its</td><td><mark>its</mark> *</td><td>The ship lost its anchor.</td></tr>
+        <tr><td>We</td><td>our</td><td><mark>ours</mark></td><td>The victory is ours!</td></tr>
+        <tr><td>They</td><td>their</td><td><mark>theirs</mark></td><td>Those books are theirs.</td></tr>
+      </tbody>
+    </table>
+    <div class="tip"><span class="icon">⚠️</span><div class="content"><strong>*Its</strong> es poco usado como pronombre; normalmente se usa "its" como adjetivo. Para objetos se prefiere reformular: "The car is mine" (no "its" solo).</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 3 – Possessive Pronouns: Ejemplos contextualizados -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A1 (REVIEW)</span>
+    <h2>Possessive Pronouns – Ejemplos</h2>
+    <span class="s-num">03 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">⚓ Contexto Naval</div>
+        <div class="ex" style="margin-top:8px">
+          ✅ This ship is <span class="key">ours</span>. (Este barco es nuestro.)<br>
+          ✅ The captain's uniform is <span class="key">his</span>. (El uniforme del capitán es suyo.)<br>
+          ✅ Is that radio <span class="key">yours</span>, cadet? (¿Esa radio es tuya, cadete?)<br>
+          ✅ The victory was <span class="key">theirs</span>. (La victoria fue de ellos.)
+        </div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">🎒 Contexto Adolescente</div>
+        <div class="ex" style="margin-top:8px">
+          ✅ This phone is <span class="key">mine</span>. Don't touch it!<br>
+          ✅ Is this jacket <span class="key">yours</span> or your sister's?<br>
+          ✅ The best score on the exam was <span class="key">hers</span>.<br>
+          ✅ Our team won. The trophy is <span class="key">ours</span>!
+        </div>
+      </div>
+    </div>
+    <div class="rule-box gold" style="margin-top:6px">
+      <div class="title">💡 Diferencia clave</div>
+      <div class="ex">
+        <strong>Adjetivo:</strong> That is <mark>my</mark> pen. (va acompañado del sustantivo "pen")<br>
+        <strong>Pronombre:</strong> That pen is <mark>mine</mark>. (reemplaza "my pen")
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4 – Prepositions of Time: IN / ON / AT -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A1 (REVIEW)</span>
+    <h2>Prepositions of Time: IN / ON / AT</h2>
+    <span class="s-num">04 / 32</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Las preposiciones de tiempo indican <strong>cuándo</strong> ocurre algo. Cada una tiene usos específicos.</p>
+    <div class="three-col">
+      <div class="rule-box">
+        <div class="title">📅 AT</div>
+        <ul>
+          <li><strong>Horas</strong>: at 8 am, at 3:30 pm</li>
+          <li><strong>Momentos del día</strong>: at noon, at midnight, at night</li>
+          <li><strong>Festividades</strong>: at Christmas, at Easter</li>
+        </ul>
+        <div class="ex" style="margin-top:6px">The exam starts <mark>at 9 o'clock</mark>.</div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📅 ON</div>
+        <ul>
+          <li><strong>Días</strong>: on Monday, on Friday</li>
+          <li><strong>Fechas</strong>: on March 15th</li>
+          <li><strong>Días + parte del día</strong>: on Sunday morning</li>
+          <li><strong>Festividades con "day"</strong>: on Christmas Day</li>
+        </ul>
+        <div class="ex" style="margin-top:6px">We have navigation class <mark>on Wednesdays</mark>.</div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">📅 IN</div>
+        <ul>
+          <li><strong>Meses</strong>: in March, in July</li>
+          <li><strong>Años</strong>: in 2027, in 1999</li>
+          <li><strong>Estaciones</strong>: in winter, in summer</li>
+          <li><strong>Partes del día</strong>: in the morning, in the afternoon, in the evening</li>
+        </ul>
+        <div class="ex" style="margin-top:6px">The ship was built <mark>in 2005</mark>.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5 – Prepositions of Time: Ejemplos -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A1 (REVIEW)</span>
+    <h2>IN / ON / AT – Ejemplos Comparados</h2>
+    <span class="s-num">05 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">⚓ Contexto Naval</div>
+        <div class="ex">
+          ✅ The ship departs <mark>at 8:00 am</mark>.<br>
+          ✅ The ceremony is <mark>on Friday</mark>.<br>
+          ✅ The admiral was born <mark>in 1975</mark>.<br>
+          ✅ Cadets wake up <mark>in the morning</mark>.<br>
+          ✅ The patrol starts <mark>at night</mark>.<br>
+          ✅ We have inspection <mark>on Monday morning</mark>.
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">🎒 Contexto Adolescente</div>
+        <div class="ex">
+          ✅ I wake up <mark>at 6:30 am</mark> every day.<br>
+          ✅ My birthday is <mark>on June 10th</mark>.<br>
+          ✅ I was born <mark>in 2008</mark>.<br>
+          ✅ Let's meet <mark>in the afternoon</mark> after school.<br>
+          ✅ I do my homework <mark>in the evening</mark>.<br>
+          ✅ We have a test <mark>on Thursday</mark>.
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Excepción:</strong> <em>at night</em> (no "in the night") · <em>in the morning/afternoon/evening</em> (no "at") · <em>on + día + morning/afternoon/evening</em> (on Sunday evening)</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 6 – Connectors: AND / BUT / BECAUSE -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A1 (REVIEW)</span>
+    <h2>Connectors: AND / BUT / BECAUSE</h2>
+    <span class="s-num">06 / 32</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los conectores unen ideas y mejoran la fluidez del discurso.</p>
+    <div class="three-col">
+      <div class="rule-box green">
+        <div class="title">➕ AND (y / además)</div>
+        <p>Añade información similar o secuencial.</p>
+        <div class="ex">I study English <span class="key">and</span> I do physical training.<br>⚓ The ship is fast <span class="key">and</span> modern.</div>
+      </div>
+      <div class="rule-box red">
+        <div class="title">🔴 BUT (pero)</div>
+        <p>Contraste u oposición.</p>
+        <div class="ex">I like coffee, <span class="key">but</span> I don't like tea.<br>⚓ The sea was rough, <span class="key">but</span> the ship sailed safely.</div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🔵 BECAUSE (porque)</div>
+        <p>Expresa causa o razón.</p>
+        <div class="ex">I study hard <span class="key">because</span> I want to be an officer.<br>🎒 I'm tired <span class="key">because</span> I went to bed late.</div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:6px">
+      💡 <strong>Ejemplo combinado:</strong> I want to join the Navy <span class="key">because</span> I love the sea, <span class="key">but</span> I am nervous about the exam, <span class="key">and</span> I need to practice more.
+    </div>
+  </div>
+</div>
+
+<!-- ========== BLOQUE 2: GRAMÁTICA A2 ========== -->
+
+<!-- SLIDE 7 – Past Simple of TO BE: WAS / WERE -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>Past Simple – Verb TO BE: WAS / WERE</h2>
+    <span class="s-num">07 / 32</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El pasado del verbo <strong>to be</strong> tiene dos formas: <strong>was</strong> (singular) y <strong>were</strong> (plural).</p>
+    <div class="conj-grid">
+      <div class="conj-cell"><span class="label">I</span><div class="form">I was</div></div>
+      <div class="conj-cell"><span class="label">You</span><div class="form">You were</div></div>
+      <div class="conj-cell"><span class="label">He / She / It</span><div class="form">He was / She was / It was</div></div>
+      <div class="conj-cell"><span class="label">We</span><div class="form">We were</div></div>
+      <div class="conj-cell"><span class="label">They</span><div class="form">They were</div></div>
+    </div>
+    <div class="two-col" style="margin-top:10px">
+      <div class="rule-box">
+        <div class="title">❌ Negativo</div>
+        <div class="ex">I was <mark>not</mark> (wasn't)<br>You were <mark>not</mark> (weren't)<br>He/She/It was <mark>not</mark> (wasn't)<br>We/They were <mark>not</mark> (weren't)</div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">❓ Interrogativo</div>
+        <div class="ex"><mark>Was</mark> I ...?<br><mark>Were</mark> you ...?<br><mark>Was</mark> he/she/it ...?<br><mark>Were</mark> we/they ...?</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8 – WAS/WERE: Ejemplos contextualizados -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>WAS / WERE – Ejemplos</h2>
+    <span class="s-num">08 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">⚓ Contexto Naval</div>
+        <div class="ex">
+          ✅ The ship <span class="key">was</span> in Valparaíso yesterday.<br>
+          ✅ We <span class="key">were</span> on a training mission last week.<br>
+          ✅ The captain <span class="key">was</span> very proud of the crew.<br>
+          ✅ The sailors <span class="key">were</span> exhausted after the exercise.<br>
+          ✅ ❓ <span class="key">Was</span> the sea calm? – Yes, it <span class="key">was</span>.
+        </div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">🎒 Contexto Adolescente</div>
+        <div class="ex">
+          ✅ I <span class="key">was</span> at the cinema last night.<br>
+          ✅ We <span class="key">were</span> best friends in primary school.<br>
+          ✅ She <span class="key">wasn't</span> at the party yesterday.<br>
+          ✅ ❓ <span class="key">Were</span> you at school on Monday?<br>
+          ✅ The exam <span class="key">was</span> difficult, but I passed.
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Short answers:</strong> Yes, I was. / No, she wasn't. / Yes, they were. / No, we weren't. El verbo principal no se repite.</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 9 – Past Simple: Regular Verbs (formación) -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>Past Simple – Regular Verbs (-ED)</h2>
+    <span class="s-num">09 / 32</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los verbos regulares forman el pasado agregando <strong>-ed</strong> al final.</p>
+    <div class="formula" style="margin-bottom:10px">
+      AFIRMATIVO: Subject + <mark>verb + -ed</mark><br>
+      NEGATIVO: Subject + <mark>did not (didn't)</mark> + verb (base form)<br>
+      PREGUNTA: <mark>Did</mark> + subject + verb (base form)?
+    </div>
+    <div class="three-col">
+      <div class="rule-box">
+        <div class="title">Regla 1: +ed</div>
+        <div class="ex">work → work<mark>ed</mark><br>play → play<mark>ed</mark><br>walk → walk<mark>ed</mark></div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">Regla 2: +d (termina en e)</div>
+        <div class="ex">like → like<mark>d</mark><br>arrive → arrive<mark>d</mark><br>change → change<mark>d</mark></div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">Regla 3: consonante+y → ied</div>
+        <div class="ex">study → stud<mark>ied</mark><br>carry → carr<mark>ied</mark><br>cry → cr<mark>ied</mark></div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:6px"><span class="icon">🔊</span><div class="content"><strong>Pronunciación de -ED:</strong> /t/ (walked), /d/ (played), /ɪd/ (wanted). La última se usa con verbos terminados en t o d.</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 10 – Regular Verbs: Ejemplos -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>Regular Verbs – Ejemplos</h2>
+    <span class="s-num">10 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">⚓ Contexto Naval</div>
+        <div class="ex">
+          ✅ The crew <span class="key">worked</span> all night.<br>
+          ✅ The captain <span class="key">arrived</span> at the port at 6 am.<br>
+          ✅ We <span class="key">studied</span> navigation for three hours.<br>
+          ✅ The ship <span class="key">sailed</span> to Punta Arenas last month.<br>
+          ✅ ❓ <span class="key">Did</span> you <span class="key">watch</span> the training video?<br>
+          ✅ They <span class="key">didn't</span> <span class="key">complete</span> the mission on time.
+        </div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">🎒 Contexto Adolescente</div>
+        <div class="ex">
+          ✅ I <span class="key">played</span> video games all weekend.<br>
+          ✅ She <span class="key">called</span> me yesterday after school.<br>
+          ✅ We <span class="key">watched</span> a great movie last night.<br>
+          ✅ He <span class="key">didn't</span> <span class="key">like</span> the food at the party.<br>
+          ✅ ❓ <span class="key">Did</span> you <span class="key">finish</span> your homework?
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11 – Past Simple: Irregular Verbs (lista básica) -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>Past Simple – Irregular Verbs</h2>
+    <span class="s-num">11 / 32</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los verbos irregulares <strong>cambian su forma</strong> en pasado. No siguen regla de -ed. ¡Debes memorizarlos!</p>
+    <div class="three-col">
+      <div class="rule-box">
+        <div class="title">Grupo 1: Cambio de vocal</div>
+        <div class="ex">
+          sing → <mark>sang</mark><br>
+          swim → <mark>swam</mark><br>
+          begin → <mark>began</mark><br>
+          drink → <mark>drank</mark>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">Grupo 2: Totalmente diferentes</div>
+        <div class="ex">
+          go → <mark>went</mark><br>
+          eat → <mark>ate</mark><br>
+          see → <mark>saw</mark><br>
+          buy → <mark>bought</mark><br>
+          think → <mark>thought</mark>
+        </div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">Grupo 3: Sin cambio</div>
+        <div class="ex">
+          put → <mark>put</mark><br>
+          cut → <mark>cut</mark><br>
+          hit → <mark>hit</mark><br>
+          cost → <mark>cost</mark>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📖</span><div class="content">Verbos más comunes: <strong>be (was/were), have (had), do (did), say (said), get (got), make (made), know (knew), leave (left), feel (felt)</strong></div></div>
+  </div>
+</div>
+
+<!-- SLIDE 12 – Irregular Verbs: Ejemplos -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>Irregular Verbs – Ejemplos</h2>
+    <span class="s-num">12 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">⚓ Contexto Naval</div>
+        <div class="ex">
+          ✅ The captain <span class="key">went</span> to the bridge at dawn.<br>
+          ✅ The crew <span class="key">ate</span> their breakfast before the drill.<br>
+          ✅ I <span class="key">saw</span> the frigate from the coast.<br>
+          ✅ The ship <span class="key">left</span> port at midnight.<br>
+          ✅ The officer <span class="key">wrote</span> the report yesterday.<br>
+          ✅ The sailors <span class="key">swam</span> in the ocean during the exercise.
+        </div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">🎒 Contexto Adolescente</div>
+        <div class="ex">
+          ✅ I <span class="key">went</span> to the mall with my friends.<br>
+          ✅ She <span class="key">ate</span> pizza for dinner.<br>
+          ✅ We <span class="key">saw</span> a great concert last weekend.<br>
+          ✅ He <span class="key">bought</span> a new phone yesterday.<br>
+          ✅ I <span class="key">thought</span> the exam was easy, but it wasn't.<br>
+          ✅ They <span class="key">came</span> to my birthday party.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 13 – Present Continuous: Formación -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>Present Continuous – Formación</h2>
+    <span class="s-num">13 / 32</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El <strong>presente continuo</strong> expresa acciones que están ocurriendo <strong>ahora mismo</strong> o en estos días.</p>
+    <div class="formula" style="margin-bottom:10px">
+      <mark>AM / IS / ARE</mark> + <mark>verb + -ING</mark>
+    </div>
+    <div class="conj-grid">
+      <div class="conj-cell"><span class="label">I</span><div class="form">I <mark>am</mark> work<mark>ing</mark></div></div>
+      <div class="conj-cell"><span class="label">He / She / It</span><div class="form">He <mark>is</mark> study<mark>ing</mark></div></div>
+      <div class="conj-cell"><span class="label">You / We / They</span><div class="form">They <mark>are</mark> sail<mark>ing</mark></div></div>
+    </div>
+    <div class="two-col" style="margin-top:10px">
+      <div class="rule-box">
+        <div class="title">❌ Negativo</div>
+        <div class="ex">I am <mark>not</mark> working<br>He <mark>isn't</mark> studying<br>They <mark>aren't</mark> sailing</div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">❓ Interrogativo</div>
+        <div class="ex"><mark>Am</mark> I working?<br><mark>Is</mark> he studying?<br><mark>Are</mark> they sailing?</div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:6px"><span class="icon">✍️</span><div class="content"><strong>Spelling -ING:</strong> run → running (duplica consonante), write → writing (pierde e), lie → lying (cambia ie por y)</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 14 – Present Continuous: Usos -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>Present Continuous – Usos</h2>
+    <span class="s-num">14 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="three-col">
+      <div class="rule-box green">
+        <div class="title">⏰ Acción ahora mismo</div>
+        <div class="ex">⚓ The captain <mark>is speaking</mark> on the radio right now.<br>🎒 I <mark>am doing</mark> my homework at the moment.</div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📅 Acciones temporales</div>
+        <div class="ex">⚓ The ship <mark>is undergoing</mark> repairs this week.<br>🎒 She <mark>is living</mark> with her aunt this month.</div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">🔮 Planes futuros (cerca)</div>
+        <div class="ex">⚓ We <mark>are sailing</mark> to Valparaíso tomorrow.<br>🎒 I <mark>am meeting</mark> my friends after school.</div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:10px">
+      💡 Palabras clave: <strong>now, right now, at the moment, today, this week, these days, tomorrow</strong> (para futuro cercano).
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 15 – Present Continuous: Ejemplos -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>Present Continuous – Ejemplos</h2>
+    <span class="s-num">15 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">⚓ Contexto Naval</div>
+        <div class="ex">
+          ✅ The cadets <span class="key">are training</span> on the deck right now.<br>
+          ✅ The captain <span class="key">is giving</span> orders to the crew.<br>
+          ✅ The ship <span class="key">is sailing</span> through rough waters.<br>
+          ✅ I <span class="key">am studying</span> navigation this semester.<br>
+          ✅ The engineers <span class="key">are repairing</span> the engine at the moment.
+        </div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">🎒 Contexto Adolescente</div>
+        <div class="ex">
+          ✅ I <span class="key">am watching</span> a movie right now.<br>
+          ✅ She <span class="key">is talking</span> to her best friend on the phone.<br>
+          ✅ They <span class="key">are playing</span> football in the park.<br>
+          ✅ We <span class="key">are preparing</span> for the exam this week.<br>
+          ✅ He <span class="key">is sleeping</span> because he's tired.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 16 – Present Simple vs Present Continuous (Contraste) -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>Present Simple vs Present Continuous</h2>
+    <span class="s-num">16 / 32</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Diferencia clave: <strong>rutinas vs acciones en progreso</strong>.</p>
+    <table class="wh-table">
+      <thead><tr><th></th><th>Present Simple</th><th>Present Continuous</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Uso</strong></td><td>Hechos, rutinas, verdades generales</td><td>Ahora mismo, acciones temporales, futuro cercano</td></tr>
+        <tr><td><strong>Palabras clave</strong></td><td>always, usually, often, sometimes, never, every day</td><td>now, right now, at the moment, today, this week</td></tr>
+        <tr><td><strong>Estructura</strong></td><td>She <mark>works</mark>... / Do you <mark>work</mark>...?</td><td>She <mark>is working</mark>... / Is she <mark>working</mark>...?</td></tr>
+      </tbody>
+    </table>
+    <div class="ex" style="margin-top:10px">
+      🔹 <strong>Contraste:</strong> I <span class="key">study</span> English every day (rutina) → pero now I <span class="key">am studying</span> for the exam (ahora mismo).<br>
+      🔹 <strong>⚓</strong> The ship <span class="key">sails</span> every Monday (rutina) → pero today it <span class="key">is sailing</span> to a different port (hoy).
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 17 – Present Simple vs Present Continuous: Ejemplos Comparados -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>Present Simple vs Present Continuous – Comparación</h2>
+    <span class="s-num">17 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">⚓ Contexto Naval</div>
+        <div class="ex">
+          <strong>Present Simple (rutina)</strong><br>
+          ✅ The crew <span class="key">wakes up</span> at 6 am every day.<br>
+          ✅ The captain <span class="key">works</span> on the bridge from 8 to 5.<br>
+          ✅ The ship <span class="key">carries</span> 200 sailors normally.<br><br>
+          <strong>Present Continuous (ahora/temporal)</strong><br>
+          ✅ The crew <span class="key">is waking up</span> right now.<br>
+          ✅ The captain <span class="key">is working</span> on a special report this week.<br>
+          ✅ The ship <span class="key">is carrying</span> extra supplies today.
+        </div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">🎒 Contexto Adolescente</div>
+        <div class="ex">
+          <strong>Present Simple (rutina)</strong><br>
+          ✅ I <span class="key">wake up</span> at 7 am every day.<br>
+          ✅ She <span class="key">studies</span> in the library after school.<br>
+          ✅ They <span class="key">play</span> football on Saturdays.<br><br>
+          <strong>Present Continuous (ahora)</strong><br>
+          ✅ I <span class="key">am waking up</span> late today because it's Sunday.<br>
+          ✅ She <span class="key">is studying</span> for the exam at the moment.<br>
+          ✅ They <span class="key">are playing</span> football in the park right now.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 18 – Verbos que NO se usan en Present Continuous -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>Non-Action Verbs (Estado)</h2>
+    <span class="s-num">18 / 32</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Algunos verbos expresan <strong>estados</strong>, no acciones. Normalmente <strong>no se usan en Present Continuous</strong>.</p>
+    <div class="three-col">
+      <div class="rule-box">
+        <div class="title">🧠 Verbos de pensamiento</div>
+        <div class="ex">believe, know, think (opinión), understand, remember, forget</div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">❤️ Verbos de emoción/gusto</div>
+        <div class="ex">like, love, hate, prefer, need, want</div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">👁️ Verbos de percepción</div>
+        <div class="ex">see, hear, smell, taste, feel (sensación)</div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:10px">
+      ✅ <span class="correct">I <strong>believe</strong> in you.</span> (no "am believing")<br>
+      ✅ <span class="correct">She <strong>wants</strong> to be an officer.</span> (no "is wanting")<br>
+      ✅ <span class="correct">Do you <strong>like</strong> the sea?</span> (no "are you liking")<br>
+      ⚠️ <strong>Excepción:</strong> "think" puede usarse en continuous cuando significa "estar considerando": <em>I <strong>am thinking</strong> about joining the Navy.</em>
+    </div>
+  </div>
+</div>
+
+<!-- ========== BLOQUE 3: VOCABULARIO A2 ========== -->
+
+<!-- SLIDE 19 – Jobs & Occupations -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Jobs & Occupations</h2>
+    <span class="s-num">19 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">👨‍✈️</span><div><div class="word">pilot</div><div class="trans">piloto</div></div></div>
+      <div class="vocab-card"><span class="emoji">👩‍⚕️</span><div><div class="word">doctor / nurse</div><div class="trans">médico / enfermera</div></div></div>
+      <div class="vocab-card"><span class="emoji">👨‍🏫</span><div><div class="word">teacher</div><div class="trans">profesor</div></div></div>
+      <div class="vocab-card"><span class="emoji">👨‍💻</span><div><div class="word">engineer / programmer</div><div class="trans">ingeniero / programador</div></div></div>
+      <div class="vocab-card"><span class="emoji">👮</span><div><div class="word">police officer</div><div class="trans">policía</div></div></div>
+      <div class="vocab-card"><span class="emoji">👩‍🍳</span><div><div class="word">chef / cook</div><div class="trans">chef / cocinero</div></div></div>
+      <div class="vocab-card"><span class="emoji">🚛</span><div><div class="word">driver / truck driver</div><div class="trans">conductor / camionero</div></div></div>
+      <div class="vocab-card"><span class="emoji">💼</span><div><div class="word">business person</div><div class="trans">empresario</div></div></div>
+      <div class="vocab-card"><span class="emoji">⚓</span><div><div class="word">sailor / naval officer</div><div class="trans">marino / oficial naval</div></div></div>
+      <div class="vocab-card"><span class="emoji">📝</span><div><div class="word">student / cadet</div><div class="trans">estudiante / cadete</div></div></div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      ⚓ My father is a <span class="key">naval officer</span>. He works on a frigate.<br>
+      🎒 I want to be an <span class="key">engineer</span> because I love machines.<br>
+      ❓ What does your mother do? → She is a <span class="key">nurse</span> at the hospital.
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 20 – Places to Work -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Places to Work</h2>
+    <span class="s-num">20 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">🏥</span><div><div class="word">hospital</div><div class="trans">hospital</div></div></div>
+      <div class="vocab-card"><span class="emoji">🏫</span><div><div class="word">school / university</div><div class="trans">escuela / universidad</div></div></div>
+      <div class="vocab-card"><span class="emoji">🏢</span><div><div class="word">office</div><div class="trans">oficina</div></div></div>
+      <div class="vocab-card"><span class="emoji">⚓</span><div><div class="word">naval base / ship</div><div class="trans">base naval / barco</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍽️</span><div><div class="word">restaurant / café</div><div class="trans">restaurante / café</div></div></div>
+      <div class="vocab-card"><span class="emoji">🛒</span><div><div class="word">supermarket / shop</div><div class="trans">supermercado / tienda</div></div></div>
+      <div class="vocab-card"><span class="emoji">✈️</span><div><div class="word">airport</div><div class="trans">aeropuerto</div></div></div>
+      <div class="vocab-card"><span class="emoji">🚒</span><div><div class="word">fire station</div><div class="trans">estación de bomberos</div></div></div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      ⚓ A naval officer works on a <span class="key">ship</span> or at a <span class="key">naval base</span>.<br>
+      🎒 My mom is a teacher. She works at a <span class="key">school</span> near my house.
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 21 – Food & Celebrations -->
+<div class="slide" id="s21">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Food & Celebrations</h2>
+    <span class="s-num">21 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">🍕 Food & Drinks</div>
+        <div class="vocab-grid">
+          <div class="vocab-card"><span class="emoji">🍎</span><div><div class="word">fruit (apple, banana, orange)</div></div></div>
+          <div class="vocab-card"><span class="emoji">🥦</span><div><div class="word">vegetables (carrots, broccoli, lettuce)</div></div></div>
+          <div class="vocab-card"><span class="emoji">🍗</span><div><div class="word">meat (chicken, beef, pork)</div></div></div>
+          <div class="vocab-card"><span class="emoji">🐟</span><div><div class="word">fish / seafood</div></div></div>
+          <div class="vocab-card"><span class="emoji">🍞</span><div><div class="word">bread / rice / pasta</div></div></div>
+          <div class="vocab-card"><span class="emoji">🧀</span><div><div class="word">cheese / eggs / yogurt</div></div></div>
+          <div class="vocab-card"><span class="emoji">🍰</span><div><div class="word">cake / dessert / chocolate</div></div></div>
+          <div class="vocab-card"><span class="emoji">☕</span><div><div class="word">coffee / tea / juice / soda / water</div></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">🎉 Celebrations</div>
+        <div class="vocab-grid">
+          <div class="vocab-card"><span class="emoji">🎂</span><div><div class="word">birthday party</div></div></div>
+          <div class="vocab-card"><span class="emoji">🎄</span><div><div class="word">Christmas</div></div></div>
+          <div class="vocab-card"><span class="emoji">🥂</span><div><div class="word">New Year's Eve</div></div></div>
+          <div class="vocab-card"><span class="emoji">🇨🇱</span><div><div class="word">Fiestas Patrias (Chilean Independence)</div></div></div>
+          <div class="vocab-card"><span class="emoji">🎓</span><div><div class="word">graduation ceremony</div></div></div>
+          <div class="vocab-card"><span class="emoji">💒</span><div><div class="word">wedding</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 22 – Health & Body Parts -->
+<div class="slide" id="s22">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Health & Body Parts</h2>
+    <span class="s-num">22 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">🦵 Body Parts</div>
+        <div class="vocab-grid">
+          <div class="vocab-card"><span class="emoji">👤</span><div><div class="word">head, hair, face, eyes, ears, nose, mouth</div></div></div>
+          <div class="vocab-card"><span class="emoji">🦷</span><div><div class="word">teeth, tongue, lips</div></div></div>
+          <div class="vocab-card"><span class="emoji">🦵</span><div><div class="word">neck, shoulders, arms, hands, fingers</div></div></div>
+          <div class="vocab-card"><span class="emoji">🦶</span><div><div class="word">chest, stomach, back, legs, knees, feet, toes</div></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">🤒 Health Issues & Symptoms</div>
+        <div class="vocab-grid">
+          <div class="vocab-card"><span class="emoji">🤧</span><div><div class="word">cold / cough / fever</div></div></div>
+          <div class="vocab-card"><span class="emoji">🤕</span><div><div class="word">headache / stomachache / backache</div></div></div>
+          <div class="vocab-card"><span class="emoji">🤢</span><div><div class="word">sore throat / nausea / dizziness</div></div></div>
+          <div class="vocab-card"><span class="emoji">🩹</span><div><div class="word">cut / bruise / broken bone</div></div></div>
+          <div class="vocab-card"><span class="emoji">💊</span><div><div class="word">medicine / pills / injection</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 23 – Health: Ejemplos -->
+<div class="slide" id="s23">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Health – Ejemplos en contexto</h2>
+    <span class="s-num">23 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">⚓ Contexto Naval</div>
+        <div class="ex">
+          ✅ The sailor had a <span class="key">fever</span>, so he went to the medical bay.<br>
+          ✅ The cadet broke his <span class="key">arm</span> during physical training.<br>
+          ✅ The ship has a doctor for <span class="key">emergencies</span>.<br>
+          ✅ "I have a <span class="key">headache</span>," said the officer.<br>
+          ✅ The crew takes <span class="key">medicine</span> when they get sick at sea.
+        </div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">🎒 Contexto Adolescente</div>
+        <div class="ex">
+          ✅ I have a <span class="key">sore throat</span> because I talked too much at the party.<br>
+          ✅ She didn't go to school because she had a <span class="key">cold</span>.<br>
+          ✅ My <span class="key">stomachache</span> started after I ate too much pizza.<br>
+          ✅ You should take <span class="key">medicine</span> and rest.<br>
+          ✅ He fell and got a <span class="key">cut</span> on his knee.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== BLOQUE 4: LENGUAJE FUNCIONAL A2 ========== -->
+
+<!-- SLIDE 24 – Asking for Permission & Making Suggestions -->
+<div class="slide" id="s24">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A2</span>
+    <h2>Asking for Permission & Making Suggestions</h2>
+    <span class="s-num">24 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🔑 Asking for Permission (Pedir permiso)</div>
+        <div class="ex">
+          ✅ <span class="key">Can I</span> use your phone?<br>
+          ✅ <span class="key">Could I</span> open the window? (más formal)<br>
+          ✅ <span class="key">Is it OK if</span> I leave early?<br>
+          ✅ <span class="key">May I</span> come in, sir? (formal, con autoridad)
+        </div>
+        <div class="ex" style="margin-top:8px">
+          <strong>Respuestas:</strong><br>
+          ✔ Yes, of course. / Sure. / Yes, you can.<br>
+          ✖ I'm sorry, you can't. / No, please don't.
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">💡 Making Suggestions (Hacer sugerencias)</div>
+        <div class="ex">
+          ✅ <span class="key">Let's</span> go to the cinema. (Contracción de Let us)<br>
+          ✅ <span class="key">Why don't we</span> study together?<br>
+          ✅ <span class="key">What about</span> going to the beach?<br>
+          ✅ <span class="key">How about</span> ordering a pizza?<br>
+          ✅ <span class="key">Shall we</span> start the meeting?
+        </div>
+        <div class="ex" style="margin-top:8px">
+          <strong>Respuestas:</strong><br>
+          ✔ Good idea! / That sounds great. / Yes, let's do that.<br>
+          ✖ I don't think so. / I'd rather not.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 25 – Making Suggestions & Permission: Ejemplos -->
+<div class="slide" id="s25">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A2</span>
+    <h2>Ejemplos – Permission & Suggestions</h2>
+    <span class="s-num">25 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">⚓ Contexto Naval</div>
+        <div class="ex">
+          <strong>Permission:</strong><br>
+          ✅ "Cadet, <span class="key">may I</span> speak to you?" – "Yes, sir."<br>
+          ✅ "<span class="key">Could I</span> leave the bridge for a moment?"<br><br>
+          <strong>Suggestions:</strong><br>
+          ✅ "<span class="key">Let's</span> review the navigation charts together."<br>
+          ✅ "<span class="key">Why don't we</span> practice the emergency drill again?"<br>
+          ✅ "<span class="key">What about</span> checking the radar systems first?"
+        </div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">🎒 Contexto Adolescente</div>
+        <div class="ex">
+          <strong>Permission:</strong><br>
+          ✅ "Mom, <span class="key">can I</span> go to the party on Saturday?"<br>
+          ✅ "<span class="key">Is it OK if</span> I borrow your jacket?"<br><br>
+          <strong>Suggestions:</strong><br>
+          ✅ "<span class="key">Let's</span> order pizza for dinner."<br>
+          ✅ "<span class="key">Why don't we</span> watch a movie tonight?"<br>
+          ✅ "<span class="key">How about</span> going to the mall after school?"
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDES DE REPASO Y RESUMEN ========== -->
+
+<!-- SLIDE 26 – Verb Tense Comparison Table -->
+<div class="slide" id="s26">
+  <div class="s-header">
+    <span class="badge">REPASO GRAMATICAL</span>
+    <h2>Comparación de Tiempos Verbales</h2>
+    <span class="s-num">26 / 32</span>
+  </div>
+  <div class="s-body">
+    <table class="wh-table">
+      <thead><tr><th>Tiempo</th><th>Uso</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td>Present Simple</td><td>Rutinas, hechos, verdades generales</td><td>She <strong>studies</strong> every day.</td></tr>
+        <tr><td>Present Continuous</td><td>Acción ahora mismo, temporal</td><td>She <strong>is studying</strong> right now.</td></tr>
+        <tr><td>Past Simple (to be)</td><td>Ser/estar en pasado</td><td>She <strong>was</strong> a cadet in 2025.</td></tr>
+        <tr><td>Past Simple (regular)</td><td>Acción terminada en pasado</td><td>She <strong>studied</strong> yesterday.</td></tr>
+        <tr><td>Past Simple (irregular)</td><td>Acción terminada (forma especial)</td><td>She <strong>went</strong> to the base.</td></tr>
+      </tbody>
+    </table>
+    <div class="tip" style="margin-top:10px"><span class="icon">⏰</span><div class="content"><strong>Palabras clave para reconocer cada tiempo:</strong> Present Simple (always, never, every day) · Present Continuous (now, at the moment, today) · Past Simple (yesterday, last week, in 2020, ago)</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 27 – Past Simple: Regular vs Irregular -->
+<div class="slide" id="s27">
+  <div class="s-header">
+    <span class="badge">REPASO GRAMATICAL</span>
+    <h2>Past Simple – Regular vs Irregular</h2>
+    <span class="s-num">27 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">✅ Regular Verbs</div>
+        <div class="ex">
+          <strong>+ed / +d / ied</strong><br>
+          work → worked<br>
+          play → played<br>
+          study → studied<br>
+          stop → stopped<br><br>
+          <strong>Negativo:</strong> didn't + base<br>
+          <strong>Pregunta:</strong> Did + sujeto + base?
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">⚠️ Irregular Verbs</div>
+        <div class="ex">
+          <strong>Cambian completamente</strong><br>
+          go → went<br>
+          eat → ate<br>
+          see → saw<br>
+          buy → bought<br>
+          think → thought<br><br>
+          <strong>Negativo/Pregunta:</strong> ¡Usan "did" igual que los regulares!<br>
+          ❓ Did you <strong>go</strong>? (no "did you went")
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      📌 <strong>Consejo clave:</strong> En negativas y preguntas, el verbo principal <strong>siempre vuelve a su forma base</strong> (infinitivo sin to), tanto para verbos regulares como irregulares.<br>
+      ✅ <span class="correct">She didn't go to the party.</span> (no "didn't went")<br>
+      ✅ <span class="correct">Did you see the ship?</span> (no "did you saw")
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 28 – Present Continuous vs Present Simple (resumen visual) -->
+<div class="slide" id="s28">
+  <div class="s-header">
+    <span class="badge">REPASO GRAMATICAL</span>
+    <h2>Present Simple vs Present Continuous</h2>
+    <span class="s-num">28 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="three-col">
+      <div class="rule-box">
+        <div class="title">📆 PRESENT SIMPLE</div>
+        <div class="ex">
+          <strong>Estructura:</strong> Sujeto + verbo<br>
+          He <mark>works</mark>.<br><br>
+          <strong>Negativo:</strong> doesn't/don't + verbo<br>
+          He <mark>doesn't work</mark>.<br><br>
+          <strong>Palabras clave:</strong><br>
+          always, usually, often,<br>
+          sometimes, never, every day
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">⏰ PRESENT CONTINUOUS</div>
+        <div class="ex">
+          <strong>Estructura:</strong> am/is/are + -ing<br>
+          He <mark>is working</mark>.<br><br>
+          <strong>Negativo:</strong> isn't/aren't + -ing<br>
+          He <mark>isn't working</mark>.<br><br>
+          <strong>Palabras clave:</strong><br>
+          now, right now, at the moment,<br>
+          today, this week, these days
+        </div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">🎯 EJEMPLO CLAVE</div>
+        <div class="ex">
+          <strong>I study English every day.</strong><br>
+          (rutina – Present Simple)<br><br>
+          <strong>I am studying English now.</strong><br>
+          (ahora mismo – Present Continuous)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 29 – Irregular Verbs List (más completa) -->
+<div class="slide" id="s29">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Irregular Verbs – Lista de los más comunes</h2>
+    <span class="s-num">29 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="three-col">
+      <div class="rule-box">
+        <div class="title">Base → Past</div>
+        <div class="ex">
+          be → was/were<br>
+          become → became<br>
+          begin → began<br>
+          break → broke<br>
+          bring → brought<br>
+          buy → bought<br>
+          catch → caught<br>
+          choose → chose<br>
+          come → came<br>
+          cost → cost<br>
+          cut → cut<br>
+          do → did<br>
+          drink → drank
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">Base → Past</div>
+        <div class="ex">
+          drive → drove<br>
+          eat → ate<br>
+          fall → fell<br>
+          feel → felt<br>
+          find → found<br>
+          fly → flew<br>
+          forget → forgot<br>
+          get → got<br>
+          give → gave<br>
+          go → went<br>
+          have → had<br>
+          hear → heard<br>
+          know → knew
+        </div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">Base → Past</div>
+        <div class="ex">
+          leave → left<br>
+          lose → lost<br>
+          make → made<br>
+          meet → met<br>
+          put → put<br>
+          read → read<br>
+          run → ran<br>
+          say → said<br>
+          see → saw<br>
+          sell → sold<br>
+          sing → sang<br>
+          sit → sat<br>
+          sleep → slept
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Continúa:</strong> speak→spoke, swim→swam, take→took, teach→taught, tell→told, think→thought, understand→understood, wake→woke, wear→wore, win→won, write→wrote.
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 30 – Time Expressions for Past and Present -->
+<div class="slide" id="s30">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Time Expressions – Guía Rápida</h2>
+    <span class="s-num">30 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📅 PASADO (Past Simple)</div>
+        <div class="ex">
+          yesterday → I studied <strong>yesterday</strong>.<br>
+          last night / last week / last month / last year<br>
+          ago → two days <strong>ago</strong>, a week <strong>ago</strong><br>
+          in + año pasado → <strong>in 2020</strong><br>
+          when I was a child
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">⏰ PRESENTE (Simple / Continuous)</div>
+        <div class="ex">
+          <strong>Simple:</strong> every day, always, usually, often, sometimes, never, on Mondays<br><br>
+          <strong>Continuous:</strong> now, right now, at the moment, today, this week, these days
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      ⚠️ <strong>¡Cuidado!</strong> "This morning" puede ser pasado (si ya pasó) o presente (si aún es de mañana):<br>
+      ✅ I <strong>studied</strong> this morning. (ya pasó la mañana – Past Simple)<br>
+      ✅ I <strong>am studying</strong> this morning. (aún es de mañana – Present Continuous)
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 31 – Functional Language: Mini Dialogues -->
+<div class="slide" id="s31">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A2</span>
+    <h2>Mini Diálogos – Permission & Suggestions</h2>
+    <span class="s-num">31 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🎭 Diálogo 1: Permission</div>
+        <div class="ex">
+          <strong>Cadet:</strong> "Sir, <span class="key">may I</span> go to the medical bay? I have a headache."<br>
+          <strong>Officer:</strong> "Yes, of course. Report back in 30 minutes."<br>
+          <strong>Cadet:</strong> "Thank you, sir."<br><br>
+          <strong>Friend A:</strong> "<span class="key">Can I</span> borrow your notes from yesterday's class?"<br>
+          <strong>Friend B:</strong> "Sure! Here they are."
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🎭 Diálogo 2: Suggestions</div>
+        <div class="ex">
+          <strong>Cadet 1:</strong> "I'm tired of studying alone."<br>
+          <strong>Cadet 2:</strong> "<span class="key">Why don't we</span> study together in the library?"<br>
+          <strong>Cadet 1:</strong> "That sounds great! <span class="key">What about</span> tomorrow afternoon?"<br>
+          <strong>Cadet 2:</strong> "Perfect. <span class="key">Let's</span> meet at 3 pm."<br><br>
+          <strong>Friend:</strong> "<span class="key">How about</span> going to the cinema tonight?"<br>
+          <strong>You:</strong> "Good idea! I'd love to."
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 32 – Resumen Final -->
+<div class="slide" id="s32">
+  <div class="s-header">
+    <span class="badge">RESUMEN A1→A2</span>
+    <h2>¡Has completado el puente A1–A2!</h2>
+    <span class="s-num">32 / 32</span>
+  </div>
+  <div class="s-body">
+    <div class="summary-grid">
+      <div class="summary-card"><h4>📌 Possessive Pronouns</h4><p>mine, yours, his, hers, ours, theirs</p></div>
+      <div class="summary-card"><h4>⏰ Prepositions IN/ON/AT</h4><p>at 8am · on Monday · in March</p></div>
+      <div class="summary-card"><h4>🔗 Connectors</h4><p>and, but, because</p></div>
+      <div class="summary-card"><h4>📖 Past Simple (to be)</h4><p>was / were</p></div>
+      <div class="summary-card"><h4>📖 Past Simple (regular)</h4><p>work → worked, study → studied</p></div>
+      <div class="summary-card"><h4>📖 Past Simple (irregular)</h4><p>go → went, eat → ate, see → saw</p></div>
+      <div class="summary-card"><h4>🔄 Present Continuous</h4><p>am/is/are + -ing (now, at the moment)</p></div>
+      <div class="summary-card"><h4>⚖️ Simple vs Continuous</h4><p>rutinas vs acciones en progreso</p></div>
+      <div class="summary-card"><h4>💼 Jobs & Places</h4><p>pilot, nurse, teacher, engineer, naval officer</p></div>
+      <div class="summary-card"><h4>🍕 Food & Celebrations</h4><p>birthday, Christmas, Fiestas Patrias</p></div>
+      <div class="summary-card"><h4>🏥 Health & Body</h4><p>headache, fever, cold, stomachache</p></div>
+      <div class="summary-card"><h4>🗣️ Functional Language</h4><p>Can I...? / Let's... / Why don't we...?</p></div>
+    </div>
+    <div class="tip" style="margin-top:12px">
+      <span class="icon">⚓</span>
+      <div class="content"><strong>¡Listo para practicar!</strong> Ahora dirígete a los <strong>Ejercicios</strong> para poner a prueba todo lo que has aprendido. ¡El próximo nivel te espera!</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:3.125%"></div></div>
+    <div id="slide-label">Slide 1 / 32</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Course</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E3.html'">✏️ Exercises</button>
+  </div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+</script>
+</body>
+</html>

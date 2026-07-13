@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matemáticas C17 · Transformaciones Isométricas · Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --teal:#0d7377;--orange:#c06020;--purple:#7a3a8a;--coral:#c06040;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+
+/* ─── LAYOUT ─── */
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+/* ─── SLIDES ─── */
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+.s-body{padding-bottom:16px !important;}
+
+/* slide header bar */
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--coral) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+/* slide body */
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+/* ─── CONTENT COMPONENTS ─── */
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--coral);}
+
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box.orange{border-left-color:var(--orange);}
+.rule-box.purple{border-left-color:var(--purple);}
+.rule-box.teal{border-left-color:var(--teal);}
+.rule-box.coral{border-left-color:var(--coral);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+/* math block */
+.math-block{
+  background:var(--navy);color:var(--gold2);border-radius:10px;
+  padding:14px 20px;font-size:.95rem;line-height:2;overflow-x:auto;
+}
+.math-block .comment{color:#6b8ab0;font-size:.8rem;}
+
+/* example strip */
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--coral);font-weight:700;}
+
+/* two-col layout */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.four-col{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;}
+
+/* tip box */
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+/* canvas wrapper */
+.canvas-wrap{
+  background:var(--white);border-radius:12px;border:1px solid #dde4ee;
+  padding:16px;display:flex;justify-content:center;align-items:center;
+  width:100%;min-height:200px;overflow-x:auto;
+}
+.canvas-wrap canvas{max-width:100%;height:auto;border-radius:6px;background:var(--white);}
+
+/* property grid */
+.prop-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.prop-card{
+  background:var(--white);border-radius:10px;padding:10px 14px;
+  border:1px solid #dde4ee;text-align:center;
+}
+.prop-card .name{font-weight:700;color:var(--navy);font-size:.85rem;}
+.prop-card .formula{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--coral);margin-top:4px;}
+.prop-card .desc{font-size:.75rem;color:var(--gray);margin-top:4px;}
+
+/* table */
+.transform-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;}
+.transform-table th{background:var(--navy);color:var(--gold);padding:6px 12px;text-align:left;font-size:.8rem;}
+.transform-table td{background:var(--white);padding:6px 12px;font-size:.85rem;border-bottom:1px solid #eef1f5;}
+.transform-table tr:nth-child(even) td{background:#f8fafc;}
+
+/* cover slide */
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,var(--coral) 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+/* ─── NAV ─── */
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+/* ─── TRANSITIONS ─── */
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col,.four-col,.prop-grid{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+  .nav-links .nav-btn{font-size:.7rem;padding:5px 10px;}
+  #progress-wrap{max-width:120px;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══════════════════════════════════ SLIDE 1 – COVER ══════════════════════════════════ -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">📐</div>
+    <div class="cover-level">Eje Geometría · Clase 17</div>
+    <div class="cover-title">Transformaciones Isométricas<br><span>Escuela Naval 2027</span></div>
+    <div class="cover-sub">Traslación, rotación, reflexión y vectores en el plano. Movimientos que conservan forma y tamaño.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">📐 Traslación</span>
+      <span class="cover-tag">🔄 Rotación</span>
+      <span class="cover-tag">🪞 Reflexión</span>
+      <span class="cover-tag">🧭 Vectores</span>
+      <span class="cover-tag">⚓ Aplicaciones</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 2 – PLANO CARTESIANO ══════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Plano Cartesiano</h2>
+    <span class="s-num">02 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El <strong>sistema cartesiano</strong> está formado por dos rectas perpendiculares: el <strong>eje \(x\)</strong> (abscisas) y el <strong>eje \(y\)</strong> (ordenadas).</p>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Coordenadas</div>
+        <div class="rule-box green">
+          <ul>
+            <li>Un punto \(P\) se escribe como \((x, y)\)</li>
+            <li>\(x\): distancia horizontal al origen</li>
+            <li>\(y\): distancia vertical al origen</li>
+          </ul>
+          <div class="ex" style="margin-top:6px;">
+            \(P(3, 2)\)<br>
+            \(Q(-2, 4)\)<br>
+            \(R(0, -3)\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Cuadrantes</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.85rem;line-height:2;">
+            <strong>I:</strong> \((+, +)\)<br>
+            <strong>II:</strong> \((-, +)\)<br>
+            <strong>III:</strong> \((-, -)\)<br>
+            <strong>IV:</strong> \((+, -)\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="canvas-wrap" style="min-height:180px;">
+      <canvas id="cartesianoCanvas" width="500" height="400"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 3 – DISTANCIA Y PUNTO MEDIO ══════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Distancia y Punto Medio</h2>
+    <span class="s-num">03 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">La <strong>distancia</strong> entre dos puntos y el <strong>punto medio</strong> de un segmento son conceptos fundamentales en geometría analítica.</p>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Distancia entre dos puntos</div>
+        <div class="rule-box green">
+          <div class="math-block" style="font-size:.85rem;padding:12px;">
+            \[
+            d(A,B) = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
+            \]
+          </div>
+          <div class="ex" style="margin-top:6px;font-size:.8rem;">
+            \(A(1,2)\), \(B(4,6)\)<br>
+            \(d = \sqrt{(4-1)^2 + (6-2)^2} = \sqrt{9+16} = 5\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Punto Medio</div>
+        <div class="rule-box orange">
+          <div class="math-block" style="font-size:.85rem;padding:12px;">
+            \[
+            M\left(\frac{x_1 + x_2}{2}, \frac{y_1 + y_2}{2}\right)
+            \]
+          </div>
+          <div class="ex" style="margin-top:6px;font-size:.8rem;">
+            \(A(1,2)\), \(B(4,6)\)<br>
+            \(M\left(\frac{1+4}{2}, \frac{2+6}{2}\right) = (2.5, 4)\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="canvas-wrap" style="min-height:160px;">
+      <canvas id="distanciaCanvas" width="600" height="350"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 4 – VECTORES ══════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Vectores</h2>
+    <span class="s-num">04 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Un <strong>vector</strong> es un segmento de recta orientado que tiene <strong>módulo</strong>, <strong>dirección</strong> y <strong>sentido</strong>.</p>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Características</div>
+        <div class="rule-box green">
+          <ul>
+            <li><strong>Módulo:</strong> longitud del vector</li>
+            <li><strong>Dirección:</strong> línea que lo contiene</li>
+            <li><strong>Sentido:</strong> indicado por la flecha</li>
+          </ul>
+          <div class="ex" style="margin-top:6px;">
+            \(\vec{v} = (v_x, v_y)\)<br>
+            \(|\vec{v}| = \sqrt{v_x^2 + v_y^2}\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Operaciones con vectores</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.85rem;line-height:2.2;">
+            <strong>Suma:</strong> \(\vec{u} + \vec{v} = (u_x+v_x, u_y+v_y)\)<br>
+            <strong>Producto por escalar:</strong> \(k\vec{v} = (k v_x, k v_y)\)
+          </div>
+          <div class="ex" style="margin-top:6px;font-size:.8rem;">
+            \(\vec{u} = (2,3)\), \(\vec{v} = (4,1)\)<br>
+            \(\vec{u} + \vec{v} = (6,4)\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="canvas-wrap" style="min-height:160px;">
+      <canvas id="vectorCanvas" width="600" height="350"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 5 – TRASLACIÓN ══════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">TRANSFORMACIONES</span>
+    <h2>Traslación</h2>
+    <span class="s-num">05 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Una <strong>traslación</strong> mueve un punto o figura según un <strong>vector de traslación</strong> \(\vec{v} = (a, b)\).</p>
+    <div class="math-block">
+      \[
+      P'(x', y') = P(x, y) + \vec{v} = (x + a, y + b)
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ejemplo</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.85rem;line-height:2.2;">
+            \(P(2, 3)\), \(\vec{v} = (4, -1)\)<br>
+            \(P' = (2+4, 3-1) = (6, 2)\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Propiedades</div>
+        <div class="rule-box orange">
+          <ul>
+            <li>Conserva <strong>forma y tamaño</strong></li>
+            <li>No cambia la <strong>orientación</strong></li>
+            <li>Es una <strong>isometría</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="canvas-wrap" style="min-height:180px;">
+      <canvas id="traslacionCanvas" width="600" height="160"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 6 – SIMETRÍA AXIAL (REFLEXIÓN) ══════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">TRANSFORMACIONES</span>
+    <h2>Simetría Axial (Reflexión)</h2>
+    <span class="s-num">06 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Una <strong>simetría axial</strong> refleja un punto o figura respecto a un <strong>eje de simetría</strong> (efecto espejo).</p>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Reflexión respecto al eje \(x\)</div>
+        <div class="rule-box green">
+          <div class="math-block" style="font-size:.85rem;padding:10px;">
+            \(P'(x, -y)\)
+          </div>
+          <div class="ex" style="margin-top:4px;">
+            \(P(3, 4) \rightarrow P'(3, -4)\)
+          </div>
+        </div>
+        <div class="sec-label" style="margin-top:8px;">📌 Reflexión respecto al eje \(y\)</div>
+        <div class="rule-box green">
+          <div class="math-block" style="font-size:.85rem;padding:10px;">
+            \(P'(-x, y)\)
+          </div>
+          <div class="ex" style="margin-top:4px;">
+            \(P(3, 4) \rightarrow P'(-3, 4)\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Reflexión respecto a una recta</div>
+        <div class="rule-box orange">
+          <div class="math-block" style="font-size:.85rem;padding:10px;">
+            \(x = a\) (vertical) → \(P'(2a - x, y)\)<br>
+            \(y = b\) (horizontal) → \(P'(x, 2b - y)\)
+          </div>
+          <div class="ex" style="margin-top:6px;font-size:.8rem;">
+            Eje \(x = 3\), \(P(1, 4)\)<br>
+            \(P'(2\cdot3 - 1, 4) = (5, 4)\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="canvas-wrap" style="min-height:180px;">
+      <canvas id="reflexionCanvas" width="600" height="300"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 7 – SIMETRÍA CENTRAL ══════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">TRANSFORMACIONES</span>
+    <h2>Simetría Central</h2>
+    <span class="s-num">07 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Una <strong>simetría central</strong> refleja un punto o figura respecto a un <strong>punto central</strong> (rotación de 180°).</p>
+    <div class="math-block">
+      \[
+      P'(2a - x, 2b - y)
+      \]
+      <span class="comment">O(a, b) es el centro de simetría</span>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ejemplo</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.85rem;line-height:2.2;">
+            Centro \(O(2, 3)\), \(P(4, 5)\)<br>
+            \(P' = (2\cdot2 - 4, 2\cdot3 - 5) = (0, 1)\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Propiedades</div>
+        <div class="rule-box orange">
+          <ul>
+            <li>Equivale a una <strong>rotación de 180°</strong></li>
+            <li>El centro es el <strong>punto medio</strong> entre \(P\) y \(P'\)</li>
+            <li>Conserva <strong>forma y tamaño</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="canvas-wrap" style="min-height:180px;">
+      <canvas id="centralCanvas" width="600" height="300"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 8 – ROTACIÓN ══════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">TRANSFORMACIONES</span>
+    <h2>Rotación</h2>
+    <span class="s-num">08 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Una <strong>rotación</strong> gira un punto o figura alrededor de un <strong>centro</strong> y en un <strong>ángulo</strong> determinado (sentido antihorario por defecto).</p>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Rotación en el origen</div>
+        <div class="rule-box green">
+          <table class="transform-table">
+            <thead><tr><th>Ángulo</th><th>\((x, y)\) →</th></tr></thead>
+            <tbody>
+              <tr><td>90°</td><td>\((-y, x)\)</td></tr>
+              <tr><td>180°</td><td>\((-x, -y)\)</td></tr>
+              <tr><td>270°</td><td>\((y, -x)\)</td></tr>
+              <tr><td>360°</td><td>\((x, y)\)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Ejemplo</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.85rem;line-height:2.2;">
+            \(P(3, 7)\), rotación 90° antihorario<br>
+            \(P'(-7, 3)\)<br><br>
+            \(P(-2, 4)\), rotación 180°<br>
+            \(P'(2, -4)\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="canvas-wrap" style="min-height:180px;">
+      <canvas id="rotacionCanvas" width="600" height="600"></canvas>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Importante:</strong> En PAES M1, las rotaciones se preguntan con centro en el <strong>origen</strong>.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 9 – TABLA DE ROTACIONES ══════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">TRANSFORMACIONES</span>
+    <h2>Tabla de Rotaciones</h2>
+    <span class="s-num">09 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Ejemplos de <strong>rotaciones</strong> de puntos en el plano cartesiano con centro en el origen.</p>
+    <table class="transform-table">
+      <thead>
+        <tr><th>Punto</th><th>90°</th><th>180°</th><th>270°</th><th>360°</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>\(A(3, 7)\)</td><td>\((-7, 3)\)</td><td>\((-3, -7)\)</td><td>\((7, -3)\)</td><td>\((3, 7)\)</td></tr>
+        <tr><td>\(B(-2, 4)\)</td><td>\((-4, -2)\)</td><td>\((2, -4)\)</td><td>\((4, 2)\)</td><td>\((-2, 4)\)</td></tr>
+        <tr><td>\(C(-1, -7)\)</td><td>\((7, -1)\)</td><td>\((1, 7)\)</td><td>\((-7, 1)\)</td><td>\((-1, -7)\)</td></tr>
+        <tr><td>\(D(4, 0)\)</td><td>\((0, 4)\)</td><td>\((-4, 0)\)</td><td>\((0, -4)\)</td><td>\((4, 0)\)</td></tr>
+      </tbody>
+    </table>
+    <div class="canvas-wrap" style="min-height:160px;margin-top:8px;">
+      <canvas id="tablaRotacionCanvas" width="600" height="400"></canvas>
+    </div>
+    <div class="tip"><span class="icon">💡</span><div class="content"><strong>Consejo:</strong> Memoriza el patrón: 90° → \((-y, x)\), 180° → \((-x, -y)\), 270° → \((y, -x)\).</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 10 – EJEMPLOS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejemplos tipo examen</h2>
+    <span class="s-num">10 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Ejercicios <strong>similares a las preguntas PAES</strong> sobre transformaciones isométricas.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 1 — Traslación</div>
+      <div class="ex">
+        El punto \(P(3, -2)\) se traslada según \(\vec{v} = (-4, 5)\). ¿Cuáles son sus nuevas coordenadas?<br>
+        <span class="key">Solución:</span> \(P' = (3-4, -2+5) = (-1, 3)\)<br>
+        <strong>Respuesta:</strong> \((-1, 3)\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 2 — Reflexión</div>
+      <div class="ex">
+        ¿Cuál es el reflejo de \(P(5, -3)\) respecto al eje \(x\)?<br>
+        <span class="key">Solución:</span> \(P'(5, 3)\)<br>
+        <strong>Respuesta:</strong> \((5, 3)\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejemplo 3 — Rotación</div>
+      <div class="ex">
+        \(P(2, 5)\) se rota 90° antihorario. ¿Cuál es su nueva posición?<br>
+        <span class="key">Solución:</span> \(P'(-5, 2)\)<br>
+        <strong>Respuesta:</strong> \((-5, 2)\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 11 – RESOLUCIÓN DE PROBLEMAS ══════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Resolución de Problemas</h2>
+    <span class="s-num">11 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 1 — Traslación de un barco</div>
+      <div class="ex">
+        Un barco se encuentra en la posición \(P(15, 8)\) en una carta náutica. Si se traslada según el vector \(\vec{v} = (-5, 3)\), ¿cuál es su nueva posición?<br><br>
+        <span class="key">Solución:</span> \(P' = (15-5, 8+3) = (10, 11)\)<br>
+        <strong>Respuesta:</strong> \((10, 11)\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 2 — Reflexión de un faro</div>
+      <div class="ex">
+        Un faro está en \(F(8, -5)\). ¿Cuál es su posición reflejada respecto al eje \(y\)?<br><br>
+        <span class="key">Solución:</span> \(F'(-8, -5)\)<br>
+        <strong>Respuesta:</strong> \((-8, -5)\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📝 Problema 3 — Rotación de un barco</div>
+      <div class="ex">
+        Un barco está en \(B(4, 6)\). Si gira 180° alrededor del origen, ¿dónde queda?<br><br>
+        <span class="key">Solución:</span> \(B'(-4, -6)\)<br>
+        <strong>Respuesta:</strong> \((-4, -6)\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 12 – EJERCICIOS DE PRÁCTICA ══════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Ejercicios de Práctica</h2>
+    <span class="s-num">12 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Resuelve estos ejercicios <strong>antes de ver la solución</strong>.</p>
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">1. Traslada \(P(2, -3)\) con \(\vec{v} = (5, 4)\).</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \((-3, -7)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \((7, 1)\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \((-3, 1)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \((7, -7)\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(P' = (2+5, -3+4) = (7,1)\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">2. Refleja \(P(6, -2)\) respecto al eje \(x\).</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \((6, 2)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \((6, 2)\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \((-6, -2)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \((-6, 2)\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(P'(x, -y) = (6, 2)\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">3. Rota \(P(3, 4)\) 90° antihorario.</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \((4, -3)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \((-4, 3)\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \((-3, -4)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \((4, 3)\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">90° → \((-y, x) = (-4, 3)\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 13 – MÁS EJERCICIOS ══════════════════════════════════ -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Más Ejercicios de Práctica</h2>
+    <span class="s-num">13 / 20</span>
+  </div>
+  <div class="s-body">
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">4. Traslada el triángulo con vértices \(A(1,2), B(3,4), C(5,1)\) con \(\vec{v} = (-2,3)\).</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">a) \(A'(-1,5), B'(1,7), C'(3,4)\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">b) \(A'(3,-1), B'(5,1), C'(7,-2)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(A'(-1,-1), B'(1,1), C'(3,-2)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(A'(-3,5), B'(-1,7), C'(1,4)\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">Sumar \(\vec{v}\) a cada vértice.</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">5. Refleja \(P(7, 9)\) respecto a la recta \(y = 4\).</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \((7, -1)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \((7, -1)\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \((-7, 9)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \((7, 1)\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(P'(x, 2b-y) = (7, 8-9) = (7,-1)\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">6. Rota \(P(-3, 5)\) 270° antihorario.</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \((5, 3)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \((5, 3)\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \((-5, -3)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \((3, 5)\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">270° → \((y, -x) = (5, 3)\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 14 – PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Preguntas estilo examen</h2>
+    <span class="s-num">14 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 1 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es la imagen de \(P(2, -3)\) al trasladarse con \(\vec{v} = (-4, 6)\)?<br><br>
+        a) \((6, -9)\) &nbsp; b) \((-2, 3)\) &nbsp; c) \((-2, 9)\) &nbsp; d) \((-6, 3)\)<br>
+        <span class="key">Solución:</span> \(P' = (2-4, -3+6) = (-2, 3)\)<br>
+        <strong>Respuesta:</strong> b) \((-2, 3)\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 2 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es el reflejo de \(P(4, -7)\) respecto al eje \(y\)?<br><br>
+        a) \((4, 7)\) &nbsp; b) \((-4, -7)\) &nbsp; c) \((-4, 7)\) &nbsp; d) \((4, 0)\)<br>
+        <span class="key">Solución:</span> \(P'(-x, y) = (-4, -7)\)<br>
+        <strong>Respuesta:</strong> b) \((-4, -7)\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 3 — PAES M1</div>
+      <div class="ex">
+        Al rotar \(P(5, 2)\) 90° antihorario, se obtiene:<br><br>
+        a) \((2, -5)\) &nbsp; b) \((-2, 5)\) &nbsp; c) \((5, -2)\) &nbsp; d) \((-5, 2)\)<br>
+        <span class="key">Solución:</span> 90° → \((-y, x) = (-2, 5)\)<br>
+        <strong>Respuesta:</strong> b) \((-2, 5)\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 15 – MÁS PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Más preguntas estilo examen</h2>
+    <span class="s-num">15 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 4 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es la imagen de \(P(-1, 4)\) tras una rotación de 180°?<br><br>
+        a) \((1, -4)\) &nbsp; b) \((-1, -4)\) &nbsp; c) \((1, 4)\) &nbsp; d) \((4, -1)\)<br>
+        <span class="key">Solución:</span> 180° → \((-x, -y) = (1, -4)\)<br>
+        <strong>Respuesta:</strong> a) \((1, -4)\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 5 — PAES M1</div>
+      <div class="ex">
+        Un punto \(P\) se traslada con \(\vec{v} = (2, -3)\) a \(P'(5, 1)\). ¿Cuál era su posición original?<br><br>
+        a) \((3, 4)\) &nbsp; b) \((7, -2)\) &nbsp; c) \((3, -2)\) &nbsp; d) \((7, 4)\)<br>
+        <span class="key">Solución:</span> \(P = P' - \vec{v} = (5-2, 1-(-3)) = (3, 4)\)<br>
+        <strong>Respuesta:</strong> a) \((3, 4)\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 6 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es la distancia entre \(A(1, 2)\) y \(B(4, 6)\)?<br><br>
+        a) 3 &nbsp; b) 4 &nbsp; c) 5 &nbsp; d) 6<br>
+        <span class="key">Solución:</span> \(d = \sqrt{(4-1)^2 + (6-2)^2} = \sqrt{9+16} = 5\)<br>
+        <strong>Respuesta:</strong> c) 5
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 16 – APLICACIONES NAVALES ══════════════════════════════════ -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Transformaciones en Contextos Navales</h2>
+    <span class="s-num">16 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Las transformaciones isométricas son <strong>fundamentales</strong> en navegación, cartografía y diseño naval.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">⚓ Movimiento de un barco</div>
+      <div class="ex">
+        Un barco se mueve desde \(P(12, 5)\) a \(P'(7, 9)\). ¿Cuál es el vector de traslación?<br><br>
+        <span class="key">Solución:</span> \(\vec{v} = (7-12, 9-5) = (-5, 4)\)<br>
+        <strong>Respuesta:</strong> \(\vec{v} = (-5, 4)\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">🧭 Rumbo y rotación</div>
+      <div class="ex">
+        Un barco navega en dirección \(45°\) (NE). Si gira \(90°\) a la derecha, ¿cuál es su nueva dirección?<br><br>
+        <span class="key">Solución:</span> \(45° + 90° = 135°\) (SE)<br>
+        <strong>Respuesta:</strong> 135° (SE)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📐 Simetría en el diseño</div>
+      <div class="ex">
+        El casco de un buque es simétrico respecto al eje \(y\). Si un punto del casco está en \((3, 5)\), ¿cuál es su simétrico?<br><br>
+        <span class="key">Solución:</span> \((-3, 5)\)<br>
+        <strong>Respuesta:</strong> \((-3, 5)\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 17 – MÁS APLICACIONES ══════════════════════════════════ -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Más Aplicaciones Prácticas</h2>
+    <span class="s-num">17 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📐 Diseño de una vela</div>
+      <div class="ex">
+        Una vela triangular tiene vértices \(A(1,1), B(4,1), C(2,4)\). Si se traslada con \(\vec{v} = (1, -2)\), ¿cuáles son los nuevos vértices?<br><br>
+        <span class="key">Solución:</span> \(A'(2,-1), B'(5,-1), C'(3,2)\)<br>
+        <strong>Respuesta:</strong> \(A'(2,-1), B'(5,-1), C'(3,2)\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">🧭 Posicionamiento satelital</div>
+      <div class="ex">
+        Un barco en \(B(20, 15)\) se refleja respecto al eje \(x\) en un sistema de coordenadas. ¿Cuál es su posición reflejada?<br><br>
+        <span class="key">Solución:</span> \(B'(20, -15)\)<br>
+        <strong>Respuesta:</strong> \((20, -15)\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📊 Rotación de un radar</div>
+      <div class="ex">
+        Un radar detecta un objeto en \(P(6, 8)\). Si el radar rota 90° antihorario, ¿dónde se encuentra el objeto en las nuevas coordenadas?<br><br>
+        <span class="key">Solución:</span> \(P'(-8, 6)\)<br>
+        <strong>Respuesta:</strong> \((-8, 6)\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 18 – EJERCICIOS ADICIONALES ══════════════════════════════════ -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejercicios Adicionales</h2>
+    <span class="s-num">18 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 1 — Traslación</div>
+      <div class="ex">
+        Traslada \(P(2, -5)\) con \(\vec{v} = (-3, 7)\).<br>
+        <span class="key">Solución:</span> \(P' = (-1, 2)\)<br>
+        <strong>Respuesta:</strong> \((-1, 2)\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 2 — Reflexión</div>
+      <div class="ex">
+        Refleja \(P(5, -8)\) respecto al eje \(x\).<br>
+        <span class="key">Solución:</span> \(P'(5, 8)\)<br>
+        <strong>Respuesta:</strong> \((5, 8)\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejercicio 3 — Rotación</div>
+      <div class="ex">
+        Rota \(P(1, 4)\) 270° antihorario.<br>
+        <span class="key">Solución:</span> 270° → \((y, -x) = (4, -1)\)<br>
+        <strong>Respuesta:</strong> \((4, -1)\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 19 – EJERCICIOS AVANZADOS ══════════════════════════════════ -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejercicios Avanzados</h2>
+    <span class="s-num">19 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 4 — Composición de transformaciones</div>
+      <div class="ex">
+        \(P(2, 3)\) se rota 90° y luego se traslada con \(\vec{v} = (1, -2)\). ¿Cuál es su posición final?<br>
+        <span class="key">Solución:</span> Rotación: \(P'(-3, 2)\)<br>
+        Traslación: \(P'' = (-3+1, 2-2) = (-2, 0)\)<br>
+        <strong>Respuesta:</strong> \((-2, 0)\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 5 — Simetría central</div>
+      <div class="ex">
+        \(P(4, 6)\) se refleja respecto al centro \(O(2, 3)\).<br>
+        <span class="key">Solución:</span> \(P' = (2\cdot2-4, 2\cdot3-6) = (0, 0)\)<br>
+        <strong>Respuesta:</strong> \((0, 0)\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejercicio 6 — Distancia y punto medio</div>
+      <div class="ex">
+        Encuentra la distancia y el punto medio entre \(A(-2, 5)\) y \(B(4, -3)\).<br>
+        <span class="key">Solución:</span> \(d = \sqrt{(4-(-2))^2 + (-3-5)^2} = \sqrt{36+64} = 10\)<br>
+        \(M = \left(\frac{-2+4}{2}, \frac{5-3}{2}\right) = (1, 1)\)<br>
+        <strong>Respuesta:</strong> Distancia = 10, Punto medio = \((1, 1)\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 20 – RESUMEN Y ESTRATEGIAS ══════════════════════════════════ -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">RESUMEN — CLASE 17</span>
+    <h2>Resumen: Transformaciones Isométricas</h2>
+    <span class="s-num">20 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Contenidos clave</div>
+        <div class="rule-box green">
+          <ul style="padding-left:18px;font-size:.9rem;line-height:2;">
+            <li><strong>Plano cartesiano:</strong> \(P(x, y)\), cuadrantes</li>
+            <li><strong>Distancia:</strong> \(d = \sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}\)</li>
+            <li><strong>Punto medio:</strong> \(M\left(\frac{x_1+x_2}{2}, \frac{y_1+y_2}{2}\right)\)</li>
+            <li><strong>Vector:</strong> \(\vec{v} = (v_x, v_y)\), \(|\vec{v}| = \sqrt{v_x^2+v_y^2}\)</li>
+            <li><strong>Traslación:</strong> \(P' = P + \vec{v}\)</li>
+            <li><strong>Reflexión (eje \(x\)):</strong> \(P'(x, -y)\)</li>
+            <li><strong>Reflexión (eje \(y\)):</strong> \(P'(-x, y)\)</li>
+            <li><strong>Rotación 90°:</strong> \(P'(-y, x)\)</li>
+            <li><strong>Rotación 180°:</strong> \(P'(-x, -y)\)</li>
+            <li><strong>Rotación 270°:</strong> \(P'(y, -x)\)</li>
+            <li><strong>Simetría central:</strong> \(P'(2a-x, 2b-y)\)</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">🎯 Estrategias para el examen</div>
+        <div class="rule-box gold">
+          <ul style="padding-left:18px;font-size:.88rem;line-height:1.9;">
+            <li><strong>Identifica</strong> el tipo de transformación.</li>
+            <li>Para traslación: <strong>suma</strong> el vector al punto.</li>
+            <li>Para reflexión: <strong>cambia</strong> el signo de la coordenada correspondiente.</li>
+            <li>Para rotación: <strong>aplica</strong> la regla según el ángulo.</li>
+            <li>Recuerda: 90° → \((-y, x)\), 180° → \((-x, -y)\), 270° → \((y, -x)\).</li>
+            <li>En problemas inversos: <strong>despeja</strong> el punto original.</li>
+            <li>Verifica que la transformación conserve <strong>forma y tamaño</strong>.</li>
+          </ul>
+        </div>
+        <div class="rule-box" style="margin-top:10px;">
+          <div class="title">📊 Próxima clase</div>
+          <p><strong>Clase 18:</strong> Análisis Gráfico y Medidas de Tendencia Central — Tablas, gráficos, promedio, mediana y moda.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><div class="content"><strong>"Los obstáculos aparecen para probar si realmente vale la pena luchar." Benito Martínez AKA: Bad Bunny</strong> — Dominarlas te permite entender la navegación, el diseño y la simetría en el mundo real.</div></div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:5%"></div></div>
+    <div id="slide-label">Slide 1 / 20</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Curso</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E17.html'">✏️ Ejercicios</button>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// NAVEGACIÓN
+// ════════════════════════════════════════════════════════════════
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: PLANO CARTESIANO (Slide 2)
+// ════════════════════════════════════════════════════════════════
+function drawCartesiano() {
+  const canvas = document.getElementById('cartesianoCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 30;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const cx = margin + graphW/2;
+  const cy = margin + graphH/2;
+
+  // Ejes
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(margin, cy);
+  ctx.lineTo(margin + graphW, cy);
+  ctx.moveTo(cx, margin);
+  ctx.lineTo(cx, margin + graphH);
+  ctx.stroke();
+
+  // Flechas
+  ctx.beginPath();
+  ctx.moveTo(margin + graphW, cy);
+  ctx.lineTo(margin + graphW - 8, cy - 5);
+  ctx.moveTo(margin + graphW, cy);
+  ctx.lineTo(margin + graphW - 8, cy + 5);
+  ctx.moveTo(cx, margin);
+  ctx.lineTo(cx - 5, margin + 8);
+  ctx.moveTo(cx, margin);
+  ctx.lineTo(cx + 5, margin + 8);
+  ctx.stroke();
+
+  // Etiquetas
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '12px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('x', margin + graphW, cy + 4);
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('y', cx - 6, margin);
+
+  // Origen
+  ctx.fillStyle = '#1a2a4a';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'top';
+  ctx.fillText('O', cx - 6, cy + 4);
+
+  // Puntos ejemplo
+  const points = [
+    {x: 3, y: 2, label: 'P(3,2)'},
+    {x: -2, y: 4, label: 'Q(-2,4)'},
+    {x: 0, y: -3, label: 'R(0,-3)'}
+  ];
+  points.forEach(p => {
+    const px = cx + p.x * 20;
+    const py = cy - p.y * 20;
+    ctx.beginPath();
+    ctx.arc(px, py, 5, 0, 2 * Math.PI);
+    ctx.fillStyle = '#1a7a4a';
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.fillStyle = '#1a2a4a';
+    ctx.font = '10px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(p.label, px + 8, py - 2);
+  });
+
+  // Cuadrantes
+  ctx.fillStyle = 'rgba(26, 111, 168, 0.06)';
+  ctx.fillRect(cx, margin, graphW/2, graphH/2);
+  ctx.fillStyle = 'rgba(200, 168, 75, 0.06)';
+  ctx.fillRect(margin, margin, graphW/2, graphH/2);
+  ctx.fillStyle = 'rgba(192, 96, 32, 0.06)';
+  ctx.fillRect(margin, cy, graphW/2, graphH/2);
+  ctx.fillStyle = 'rgba(26, 122, 74, 0.06)';
+  ctx.fillRect(cx, cy, graphW/2, graphH/2);
+
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '10px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('II', cx - graphW/4, cy - graphH/4);
+  ctx.fillText('I', cx + graphW/4, cy - graphH/4);
+  ctx.fillText('III', cx - graphW/4, cy + graphH/4);
+  ctx.fillText('IV', cx + graphW/4, cy + graphH/4);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: DISTANCIA Y PUNTO MEDIO (Slide 3)
+// ════════════════════════════════════════════════════════════════
+function drawDistancia() {
+  const canvas = document.getElementById('distanciaCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 30;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const cx = margin + graphW/2;
+  const cy = margin + graphH/2;
+
+  // Ejes
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(margin, cy);
+  ctx.lineTo(margin + graphW, cy);
+  ctx.moveTo(cx, margin);
+  ctx.lineTo(cx, margin + graphH);
+  ctx.stroke();
+
+  // Puntos A(1,2) y B(4,6)
+  const A = {x: 1, y: 2};
+  const B = {x: 4, y: 6};
+  const scale = 18;
+
+  const ax = cx + A.x * scale;
+  const ay = cy - A.y * scale;
+  const bx = cx + B.x * scale;
+  const by = cy - B.y * scale;
+
+  // Segmento AB
+  ctx.beginPath();
+  ctx.moveTo(ax, ay);
+  ctx.lineTo(bx, by);
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // Puntos
+  ctx.beginPath();
+  ctx.arc(ax, ay, 5, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a7a4a';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(bx, by, 5, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a7a4a';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('A(1,2)', ax + 8, ay - 2);
+  ctx.fillText('B(4,6)', bx + 8, by - 2);
+
+  // Punto medio M(2.5, 4)
+  const mx = (ax + bx) / 2;
+  const my = (ay + by) / 2;
+  ctx.beginPath();
+  ctx.arc(mx, my, 5, 0, 2 * Math.PI);
+  ctx.fillStyle = '#c06020';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.fillStyle = '#c06020';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('M(2.5, 4)', mx - 8, my - 4);
+
+  // Etiquetas
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('x', margin + graphW, cy + 4);
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('y', cx - 6, margin);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: VECTORES (Slide 4) - CORREGIDO
+// ════════════════════════════════════════════════════════════════
+function drawVector() {
+  const canvas = document.getElementById('vectorCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 30;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const cx = margin + graphW/2;
+  const cy = margin + graphH/2;
+
+  // Ejes coordenados
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(margin, cy);
+  ctx.lineTo(margin + graphW, cy);
+  ctx.moveTo(cx, margin);
+  ctx.lineTo(cx, margin + graphH);
+  ctx.stroke();
+
+  // Vector v = (4, 2)
+  const vx = 4, vy = 2;
+  const scale = 18;
+  const endX = cx + vx * scale;
+  const endY = cy - vy * scale;
+
+  // Línea del vector
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(endX, endY);
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // Punta de flecha
+  const angle = Math.atan2(-vy, vx);
+  const headLen = 12;
+  const headAngle = Math.PI/4; // Ángulo de apertura más razonable (≈28.6°)
+  
+  ctx.beginPath();
+  ctx.moveTo(endX, endY);
+  ctx.lineTo(
+    endX - headLen * Math.cos(angle - headAngle),
+    endY + headLen * Math.sin(angle - headAngle)
+  );
+  ctx.lineTo(
+    endX - headLen * Math.cos(angle + headAngle),
+    endY + headLen * Math.sin(angle + headAngle)
+  );
+  ctx.closePath();
+  ctx.fillStyle = '#1a6fa8';
+  ctx.fill();
+
+  // Etiqueta del vector
+  ctx.fillStyle = '#1a6fa8';
+  ctx.font = 'bold 12px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('v = (4, 2)', endX + 10, endY);
+
+  // Origen
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'top';
+  ctx.fillText('O', cx - 6, cy + 4);
+
+  // Etiquetas de ejes
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('x', margin + graphW, cy + 4);
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('y', cx - 6, margin);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: TRASLACIÓN (Slide 5)
+// ════════════════════════════════════════════════════════════════
+function drawTraslacion() {
+  const canvas = document.getElementById('traslacionCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 30;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const cx = margin + graphW/2;
+  const cy = margin + graphH/2;
+
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(margin, cy);
+  ctx.lineTo(margin + graphW, cy);
+  ctx.moveTo(cx, margin);
+  ctx.lineTo(cx, margin + graphH);
+  ctx.stroke();
+
+  const scale = 20;
+  // Triángulo original A(1,1), B(3,1), C(2,4)
+  const pts = [{x:1,y:1}, {x:3,y:1}, {x:2,y:4}];
+  const v = {x:3, y:-1}; // vector traslación
+
+  // Dibujar triángulo original
+  ctx.beginPath();
+  pts.forEach((p, i) => {
+    const px = cx + p.x * scale;
+    const py = cy - p.y * scale;
+    if (i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  });
+  ctx.closePath();
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.fillStyle = 'rgba(26, 111, 168, 0.1)';
+  ctx.fill();
+
+  // Etiqueta original
+  ctx.fillStyle = '#1a6fa8';
+  ctx.font = '11px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('Original', cx + 2*scale, cy - 1*scale - 10);
+
+  // Dibujar triángulo trasladado
+  const ptsT = pts.map(p => ({x: p.x + v.x, y: p.y + v.y}));
+  ctx.beginPath();
+  ptsT.forEach((p, i) => {
+    const px = cx + p.x * scale;
+    const py = cy - p.y * scale;
+    if (i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  });
+  ctx.closePath();
+  ctx.strokeStyle = '#c06020';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.fillStyle = 'rgba(192, 96, 32, 0.1)';
+  ctx.fill();
+
+  ctx.fillStyle = '#c06020';
+  ctx.font = '11px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('Trasladado', cx + (2+v.x)*scale, cy - (1+v.y)*scale - 10);
+
+  // Vector de traslación
+  const startX = cx + 2*scale;
+  const startY = cy - 1*scale;
+  const endX = cx + (2+v.x)*scale;
+  const endY = cy - (1+v.y)*scale;
+  ctx.beginPath();
+  ctx.moveTo(startX, startY);
+  ctx.lineTo(endX, endY);
+  ctx.strokeStyle = '#c8a84b';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([6, 4]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  // Punta
+  ctx.beginPath();
+  const a = Math.atan2(endY - startY, endX - startX);
+  const hl = 10;
+  ctx.moveTo(endX, endY);
+  ctx.lineTo(endX - hl * Math.cos(a - 0.5), endY + hl * Math.sin(a - 0.5));
+  ctx.lineTo(endX - hl * Math.cos(a + 0.5), endY + hl * Math.sin(a + 0.5));
+  ctx.closePath();
+  ctx.fillStyle = '#c8a84b';
+  ctx.fill();
+
+  ctx.fillStyle = '#c8a84b';
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('v = (3, -1)', (startX+endX)/2 + 10, (startY+endY)/2 - 4);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: REFLEXIÓN (Slide 6)
+// ════════════════════════════════════════════════════════════════
+function drawReflexion() {
+  const canvas = document.getElementById('reflexionCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 30;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const cx = margin + graphW/2;
+  const cy = margin + graphH/2;
+
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(margin, cy);
+  ctx.lineTo(margin + graphW, cy);
+  ctx.moveTo(cx, margin);
+  ctx.lineTo(cx, margin + graphH);
+  ctx.stroke();
+
+  const scale = 20;
+  // Punto original P(3, 4)
+  const px = cx + 3*scale;
+  const py = cy - 4*scale;
+
+  // Punto reflejado P'(3, -4)
+  const pxr = cx + 3*scale;
+  const pyr = cy + 4*scale;
+
+  // Eje x (línea de reflexión)
+  ctx.beginPath();
+  ctx.moveTo(margin, cy);
+  ctx.lineTo(margin + graphW, cy);
+  ctx.strokeStyle = '#c8a84b';
+  ctx.lineWidth = 2.5;
+  ctx.setLineDash([6, 4]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#c8a84b';
+  ctx.font = '11px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'top';
+  ctx.fillText('Eje x', margin + graphW - 10, cy + 6);
+
+  // Punto original
+  ctx.beginPath();
+  ctx.arc(px, py, 6, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a6fa8';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.fillStyle = '#1a6fa8';
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('P(3, 4)', px + 10, py - 4);
+
+  // Punto reflejado
+  ctx.beginPath();
+  ctx.arc(pxr, pyr, 6, 0, 2 * Math.PI);
+  ctx.fillStyle = '#c06020';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.fillStyle = '#c06020';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillText("P'(3, -4)", pxr + 10, pyr + 4);
+
+  // Línea de conexión
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath();
+  ctx.moveTo(px, py);
+  ctx.lineTo(pxr, pyr);
+  ctx.strokeStyle = '#6b7a90';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: SIMETRÍA CENTRAL (Slide 7)
+// ════════════════════════════════════════════════════════════════
+function drawCentral() {
+  const canvas = document.getElementById('centralCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 30;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const cx = margin + graphW/2;
+  const cy = margin + graphH/2;
+
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(margin, cy);
+  ctx.lineTo(margin + graphW, cy);
+  ctx.moveTo(cx, margin);
+  ctx.lineTo(cx, margin + graphH);
+  ctx.stroke();
+
+  const scale = 20;
+  // Centro O(2, 3)
+  const ox = cx + 2*scale;
+  const oy = cy - 3*scale;
+
+  // Punto P(4, 5)
+  const px = cx + 4*scale;
+  const py = cy - 5*scale;
+
+  // Punto P'(0, 1)
+  const pxr = cx + 0*scale;
+  const pyr = cy - 1*scale;
+
+  // Centro
+  ctx.beginPath();
+  ctx.arc(ox, oy, 6, 0, 2 * Math.PI);
+  ctx.fillStyle = '#c8a84b';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.fillStyle = '#c8a84b';
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('O(2, 3)', ox + 10, oy - 4);
+
+  // Punto original
+  ctx.beginPath();
+  ctx.arc(px, py, 6, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a6fa8';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.fillStyle = '#1a6fa8';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('P(4, 5)', px + 10, py - 4);
+
+  // Punto reflejado
+  ctx.beginPath();
+  ctx.arc(pxr, pyr, 6, 0, 2 * Math.PI);
+  ctx.fillStyle = '#c06020';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.fillStyle = '#c06020';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText("P'(0, 1)", pxr + 10, pyr - 4);
+
+  // Líneas de conexión
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath();
+  ctx.moveTo(px, py);
+  ctx.lineTo(ox, oy);
+  ctx.moveTo(ox, oy);
+  ctx.lineTo(pxr, pyr);
+  ctx.strokeStyle = '#6b7a90';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: ROTACIÓN (Slide 8)
+// ════════════════════════════════════════════════════════════════
+function drawRotacion() {
+  const canvas = document.getElementById('rotacionCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 30;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const cx = margin + graphW/2;
+  const cy = margin + graphH/2;
+
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(margin, cy);
+  ctx.lineTo(margin + graphW, cy);
+  ctx.moveTo(cx, margin);
+  ctx.lineTo(cx, margin + graphH);
+  ctx.stroke();
+
+  const scale = 20;
+  // Punto original P(3, 7)
+  const px = cx + 3*scale;
+  const py = cy - 7*scale;
+
+  // Punto rotado 90°: P'(-7, 3)
+  const pxr = cx - 7*scale;
+  const pyr = cy - 3*scale;
+
+  // Arco de rotación
+  const r = Math.sqrt(3*3 + 7*7) * scale;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, -Math.atan2(7, 3), -Math.atan2(3, -7));
+  ctx.strokeStyle = 'rgba(200, 168, 75, 0.3)';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([4, 4]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Línea de conexión al origen
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(px, py);
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(pxr, pyr);
+  ctx.strokeStyle = '#6b7a90';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Punto original
+  ctx.beginPath();
+  ctx.arc(px, py, 6, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a6fa8';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.fillStyle = '#1a6fa8';
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('P(3, 7)', px + 10, py - 4);
+
+  // Punto rotado
+  ctx.beginPath();
+  ctx.arc(pxr, pyr, 6, 0, 2 * Math.PI);
+  ctx.fillStyle = '#c06020';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.fillStyle = '#c06020';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText("P'(-7, 3)", pxr + 10, pyr - 4);
+
+  // Ángulo
+  ctx.fillStyle = '#c8a84b';
+  ctx.font = '12px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('90°', cx + 20, cy - 40);
+
+  // Origen
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'top';
+  ctx.fillText('O', cx - 6, cy + 4);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: TABLA DE ROTACIONES (Slide 9)
+// ════════════════════════════════════════════════════════════════
+function drawTablaRotacion() {
+  const canvas = document.getElementById('tablaRotacionCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 20;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const cx = margin + graphW/2;
+  const cy = margin + graphH/2;
+
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(margin, cy);
+  ctx.lineTo(margin + graphW, cy);
+  ctx.moveTo(cx, margin);
+  ctx.lineTo(cx, margin + graphH);
+  ctx.stroke();
+
+  const scale = 14;
+  // Puntos de ejemplo: A(3,7), B(-2,4), C(-1,-7), D(4,0)
+  const points = [
+    {x: 3, y: 7, label: 'A'},
+    {x: -2, y: 4, label: 'B'},
+    {x: -1, y: -7, label: 'C'},
+    {x: 4, y: 0, label: 'D'}
+  ];
+  const colors = ['#1a6fa8', '#c06020', '#1a7a4a', '#c8a84b'];
+
+  points.forEach((p, i) => {
+    const px = cx + p.x * scale;
+    const py = cy - p.y * scale;
+    ctx.beginPath();
+    ctx.arc(px, py, 5, 0, 2 * Math.PI);
+    ctx.fillStyle = colors[i];
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.fillStyle = colors[i];
+    ctx.font = '10px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(p.label + '(' + p.x + ',' + p.y + ')', px + 8, py - 2);
+
+    // Puntos rotados 90° (-y, x)
+    const rx = -p.y;
+    const ry = p.x;
+    const rxPx = cx + rx * scale;
+    const ryPy = cy - ry * scale;
+    ctx.beginPath();
+    ctx.arc(rxPx, ryPy, 4, 0, 2 * Math.PI);
+    ctx.fillStyle = 'rgba(200, 168, 75, 0.4)';
+    ctx.fill();
+  });
+
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '10px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('Puntos originales (■) y rotados 90° (●)', cx, margin + graphH + 4);
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER KATEX Y CANVAS
+// ════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement === 'function') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });
+  }
+
+  setTimeout(() => {
+    drawCartesiano();
+    drawDistancia();
+    drawVector();
+    drawTraslacion();
+    drawReflexion();
+    drawCentral();
+    drawRotacion();
+    drawTablaRotacion();
+  }, 100);
+});
+
+// Redibujar al cambiar de slide
+const observer = new MutationObserver(() => {
+  setTimeout(() => {
+    drawCartesiano();
+    drawDistancia();
+    drawVector();
+    drawTraslacion();
+    drawReflexion();
+    drawCentral();
+    drawRotacion();
+    drawTablaRotacion();
+  }, 50);
+});
+
+slides.forEach(s => {
+  observer.observe(s, { attributes: true, attributeFilter: ['class'] });
+});
+</script>
+</body>
+</html>

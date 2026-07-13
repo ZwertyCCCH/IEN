@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inglés B1 – Second Conditional, Modals, Relative Clauses & Vocabulary | Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --accent:#e63946;--teal:#0d7377;--orange:#e67e22;--purple:#7a3a9a;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+.s-body{padding-bottom:16px !important;}
+
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--purple) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--sky);}
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box.teal{border-left-color:var(--teal);}
+.rule-box.orange{border-left-color:var(--orange);}
+.rule-box.purple{border-left-color:var(--purple);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--sky);font-weight:700;}
+.ex span.orange{color:var(--orange);font-weight:700;}
+.ex span.purple{color:var(--purple);font-weight:700;}
+.ex span.teal{color:var(--teal);font-weight:700;}
+.ex .trans{color:var(--gray);font-size:.75rem;font-family:'Source Sans 3',sans-serif;}
+
+.vocab-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;
+}
+.vocab-card{
+  background:var(--white);border-radius:10px;padding:10px 12px;
+  border:1px solid #dde4ee;display:flex;align-items:center;gap:10px;
+}
+.vocab-card .emoji{font-size:1.2rem;width:30px;text-align:center;}
+.vocab-card .word{font-weight:700;font-size:.88rem;color:var(--navy);}
+.vocab-card .trans{font-size:.72rem;color:var(--gray);}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+mark{background:#fef3c7;color:#92400e;border-radius:4px;padding:1px 5px;font-weight:600;}
+
+.wh-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;}
+.wh-table th{background:var(--navy);color:var(--gold);padding:8px 14px;text-align:left;font-size:.85rem;}
+.wh-table td{background:var(--white);padding:8px 14px;font-size:.88rem;border-bottom:1px solid #eef1f5;}
+.wh-table tr:nth-child(even) td{background:#f8fafc;}
+.wh-table td:first-child{font-weight:700;color:var(--sky);font-family:'JetBrains Mono',monospace;font-size:.95rem;}
+
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,#0d3060 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+.dialogue{background:var(--white);border-radius:12px;overflow:hidden;border:1px solid #dde4ee;}
+.dialogue-line{padding:10px 16px;display:flex;gap:10px;align-items:flex-start;border-bottom:1px solid #eef1f5;}
+.dialogue-line:last-child{border-bottom:none;}
+.dialogue-line.a{background:#f0f7ff;}
+.dialogue-line .speaker{font-weight:700;font-size:.75rem;color:var(--sky);min-width:70px;margin-top:2px;}
+.dialogue-line.b .speaker{color:var(--teal);}
+.dialogue-line .text{font-size:.9rem;color:#1a2a3a;line-height:1.5;}
+.dialogue-line .text .key{color:var(--sky);font-weight:700;}
+.dialogue-line .text .trans{color:var(--gray);font-size:.7rem;font-family:'Source Sans 3',sans-serif;}
+
+.phrasal-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px;
+}
+.phrasal-card{
+  background:var(--white);border-radius:8px;padding:8px 12px;
+  border:1px solid #dde4ee;
+}
+.phrasal-card .verb{font-weight:700;color:var(--purple);}
+.phrasal-card .meaning{color:var(--gray);font-size:.8rem;}
+.phrasal-card .example{font-size:.8rem;color:var(--navy);}
+
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col,.phrasal-grid{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- SLIDE 1 – COVER -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">💻</div>
+    <div class="cover-level">CEFR Level B1</div>
+    <div class="cover-title">Second Conditional, Modals &<br><span>Media Vocabulary</span></div>
+    <div class="cover-sub">Aprende a expresar situaciones imaginarias con el Second Conditional. Domina los modales de sugerencia, obligación y permiso. Amplía tu vocabulario sobre tecnología y phrasal verbs. Practica cómo quejarte y disculparte en inglés.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">🔮 Second Conditional</span>
+      <span class="cover-tag">📝 Modals</span>
+      <span class="cover-tag">📚 Relative Clauses</span>
+      <span class="cover-tag">💻 Media & Technology</span>
+      <span class="cover-tag">🔤 Phrasal Verbs</span>
+      <span class="cover-tag">🗣️ Complaining & Apologizing</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 1: SECOND CONDITIONAL ========== -->
+
+<!-- SLIDE 2 – Second Conditional: Introducción -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Second Conditional – Introducción</h2>
+    <span class="s-num">02 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El <strong>Second Conditional</strong> se usa para hablar de situaciones <strong>imaginarias, irreales o poco probables</strong> en el presente o futuro.</p>
+    <div class="formula">
+      <mark>IF + past simple, WOULD + infinitive</mark><br>
+      <span class="trans">SI + pasado simple, WOULD + infinitivo</span>
+    </div>
+    <div class="ex">
+      ✅ <span class="key">If I had</span> a million dollars, I <span class="key">would travel</span> the world.<br>
+      <span class="trans">Si tuviera un millón de dólares, viajaría por el mundo.</span><br><br>
+      ✅ <span class="key">If she studied</span> more, she <span class="key">would pass</span> the exam.<br>
+      <span class="trans">Si ella estudiara más, aprobaría el examen.</span><br><br>
+      ✅ <span class="key">If I were</span> you, I <span class="key">would accept</span> the offer.<br>
+      <span class="trans">Si fuera tú, aceptaría la oferta.</span>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>Diferencia con First Conditional:</strong> El First Conditional es <strong>posible</strong> (If it rains, I will stay). El Second Conditional es <strong>imaginario</strong> (If I had a million dollars, I would travel).</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3 – Second Conditional: Formación -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Second Conditional – Formación</h2>
+    <span class="s-num">03 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">✅ Afirmativo</div>
+        <div class="ex">
+          If I <span class="key">had</span> time, I <span class="key">would</span> help you.<br>
+          If you <span class="key">asked</span>, she <span class="key">would</span> help.<br>
+          If we <span class="key">lived</span> near the beach, we <span class="key">would swim</span> every day.<br>
+          If he <span class="key">studied</span>, he <span class="key">would pass</span>.
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">❌ Negativo</div>
+        <div class="ex">
+          If I <span class="key">didn't have</span> time, I <span class="key">wouldn't</span> help.<br>
+          If you <span class="key">didn't ask</span>, she <span class="key">wouldn't</span> help.<br>
+          If we <span class="key">didn't live</span> near the beach, we <span class="key">wouldn't swim</span>.<br>
+          If he <span class="key">didn't study</span>, he <span class="key">wouldn't pass</span>.
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      ❓ <strong>Pregunta:</strong> <span class="key">What would you do</span> if you <span class="key">won</span> the lottery?<br>
+      <span class="trans">¿Qué harías si ganaras la lotería?</span><br><br>
+      ❓ <span class="key">Would you travel</span> if you <span class="key">had</span> more money?<br>
+      <span class="trans">¿Viajarías si tuvieras más dinero?</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4 – Second Conditional: WAS vs WERE -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Second Conditional – WAS vs WERE</h2>
+    <span class="s-num">04 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">En el Second Conditional, con el verbo <strong>TO BE</strong>, es común usar <strong>WERE</strong> para todas las personas en la condición.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">✅ Forma correcta</div>
+        <div class="ex">
+          If I <span class="key">were</span> you, I would study more.<br>
+          <span class="trans">Si fuera tú, estudiaría más.</span><br><br>
+          If she <span class="key">were</span> here, she would help.<br>
+          <span class="trans">Si ella estuviera aquí, ayudaría.</span><br><br>
+          If they <span class="key">were</span> rich, they would travel.<br>
+          <span class="trans">Si ellos fueran ricos, viajarían.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">⚠️ WAS también es aceptable</div>
+        <div class="ex">
+          If I <span class="key">was</span> you, I would study more.<br>
+          <span class="trans">(También es aceptable, pero "were" es más común)</span><br><br>
+          <span class="key">Consejo:</span> Usa <span class="key">WERE</span> para sonar más formal y correcto.
+        </div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content">"If I <span class="key">were</span> you" es una expresión muy común para dar <strong>consejos</strong>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5 – Second Conditional: Usos -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Second Conditional – Usos</h2>
+    <span class="s-num">05 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="three-col">
+      <div class="rule-box green">
+        <div class="title">🔮 Situaciones imaginarias</div>
+        <p>Hablar de cosas que no son reales.</p>
+        <div class="ex" style="margin-top:6px">
+          If I <span class="key">were</span> a bird, I <span class="key">would fly</span>.<br>
+          <span class="trans">Si fuera un pájaro, volaría.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">💡 Consejos</div>
+        <p>Dar consejos con "If I were you".</p>
+        <div class="ex" style="margin-top:6px">
+          If I <span class="key">were</span> you, I <span class="key">would</span> talk to her.<br>
+          <span class="trans">Si fuera tú, hablaría con ella.</span>
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">🤔 Sueños y deseos</div>
+        <p>Expresar deseos poco probables.</p>
+        <div class="ex" style="margin-top:6px">
+          If I <span class="key">had</span> superpowers, I <span class="key">would</span> save the world.<br>
+          <span class="trans">Si tuviera superpoderes, salvaría el mundo.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6 – Second Conditional: Ejemplos extensos -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Second Conditional – Ejemplos</h2>
+    <span class="s-num">06 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🎒 Contexto adolescente</div>
+        <div class="ex">
+          ✅ If I <span class="key">had</span> a car, I <span class="key">would drive</span> to school.<br>
+          <span class="trans">Si tuviera un auto, iría manejando a la escuela.</span><br><br>
+          ✅ If she <span class="key">studied</span> more, she <span class="key">would get</span> better grades.<br>
+          <span class="trans">Si ella estudiara más, obtendría mejores calificaciones.</span><br><br>
+          ✅ If we <span class="key">lived</span> in the city, we <span class="key">would go</span> out more often.<br>
+          <span class="trans">Si viviéramos en la ciudad, saldríamos más a menudo.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🌍 Contexto global</div>
+        <div class="ex">
+          ✅ If everyone <span class="key">recycled</span>, the planet <span class="key">would be</span> cleaner.<br>
+          <span class="trans">Si todos reciclaran, el planeta estaría más limpio.</span><br><br>
+          ✅ If there <span class="key">were</span> no pollution, the air <span class="key">would be</span> fresher.<br>
+          <span class="trans">Si no hubiera contaminación, el aire sería más fresco.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 2: MODALS OF SUGGESTION, OBLIGATION & PERMISSION ========== -->
+
+<!-- SLIDE 7 – Modals: Introducción -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Modals – Introducción</h2>
+    <span class="s-num">07 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los <strong>verbos modales</strong> expresan <strong>obligación, permiso, sugerencia, habilidad, posibilidad</strong>, etc. Son verbos auxiliares que siempre van acompañados de un verbo en <strong>forma base</strong>.</p>
+    <div class="three-col">
+      <div class="rule-box green">
+        <div class="title">💡 Sugerencia</div>
+        <div class="ex">
+          <span class="key">should</span> / <span class="key">ought to</span><br>
+          You <span class="key">should</span> study more.<br>
+          <span class="trans">Deberías estudiar más.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🔒 Obligación</div>
+        <div class="ex">
+          <span class="key">must</span> / <span class="key">have to</span><br>
+          You <span class="key">must</span> wear a uniform.<br>
+          <span class="trans">Debes usar uniforme.</span>
+        </div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">🔑 Permiso</div>
+        <div class="ex">
+          <span class="key">can</span> / <span class="key">could</span> / <span class="key">may</span><br>
+          <span class="key">Can</span> I go out?<br>
+          <span class="trans">¿Puedo salir?</span>
+        </div>
+      </div>
+    </div>
+    <div class="formula" style="margin-top:6px">
+      <mark>Modal + verbo (base form)</mark>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8 – SHOULD: Sugerencia / Consejo -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>SHOULD – Sugerencia y consejo</h2>
+    <span class="s-num">08 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">✅ Afirmativo</div>
+        <div class="ex">
+          You <span class="key">should</span> study more.<br>
+          He <span class="key">should</span> apologize.<br>
+          We <span class="key">should</span> leave now.<br>
+          They <span class="key">should</span> recycle more.
+        </div>
+        <div class="ex" style="margin-top:8px">
+          <strong>Consejos:</strong><br>
+          You <span class="key">should</span> eat more vegetables.<br>
+          You <span class="key">shouldn't</span> spend so much time on your phone.
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">❌ Negativo</div>
+        <div class="ex">
+          You <span class="key">shouldn't</span> (should not) study so late.<br>
+          He <span class="key">shouldn't</span> be so rude.<br>
+          We <span class="key">shouldn't</span> wait any longer.<br>
+          They <span class="key">shouldn't</span> waste water.
+        </div>
+        <div class="sec-label" style="margin-top:12px">❓ Pregunta</div>
+        <div class="ex">
+          <span class="key">Should</span> I call her?<br>
+          <span class="trans">¿Debería llamarla?</span>
+        </div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">💡</span>
+      <div class="content"><strong>SHOULD</strong> es menos fuerte que <strong>MUST</strong>. Es una <strong>recomendación</strong>, no una obligación absoluta.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9 – MUST / HAVE TO: Obligación -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>MUST / HAVE TO – Obligación</h2>
+    <span class="s-num">09 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🔒 MUST (obligación personal)</div>
+        <p>El hablante impone la obligación.</p>
+        <div class="ex">
+          I <span class="key">must</span> study for the exam.<br>
+          <span class="trans">Debo estudiar para el examen.</span><br><br>
+          You <span class="key">must</span> wear a seatbelt.<br>
+          <span class="trans">Debes usar el cinturón de seguridad.</span>
+        </div>
+        <div class="ex" style="margin-top:6px">
+          ❌ <strong>Negativo:</strong> <span class="key">mustn't</span> (prohibición)<br>
+          You <span class="key">mustn't</span> use your phone in class.<br>
+          <span class="trans">No debes usar el teléfono en clase.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🔒 HAVE TO (obligación externa)</div>
+        <p>Una regla o situación externa impone la obligación.</p>
+        <div class="ex">
+          I <span class="key">have to</span> go to work at 8 am.<br>
+          <span class="trans">Tengo que ir al trabajo a las 8 am.</span><br><br>
+          Students <span class="key">have to</span> wear a uniform.<br>
+          <span class="trans">Los estudiantes tienen que usar uniforme.</span>
+        </div>
+        <div class="ex" style="margin-top:6px">
+          ❌ <strong>Negativo:</strong> <span class="key">don't / doesn't have to</span> (no es necesario)<br>
+          You <span class="key">don't have to</span> come if you don't want.<br>
+          <span class="trans">No tienes que venir si no quieres.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10 – CAN / COULD / MAY: Permiso -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>CAN / COULD / MAY – Permiso</h2>
+    <span class="s-num">10 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">🔑 CAN (informal)</div>
+        <div class="ex">
+          <span class="key">Can</span> I go to the bathroom?<br>
+          <span class="trans">¿Puedo ir al baño?</span><br><br>
+          <span class="key">Can</span> I borrow your pen?<br>
+          <span class="trans">¿Puedo tomar prestado tu lapicero?</span>
+        </div>
+        <div class="sec-label" style="margin-top:8px">🔑 MAY (formal)</div>
+        <div class="ex">
+          <span class="key">May</span> I come in, sir?<br>
+          <span class="trans">¿Puedo pasar, señor?</span><br><br>
+          <span class="key">May</span> I leave early today?<br>
+          <span class="trans">¿Puedo salir temprano hoy?</span>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">🔑 COULD (más formal que CAN)</div>
+        <div class="ex">
+          <span class="key">Could</span> I speak to you for a moment?<br>
+          <span class="trans">¿Podría hablar contigo un momento?</span><br><br>
+          <span class="key">Could</span> I have some water, please?<br>
+          <span class="trans">¿Podría tomar un poco de agua, por favor?</span>
+        </div>
+        <div class="tip" style="margin-top:8px">
+          <span class="icon">📌</span>
+          <div class="content"><strong>Nivel de formalidad:</strong> CAN (informal) → COULD (más formal) → MAY (muy formal)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 3: RELATIVE CLAUSES ========== -->
+
+<!-- SLIDE 11 – Relative Clauses: Introducción -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Relative Clauses – Introducción</h2>
+    <span class="s-num">11 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Las <strong>oraciones de relativo</strong> se usan para dar <strong>información adicional</strong> sobre un sustantivo. Se conectan usando pronombres relativos: <strong>WHO, WHICH, THAT</strong>.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">👤 WHO (para personas)</div>
+        <div class="ex">
+          The woman <span class="key">who</span> lives next door is a doctor.<br>
+          <span class="trans">La mujer que vive al lado es doctora.</span><br><br>
+          My friend <span class="key">who</span> studies English is very smart.<br>
+          <span class="trans">Mi amigo que estudia inglés es muy inteligente.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📦 WHICH / THAT (cosas y animales)</div>
+        <div class="ex">
+          This is the book <span class="key">which</span> I bought yesterday.<br>
+          <span class="trans">Este es el libro que compré ayer.</span><br><br>
+          The car <span class="key">that</span> I want is very expensive.<br>
+          <span class="trans">El auto que quiero es muy caro.</span>
+        </div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>THAT</strong> se puede usar para personas, cosas y animales, pero <strong>WHO</strong> solo para personas y <strong>WHICH</strong> solo para cosas/animales.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12 – Relative Clauses: Ejemplos -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B1</span>
+    <h2>Relative Clauses – Ejemplos</h2>
+    <span class="s-num">12 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">👤 WHO (personas)</div>
+        <div class="ex">
+          The teacher <span class="key">who</span> teaches math is very strict.<br>
+          <span class="trans">El profesor que enseña matemáticas es muy estricto.</span><br><br>
+          I met a girl <span class="key">who</span> speaks five languages.<br>
+          <span class="trans">Conocí a una chica que habla cinco idiomas.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📦 WHICH / THAT (cosas)</div>
+        <div class="ex">
+          This is the phone <span class="key">which</span> I want to buy.<br>
+          <span class="trans">Este es el teléfono que quiero comprar.</span><br><br>
+          The movie <span class="key">that</span> we watched was really good.<br>
+          <span class="trans">La película que vimos era realmente buena.</span>
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Ejemplo con WHO y WHICH:</strong><br>
+      The man <span class="key">who</span> lives here has a dog <span class="key">which</span> is very friendly.<br>
+      <span class="trans">El hombre que vive aquí tiene un perro que es muy amigable.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 4: VOCABULARY – MEDIA & TECHNOLOGY ========== -->
+
+<!-- SLIDE 13 – Media & Technology: Devices -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B1</span>
+    <h2>Media & Technology – Devices</h2>
+    <span class="s-num">13 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">📱</span><div><div class="word">smartphone</div><div class="trans">teléfono inteligente</div></div></div>
+      <div class="vocab-card"><span class="emoji">💻</span><div><div class="word">laptop</div><div class="trans">computadora portátil</div></div></div>
+      <div class="vocab-card"><span class="emoji">🖥️</span><div><div class="word">desktop computer</div><div class="trans">computadora de escritorio</div></div></div>
+      <div class="vocab-card"><span class="emoji">📟</span><div><div class="word">tablet</div><div class="trans">tableta</div></div></div>
+      <div class="vocab-card"><span class="emoji">🖨️</span><div><div class="word">printer</div><div class="trans">impresora</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎧</span><div><div class="word">headphones</div><div class="trans">auriculares</div></div></div>
+      <div class="vocab-card"><span class="emoji">⌚</span><div><div class="word">smartwatch</div><div class="trans">reloj inteligente</div></div></div>
+      <div class="vocab-card"><span class="emoji">📷</span><div><div class="word">camera</div><div class="trans">cámara</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 14 – Media & Technology: Internet & Social Media -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B1</span>
+    <h2>Media & Technology – Internet & Social Media</h2>
+    <span class="s-num">14 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">🌐</span><div><div class="word">internet</div><div class="trans">internet</div></div></div>
+      <div class="vocab-card"><span class="emoji">📡</span><div><div class="word">Wi-Fi</div><div class="trans">Wi-Fi</div></div></div>
+      <div class="vocab-card"><span class="emoji">📧</span><div><div class="word">email</div><div class="trans">correo electrónico</div></div></div>
+      <div class="vocab-card"><span class="emoji">📱</span><div><div class="word">social media</div><div class="trans">redes sociales</div></div></div>
+      <div class="vocab-card"><span class="emoji">📸</span><div><div class="word">Instagram</div><div class="trans">Instagram</div></div></div>
+      <div class="vocab-card"><span class="emoji">👍</span><div><div class="word">Facebook</div><div class="trans">Facebook</div></div></div>
+      <div class="vocab-card"><span class="emoji">🐦</span><div><div class="word">Twitter / X</div><div class="trans">Twitter / X</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎵</span><div><div class="word">TikTok</div><div class="trans">TikTok</div></div></div>
+      <div class="vocab-card"><span class="emoji">📹</span><div><div class="word">YouTube</div><div class="trans">YouTube</div></div></div>
+      <div class="vocab-card"><span class="emoji">💬</span><div><div class="word">WhatsApp</div><div class="trans">WhatsApp</div></div></div>
+      <div class="vocab-card"><span class="emoji">📱</span><div><div class="word">app</div><div class="trans">aplicación</div></div></div>
+      <div class="vocab-card"><span class="emoji">🌍</span><div><div class="word">website</div><div class="trans">sitio web</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 15 – Media & Technology: Verbs -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B1</span>
+    <h2>Media & Technology – Verbs</h2>
+    <span class="s-num">15 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">📱</span><div><div class="word">download</div><div class="trans">descargar</div></div></div>
+      <div class="vocab-card"><span class="emoji">📤</span><div><div class="word">upload</div><div class="trans">subir</div></div></div>
+      <div class="vocab-card"><span class="emoji">🔍</span><div><div class="word">search</div><div class="trans">buscar</div></div></div>
+      <div class="vocab-card"><span class="emoji">💻</span><div><div class="word">browse</div><div class="trans">navegar</div></div></div>
+      <div class="vocab-card"><span class="emoji">📧</span><div><div class="word">send</div><div class="trans">enviar</div></div></div>
+      <div class="vocab-card"><span class="emoji">📩</span><div><div class="word">receive</div><div class="trans">recibir</div></div></div>
+      <div class="vocab-card"><span class="emoji">💬</span><div><div class="word">chat</div><div class="trans">chatear</div></div></div>
+      <div class="vocab-card"><span class="emoji">📱</span><div><div class="word">share</div><div class="trans">compartir</div></div></div>
+      <div class="vocab-card"><span class="emoji">👍</span><div><div class="word">like</div><div class="trans">dar like</div></div></div>
+      <div class="vocab-card"><span class="emoji">💬</span><div><div class="word">comment</div><div class="trans">comentar</div></div></div>
+      <div class="vocab-card"><span class="emoji">📱</span><div><div class="word">stream</div><div class="trans">transmitir / ver en streaming</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎮</span><div><div class="word">play</div><div class="trans">jugar (videojuegos)</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 5: PHRASAL VERBS & IDIOMS ========== -->
+
+<!-- SLIDE 16 – Phrasal Verbs: Introducción -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B1</span>
+    <h2>Phrasal Verbs – Introducción</h2>
+    <span class="s-num">16 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los <strong>phrasal verbs</strong> son verbos seguidos de una <strong>preposición o adverbio</strong> que cambia el significado del verbo original. Son muy comunes en inglés cotidiano.</p>
+    <div class="formula">
+      <mark>Verbo + partícula (preposición / adverbio)</mark>
+    </div>
+    <div class="ex">
+      ✅ <span class="key">look for</span> = buscar (algo que perdiste)<br>
+      <span class="trans">I'm looking for my keys. (Estoy buscando mis llaves.)</span><br><br>
+      ✅ <span class="key">give up</span> = rendirse / dejar de hacer algo<br>
+      <span class="trans">Don't give up! (¡No te rindas!)</span>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content">El significado del phrasal verb a veces es <strong>imposible de adivinar</strong> por las palabras individuales. ¡Es mejor memorizarlos!</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 17 – Phrasal Verbs: Los más comunes -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B1</span>
+    <h2>Phrasal Verbs – Los más comunes</h2>
+    <span class="s-num">17 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card"><span class="verb">look for</span> – <span class="meaning">buscar</span><br><span class="example">I'm looking for my phone.</span></div>
+      <div class="phrasal-card"><span class="verb">give up</span> – <span class="meaning">rendirse / dejar</span><br><span class="example">Don't give up on your dreams!</span></div>
+      <div class="phrasal-card"><span class="verb">take care of</span> – <span class="meaning">cuidar de</span><br><span class="example">Take care of your health.</span></div>
+      <div class="phrasal-card"><span class="verb">run out of</span> – <span class="meaning">quedarse sin</span><br><span class="example">We've run out of milk.</span></div>
+      <div class="phrasal-card"><span class="verb">break down</span> – <span class="meaning">averiarse</span><br><span class="example">My car broke down yesterday.</span></div>
+      <div class="phrasal-card"><span class="verb">get along with</span> – <span class="meaning">llevarse bien con</span><br><span class="example">I get along with my sister.</span></div>
+      <div class="phrasal-card"><span class="verb">look after</span> – <span class="meaning">cuidar</span><br><span class="example">Can you look after my dog?</span></div>
+      <div class="phrasal-card"><span class="verb">turn on / off</span> – <span class="meaning">encender / apagar</span><br><span class="example">Turn off the lights, please.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 18 – Phrasal Verbs: Más comunes -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B1</span>
+    <h2>Phrasal Verbs – Más comunes</h2>
+    <span class="s-num">18 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card"><span class="verb">put on</span> – <span class="meaning">ponerse (ropa)</span><br><span class="example">Put on your jacket.</span></div>
+      <div class="phrasal-card"><span class="verb">take off</span> – <span class="meaning">quitarse (ropa)</span><br><span class="example">Take off your shoes.</span></div>
+      <div class="phrasal-card"><span class="verb">look forward to</span> – <span class="meaning">esperar con ansias</span><br><span class="example">I look forward to seeing you.</span></div>
+      <div class="phrasal-card"><span class="verb">find out</span> – <span class="meaning">descubrir / averiguar</span><br><span class="example">I need to find out the truth.</span></div>
+      <div class="phrasal-card"><span class="verb">make up</span> – <span class="meaning">inventar / reconciliarse</span><br><span class="example">They made up after the fight.</span></div>
+      <div class="phrasal-card"><span class="verb">throw away</span> – <span class="meaning">tirar / desechar</span><br><span class="example">Don't throw away that bottle!</span></div>
+      <div class="phrasal-card"><span class="verb">pick up</span> – <span class="meaning">recoger</span><br><span class="example">I'll pick you up at 8 pm.</span></div>
+      <div class="phrasal-card"><span class="verb">call off</span> – <span class="meaning">cancelar</span><br><span class="example">They called off the concert.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 6: FUNCTIONAL LANGUAGE – COMPLAINING & APOLOGIZING ========== -->
+
+<!-- SLIDE 19 – Complaining: Introducción -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL B1</span>
+    <h2>Complaining – Introducción</h2>
+    <span class="s-num">19 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para <strong>quejarse</strong> en inglés, usa expresiones como <strong>I'm sorry but..., I'm afraid..., Excuse me...</strong> para ser educado.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🗣️ Expresiones para quejarse</div>
+        <div class="ex">
+          <span class="key">I'm sorry but</span> this is not what I ordered.<br>
+          <span class="trans">Lo siento, pero esto no es lo que pedí.</span><br><br>
+          <span class="key">I'm afraid</span> there's a problem with my room.<br>
+          <span class="trans">Me temo que hay un problema con mi habitación.</span><br><br>
+          <span class="key">Excuse me</span>, but this food is cold.<br>
+          <span class="trans">Disculpe, pero esta comida está fría.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🗣️ Quejas más directas</div>
+        <div class="ex">
+          <span class="key">I'm not happy with</span> the service.<br>
+          <span class="trans">No estoy contento con el servicio.</span><br><br>
+          <span class="key">I'd like to speak to</span> the manager.<br>
+          <span class="trans">Me gustaría hablar con el gerente.</span><br><br>
+          <span class="key">I've been waiting</span> for 30 minutes!<br>
+          <span class="trans">¡He estado esperando 30 minutos!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 20 – Apologizing: Introducción -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL B1</span>
+    <h2>Apologizing – Introducción</h2>
+    <span class="s-num">20 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para <strong>disculparse</strong> en inglés, usa expresiones como <strong>I'm sorry, I apologize, I'm terribly sorry</strong>.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🙏 Expresiones para disculparse</div>
+        <div class="ex">
+          <span class="key">I'm sorry</span> for being late.<br>
+          <span class="trans">Lamento llegar tarde.</span><br><br>
+          <span class="key">I apologize</span> for the mistake.<br>
+          <span class="trans">Me disculpo por el error.</span><br><br>
+          <span class="key">I'm terribly sorry</span> for the inconvenience.<br>
+          <span class="trans">Lamento muchísimo las molestias.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">💬 Respuestas a disculpas</div>
+        <div class="ex">
+          <span class="key">That's okay.</span> (Está bien.)<br>
+          <span class="key">Don't worry about it.</span> (No te preocupes.)<br>
+          <span class="key">No problem.</span> (No hay problema.)<br>
+          <span class="key">I understand.</span> (Te entiendo.)<br>
+          <span class="key">It's not your fault.</span> (No es tu culpa.)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 21 – Complaining & Apologizing: Diálogo -->
+<div class="slide" id="s21">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL B1</span>
+    <h2>Complaining & Apologizing – Diálogo</h2>
+    <span class="s-num">21 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="dialogue">
+      <div class="dialogue-line a"><span class="speaker">Cliente:</span><span class="text"><span class="key">Excuse me</span>, but I ordered a steak and this is chicken. <span class="trans">Disculpe, pero pedí un bistec y esto es pollo.</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Mozo:</span><span class="text"><span class="key">I'm terribly sorry</span>, sir. I'll change it immediately. <span class="trans">Lo siento muchísimo, señor. Lo cambiaré de inmediato.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Cliente:</span><span class="text">Also, I've been waiting for 20 minutes. <span class="trans">Además, he estado esperando 20 minutos.</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Mozo:</span><span class="text"><span class="key">I apologize</span> for the delay. We're very busy today. <span class="trans">Me disculpo por la demora. Estamos muy ocupados hoy.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Cliente:</span><span class="text"><span class="key">I understand</span>, but please hurry. <span class="trans">Lo entiendo, pero por favor apúrese.</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Mozo:</span><span class="text">Of course. I'll bring your steak right away. <span class="trans">Por supuesto. Le traeré su bistec enseguida.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Cliente:</span><span class="text">Thank you. <span class="trans">Gracias.</span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDES DE REPASO ========== -->
+
+<!-- SLIDE 22 – Second Conditional: Resumen -->
+<div class="slide" id="s22">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Second Conditional – Resumen</h2>
+    <span class="s-num">22 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box purple">
+      <div class="title">🔮 Second Conditional</div>
+      <ul>
+        <li><strong>Estructura:</strong> IF + past simple, WOULD + infinitive</li>
+        <li><strong>Uso:</strong> Situaciones <strong>imaginarias, irreales o poco probables</strong></li>
+        <li><strong>Con TO BE:</strong> Usa <span class="key">WERE</span> para todas las personas (If I were...)</li>
+        <li><strong>Diferencia con First:</strong> First = posible / Second = imaginario</li>
+      </ul>
+      <div class="ex" style="margin-top:8px">
+        If I had a million dollars, I would travel.<br>
+        If I were you, I would study more.<br>
+        What would you do if you won the lottery?
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 23 – Modals: Resumen -->
+<div class="slide" id="s23">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Modals – Resumen</h2>
+    <span class="s-num">23 / 44</span>
+  </div>
+  <div class="s-body">
+    <table class="wh-table">
+      <thead><tr><th>Modal</th><th>Uso</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td><strong>should</strong></td><td>Sugerencia / consejo</td><td>You should study more.</td></tr>
+        <tr><td><strong>must</strong></td><td>Obligación personal</td><td>I must go now.</td></tr>
+        <tr><td><strong>have to</strong></td><td>Obligación externa</td><td>I have to work at 8 am.</td></tr>
+        <tr><td><strong>can</strong></td><td>Permiso (informal)</td><td>Can I go to the bathroom?</td></tr>
+        <tr><td><strong>could</strong></td><td>Permiso (formal)</td><td>Could I speak to you?</td></tr>
+        <tr><td><strong>may</strong></td><td>Permiso (muy formal)</td><td>May I come in, sir?</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SLIDE 24 – Relative Clauses: Resumen -->
+<div class="slide" id="s24">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Relative Clauses – Resumen</h2>
+    <span class="s-num">24 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">👤 WHO (personas)</div>
+        <div class="ex">
+          The teacher <span class="key">who</span> teaches math is strict.<br>
+          The woman <span class="key">who</span> lives next door is a doctor.<br>
+          My friend <span class="key">who</span> studies English is smart.
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📦 WHICH / THAT (cosas)</div>
+        <div class="ex">
+          The book <span class="key">which</span> I bought is interesting.<br>
+          The movie <span class="key">that</span> we watched was great.<br>
+          The car <span class="key">that</span> I want is expensive.
+        </div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>THAT</strong> puede usarse para <strong>personas y cosas</strong>. WHO solo para personas. WHICH solo para cosas/animales.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 25 – Media & Technology: Resumen -->
+<div class="slide" id="s25">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Media & Technology – Resumen</h2>
+    <span class="s-num">25 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">💻 Dispositivos</div>
+        <div class="ex">
+          smartphone, laptop, tablet<br>
+          desktop computer, printer<br>
+          headphones, smartwatch, camera
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🌐 Internet y redes</div>
+        <div class="ex">
+          internet, Wi-Fi, email<br>
+          social media, Instagram, Facebook<br>
+          TikTok, YouTube, WhatsApp<br>
+          app, website, download, upload
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 26 – Phrasal Verbs: Resumen -->
+<div class="slide" id="s26">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Phrasal Verbs – Resumen</h2>
+    <span class="s-num">26 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🔤 Los más comunes</div>
+        <div class="ex">
+          look for (buscar)<br>
+          give up (rendirse)<br>
+          take care of (cuidar)<br>
+          run out of (quedarse sin)<br>
+          break down (averiarse)<br>
+          get along with (llevarse bien)
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🔤 Más comunes</div>
+        <div class="ex">
+          look after (cuidar)<br>
+          turn on / off (encender / apagar)<br>
+          put on / take off (ponerse / quitarse)<br>
+          look forward to (esperar con ansias)<br>
+          find out (descubrir)<br>
+          make up (reconciliarse)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 27 – Complaining & Apologizing: Resumen -->
+<div class="slide" id="s27">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Complaining & Apologizing – Resumen</h2>
+    <span class="s-num">27 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🗣️ Quejarse</div>
+        <div class="ex">
+          I'm sorry but...<br>
+          I'm afraid that...<br>
+          Excuse me, but...<br>
+          I'm not happy with...<br>
+          I'd like to speak to...
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🙏 Disculparse</div>
+        <div class="ex">
+          I'm sorry.<br>
+          I apologize for...<br>
+          I'm terribly sorry.<br>
+          It won't happen again.
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Respuestas a disculpas:</strong><br>
+      That's okay. / Don't worry about it. / No problem. / I understand.
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 28 – Common Mistakes: Second Conditional -->
+<div class="slide" id="s28">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Common Mistakes – Second Conditional</h2>
+    <span class="s-num">28 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box red">
+        <div class="title">❌ Errores comunes</div>
+        <div class="ex">
+          ❌ If I <span class="wrong">would have</span> money, I would travel.<br>
+          ✅ If I <span class="correct">had</span> money, I would travel.<br><br>
+          ❌ If I <span class="wrong">would be</span> you, I would study.<br>
+          ✅ If I <span class="correct">were</span> you, I would study.<br><br>
+          ❌ If I had money, I <span class="wrong">travel</span>.<br>
+          ✅ If I had money, I <span class="correct">would travel</span>.
+        </div>
+      </div>
+      <div class="rule-box green">
+        <div class="title">✅ Recordatorio</div>
+        <div class="ex">
+          <strong>IF</strong> + <span class="correct">past simple</span><br>
+          <strong>WOULD</strong> + <span class="correct">infinitive</span><br><br>
+          ¡No uses WOULD en la condición!<br>
+          ¡Usa WERE con TO BE!
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 29 – Common Mistakes: Modals -->
+<div class="slide" id="s29">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Common Mistakes – Modals</h2>
+    <span class="s-num">29 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box red">
+        <div class="title">❌ Errores comunes</div>
+        <div class="ex">
+          ❌ You <span class="wrong">should to</span> study.<br>
+          ✅ You <span class="correct">should</span> study.<br><br>
+          ❌ You <span class="wrong">must to</span> go.<br>
+          ✅ You <span class="correct">must</span> go.<br><br>
+          ❌ I <span class="wrong">have to</span> going.<br>
+          ✅ I <span class="correct">have to</span> go.<br><br>
+          ❌ <span class="wrong">Should</span> I to call?<br>
+          ✅ <span class="correct">Should</span> I call?
+        </div>
+      </div>
+      <div class="rule-box green">
+        <div class="title">✅ Recordatorio</div>
+        <div class="ex">
+          <strong>Modal</strong> + <span class="correct">verbo (base form)</span><br>
+          ¡No uses "to" después del modal!<br>
+          ¡No cambies la forma del verbo!
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 30 – Common Mistakes: Relative Clauses -->
+<div class="slide" id="s30">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Common Mistakes – Relative Clauses</h2>
+    <span class="s-num">30 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box red">
+        <div class="title">❌ Errores comunes</div>
+        <div class="ex">
+          ❌ The man <span class="wrong">which</span> lives here is my uncle.<br>
+          ✅ The man <span class="correct">who</span> lives here is my uncle.<br><br>
+          ❌ The book <span class="wrong">who</span> I bought is interesting.<br>
+          ✅ The book <span class="correct">which / that</span> I bought is interesting.<br><br>
+          ❌ The girl <span class="wrong">which</span> is my sister.<br>
+          ✅ The girl <span class="correct">who</span> is my sister.
+        </div>
+      </div>
+      <div class="rule-box green">
+        <div class="title">✅ Recordatorio</div>
+        <div class="ex">
+          <strong>WHO</strong> = <span class="correct">personas</span><br>
+          <strong>WHICH</strong> = <span class="correct">cosas y animales</span><br>
+          <strong>THAT</strong> = <span class="correct">personas, cosas y animales</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 31 – Resumen Final -->
+<div class="slide" id="s31">
+  <div class="s-header">
+    <span class="badge">RESUMEN B1</span>
+    <h2>¡Has completado la clase C9!</h2>
+    <span class="s-num">31 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="summary-grid">
+      <div class="summary-card"><h4>🔮 Second Conditional</h4><p>If + past, would + infinitive (imaginario)</p></div>
+      <div class="summary-card"><h4>📝 Modals</h4><p>should, must, have to, can, could, may</p></div>
+      <div class="summary-card"><h4>📚 Relative Clauses</h4><p>who (personas), which/that (cosas)</p></div>
+      <div class="summary-card"><h4>💻 Media & Technology</h4><p>smartphone, laptop, social media, app</p></div>
+      <div class="summary-card"><h4>🔤 Phrasal Verbs</h4><p>look for, give up, take care of, run out of</p></div>
+      <div class="summary-card"><h4>🗣️ Complaining & Apologizing</h4><p>I'm sorry but..., I apologize for...</p></div>
+    </div>
+    <div class="tip" style="margin-top:12px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>¡Listo para practicar!</strong> Ahora dirígete a los <strong>Ejercicios B1 (E9.html)</strong> para poner a prueba todo lo que has aprendido en esta clase.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:2.3%"></div></div>
+    <div id="slide-label">Slide 1 / 31</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Course</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E9.html'">✏️ Exercises</button>
+  </div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+</script>
+</body>
+</html>

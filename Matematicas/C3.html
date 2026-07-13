@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matemáticas C3 · Porcentajes · Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --teal:#0d7377;--orange:#c06020;--purple:#7a3a8a;--coral:#c06040;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+
+/* ─── LAYOUT ─── */
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+/* ─── SLIDES ─── */
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+.s-body{padding-bottom:16px !important;}
+
+/* slide header bar */
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--orange) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+/* slide body */
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+/* ─── CONTENT COMPONENTS ─── */
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--orange);}
+
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box.orange{border-left-color:var(--orange);}
+.rule-box.purple{border-left-color:var(--purple);}
+.rule-box.teal{border-left-color:var(--teal);}
+.rule-box.coral{border-left-color:var(--coral);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+/* math block */
+.math-block{
+  background:var(--navy);color:var(--gold2);border-radius:10px;
+  padding:14px 20px;font-size:.95rem;line-height:2;overflow-x:auto;
+}
+.math-block .comment{color:#6b8ab0;font-size:.8rem;}
+
+/* example strip */
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--orange);font-weight:700;}
+
+/* two-col layout */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+
+/* tip box */
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+/* canvas wrapper */
+.canvas-wrap{
+  background: var(--white);
+  border-radius: 12px;
+  border: 1px solid #dde4ee;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 220px;
+  overflow-x: auto;
+}
+.canvas-wrap canvas {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  background: var(--white);
+}
+
+/* percentage grid */
+.pct-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.pct-card{
+  background:var(--white);border-radius:10px;padding:10px 14px;
+  border:1px solid #dde4ee;text-align:center;
+}
+.pct-card .pct{font-size:1.4rem;font-weight:700;color:var(--orange);font-family:'Playfair Display',serif;}
+.pct-card .frac{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--gray);}
+.pct-card .decimal{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--teal);}
+
+/* conversion table */
+.conv-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;}
+.conv-table th{background:var(--navy);color:var(--gold);padding:8px 14px;text-align:left;font-size:.82rem;}
+.conv-table td{background:var(--white);padding:8px 14px;font-size:.85rem;border-bottom:1px solid #eef1f5;}
+.conv-table tr:nth-child(even) td{background:#f8fafc;}
+.conv-table td:first-child{font-weight:700;color:var(--orange);font-family:'JetBrains Mono',monospace;}
+
+/* cover slide */
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,var(--orange) 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+/* ─── NAV ─── */
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+/* ─── TRANSITIONS ─── */
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col,.pct-grid{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+  .nav-links .nav-btn{font-size:.7rem;padding:5px 10px;}
+  #progress-wrap{max-width:120px;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══════════════════════════════════ SLIDE 1 – COVER ══════════════════════════════════ -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">📐</div>
+    <div class="cover-level">Eje Números · Clase 03</div>
+    <div class="cover-title">Porcentajes<br><span>Escuela Naval 2027</span></div>
+    <div class="cover-sub">Cálculo de porcentajes, aumentos, descuentos y aplicaciones prácticas. Herramienta fundamental para finanzas, estadística y toma de decisiones.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">%</span>
+      <span class="cover-tag">📊 Cálculo</span>
+      <span class="cover-tag">📈 Aumentos</span>
+      <span class="cover-tag">📉 Descuentos</span>
+      <span class="cover-tag">🧮 Regla de 3</span>
+      <span class="cover-tag">⚓ Aplicaciones</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 2 – DEFINICIÓN DE PORCENTAJE ══════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Definición de Porcentaje</h2>
+    <span class="s-num">02 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Un <strong>porcentaje</strong> es una forma de expresar una <strong>parte de un total</strong> como una fracción de <strong>100 partes</strong>. La palabra "porcentaje" significa "por cada cien".</p>
+    <div class="math-block">
+      \[
+      \text{Porcentaje} = \frac{\text{Cantidad parcial}}{\text{Cantidad total}} \cdot 100\%
+      \]
+      <span class="comment">Ejemplo: 25 de 400 → (25/400)·100 = 6.25%</span>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ejemplo paso a paso</div>
+        <div class="rule-box gold">
+          <div class="ex" style="font-size:0.95rem;">
+            Calcular el porcentaje de 25 con respecto a 400:
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.9rem;line-height:2;margin-top:8px;background:#f0f4f8;padding:10px;border-radius:8px;">
+            \(\frac{25}{400} \cdot 100 = \frac{25}{4 \cdot 100} \cdot 100 = \frac{25}{4} = 6.25\%\)
+          </div>
+          <p style="margin-top:6px;"><strong>Interpretación:</strong> 25 es el <strong>6.25%</strong> de 400.</p>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">🎯 Visualización</div>
+        <div class="canvas-wrap">
+          <canvas id="pctCanvas" width="400" height="200"></canvas>
+        </div>
+        <div style="font-size:0.82rem;color:var(--gray);text-align:center;margin-top:4px;">
+          25 de 400 = 6.25% (área sombreada)
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">💡</span><div class="content"><strong>Recuerda:</strong> El símbolo \(\%\) significa "entre 100". Por lo tanto, \(25\% = \frac{25}{100} = 0.25\).</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 3 – TRES FORMAS DE EXPRESAR UN PORCENTAJE ══════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Tres Formas de Expresar un Porcentaje</h2>
+    <span class="s-num">03 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Un porcentaje se puede expresar de <strong>tres formas diferentes</strong>: como fracción, como decimal o como cifra porcentual.</p>
+    <div class="pct-grid">
+      <div class="pct-card" style="border-top:4px solid var(--green);">
+        <div class="pct">25%</div>
+        <div class="frac">\(\frac{25}{100} = \frac{1}{4}\)</div>
+        <div class="decimal">0.25</div>
+        <div style="font-size:0.7rem;color:var(--gray);margin-top:4px;">Fracción porcentual</div>
+      </div>
+      <div class="pct-card" style="border-top:4px solid var(--orange);">
+        <div class="pct">50%</div>
+        <div class="frac">\(\frac{50}{100} = \frac{1}{2}\)</div>
+        <div class="decimal">0.5</div>
+        <div style="font-size:0.7rem;color:var(--gray);margin-top:4px;">Decimal porcentual</div>
+      </div>
+      <div class="pct-card" style="border-top:4px solid var(--purple);">
+        <div class="pct">12.5%</div>
+        <div class="frac">\(\frac{12.5}{100} = \frac{1}{8}\)</div>
+        <div class="decimal">0.125</div>
+        <div style="font-size:0.7rem;color:var(--gray);margin-top:4px;">Cifra porcentual</div>
+      </div>
+    </div>
+    <div class="rule-box gold" style="margin-top:8px;">
+      <div class="title">📌 Conversión entre formas</div>
+      <div class="two-col">
+        <div>
+          <div class="sec-label">Fracción → Decimal</div>
+          <div class="ex" style="font-size:0.85rem;">
+            \(\frac{1}{4} = 1 \div 4 = 0.25\)
+          </div>
+        </div>
+        <div>
+          <div class="sec-label">Decimal → Porcentaje</div>
+          <div class="ex" style="font-size:0.85rem;">
+            \(0.25 \cdot 100 = 25\%\)
+          </div>
+        </div>
+      </div>
+      <div class="ex" style="margin-top:8px;">
+        \(1\% = \frac{1}{100} = 0.01\)<br>
+        \(23\% = \frac{23}{100} = 0.23\)<br>
+        \(0.1\% = \frac{0.1}{100} = \frac{1}{1000} = 0.001\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 4 – PORCENTAJES NOTABLES ══════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Porcentajes Notables y su Equivalencia</h2>
+    <span class="s-num">04 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Existen <strong>porcentajes notables</strong> que aparecen con frecuencia y es útil conocer sus equivalencias como fracción y decimal.</p>
+    <table class="conv-table">
+      <thead>
+        <tr><th>Porcentaje</th><th>Fracción</th><th>Decimal</th><th>Uso común</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>10%</td><td>\(\frac{1}{10}\)</td><td>0.1</td><td>Propinas, impuestos</td></tr>
+        <tr><td>12.5%</td><td>\(\frac{1}{8}\)</td><td>0.125</td><td>IVA en algunos países</td></tr>
+        <tr><td>20%</td><td>\(\frac{1}{5}\)</td><td>0.2</td><td>Descuentos comunes</td></tr>
+        <tr><td>25%</td><td>\(\frac{1}{4}\)</td><td>0.25</td><td>Cuartos de algo</td></tr>
+        <tr><td>30%</td><td>\(\frac{3}{10}\)</td><td>0.3</td><td>Descuentos de temporada</td></tr>
+        <tr><td>40%</td><td>\(\frac{2}{5}\)</td><td>0.4</td><td>Ofertas del 40%</td></tr>
+        <tr><td>50%</td><td>\(\frac{1}{2}\)</td><td>0.5</td><td>Mitad de algo</td></tr>
+        <tr><td>60%</td><td>\(\frac{3}{5}\)</td><td>0.6</td><td>Aprobación de exámenes</td></tr>
+        <tr><td>75%</td><td>\(\frac{3}{4}\)</td><td>0.75</td><td>Tres cuartos</td></tr>
+        <tr><td>80%</td><td>\(\frac{4}{5}\)</td><td>0.8</td><td>Rendimiento alto</td></tr>
+        <tr><td>90%</td><td>\(\frac{9}{10}\)</td><td>0.9</td><td>Excelente rendimiento</td></tr>
+        <tr><td>100%</td><td>\(1\)</td><td>1</td><td>Totalidad</td></tr>
+      </tbody>
+    </table>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Memoriza estos valores:</strong> \(10\% = \frac{1}{10}\), \(20\% = \frac{1}{5}\), \(25\% = \frac{1}{4}\), \(50\% = \frac{1}{2}\), \(75\% = \frac{3}{4}\).</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 5 – CÁLCULO DE PORCENTAJES (REGLAS) ══════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">CÁLCULO</span>
+    <h2>Cálculo de Porcentajes</h2>
+    <span class="s-num">05 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Existen <strong>tres formas</strong> de calcular un porcentaje. El método más versátil es la <strong>regla de tres</strong>.</p>
+    <div class="three-col">
+      <div>
+        <div class="sec-label">📌 Método 1: Fórmula</div>
+        <div class="rule-box green">
+          <div class="math-block" style="font-size:0.85rem;">
+            \(\% = \frac{\text{parte}}{\text{total}} \cdot 100\)
+          </div>
+          <div class="ex" style="margin-top:6px;font-size:0.8rem;">
+            \(\frac{30}{150} \cdot 100 = 20\%\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Método 2: Multiplicación</div>
+        <div class="rule-box orange">
+          <div class="math-block" style="font-size:0.85rem;">
+            \(\text{Valor} = \text{Cantidad} \cdot \frac{\%}{100}\)
+          </div>
+          <div class="ex" style="margin-top:6px;font-size:0.8rem;">
+            \(200 \cdot \frac{15}{100} = 30\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Método 3: Regla de 3</div>
+        <div class="rule-box purple">
+          <div class="math-block" style="font-size:0.85rem;">
+            \(\frac{\text{parte}}{\text{total}} = \frac{\%}{100}\)
+          </div>
+          <div class="ex" style="margin-top:6px;font-size:0.8rem;">
+            \(\frac{x}{200} = \frac{15}{100} \rightarrow x = 30\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rule-box gold" style="margin-top:8px;">
+      <div class="title">🎯 Regla de 3 — "Multiplica cruzado y divide por el que sobra"</div>
+      <div class="ex" style="font-size:0.9rem;">
+        Calcular el 10% de 500:<br>
+        \(\frac{500}{100} = \frac{x}{10} \rightarrow x = \frac{500 \cdot 10}{100} = 50\)
+      </div>
+      <div class="ex" style="margin-top:6px;font-size:0.9rem;">
+        El 20% de un número es 15, ¿cuál es el número?<br>
+        \(\frac{x}{100} = \frac{15}{20} \rightarrow x = \frac{15 \cdot 100}{20} = 75\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 6 – AUMENTOS Y DESCUENTOS ══════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Aumentos y Descuentos Porcentuales</h2>
+    <span class="s-num">06 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los porcentajes se usan para calcular <strong>aumentos</strong> (precios, sueldos) y <strong>descuentos</strong> (ofertas, rebajas).</p>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📈 Aumento porcentual</div>
+        <div class="rule-box green">
+          <div class="math-block" style="font-size:0.9rem;">
+            \(\text{Nuevo valor} = \text{Original} \cdot (1 + \frac{\%}{100})\)
+          </div>
+          <div class="ex" style="margin-top:6px;">
+            Un producto cuesta $50.000 y sube un 15%:<br>
+            \(50.000 \cdot (1 + 0.15) = 50.000 \cdot 1.15 = 57.500\)
+          </div>
+          <p style="font-size:0.82rem;color:var(--gray);margin-top:6px;">
+            <strong>Aumento:</strong> \(57.500 - 50.000 = 7.500\)
+          </p>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📉 Descuento porcentual</div>
+        <div class="rule-box orange">
+          <div class="math-block" style="font-size:0.9rem;">
+            \(\text{Nuevo valor} = \text{Original} \cdot (1 - \frac{\%}{100})\)
+          </div>
+          <div class="ex" style="margin-top:6px;">
+            Un producto cuesta $50.000 y tiene un 20% de descuento:<br>
+            \(50.000 \cdot (1 - 0.20) = 50.000 \cdot 0.80 = 40.000\)
+          </div>
+          <p style="font-size:0.82rem;color:var(--gray);margin-top:6px;">
+            <strong>Descuento:</strong> \(50.000 - 40.000 = 10.000\)
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">🧮</span><div class="content"><strong>Truco:</strong> Un aumento del \(x\%\) se calcula multiplicando por \((1 + \frac{x}{100})\). Un descuento del \(x\%\) se calcula multiplicando por \((1 - \frac{x}{100})\).</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 7 – PORCENTAJE DE UN PORCENTAJE ══════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Porcentaje de un Porcentaje</h2>
+    <span class="s-num">07 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Cuando se aplican <strong>varios porcentajes</strong> en secuencia, se <strong>multiplican</strong> entre sí.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📌 Regla general</div>
+      <div class="math-block">
+        \[
+        \text{Total} = \text{Valor inicial} \cdot \frac{p_1}{100} \cdot \frac{p_2}{100} \cdot \dots
+        \]
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">Ejemplo 1: Descuento sobre descuento</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:0.9rem;">
+            Un producto de $100.000 tiene un 20% de descuento, y luego un 10% adicional.<br>
+            \(100.000 \cdot 0.80 \cdot 0.90 = 100.000 \cdot 0.72 = 72.000\)
+          </div>
+          <p style="font-size:0.82rem;color:var(--gray);margin-top:6px;">
+            <strong>Descuento total:</strong> 28% (no 30%)
+          </p>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">Ejemplo 2: Aumento compuesto</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:0.9rem;">
+            Un sueldo de $500.000 aumenta 5% y luego 3%.<br>
+            \(500.000 \cdot 1.05 \cdot 1.03 = 500.000 \cdot 1.0815 = 540.750\)
+          </div>
+          <p style="font-size:0.82rem;color:var(--gray);margin-top:6px;">
+            <strong>Aumento total:</strong> 8.15% (no 8%)
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="canvas-wrap" style="margin-top:8px;">
+      <canvas id="pctPctCanvas" width="700" height="120"></canvas>
+    </div>
+    <div class="tip"><span class="icon">⚠️</span><div class="content"><strong>¡Cuidado!</strong> Los porcentajes <strong>no se suman</strong> cuando se aplican en secuencia. \(20\% + 10\% \neq 30\%\) en un descuento compuesto.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 8 – EJEMPLOS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejemplos tipo examen</h2>
+    <span class="s-num">08 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Ejercicios <strong>similares a las preguntas PAES</strong> sobre porcentajes.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 1 — Cálculo directo</div>
+      <div class="ex">
+        ¿Cuál es el 15% de 240?<br>
+        <span class="key">Solución:</span> \(240 \cdot \frac{15}{100} = 240 \cdot 0.15 = 36\)<br>
+        <strong>Respuesta:</strong> 36
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 2 — Porcentaje de una cantidad</div>
+      <div class="ex">
+        El 25% de un número es 40. ¿Cuál es el número?<br>
+        <span class="key">Solución:</span> \(\frac{x}{100} = \frac{40}{25} \rightarrow x = \frac{40 \cdot 100}{25} = 160\)<br>
+        <strong>Respuesta:</strong> 160
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejemplo 3 — Descuento porcentual</div>
+      <div class="ex">
+        Un artículo cuesta $80.000 y tiene un 30% de descuento. ¿Cuánto se paga?<br>
+        <span class="key">Solución:</span> \(80.000 \cdot (1 - 0.30) = 80.000 \cdot 0.70 = 56.000\)<br>
+        <strong>Respuesta:</strong> $56.000
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 9 – RESOLUCIÓN DE PROBLEMAS ══════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Resolución de Problemas</h2>
+    <span class="s-num">09 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 1 — Combustible en un buque</div>
+      <div class="ex">
+        Un buque tiene capacidad para 10.000 litros de combustible. Actualmente tiene el 40% de su capacidad. ¿Cuántos litros de combustible le faltan para llenarse?<br><br>
+        <span class="key">Solución:</span> \(10.000 \cdot 0.40 = 4.000\) litros actuales.<br>
+        \(10.000 - 4.000 = 6.000\) litros faltantes.<br>
+        <strong>Respuesta:</strong> Faltan 6.000 litros.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 2 — Aumento de tripulación</div>
+      <div class="ex">
+        La tripulación de un buque aumenta en un 10% al inicio de una misión. Si originalmente eran 120 personas, ¿cuántas son ahora?<br><br>
+        <span class="key">Solución:</span> \(120 \cdot (1 + 0.10) = 120 \cdot 1.10 = 132\)<br>
+        <strong>Respuesta:</strong> Ahora son 132 tripulantes.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📝 Problema 3 — Porcentaje de un porcentaje</div>
+      <div class="ex">
+        Un buque consume 30% de su combustible en la primera semana y 20% del resto en la segunda semana. ¿Qué porcentaje del total queda?<br><br>
+        <span class="key">Solución:</span> \(1 - 0.30 = 0.70\) (resto).<br>
+        \(0.70 \cdot 0.20 = 0.14\) (consumido en segunda semana).<br>
+        Total consumido: \(0.30 + 0.14 = 0.44\).<br>
+        Queda: \(1 - 0.44 = 0.56 = 56\%\).<br>
+        <strong>Respuesta:</strong> Queda el 56%.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 10 – EJERCICIOS DE PRÁCTICA ══════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Ejercicios de Práctica</h2>
+    <span class="s-num">10 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Resuelve estos ejercicios <strong>antes de ver la solución</strong>.</p>
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">1. Calcula el 30% de 250</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) 65</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) 75 ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) 85</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) 95</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(250 \cdot 0.30 = 75\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">2. ¿Qué porcentaje es 45 de 180?</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) 20%</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) 25% ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) 30%</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) 35%</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(\frac{45}{180} \cdot 100 = 25\%\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">3. El 12% de un número es 36. ¿Cuál es el número?</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) 250</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">b) 280</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">c) 300 ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) 320</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(\frac{x}{100} = \frac{36}{12} \rightarrow x = \frac{36 \cdot 100}{12} = 300\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 11 – MÁS EJERCICIOS ══════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Más Ejercicios de Práctica</h2>
+    <span class="s-num">11 / 20</span>
+  </div>
+  <div class="s-body">
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">4. Un producto cuesta $120.000 y tiene un 15% de descuento. ¿Cuánto se paga?</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) $100.000</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) $102.000 ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) $105.000</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) $108.000</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(120.000 \cdot 0.85 = 102.000\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">5. Un número aumenta un 20% y luego un 10%. ¿Qué porcentaje aumentó en total?</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) 30%</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">b) 32%</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">c) 32% ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) 33%</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(1.20 \cdot 1.10 = 1.32 \rightarrow 32\%\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">6. En un curso de 40 estudiantes, el 65% aprobó. ¿Cuántos aprobaron?</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) 24</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) 26 ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) 28</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) 30</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(40 \cdot 0.65 = 26\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 12 – PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Preguntas estilo examen</h2>
+    <span class="s-num">12 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 1 — PAES M1</div>
+      <div class="ex">
+        Un artículo cuesta $60.000. Si se aplica un descuento del 25%, ¿cuánto se paga?<br><br>
+        a) $40.000 &nbsp; b) $42.500 &nbsp; c) $45.000 &nbsp; d) $48.000<br>
+        <span class="key">Solución:</span> \(60.000 \cdot 0.75 = 45.000\)<br>
+        <strong>Respuesta:</strong> c) $45.000
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 2 — PAES M1</div>
+      <div class="ex">
+        El 18% de un número es 54. ¿Cuál es el número?<br><br>
+        a) 250 &nbsp; b) 280 &nbsp; c) 300 &nbsp; d) 320<br>
+        <span class="key">Solución:</span> \(\frac{x}{100} = \frac{54}{18} \rightarrow x = \frac{54 \cdot 100}{18} = 300\)<br>
+        <strong>Respuesta:</strong> c) 300
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 3 — PAES M1</div>
+      <div class="ex">
+        Si el precio de un producto aumenta un 20% y luego disminuye un 20%, ¿qué ocurre con el precio final?<br><br>
+        a) Sube un 4% &nbsp; b) Baja un 4% &nbsp; c) Queda igual &nbsp; d) Baja un 20%<br>
+        <span class="key">Solución:</span> \(1.20 \cdot 0.80 = 0.96 \rightarrow\) baja 4%.<br>
+        <strong>Respuesta:</strong> b) Baja un 4%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 13 – MÁS PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Más preguntas estilo examen</h2>
+    <span class="s-num">13 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 4 — PAES M1</div>
+      <div class="ex">
+        En una escuela, el 40% de los estudiantes son mujeres. Si hay 300 estudiantes en total, ¿cuántos son hombres?<br><br>
+        a) 120 &nbsp; b) 150 &nbsp; c) 180 &nbsp; d) 200<br>
+        <span class="key">Solución:</span> 60% son hombres → \(300 \cdot 0.60 = 180\)<br>
+        <strong>Respuesta:</strong> c) 180
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 5 — PAES M1</div>
+      <div class="ex">
+        Un buque usa el 25% de su combustible en la primera semana y el 15% del resto en la segunda. ¿Qué porcentaje del total queda?<br><br>
+        a) 40% &nbsp; b) 55% &nbsp; c) 60% &nbsp; d) 63.75%<br>
+        <span class="key">Solución:</span> Resto: \(75\%\) → \(0.75 \cdot 0.85 = 0.6375 = 63.75\%\)<br>
+        <strong>Respuesta:</strong> d) 63.75%
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 6 — PAES M1</div>
+      <div class="ex">
+        Un producto cuesta $150.000. Si se aplica primero un 10% de descuento y luego un 15% de descuento adicional, ¿cuánto se paga?<br><br>
+        a) $112.500 &nbsp; b) $114.750 &nbsp; c) $115.000 &nbsp; d) $120.000<br>
+        <span class="key">Solución:</span> \(150.000 \cdot 0.90 \cdot 0.85 = 150.000 \cdot 0.765 = 114.750\)<br>
+        <strong>Respuesta:</strong> b) $114.750
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 14 – APLICACIONES NAVALES ══════════════════════════════════ -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Porcentajes en Contextos Navales</h2>
+    <span class="s-num">14 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los porcentajes son <strong>esenciales</strong> en la navegación, logística, combustible y gestión de recursos.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">⚓ Combustible y autonomía</div>
+      <div class="ex">
+        Un buque tiene 12.000 litros de combustible, que representan el 60% de su capacidad total. ¿Cuál es la capacidad total?<br><br>
+        <span class="key">Solución:</span> \(12.000 \div 0.60 = 20.000\) litros<br>
+        <strong>Respuesta:</strong> La capacidad total es de 20.000 litros.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">🧑‍✈️ Tripulación</div>
+      <div class="ex">
+        En un buque, el 45% de la tripulación son oficiales, el 35% son suboficiales y el resto son marineros. Si hay 240 tripulantes en total, ¿cuántos son marineros?<br><br>
+        <span class="key">Solución:</span> \(100\% - 45\% - 35\% = 20\%\) son marineros.<br>
+        \(240 \cdot 0.20 = 48\) marineros.<br>
+        <strong>Respuesta:</strong> Hay 48 marineros.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📊 Estadísticas de navegación</div>
+      <div class="ex">
+        En una travesía, el buque recorrió el 55% de la ruta en el primer día y el 30% del resto en el segundo día. ¿Qué porcentaje de la ruta queda?<br><br>
+        <span class="key">Solución:</span> Resto después del día 1: 45%.<br>
+        Recorrido día 2: \(0.45 \cdot 0.30 = 0.135 = 13.5\%\).<br>
+        Total recorrido: \(55\% + 13.5\% = 68.5\%\).<br>
+        Queda: \(100\% - 68.5\% = 31.5\%\).<br>
+        <strong>Respuesta:</strong> Queda el 31.5% de la ruta.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 15 – MÁS APLICACIONES ══════════════════════════════════ -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Más Aplicaciones Prácticas</h2>
+    <span class="s-num">15 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📦 Logística y carga</div>
+      <div class="ex">
+        Un contenedor tiene capacidad para 500 cajas. Si actualmente está al 72% de su capacidad, ¿cuántas cajas tiene?<br><br>
+        <span class="key">Solución:</span> \(500 \cdot 0.72 = 360\) cajas.<br>
+        <strong>Respuesta:</strong> Tiene 360 cajas.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📈 Aumento de personal</div>
+      <div class="ex">
+        La dotación de un buque aumenta de 180 a 198 personas. ¿En qué porcentaje aumentó?<br><br>
+        <span class="key">Solución:</span> Aumento: \(198 - 180 = 18\).<br>
+        \(\frac{18}{180} \cdot 100 = 10\%\).<br>
+        <strong>Respuesta:</strong> Aumentó un 10%.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📉 Consumo de agua</div>
+      <div class="ex">
+        Un buque reduce el consumo de agua de 6.000 litros diarios a 5.100 litros diarios. ¿En qué porcentaje se redujo?<br><br>
+        <span class="key">Solución:</span> Reducción: \(6.000 - 5.100 = 900\).<br>
+        \(\frac{900}{6.000} \cdot 100 = 15\%\).<br>
+        <strong>Respuesta:</strong> Se redujo un 15%.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 16 – PORCENTAJE DE VARIACIÓN ══════════════════════════════════ -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Porcentaje de Variación</h2>
+    <span class="s-num">16 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El <strong>porcentaje de variación</strong> mide cuánto cambia una cantidad en relación a su valor original.</p>
+    <div class="math-block">
+      \[
+      \text{Variación} = \frac{\text{Valor final} - \text{Valor inicial}}{\text{Valor inicial}} \cdot 100\%
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📈 Aumento</div>
+        <div class="rule-box green">
+          <div class="ex">
+            El precio de un producto aumentó de $50.000 a $60.000.<br>
+            \( \frac{60.000 - 50.000}{50.000} \cdot 100 = \frac{10.000}{50.000} \cdot 100 = 20\%\)
+          </div>
+          <p style="font-size:0.82rem;color:var(--gray);margin-top:6px;">
+            <strong>Aumento:</strong> 20%
+          </p>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📉 Disminución</div>
+        <div class="rule-box orange">
+          <div class="ex">
+            El consumo de combustible bajó de 100 L a 85 L.<br>
+            \( \frac{85 - 100}{100} \cdot 100 = \frac{-15}{100} \cdot 100 = -15\%\)
+          </div>
+          <p style="font-size:0.82rem;color:var(--gray);margin-top:6px;">
+            <strong>Disminución:</strong> 15%
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="canvas-wrap" style="min-height:220px;">
+      <canvas id="variacionCanvas" width="750" height="200"></canvas>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Recuerda:</strong> Si el resultado es <strong>positivo</strong>, hubo un <strong>aumento</strong>. Si es <strong>negativo</strong>, hubo una <strong>disminución</strong>.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 17 – PORCENTAJES EN ESTADÍSTICA ══════════════════════════════════ -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Porcentajes en Estadística</h2>
+    <span class="s-num">17 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los porcentajes son fundamentales en <strong>estadística</strong> para interpretar datos y frecuencias.</p>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📊 Tabla de frecuencias</div>
+        <div class="rule-box gold">
+          <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+            <thead>
+              <tr style="background:var(--navy);color:var(--white);">
+                <th style="padding:6px 8px;text-align:left;">Nota</th>
+                <th style="padding:6px 8px;text-align:left;">Frecuencia</th>
+                <th style="padding:6px 8px;text-align:left;">%</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:4px 8px;border-bottom:1px solid #eef1f5;">Excelente</td><td style="padding:4px 8px;border-bottom:1px solid #eef1f5;">30</td><td style="padding:4px 8px;border-bottom:1px solid #eef1f5;">30%</td></tr>
+              <tr><td style="padding:4px 8px;border-bottom:1px solid #eef1f5;">Bueno</td><td style="padding:4px 8px;border-bottom:1px solid #eef1f5;">40</td><td style="padding:4px 8px;border-bottom:1px solid #eef1f5;">40%</td></tr>
+              <tr><td style="padding:4px 8px;border-bottom:1px solid #eef1f5;">Regular</td><td style="padding:4px 8px;border-bottom:1px solid #eef1f5;">20</td><td style="padding:4px 8px;border-bottom:1px solid #eef1f5;">20%</td></tr>
+              <tr><td style="padding:4px 8px;">Deficiente</td><td style="padding:4px 8px;">10</td><td style="padding:4px 8px;">10%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">🎯 Interpretación</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:0.85rem;">
+            <strong>¿Qué porcentaje obtuvo Bueno o Excelente?</strong><br>
+            \(30\% + 40\% = 70\%\)<br><br>
+            <strong>¿Cuántos estudiantes hay en total?</strong><br>
+            \(30 + 40 + 20 + 10 = 100\) estudiantes.
+          </div>
+        </div>
+        <div class="rule-box orange" style="margin-top:8px;">
+          <div class="title">📌 Frecuencia relativa</div>
+          <div class="ex" style="font-size:0.85rem;">
+            \( \text{Frecuencia relativa} = \frac{\text{Frecuencia}}{\text{Total}} \cdot 100\%\)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 18 – EJERCICIOS ADICIONALES ══════════════════════════════════ -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejercicios Adicionales</h2>
+    <span class="s-num">18 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 1 — Aumento y descuento en secuencia</div>
+      <div class="ex">
+        Un producto de $80.000 sube un 10% y luego baja un 10%. ¿Cuál es el precio final?<br><br>
+        <span class="key">Solución:</span> \(80.000 \cdot 1.10 \cdot 0.90 = 80.000 \cdot 0.99 = 79.200\)<br>
+        <strong>Respuesta:</strong> El precio final es $79.200.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 2 — Porcentaje de una cantidad</div>
+      <div class="ex">
+        El 35% de los 200 estudiantes de una escuela participaron en una actividad. ¿Cuántos no participaron?<br><br>
+        <span class="key">Solución:</span> Participaron: \(200 \cdot 0.35 = 70\).<br>
+        No participaron: \(200 - 70 = 130\).<br>
+        <strong>Respuesta:</strong> 130 estudiantes no participaron.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejercicio 3 — Variación porcentual</div>
+      <div class="ex">
+        La población de una ciudad pasó de 250.000 a 275.000 habitantes. ¿En qué porcentaje aumentó?<br><br>
+        <span class="key">Solución:</span> \(\frac{275.000 - 250.000}{250.000} \cdot 100 = \frac{25.000}{250.000} \cdot 100 = 10\%\)<br>
+        <strong>Respuesta:</strong> Aumentó un 10%.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 19 – EJERCICIOS AVANZADOS ══════════════════════════════════ -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejercicios Avanzados</h2>
+    <span class="s-num">19 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 4 — Descuentos compuestos</div>
+      <div class="ex">
+        Un buque compra un sistema de navegación que cuesta $2.500.000. Si obtiene un 15% de descuento por pago al contado y un 8% adicional por ser proveedor habitual, ¿cuánto paga finalmente?<br><br>
+        <span class="key">Solución:</span> \(2.500.000 \cdot 0.85 \cdot 0.92 = 2.500.000 \cdot 0.782 = 1.955.000\)<br>
+        <strong>Respuesta:</strong> Paga $1.955.000.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 5 — Porcentaje de aumento compuesto</div>
+      <div class="ex">
+        La tripulación de un buque aumenta un 8% el primer año y un 12% el segundo. Si inicialmente eran 150 personas, ¿cuántas son al final del segundo año?<br><br>
+        <span class="key">Solución:</span> \(150 \cdot 1.08 \cdot 1.12 = 150 \cdot 1.2096 = 181.44 \approx 181\)<br>
+        <strong>Respuesta:</strong> Aproximadamente 181 tripulantes.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejercicio 6 — Porcentaje de un total</div>
+      <div class="ex">
+        En un inventario, el 40% de las piezas son de acero. Si hay 240 piezas de acero, ¿cuántas piezas hay en total?<br><br>
+        <span class="key">Solución:</span> \(240 \div 0.40 = 600\) piezas.<br>
+        <strong>Respuesta:</strong> Hay 600 piezas en total.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 20 – RESUMEN Y ESTRATEGIAS ══════════════════════════════════ -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">RESUMEN — CLASE 03</span>
+    <h2>Resumen: Porcentajes</h2>
+    <span class="s-num">20 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Contenidos clave</div>
+        <div class="rule-box green">
+          <ul style="padding-left:18px;font-size:.9rem;line-height:2;">
+            <li><strong>Porcentaje:</strong> \(\% = \frac{\text{parte}}{\text{total}} \cdot 100\)</li>
+            <li><strong>Tres formas:</strong> fracción \(\frac{25}{100}\), decimal \(0.25\), cifra \(25\%\)</li>
+            <li><strong>Porcentajes notables:</strong> \(10\%, 20\%, 25\%, 50\%, 75\%\)</li>
+            <li><strong>Aumento:</strong> multiplicar por \((1 + \frac{p}{100})\)</li>
+            <li><strong>Descuento:</strong> multiplicar por \((1 - \frac{p}{100})\)</li>
+            <li><strong>Porcentaje de porcentaje:</strong> se multiplican los factores</li>
+            <li><strong>Variación:</strong> \(\frac{\text{final} - \text{inicial}}{\text{inicial}} \cdot 100\)</li>
+            <li><strong>Regla de 3:</strong> multiplicar cruzado y dividir</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">🎯 Estrategias para el examen</div>
+        <div class="rule-box gold">
+          <ul style="padding-left:18px;font-size:.88rem;line-height:1.9;">
+            <li><strong>Identifica</strong> si es porcentaje, aumento o descuento.</li>
+            <li><strong>Convierte</strong> el porcentaje a decimal para multiplicar.</li>
+            <li>Usa la <strong>regla de 3</strong> cuando tengas 3 datos y busques el cuarto.</li>
+            <li>En aumentos/descuentos compuestos: <strong>multiplica los factores</strong>.</li>
+            <li>Para variación: <strong>resta y divide</strong> por el valor inicial.</li>
+            <li><strong>Verifica</strong> si el resultado es lógico (un descuento no puede ser >100%).</li>
+            <li><strong>Memoriza</strong> \(25\% = \frac{1}{4}\), \(50\% = \frac{1}{2}\), \(75\% = \frac{3}{4}\).</li>
+          </ul>
+        </div>
+        <div class="rule-box" style="margin-top:10px;">
+          <div class="title">📊 Próxima clase</div>
+          <p><strong>Clase 04:</strong> Potencias y Raíces — Propiedades, notación científica y aplicaciones.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><div class="content"><strong>"Las matemáticas son la puerta y la llave de la ciencia." Rogen Bacon</strong> — Genial!. Has logrado finalizar la clase 3. Continua a los ejercicios.</div></div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:5%"></div></div>
+    <div id="slide-label">Slide 1 / 20</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Curso</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E3.html'">✏️ Ejercicios</button>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// NAVEGACIÓN
+// ════════════════════════════════════════════════════════════════
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: PORCENTAJE VISUAL (Slide 2)
+// ════════════════════════════════════════════════════════════════
+function drawPct() {
+  const canvas = document.getElementById('pctCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const cx = w/2, cy = h/2;
+  const radius = 70;
+
+  // Círculo completo (fondo)
+  ctx.beginPath();
+  ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+  ctx.fillStyle = '#f0f4f8';
+  ctx.fill();
+  ctx.strokeStyle = '#dde4ee';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Sector sombreado (6.25% = 22.5°)
+  const angle = 0.0625 * 2 * Math.PI;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.arc(cx, cy, radius, -Math.PI/2, -Math.PI/2 + angle);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(26, 111, 168, 0.5)';
+  ctx.fill();
+
+  // Línea divisoria
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(cx + radius * Math.cos(-Math.PI/2 + angle), cy + radius * Math.sin(-Math.PI/2 + angle));
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Texto central
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = 'bold 20px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('6.25%', cx, cy);
+
+  // Etiquetas
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '14px "Source Sans 3", sans-serif';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('25 de 400', cx, cy - radius - 10);
+
+  // Cuadro de proporción
+  ctx.fillStyle = 'rgba(26, 111, 168, 0.08)';
+  ctx.fillRect(cx - 90, cy + radius + 20, 180, 40);
+  ctx.strokeStyle = 'rgba(26, 111, 168, 0.2)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(cx - 90, cy + radius + 20, 180, 40);
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '14px "JetBrains Mono", monospace';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('25 ÷ 400 = 0.0625', cx, cy + radius + 40);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: PORCENTAJE DE PORCENTAJE (Slide 7)
+// ════════════════════════════════════════════════════════════════
+function drawPctPct() {
+  const canvas = document.getElementById('pctPctCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const cy = h/2;
+  
+  // ── Datos para cada paso ──
+  const steps = [
+    { label: '100%', sub: 'Precio original', x: 70, color: '#1a6fa8' },
+    { label: '× 0.80', sub: '20% descuento', x: 200, color: '#c8a84b' },
+    { label: '× 0.90', sub: '10% adicional', x: 330, color: '#c06020' },
+    { label: '= 72%', sub: 'Precio final', x: 460, color: '#1a7a4a' },
+    { label: '28% OFF', sub: 'Descuento total', x: 590, color: '#a02020' }
+  ];
+
+  // ── Flechas entre pasos ──
+  ctx.fillStyle = '#c8a84b';
+  ctx.font = '24px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  for (let i = 0; i < steps.length - 1; i++) {
+    const x1 = steps[i].x + 45;
+    const x2 = steps[i+1].x - 45;
+    ctx.fillText('→', (x1 + x2) / 2, cy);
+  }
+
+  // ── Dibujar cada paso ──
+  steps.forEach((step) => {
+    const x = step.x;
+    const bw = 80;
+    const bh = 85;
+    const y = cy - bh/2;
+
+    // Fondo
+    ctx.fillStyle = '#ffffff';
+    ctx.shadowColor = 'rgba(0,0,0,0.06)';
+    ctx.shadowBlur = 6;
+    ctx.fillRect(x - bw/2, y, bw, bh);
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = '#dde4ee';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x - bw/2, y, bw, bh);
+
+    // Borde superior con color
+    ctx.beginPath();
+    ctx.moveTo(x - bw/2, y);
+    ctx.lineTo(x + bw/2, y);
+    ctx.strokeStyle = step.color;
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+    // Etiqueta principal (número)
+    ctx.fillStyle = step.color;
+    ctx.font = 'bold 22px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(step.label, x, cy - 8);
+
+    // Sub-etiqueta
+    ctx.fillStyle = '#6b7a90';
+    ctx.font = '11px "Source Sans 3", sans-serif';
+    ctx.textBaseline = 'top';
+    ctx.fillText(step.sub, x, cy + 20);
+  });
+
+  // ── Título inferior ──
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = 'bold 14px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('20% + 10% = 28% de descuento total (no 30%)', w/2, h - 10);
+
+  // ── Marco decorativo ──
+  ctx.strokeStyle = 'rgba(200, 168, 75, 0.10)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 4]);
+  ctx.strokeRect(15, 15, w - 30, h - 30);
+  ctx.setLineDash([]);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: VARIACIÓN (Slide 16)
+// ════════════════════════════════════════════════════════════════
+function drawVariacion() {
+  const canvas = document.getElementById('variacionCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  // ── Ajustar altura disponible ──
+  const topMargin = 30;
+  const bottomMargin = 65;
+  const chartTop = topMargin;
+  const chartBottom = h - bottomMargin;
+  const chartHeight = chartBottom - chartTop;
+
+  // ── Datos ──
+  const steps = [
+    { value: 100, label: 'Inicial', sub: '100', color: '#1a6fa8' },
+    { value: 120, label: '+20%', sub: 'aumento', color: '#1a7a4a' },
+    { value: 102, label: '-15%', sub: 'del 15%', color: '#c06020' },
+    { value: 102, label: 'Final', sub: '+2% neto', color: '#1a6fa8' }
+  ];
+
+  const positions = [90, 210, 330, 450];
+  const barWidth = 60;
+
+  // ── Escala ──
+  const minVal = 80;
+  const maxVal = 130;
+  const range = maxVal - minVal;
+
+  // ── Eje horizontal (más abajo) ──
+  const axisY = chartBottom - 10;
+  ctx.beginPath();
+  ctx.moveTo(40, axisY);
+  ctx.lineTo(w - 40, axisY);
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Flechas del eje
+  ctx.beginPath();
+  ctx.moveTo(w - 40, axisY);
+  ctx.lineTo(w - 50, axisY - 5);
+  ctx.moveTo(w - 40, axisY);
+  ctx.lineTo(w - 50, axisY + 5);
+  ctx.stroke();
+
+  // ── Dibujar barras ──
+  steps.forEach((step, i) => {
+    const x = positions[i] - barWidth/2;
+    const height = ((step.value - minVal) / range) * chartHeight * 0.85;
+    const y = axisY - height;
+
+    // Barra con esquinas redondeadas
+    const radius = 4;
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + barWidth - radius, y);
+    ctx.quadraticCurveTo(x + barWidth, y, x + barWidth, y + radius);
+    ctx.lineTo(x + barWidth, axisY);
+    ctx.lineTo(x, axisY);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+    ctx.fillStyle = step.color;
+    ctx.shadowColor = 'rgba(0,0,0,0.08)';
+    ctx.shadowBlur = 6;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Valor encima de la barra (más separado)
+    ctx.fillStyle = '#1a2a4a';
+    ctx.font = 'bold 16px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(step.value, positions[i], y - 8);
+
+    // Etiqueta principal (color) debajo del eje
+    ctx.fillStyle = step.color;
+    ctx.font = 'bold 13px "Source Sans 3", sans-serif';
+    ctx.textBaseline = 'top';
+    ctx.fillText(step.label, positions[i], axisY + 6);
+
+    // Sub-etiqueta (gris) más abajo
+    ctx.fillStyle = '#6b7a90';
+    ctx.font = '10px "Source Sans 3", sans-serif';
+    ctx.textBaseline = 'top';
+    ctx.fillText(step.sub, positions[i], axisY + 24);
+
+    // Marca en el eje
+    ctx.beginPath();
+    ctx.moveTo(positions[i], axisY);
+    ctx.lineTo(positions[i], axisY + 4);
+    ctx.strokeStyle = '#1a2a4a';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+
+  // ── Línea de tendencia (conector) ──
+  ctx.beginPath();
+  steps.forEach((step, i) => {
+    const x = positions[i];
+    const height = ((step.value - minVal) / range) * chartHeight * 0.85;
+    const y = axisY - height;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.strokeStyle = 'rgba(200, 168, 75, 0.6)';
+  ctx.lineWidth = 2.5;
+  ctx.setLineDash([6, 4]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // ── Círculos en los puntos de la línea ──
+  steps.forEach((step, i) => {
+    const x = positions[i];
+    const height = ((step.value - minVal) / range) * chartHeight * 0.85;
+    const y = axisY - height;
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, 2 * Math.PI);
+    ctx.fillStyle = step.color;
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  });
+
+  // ── Resultado neto (arriba a la derecha) ──
+  ctx.fillStyle = '#1a7a4a';
+  ctx.font = 'bold 15px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'top';
+  ctx.fillText('Aumento neto: +2%', w - 20, 8);
+
+  // ── Título inferior (más separado) ──
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '13px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('100  →  120 (+20%)  →  102 (-15%)  =  +2% neto', w/2, h - 4);
+
+  // ── Marco decorativo ──
+  ctx.strokeStyle = 'rgba(200, 168, 75, 0.08)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 4]);
+  ctx.strokeRect(10, 10, w - 20, h - 20);
+  ctx.setLineDash([]);
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER KATEX Y CANVAS
+// ════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement === 'function') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });
+  }
+
+  setTimeout(() => {
+    drawPct();
+    drawPctPct();
+    drawVariacion();
+  }, 100);
+});
+
+// Redibujar al cambiar de slide
+const observer = new MutationObserver(() => {
+  setTimeout(() => {
+    drawPct();
+    drawPctPct();
+    drawVariacion();
+  }, 50);
+});
+
+slides.forEach(s => {
+  observer.observe(s, { attributes: true, attributeFilter: ['class'] });
+});
+</script>
+</body>
+</html>

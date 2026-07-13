@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matemáticas C11 · Función Lineal y Afín · Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --teal:#0d7377;--orange:#c06020;--purple:#7a3a8a;--coral:#c06040;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+
+/* ─── LAYOUT ─── */
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+/* ─── SLIDES ─── */
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+.s-body{padding-bottom:16px !important;}
+
+/* slide header bar */
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--teal) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+/* slide body */
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+/* ─── CONTENT COMPONENTS ─── */
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--teal);}
+
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box.orange{border-left-color:var(--orange);}
+.rule-box.purple{border-left-color:var(--purple);}
+.rule-box.teal{border-left-color:var(--teal);}
+.rule-box.coral{border-left-color:var(--coral);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+/* math block */
+.math-block{
+  background:var(--navy);color:var(--gold2);border-radius:10px;
+  padding:14px 20px;font-size:.95rem;line-height:2;overflow-x:auto;
+}
+.math-block .comment{color:#6b8ab0;font-size:.8rem;}
+
+/* example strip */
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--teal);font-weight:700;}
+
+/* two-col layout */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+
+/* tip box */
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+/* canvas wrapper */
+.canvas-wrap{
+  background:var(--white);border-radius:12px;border:1px solid #dde4ee;
+  padding:16px;display:flex;justify-content:center;align-items:center;
+  width:100%;min-height:200px;overflow-x:auto;
+}
+.canvas-wrap canvas{max-width:100%;height:auto;border-radius:6px;background:var(--white);}
+
+/* property grid */
+.prop-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.prop-card{
+  background:var(--white);border-radius:10px;padding:10px 14px;
+  border:1px solid #dde4ee;text-align:center;
+}
+.prop-card .name{font-weight:700;color:var(--navy);font-size:.85rem;}
+.prop-card .formula{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--teal);margin-top:4px;}
+.prop-card .desc{font-size:.75rem;color:var(--gray);margin-top:4px;}
+
+/* function table */
+.func-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;}
+.func-table th{background:var(--navy);color:var(--gold);padding:6px 12px;text-align:left;font-size:.8rem;}
+.func-table td{background:var(--white);padding:6px 12px;font-size:.85rem;border-bottom:1px solid #eef1f5;}
+.func-table tr:nth-child(even) td{background:#f8fafc;}
+
+/* cover slide */
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,var(--teal) 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+/* ─── NAV ─── */
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+/* ─── TRANSITIONS ─── */
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col,.prop-grid{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+  .nav-links .nav-btn{font-size:.7rem;padding:5px 10px;}
+  #progress-wrap{max-width:120px;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══════════════════════════════════ SLIDE 1 – COVER ══════════════════════════════════ -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">📐</div>
+    <div class="cover-level">Eje Álgebra · Clase 11</div>
+    <div class="cover-title">Función Lineal y Afín<br><span>Escuela Naval 2027</span></div>
+    <div class="cover-sub">Pendiente, coeficiente de posición, intersecciones y aplicaciones de funciones lineales y afines en contextos reales y navales.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">📐 Rectas</span>
+      <span class="cover-tag">📈 Pendiente</span>
+      <span class="cover-tag">📊 Coeficiente de posición</span>
+      <span class="cover-tag">🧮 Intersecciones</span>
+      <span class="cover-tag">⚓ Aplicaciones</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 2 – TIPOS DE FUNCIONES LINEALES ══════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Tipos de Funciones Lineales</h2>
+    <span class="s-num">02 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Dentro de las funciones de primer grado, existen <strong>4 tipos principales</strong> según su forma y características.</p>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      
+      <!-- Función Constante -->
+      <div style="background:var(--white);border-radius:12px;border:1px solid #dde4ee;padding:12px;border-top:4px solid var(--green);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
+          <div>
+            <div style="font-weight:700;color:var(--navy);font-size:.95rem;">Función Constante</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--green);">\(f(x) = n\)</div>
+          </div>
+          <div style="font-size:.75rem;color:var(--gray);background:#f0f4f8;padding:2px 10px;border-radius:12px;">Ej: \(f(x) = 5\)</div>
+        </div>
+        <div class="canvas-wrap" style="min-height:110px;padding:6px;">
+          <canvas id="constanteGraphCanvas" width="380" height="100"></canvas>
+        </div>
+      </div>
+
+      <!-- Función Lineal -->
+      <div style="background:var(--white);border-radius:12px;border:1px solid #dde4ee;padding:12px;border-top:4px solid var(--sky);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
+          <div>
+            <div style="font-weight:700;color:var(--navy);font-size:.95rem;">Función Lineal</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--sky);">\(f(x) = mx\)</div>
+          </div>
+          <div style="font-size:.75rem;color:var(--gray);background:#f0f4f8;padding:2px 10px;border-radius:12px;">Ej: \(f(x) = 2x\)</div>
+        </div>
+        <div class="canvas-wrap" style="min-height:110px;padding:6px;">
+          <canvas id="linealGraphCanvas" width="380" height="100"></canvas>
+        </div>
+      </div>
+
+      <!-- Función Identidad -->
+      <div style="background:var(--white);border-radius:12px;border:1px solid #dde4ee;padding:12px;border-top:4px solid var(--gold);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
+          <div>
+            <div style="font-weight:700;color:var(--navy);font-size:.95rem;">Función Identidad</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--gold);">\(f(x) = x\)</div>
+          </div>
+          <div style="font-size:.75rem;color:var(--gray);background:#f0f4f8;padding:2px 10px;border-radius:12px;">Ej: \(f(x) = x\)</div>
+        </div>
+        <div class="canvas-wrap" style="min-height:110px;padding:6px;">
+          <canvas id="identidadGraphCanvas" width="380" height="100"></canvas>
+        </div>
+      </div>
+
+      <!-- Función Afín -->
+      <div style="background:var(--white);border-radius:12px;border:1px solid #dde4ee;padding:12px;border-top:4px solid var(--orange);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
+          <div>
+            <div style="font-weight:700;color:var(--navy);font-size:.95rem;">Función Afín</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--orange);">\(f(x) = mx + n\)</div>
+          </div>
+          <div style="font-size:.75rem;color:var(--gray);background:#f0f4f8;padding:2px 10px;border-radius:12px;">Ej: \(f(x) = 2x + 3\)</div>
+        </div>
+        <div class="canvas-wrap" style="min-height:110px;padding:6px;">
+          <canvas id="afinGraphCanvas" width="380" height="100"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Resumen:</strong> \(m\) = pendiente, \(n\) = coeficiente de posición. La función afín es la más general.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 3 – PENDIENTE (m) ══════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Pendiente (m)</h2>
+    <span class="s-num">03 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">La <strong>pendiente</strong> \(m\) indica la <strong>inclinación</strong> de una recta y se calcula como la razón entre la variación vertical y horizontal.</p>
+    <div class="math-block">
+      \[
+      m = \frac{\Delta y}{\Delta x} = \frac{y_2 - y_1}{x_2 - x_1}
+      \]
+      <span class="comment">Con los puntos \(P_1(x_1, y_1)\) y \(P_2(x_2, y_2)\)</span>
+    </div>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+      
+      <!-- Pendiente positiva -->
+      <div style="background:var(--white);border-radius:12px;border:1px solid #dde4ee;padding:10px;border-top:4px solid var(--green);">
+        <div style="text-align:center;">
+          <div style="font-weight:700;color:var(--navy);font-size:.85rem;">Pendiente positiva</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--green);">\(m > 0\)</div>
+        </div>
+        <div class="canvas-wrap" style="min-height:80px;padding:4px;">
+          <canvas id="pendPosCanvas" width="220" height="70"></canvas>
+        </div>
+        <div style="text-align:center;font-size:.7rem;color:var(--gray);">Recta <strong>creciente</strong></div>
+      </div>
+
+      <!-- Pendiente negativa -->
+      <div style="background:var(--white);border-radius:12px;border:1px solid #dde4ee;padding:10px;border-top:4px solid var(--red);">
+        <div style="text-align:center;">
+          <div style="font-weight:700;color:var(--navy);font-size:.85rem;">Pendiente negativa</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--red);">\(m < 0\)</div>
+        </div>
+        <div class="canvas-wrap" style="min-height:80px;padding:4px;">
+          <canvas id="pendNegCanvas" width="220" height="70"></canvas>
+        </div>
+        <div style="text-align:center;font-size:.7rem;color:var(--gray);">Recta <strong>decreciente</strong></div>
+      </div>
+
+      <!-- Pendiente cero -->
+      <div style="background:var(--white);border-radius:12px;border:1px solid #dde4ee;padding:10px;border-top:4px solid var(--gold);">
+        <div style="text-align:center;">
+          <div style="font-weight:700;color:var(--navy);font-size:.85rem;">Pendiente cero</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--gold);">\(m = 0\)</div>
+        </div>
+        <div class="canvas-wrap" style="min-height:80px;padding:4px;">
+          <canvas id="pendCeroCanvas" width="220" height="70"></canvas>
+        </div>
+        <div style="text-align:center;font-size:.7rem;color:var(--gray);">Recta <strong>horizontal</strong></div>
+      </div>
+
+    </div>
+
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Interpretación:</strong> \(m = 2\) significa que por cada 1 unidad en \(x\), \(y\) aumenta 2 unidades.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 4 – COEFICIENTE DE POSICIÓN (n) ══════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Coeficiente de Posición (n)</h2>
+    <span class="s-num">04 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El <strong>coeficiente de posición</strong> \(n\) es el punto donde la recta <strong>corta al eje \(y\)</strong>, es decir, \((0, n)\).</p>
+    <div class="math-block">
+      \[
+      f(x) = mx + n \quad \Rightarrow \quad f(0) = n
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ejemplo de cálculo</div>
+        <div class="rule-box gold">
+          <div class="ex" style="font-size:.85rem;line-height:2.2;">
+            \(P_1 = (2, 7)\), \(P_2 = (-1, 1)\)<br><br>
+            \(m = \frac{1 - 7}{-1 - 2} = \frac{-6}{-3} = 2\)<br>
+            \(n = y_1 - m \cdot x_1 = 7 - 2 \cdot 2 = 3\)<br><br>
+            <strong>Ecuación:</strong> \(f(x) = 2x + 3\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Interpretación</div>
+        <div class="rule-box green">
+          <ul>
+            <li>\(n\) es el valor de \(y\) cuando \(x = 0\)</li>
+            <li>El punto de corte con el eje \(y\) es \((0, n)\)</li>
+            <li>Si \(n > 0\), la recta corta al eje \(y\) arriba del origen.</li>
+            <li>Si \(n < 0\), la recta corta al eje \(y\) abajo del origen.</li>
+            <li>Si \(n = 0\), la recta pasa por el origen (función lineal).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 5 – INTERSECCIONES CON LOS EJES ══════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Intersecciones con los Ejes</h2>
+    <span class="s-num">05 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Una función afín \(f(x) = mx + n\) tiene <strong>dos intersecciones</strong> con los ejes coordenados.</p>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Corte con el eje \(y\)</div>
+        <div class="rule-box green">
+          <div class="math-block" style="font-size:.85rem;padding:10px;">
+            \(f(0) = n\) → Punto \((0, n)\)
+          </div>
+          <div class="ex" style="margin-top:6px;">
+            \(f(x) = 2x + 3\) → Corte con \(y\): \((0, 3)\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Corte con el eje \(x\)</div>
+        <div class="rule-box orange">
+          <div class="math-block" style="font-size:.85rem;padding:10px;">
+            \(f(x) = 0\) → \(mx + n = 0\) → \(x = -\frac{n}{m}\)
+          </div>
+          <div class="ex" style="margin-top:6px;">
+            \(f(x) = 2x + 3\) → \(2x + 3 = 0\) → \(x = -\frac{3}{2}\) → \(\left(-\frac{3}{2}, 0\right)\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="canvas-wrap" style="min-height:200px;">
+      <canvas id="interseccionesCanvas" width="700" height="180"></canvas>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Recuerda:</strong> El corte con el eje \(x\) se obtiene igualando la función a 0. El corte con el eje \(y\) se obtiene evaluando en \(x=0\).</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 6 – CÁLCULO DE PENDIENTE CON DOS PUNTOS ══════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Cálculo de Pendiente con Dos Puntos</h2>
+    <span class="s-num">06 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para calcular la pendiente \(m\) de una recta, necesitamos <strong>dos puntos</strong> pertenecientes a ella.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📌 Fórmula</div>
+      <div class="math-block" style="font-size:.9rem;">
+        \[
+        m = \frac{y_2 - y_1}{x_2 - x_1}
+        \]
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ejemplo 1 (Pendiente positiva)</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.85rem;line-height:2.2;">
+            \(A(1, 2)\), \(B(4, 8)\)<br><br>
+            \(m = \frac{8 - 2}{4 - 1} = \frac{6}{3} = 2\)<br><br>
+            <span style="color:var(--gray);font-size:.8rem;">La recta es creciente.</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Ejemplo 2 (Pendiente negativa)</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.85rem;line-height:2.2;">
+            \(A(2, 5)\), \(B(6, 1)\)<br><br>
+            \(m = \frac{1 - 5}{6 - 2} = \frac{-4}{4} = -1\)<br><br>
+            <span style="color:var(--gray);font-size:.8rem;">La recta es decreciente.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Importante:</strong> El orden de los puntos no importa, siempre que se mantenga consistencia: \((y_2 - y_1)/(x_2 - x_1)\).</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 7 – CÁLCULO DE COEFICIENTE DE POSICIÓN ══════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Cálculo del Coeficiente de Posición</h2>
+    <span class="s-num">07 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Una vez calculada la pendiente, el <strong>coeficiente de posición</strong> se obtiene despejando \(n\) de la ecuación de la recta.</p>
+    <div class="math-block">
+      \[
+      n = y_1 - m \cdot x_1
+      \]
+    </div>
+    <div class="rule-box gold" style="margin-top:8px;">
+      <div class="title">📌 Ejemplo paso a paso</div>
+      <div class="ex" style="font-size:.85rem;line-height:2.2;">
+        <strong>Datos:</strong> \(A(2, 7)\) y \(B(-1, 1)\)<br><br>
+        <span class="key">Paso 1:</span> Calcular pendiente: \(m = \frac{1 - 7}{-1 - 2} = \frac{-6}{-3} = 2\)<br>
+        <span class="key">Paso 2:</span> Usar un punto para calcular \(n\): \(n = 7 - 2 \cdot 2 = 3\)<br>
+        <span class="key">Paso 3:</span> Escribir la ecuación: \(f(x) = 2x + 3\)<br>
+        <span class="key">Verificación:</span> \(A(2,7)\) → \(2(2)+3=7\) ✅<br>
+        \(B(-1,1)\) → \(2(-1)+3=1\) ✅
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 8 – ECUACIÓN DE LA RECTA ══════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Ecuación de la Recta</h2>
+    <span class="s-num">08 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">La <strong>ecuación de la recta</strong> en su forma principal es \(y = mx + n\), donde \(m\) es la pendiente y \(n\) el coeficiente de posición.</p>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Formas de la ecuación</div>
+        <div class="rule-box green">
+          <ul>
+            <li><strong>Forma principal:</strong> \(y = mx + n\)</li>
+            <li><strong>Forma general:</strong> \(Ax + By + C = 0\)</li>
+            <li><strong>Forma punto-pendiente:</strong> \(y - y_1 = m(x - x_1)\)</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Ejemplo</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.85rem;line-height:2.2;">
+            <strong>Pendiente:</strong> \(m = 3\)<br>
+            <strong>Punto:</strong> \((2, 5)\)<br><br>
+            \(y - 5 = 3(x - 2)\)<br>
+            \(y - 5 = 3x - 6\)<br>
+            \(y = 3x - 1\)<br><br>
+            <strong>Ecuación:</strong> \(y = 3x - 1\)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 9 – EJEMPLOS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejemplos tipo examen</h2>
+    <span class="s-num">09 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Ejercicios <strong>similares a las preguntas PAES</strong> sobre función lineal y afín.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 1 — Pendiente</div>
+      <div class="ex">
+        ¿Cuál es la pendiente de la recta que pasa por \((1, 3)\) y \((4, 9)\)?<br>
+        <span class="key">Solución:</span> \(m = \frac{9 - 3}{4 - 1} = \frac{6}{3} = 2\)<br>
+        <strong>Respuesta:</strong> \(m = 2\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 2 — Ecuación de la recta</div>
+      <div class="ex">
+        Encuentra la ecuación de la recta con pendiente \(m = -2\) que pasa por \((3, 1)\).<br>
+        <span class="key">Solución:</span> \(y - 1 = -2(x - 3)\) → \(y - 1 = -2x + 6\) → \(y = -2x + 7\)<br>
+        <strong>Respuesta:</strong> \(f(x) = -2x + 7\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejemplo 3 — Coeficiente de posición</div>
+      <div class="ex">
+        ¿Cuál es el coeficiente de posición de la recta que pasa por \((2, 7)\) y \((-1, 1)\)?<br>
+        <span class="key">Solución:</span> \(m = 2\), \(n = 7 - 2(2) = 3\)<br>
+        <strong>Respuesta:</strong> \(n = 3\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 10 – RESOLUCIÓN DE PROBLEMAS ══════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Resolución de Problemas</h2>
+    <span class="s-num">10 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 1 — Costo de un viaje</div>
+      <div class="ex">
+        El costo de un viaje en taxi está dado por \(C(d) = 500 + 200d\), donde \(d\) es la distancia en km.<br><br>
+        a) ¿Cuál es la pendiente y qué representa?<br>
+        b) ¿Cuál es el coeficiente de posición y qué representa?<br><br>
+        <span class="key">Solución:</span> \(m = 200\) (costo por km), \(n = 500\) (costo base)<br>
+        <strong>Respuesta:</strong> \(m = 200\), \(n = 500\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 2 — Temperatura</div>
+      <div class="ex">
+        La temperatura en una ciudad está dada por \(T(h) = 20 - 2h\), donde \(h\) es la altura en km.<br><br>
+        a) ¿Cuál es la pendiente y qué significa?<br>
+        b) ¿A qué altura la temperatura es 0°C?<br><br>
+        <span class="key">Solución:</span> \(m = -2\) (la temperatura baja 2°C por km), \(20 - 2h = 0 \rightarrow h = 10\) km<br>
+        <strong>Respuesta:</strong> Pendiente -2, altura 10 km.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📝 Problema 3 — Distancia</div>
+      <div class="ex">
+        Un auto recorre una distancia dada por \(d(t) = 80t + 20\), donde \(t\) es el tiempo en horas.<br><br>
+        a) ¿Cuál es la velocidad del auto?<br>
+        b) ¿Qué distancia ha recorrido al inicio?<br><br>
+        <span class="key">Solución:</span> \(m = 80\) km/h, \(n = 20\) km<br>
+        <strong>Respuesta:</strong> Velocidad 80 km/h, distancia inicial 20 km.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 11 – EJERCICIOS DE PRÁCTICA ══════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Ejercicios de Práctica</h2>
+    <span class="s-num">11 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Resuelve estos ejercicios <strong>antes de ver la solución</strong>.</p>
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">1. Calcula la pendiente entre \(A(2, 3)\) y \(B(5, 9)\).</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) 1</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) 2 ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) 3</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) 4</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(m = \frac{9-3}{5-2} = \frac{6}{3} = 2\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">2. ¿Cuál es el coeficiente de posición de \(f(x) = -3x + 7\)?</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) -3</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) 7 ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) 3</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) -7</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(n = 7\) es el corte con el eje \(y\).</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">3. Encuentra la ecuación de la recta con \(m = 3\) que pasa por \((1, 2)\).</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \(y = 3x + 1\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \(y = 3x - 1\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(y = 3x + 2\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(y = 3x - 2\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(y - 2 = 3(x - 1) \rightarrow y = 3x - 1\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 12 – MÁS EJERCICIOS ══════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Más Ejercicios de Práctica</h2>
+    <span class="s-num">12 / 20</span>
+  </div>
+  <div class="s-body">
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">4. ¿Cuál es el corte con el eje \(x\) de \(f(x) = 2x - 6\)?</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) (0, -6)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) (3, 0) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) (-3, 0)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) (0, 6)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(2x - 6 = 0 \rightarrow x = 3\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">5. ¿Qué tipo de función es \(f(x) = -4\)?</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) Lineal</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) Constante ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) Identidad</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) Afín</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(f(x) = n\) con \(n = -4\) → función constante.</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">6. Calcula la pendiente entre \(A(-2, 5)\) y \(B(4, -1)\).</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) 1</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">b) -1</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">c) -1 ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) 0</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(m = \frac{-1-5}{4-(-2)} = \frac{-6}{6} = -1\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 13 – PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Preguntas estilo examen</h2>
+    <span class="s-num">13 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 1 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es la pendiente de la recta \(y = -2x + 5\)?<br><br>
+        a) 5 &nbsp; b) 2 &nbsp; c) -2 &nbsp; d) -5<br>
+        <span class="key">Solución:</span> \(m = -2\)<br>
+        <strong>Respuesta:</strong> c) -2
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 2 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es el coeficiente de posición de la recta que pasa por \((0, 4)\) y \((2, 8)\)?<br><br>
+        a) 2 &nbsp; b) 3 &nbsp; c) 4 &nbsp; d) 5<br>
+        <span class="key">Solución:</span> La recta pasa por \((0, 4)\) → \(n = 4\)<br>
+        <strong>Respuesta:</strong> c) 4
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 3 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es la ecuación de la recta que pasa por \((2, 3)\) y tiene pendiente \(m = -1\)?<br><br>
+        a) \(y = -x + 5\) &nbsp; b) \(y = -x + 1\) &nbsp; c) \(y = x + 5\) &nbsp; d) \(y = x - 1\)<br>
+        <span class="key">Solución:</span> \(y - 3 = -1(x - 2) \rightarrow y = -x + 5\)<br>
+        <strong>Respuesta:</strong> a) \(y = -x + 5\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 14 – MÁS PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Más preguntas estilo examen</h2>
+    <span class="s-num">14 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 4 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es el corte con el eje \(x\) de la recta \(y = 3x - 9\)?<br><br>
+        a) (0, -9) &nbsp; b) (3, 0) &nbsp; c) (-3, 0) &nbsp; d) (0, 9)<br>
+        <span class="key">Solución:</span> \(3x - 9 = 0 \rightarrow x = 3\)<br>
+        <strong>Respuesta:</strong> b) (3, 0)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 5 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál de las siguientes funciones es creciente?<br><br>
+        a) \(f(x) = -3x + 2\) &nbsp; b) \(f(x) = 2x - 1\) &nbsp; c) \(f(x) = -x + 5\) &nbsp; d) \(f(x) = -2x\)<br>
+        <span class="key">Solución:</span> \(m = 2 > 0\) → creciente<br>
+        <strong>Respuesta:</strong> b) \(f(x) = 2x - 1\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 6 — PAES M1</div>
+      <div class="ex">
+        Una función afín pasa por \((1, 2)\) y \((3, 8)\). ¿Cuál es su pendiente?<br><br>
+        a) 2 &nbsp; b) 3 &nbsp; c) 4 &nbsp; d) 5<br>
+        <span class="key">Solución:</span> \(m = \frac{8-2}{3-1} = \frac{6}{2} = 3\)<br>
+        <strong>Respuesta:</strong> b) 3
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 15 – APLICACIONES NAVALES ══════════════════════════════════ -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Función Lineal y Afín en Contextos Navales</h2>
+    <span class="s-num">15 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Las funciones lineales y afines modelan relaciones <strong>directamente proporcionales</strong> en navegación y logística.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">⚓ Velocidad constante</div>
+      <div class="ex">
+        Un buque navega a velocidad constante de 25 nudos. La distancia recorrida es \(d(t) = 25t\).<br><br>
+        a) ¿Cuál es la pendiente y qué representa?<br>
+        b) ¿Qué distancia recorre en 4 horas?<br><br>
+        <span class="key">Solución:</span> \(m = 25\) (velocidad), \(d(4) = 25 \cdot 4 = 100\) millas<br>
+        <strong>Respuesta:</strong> Pendiente 25 nudos, 100 millas.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">⛽ Consumo de combustible</div>
+      <div class="ex">
+        El consumo de combustible de un motor está dado por \(C(h) = 80h + 120\), donde \(h\) es el número de horas.<br><br>
+        a) ¿Cuánto se consume en 5 horas?<br>
+        b) ¿Cuál es el consumo base?<br><br>
+        <span class="key">Solución:</span> \(C(5) = 80(5) + 120 = 520\) L, \(n = 120\) L<br>
+        <strong>Respuesta:</strong> 520 litros, consumo base 120 L.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📊 Profundidad de un submarino</div>
+      <div class="ex">
+        Un submarino desciende a velocidad constante. Su profundidad es \(P(t) = -40t - 50\), donde \(t\) es el tiempo en minutos.<br><br>
+        a) ¿Cuál es la pendiente y qué representa?<br>
+        b) ¿Cuál es la profundidad inicial?<br><br>
+        <span class="key">Solución:</span> \(m = -40\) (desciende 40 m/min), \(n = -50\) m<br>
+        <strong>Respuesta:</strong> Pendiente -40 m/min, profundidad inicial 50 m bajo el nivel del mar.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 16 – MÁS APLICACIONES ══════════════════════════════════ -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Más Aplicaciones Prácticas</h2>
+    <span class="s-num">16 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📐 Conversión de temperatura</div>
+      <div class="ex">
+        La conversión de °C a °F es \(F(C) = \frac{9}{5}C + 32\).<br><br>
+        a) ¿Cuál es la pendiente y qué representa?<br>
+        b) ¿Cuántos °F son 25°C?<br><br>
+        <span class="key">Solución:</span> \(m = \frac{9}{5} = 1.8\) (cada °C equivale a 1.8°F), \(F(25) = 45 + 32 = 77\)°F<br>
+        <strong>Respuesta:</strong> Pendiente 1.8, 77°F.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📊 Costo de producción</div>
+      <div class="ex">
+        El costo de producir \(x\) unidades está dado por \(C(x) = 5x + 200\).<br><br>
+        a) ¿Cuál es el costo variable por unidad?<br>
+        b) ¿Cuál es el costo fijo?<br><br>
+        <span class="key">Solución:</span> \(m = 5\) (costo por unidad), \(n = 200\) (costo fijo)<br>
+        <strong>Respuesta:</strong> Costo variable $5, costo fijo $200.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">🧭 Distancia de frenado</div>
+      <div class="ex">
+        La distancia de frenado de un vehículo está dada por \(d(v) = 0.2v^2\). ¿Es una función lineal o afín?<br><br>
+        <span class="key">Solución:</span> No es lineal ni afín porque tiene \(v^2\) (grado 2).<br>
+        <strong>Respuesta:</strong> Es una función cuadrática.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 17 – EJERCICIOS ADICIONALES ══════════════════════════════════ -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejercicios Adicionales</h2>
+    <span class="s-num">17 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 1 — Pendiente negativa</div>
+      <div class="ex">
+        Calcula la pendiente entre \(A(4, 10)\) y \(B(8, 2)\).<br>
+        <span class="key">Solución:</span> \(m = \frac{2-10}{8-4} = \frac{-8}{4} = -2\)<br>
+        <strong>Respuesta:</strong> \(m = -2\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 2 — Ecuación de la recta</div>
+      <div class="ex">
+        Encuentra la ecuación de la recta que pasa por \((2, -1)\) y \((5, 5)\).<br>
+        <span class="key">Solución:</span> \(m = \frac{5-(-1)}{5-2} = \frac{6}{3} = 2\), \(n = -1 - 2(2) = -5\)<br>
+        <strong>Respuesta:</strong> \(f(x) = 2x - 5\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejercicio 3 — Intersecciones</div>
+      <div class="ex">
+        Encuentra las intersecciones con los ejes de \(f(x) = -3x + 6\).<br>
+        <span class="key">Solución:</span> \(f(0) = 6\) → \((0, 6)\), \(-3x+6=0 \rightarrow x=2\) → \((2, 0)\)<br>
+        <strong>Respuesta:</strong> \((0, 6)\) y \((2, 0)\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 18 – EJERCICIOS AVANZADOS ══════════════════════════════════ -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejercicios Avanzados</h2>
+    <span class="s-num">18 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 4 — Función afín con dos puntos</div>
+      <div class="ex">
+        Encuentra la función afín que pasa por \((-2, 3)\) y \((4, -3)\).<br>
+        <span class="key">Solución:</span> \(m = \frac{-3-3}{4-(-2)} = \frac{-6}{6} = -1\), \(n = 3 - (-1)(-2) = 1\)<br>
+        <strong>Respuesta:</strong> \(f(x) = -x + 1\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 5 — Punto de intersección</div>
+      <div class="ex">
+        Encuentra el punto de intersección de \(f(x) = 2x + 1\) y \(g(x) = -x + 4\).<br>
+        <span class="key">Solución:</span> \(2x + 1 = -x + 4 \rightarrow 3x = 3 \rightarrow x = 1\), \(y = 3\)<br>
+        <strong>Respuesta:</strong> \((1, 3)\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejercicio 6 — Función constante</div>
+      <div class="ex">
+        ¿Cuál es la ecuación de una función constante que pasa por \((3, -2)\)?<br>
+        <span class="key">Solución:</span> \(f(x) = -2\)<br>
+        <strong>Respuesta:</strong> \(f(x) = -2\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 19 – PREGUNTAS TIPO PAES M2 ══════════════════════════════════ -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Preguntas estilo examen (M2)</h2>
+    <span class="s-num">19 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 7 — PAES M2</div>
+      <div class="ex">
+        Una recta tiene pendiente \(m = -3\) y pasa por \((2, 4)\). ¿Cuál es su ecuación?<br><br>
+        a) \(y = -3x + 10\) &nbsp; b) \(y = -3x + 2\) &nbsp; c) \(y = -3x - 2\) &nbsp; d) \(y = -3x - 10\)<br>
+        <span class="key">Solución:</span> \(y - 4 = -3(x - 2) \rightarrow y = -3x + 10\)<br>
+        <strong>Respuesta:</strong> a) \(y = -3x + 10\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 8 — PAES M2</div>
+      <div class="ex">
+        ¿Cuál es el punto de intersección de \(y = 2x + 1\) con el eje \(y\)?<br><br>
+        a) (0, 0) &nbsp; b) (0, 1) &nbsp; c) (1, 0) &nbsp; d) (0, 2)<br>
+        <span class="key">Solución:</span> \(f(0) = 1\) → \((0, 1)\)<br>
+        <strong>Respuesta:</strong> b) (0, 1)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 9 — PAES M2</div>
+      <div class="ex">
+        Una función afín tiene pendiente \(2\) y coeficiente de posición \(-3\). ¿Cuál es su ecuación?<br><br>
+        a) \(y = 2x - 3\) &nbsp; b) \(y = -2x + 3\) &nbsp; c) \(y = 2x + 3\) &nbsp; d) \(y = -2x - 3\)<br>
+        <span class="key">Solución:</span> \(m = 2\), \(n = -3\) → \(y = 2x - 3\)<br>
+        <strong>Respuesta:</strong> a) \(y = 2x - 3\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 20 – RESUMEN Y ESTRATEGIAS ══════════════════════════════════ -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">RESUMEN — CLASE 11</span>
+    <h2>Resumen: Función Lineal y Afín</h2>
+    <span class="s-num">20 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Contenidos clave</div>
+        <div class="rule-box green">
+          <ul style="padding-left:18px;font-size:.9rem;line-height:2;">
+            <li><strong>Función lineal:</strong> \(f(x) = mx\) (pasa por el origen)</li>
+            <li><strong>Función identidad:</strong> \(f(x) = x\) (caso especial con \(m=1\))</li>
+            <li><strong>Función afín:</strong> \(f(x) = mx + n\) (no pasa por el origen)</li>
+            <li><strong>Pendiente (m):</strong> Inclinación de la recta</li>
+            <li><strong>Coeficiente de posición (n):</strong> Corte con el eje \(y\)</li>
+            <li><strong>Cálculo de m:</strong> \(m = \frac{y_2 - y_1}{x_2 - x_1}\)</li>
+            <li><strong>Cálculo de n:</strong> \(n = y_1 - m \cdot x_1\)</li>
+            <li><strong>Corte con eje \(x\):</strong> \(x = -\frac{n}{m}\)</li>
+            <li><strong>Corte con eje \(y\):</strong> \((0, n)\)</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">🎯 Estrategias para el examen</div>
+        <div class="rule-box gold">
+          <ul style="padding-left:18px;font-size:.88rem;line-height:1.9;">
+            <li><strong>Identifica</strong> si la función es lineal (\(n=0\)) o afín (\(n\neq 0\)).</li>
+            <li>Para calcular \(m\): <strong>usa dos puntos</strong> de la recta.</li>
+            <li>Para calcular \(n\): <strong>despeja</strong> de la ecuación \(y = mx + n\).</li>
+            <li>La pendiente \(m > 0\) → <strong>creciente</strong>, \(m < 0\) → <strong>decreciente</strong>.</li>
+            <li>En problemas verbales: <strong>identifica</strong> la pendiente y el coeficiente de posición.</li>
+            <li>Recuerda: La función constante \(f(x)=n\) tiene \(m=0\).</li>
+          </ul>
+        </div>
+        <div class="rule-box" style="margin-top:10px;">
+          <div class="title">📊 Próxima clase</div>
+          <p><strong>Clase 12:</strong> Ecuaciones de Segundo Grado — Resolución por factorización, completación de cuadrados y fórmula general.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><div class="content"><strong>"No es que sea tan inteligente, es solo que me quedo con los problemas durante más tiempo." Albert Einstein</strong> — Genial!. Has completado la clase 11. Ahora puedes continuar con ejercicios.</div></div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:5%"></div></div>
+    <div id="slide-label">Slide 1 / 20</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Curso</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E11.html'">✏️ Ejercicios</button>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// NAVEGACIÓN
+// ════════════════════════════════════════════════════════════════
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: FUNCIÓN CONSTANTE (Slide 2)
+// ════════════════════════════════════════════════════════════════
+function drawConstanteGraph() {
+  const canvas = document.getElementById('constanteGraphCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 25;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const yMin = margin;
+  const yMax = margin + graphH;
+  const cy = margin + graphH/2;
+
+  // Ejes
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(margin, yMin);
+  ctx.lineTo(margin, yMax);
+  ctx.lineTo(margin + graphW, yMax);
+  ctx.stroke();
+
+  // Línea horizontal f(x) = 5 (en la mitad superior)
+  const lineY = cy - 20;
+  ctx.beginPath();
+  ctx.moveTo(margin + 10, lineY);
+  ctx.lineTo(margin + graphW - 10, lineY);
+  ctx.strokeStyle = '#1a7a4a';
+  ctx.lineWidth = 3.5;
+  ctx.stroke();
+
+  // Círculo en el punto (0, 5)
+  const cx = margin + graphW/2;
+  ctx.beginPath();
+  ctx.arc(cx, lineY, 6, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a7a4a';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Etiqueta de la función
+  ctx.fillStyle = '#1a7a4a';
+  ctx.font = 'bold 13px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('f(x) = 5', cx, lineY - 8);
+
+  // Etiqueta del punto
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('(0, 5)', cx + 10, lineY - 2);
+
+  // Etiquetas de ejes
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('x', margin + graphW, yMax + 4);
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('y', margin - 6, yMin);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: FUNCIÓN LINEAL (Slide 2) - CORREGIDA
+// ════════════════════════════════════════════════════════════════
+function drawLinealGraph() {
+  const canvas = document.getElementById('linealGraphCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 25;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const cy = margin + graphH/2;
+  const cx = margin + graphW/2;
+
+  // Ejes cruzándose en el centro (origen)
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  
+  // Eje Y (vertical)
+  ctx.beginPath();
+  ctx.moveTo(cx, margin);
+  ctx.lineTo(cx, margin + graphH);
+  ctx.stroke();
+  
+  // Eje X (horizontal)
+  ctx.beginPath();
+  ctx.moveTo(margin, cy);
+  ctx.lineTo(margin + graphW, cy);
+  ctx.stroke();
+
+  // Línea f(x) = 2x (pasa por el origen)
+  // Pendiente 2: por cada unidad en X, sube 2 en Y
+  ctx.beginPath();
+  ctx.moveTo(margin + 10, cy + (graphH/2 - 10)); // esquina inferior izquierda
+  ctx.lineTo(margin + graphW - 10, cy - (graphH/2 - 10)); // esquina superior derecha
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 3.5;
+  ctx.stroke();
+
+  // Círculo en el origen (0,0) - en el centro donde se cruzan los ejes
+  ctx.beginPath();
+  ctx.arc(cx, cy, 6, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a6fa8';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Etiqueta de la función
+  ctx.fillStyle = '#1a6fa8';
+  ctx.font = 'bold 13px "JetBrains Mono", monospace';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('f(x) = 2x', margin + graphW - 10, cy - 20);
+
+  // Etiqueta del origen (0,0)
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillText('(0, 0)', cx + 8, cy + 4);
+
+  // Etiquetas de los ejes
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('x', margin + graphW, cy + 4);
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('y', cx - 6, margin);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: FUNCIÓN IDENTIDAD (Slide 2) - CORREGIDA
+// ════════════════════════════════════════════════════════════════
+function drawIdentidadGraph() {
+  const canvas = document.getElementById('identidadGraphCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 25;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const cy = margin + graphH/2;
+  const cx = margin + graphW/2;
+
+  // Ejes cruzándose en el centro (origen)
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  
+  // Eje Y (vertical)
+  ctx.beginPath();
+  ctx.moveTo(cx, margin);
+  ctx.lineTo(cx, margin + graphH);
+  ctx.stroke();
+  
+  // Eje X (horizontal)
+  ctx.beginPath();
+  ctx.moveTo(margin, cy);
+  ctx.lineTo(margin + graphW, cy);
+  ctx.stroke();
+
+  // Línea f(x) = x (diagonal a 45° que pasa por el origen)
+  ctx.beginPath();
+  ctx.moveTo(margin + 10, cy + (graphH/2 - 10)); // esquina inferior izquierda
+  ctx.lineTo(margin + graphW - 10, cy - (graphH/2 - 10)); // esquina superior derecha
+  ctx.strokeStyle = '#c8a84b';
+  ctx.lineWidth = 3.5;
+  ctx.stroke();
+
+  // Círculo en el origen (0, 0) - en el centro donde se cruzan los ejes
+  ctx.beginPath();
+  ctx.arc(cx, cy, 6, 0, 2 * Math.PI);
+  ctx.fillStyle = '#c8a84b';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Etiqueta de la función
+  ctx.fillStyle = '#c8a84b';
+  ctx.font = 'bold 13px "JetBrains Mono", monospace';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('f(x) = x', margin + graphW - 10, cy - 20);
+
+  // Etiqueta del origen
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillText('(0, 0)', cx + 8, cy + 4);
+
+  // Etiquetas de ejes
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('x', margin + graphW, cy + 4);
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('y', cx - 6, margin);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: FUNCIÓN AFÍN (Slide 2) - CORREGIDA
+// ════════════════════════════════════════════════════════════════
+function drawAfinGraph() {
+  const canvas = document.getElementById('afinGraphCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 25;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const cy = margin + graphH/2;
+  const cx = margin + graphW/2;
+
+  // Ejes cruzándose en el centro (origen)
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  
+  // Eje Y (vertical)
+  ctx.beginPath();
+  ctx.moveTo(cx, margin);
+  ctx.lineTo(cx, margin + graphH);
+  ctx.stroke();
+  
+  // Eje X (horizontal)
+  ctx.beginPath();
+  ctx.moveTo(margin, cy);
+  ctx.lineTo(margin + graphW, cy);
+  ctx.stroke();
+
+  // Línea f(x) = 2x + 3 (corta en y=3)
+  // Escala: 1 unidad en Y = graphH/8 píxeles
+  // Punto (0, 3) está en (cx, cy - 3*(graphH/8))
+  const yScale = graphH / 8;
+  const xScale = graphW / 8;
+  
+  // Dos puntos para la línea: (-3, -3) y (3, 9) aproximadamente
+  const x1 = margin + 10;
+  const y1 = cy + 3 * yScale; // f(-3) = 2*(-3) + 3 = -3
+  const x2 = margin + graphW - 10;
+  const y2 = cy - 3 * yScale; // f(3) = 2*(3) + 3 = 9
+  
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.strokeStyle = '#c06020';
+  ctx.lineWidth = 3.5;
+  ctx.stroke();
+
+  // Círculo en el corte con y (0, 3) - sobre el eje Y
+  const cyPoint = cy - 3 * yScale;
+  ctx.beginPath();
+  ctx.arc(cx, cyPoint, 6, 0, 2 * Math.PI);
+  ctx.fillStyle = '#c06020';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Etiqueta de la función
+  ctx.fillStyle = '#c06020';
+  ctx.font = 'bold 13px "JetBrains Mono", monospace';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('f(x) = 2x + 3', margin + graphW - 10, cy - 20);
+
+  // Etiqueta del punto (0, 3)
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('(0, 3)', cx + 8, cyPoint - 2);
+
+  // Etiquetas de ejes
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('x', margin + graphW, cy + 4);
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('y', cx - 6, margin);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: PENDIENTE POSITIVA (Slide 3)
+// ════════════════════════════════════════════════════════════════
+function drawPendPos() {
+  const canvas = document.getElementById('pendPosCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 12;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const cy = margin + graphH/2;
+
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(margin, margin);
+  ctx.lineTo(margin, margin + graphH);
+  ctx.lineTo(margin + graphW, margin + graphH);
+  ctx.stroke();
+
+  // Línea con pendiente positiva
+  ctx.beginPath();
+  ctx.moveTo(margin, cy + 20);
+  ctx.lineTo(margin + graphW, cy - 20);
+  ctx.strokeStyle = '#1a7a4a';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  ctx.fillStyle = '#1a7a4a';
+  ctx.font = '9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('m > 0', margin + graphW - 40, cy - 22);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: PENDIENTE NEGATIVA (Slide 3)
+// ════════════════════════════════════════════════════════════════
+function drawPendNeg() {
+  const canvas = document.getElementById('pendNegCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 12;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const cy = margin + graphH/2;
+
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(margin, margin);
+  ctx.lineTo(margin, margin + graphH);
+  ctx.lineTo(margin + graphW, margin + graphH);
+  ctx.stroke();
+
+  // Línea con pendiente negativa
+  ctx.beginPath();
+  ctx.moveTo(margin, cy - 20);
+  ctx.lineTo(margin + graphW, cy + 20);
+  ctx.strokeStyle = '#a02020';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  ctx.fillStyle = '#a02020';
+  ctx.font = '9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillText('m < 0', margin + graphW - 40, cy + 24);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: PENDIENTE CERO (Slide 3)
+// ════════════════════════════════════════════════════════════════
+function drawPendCero() {
+  const canvas = document.getElementById('pendCeroCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 12;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const cy = margin + graphH/2;
+
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(margin, margin);
+  ctx.lineTo(margin, margin + graphH);
+  ctx.lineTo(margin + graphW, margin + graphH);
+  ctx.stroke();
+
+  // Línea horizontal
+  ctx.beginPath();
+  ctx.moveTo(margin, cy);
+  ctx.lineTo(margin + graphW, cy);
+  ctx.strokeStyle = '#c8a84b';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  ctx.fillStyle = '#c8a84b';
+  ctx.font = '9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('m = 0', margin + graphW - 35, cy - 4);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: INTERSECCIONES (Slide 5 - Corregido)
+// ════════════════════════════════════════════════════════════════
+function drawIntersecciones() {
+  const canvas = document.getElementById('interseccionesCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 35;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+  const yMin = margin;
+  const yMax = margin + graphH;
+  const cx = margin + graphW/2;
+  const cy = margin + graphH/2;
+
+  // Ejes
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(margin, cy);
+  ctx.lineTo(margin + graphW, cy);
+  ctx.moveTo(cx, yMin);
+  ctx.lineTo(cx, yMax);
+  ctx.stroke();
+
+  // Flechas de ejes
+  ctx.beginPath();
+  ctx.moveTo(margin + graphW, cy);
+  ctx.lineTo(margin + graphW - 10, cy - 5);
+  ctx.moveTo(margin + graphW, cy);
+  ctx.lineTo(margin + graphW - 10, cy + 5);
+  ctx.moveTo(cx, yMin);
+  ctx.lineTo(cx - 5, yMin + 10);
+  ctx.moveTo(cx, yMin);
+  ctx.lineTo(cx + 5, yMin + 10);
+  ctx.stroke();
+
+  // Etiquetas de ejes
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '12px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('x', margin + graphW, cy + 6);
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('y', cx - 8, yMin);
+
+  // Origen
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'top';
+  ctx.fillText('O', cx - 6, cy + 4);
+
+  // Función: y = 2x + 3
+  // Calcular puntos de la recta
+  const m = 2;
+  const n = 3;
+  const xMin = -3;
+  const xMax = 3;
+  const yMinVal = -4;
+  const yMaxVal = 10;
+
+  const toPx = (x) => cx + (x / 4) * (graphW / 2);
+  const toPy = (y) => cy - (y / 7) * (graphH / 2);
+
+  // Dibujar la recta
+  ctx.beginPath();
+  const startX = xMin;
+  const startY = m * startX + n;
+  ctx.moveTo(toPx(startX), toPy(startY));
+  const endX = xMax;
+  const endY = m * endX + n;
+  ctx.lineTo(toPx(endX), toPy(endY));
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // Corte con y: (0, 3)
+  const p0x = toPx(0);
+  const p0y = toPy(3);
+  ctx.beginPath();
+  ctx.arc(p0x, p0y, 7, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a7a4a';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '12px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('(0, 3)', p0x + 10, p0y - 4);
+
+  // Corte con x: (-3/2, 0)
+  const p1x = toPx(-1.5);
+  const p1y = toPy(0);
+  ctx.beginPath();
+  ctx.arc(p1x, p1y, 7, 0, 2 * Math.PI);
+  ctx.fillStyle = '#c06020';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.fillStyle = '#1a2a4a';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('(-3/2, 0)', p1x - 10, p1y - 4);
+
+  // Etiqueta de la función
+  ctx.fillStyle = '#1a6fa8';
+  ctx.font = 'bold 14px "JetBrains Mono", monospace';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('y = 2x + 3', margin + graphW - 10, yMin + 20);
+
+  // Cuadrícula sutil
+  ctx.strokeStyle = 'rgba(0,0,0,0.05)';
+  ctx.lineWidth = 0.5;
+  for (let i = -3; i <= 3; i++) {
+    const px = toPx(i);
+    ctx.beginPath();
+    ctx.moveTo(px, yMin);
+    ctx.lineTo(px, yMax);
+    ctx.stroke();
+    ctx.fillStyle = '#6b7a90';
+    ctx.font = '9px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    if (i !== 0) ctx.fillText(i, px, cy + 6);
+  }
+  for (let i = -3; i <= 7; i++) {
+    const py = toPy(i);
+    ctx.beginPath();
+    ctx.moveTo(margin, py);
+    ctx.lineTo(margin + graphW, py);
+    ctx.stroke();
+    ctx.fillStyle = '#6b7a90';
+    ctx.font = '9px "JetBrains Mono", monospace';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    if (i !== 0) ctx.fillText(i, cx - 8, py);
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER KATEX Y CANVAS
+// ════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement === 'function') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });
+  }
+
+  setTimeout(() => {
+    drawConstanteGraph();
+    drawLinealGraph();
+    drawIdentidadGraph();
+    drawAfinGraph();
+    drawPendPos();
+    drawPendNeg();
+    drawPendCero();
+    drawIntersecciones();
+  }, 150);
+});
+
+// Redibujar al cambiar de slide
+const observer = new MutationObserver(() => {
+  setTimeout(() => {
+    drawConstanteGraph();
+    drawLinealGraph();
+    drawIdentidadGraph();
+    drawAfinGraph();
+    drawPendPos();
+    drawPendNeg();
+    drawPendCero();
+    drawIntersecciones();
+  }, 80);
+});
+
+slides.forEach(s => {
+  observer.observe(s, { attributes: true, attributeFilter: ['class'] });
+});
+</script>
+</body>
+</html>

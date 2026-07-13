@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matemáticas C6 · Proporcionalidad · Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --teal:#0d7377;--orange:#c06020;--purple:#7a3a8a;--coral:#c06040;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+
+/* ─── LAYOUT ─── */
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+/* ─── SLIDES ─── */
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+.s-body{padding-bottom:16px !important;}
+
+/* slide header bar */
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--orange) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+/* slide body */
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+/* ─── CONTENT COMPONENTS ─── */
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--orange);}
+
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box.orange{border-left-color:var(--orange);}
+.rule-box.purple{border-left-color:var(--purple);}
+.rule-box.teal{border-left-color:var(--teal);}
+.rule-box.coral{border-left-color:var(--coral);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+/* math block */
+.math-block{
+  background:var(--navy);color:var(--gold2);border-radius:10px;
+  padding:14px 20px;font-size:.95rem;line-height:2;overflow-x:auto;
+}
+.math-block .comment{color:#6b8ab0;font-size:.8rem;}
+
+/* example strip */
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--orange);font-weight:700;}
+
+/* two-col layout */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+
+/* tip box */
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+/* canvas wrapper */
+.canvas-wrap{
+  background:var(--white);border-radius:12px;border:1px solid #dde4ee;
+  padding:16px;display:flex;justify-content:center;align-items:center;
+  width:100%;min-height:200px;overflow-x:auto;
+}
+.canvas-wrap canvas{max-width:100%;height:auto;border-radius:6px;background:var(--white);}
+
+/* property grid */
+.prop-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.prop-card{
+  background:var(--white);border-radius:10px;padding:10px 14px;
+  border:1px solid #dde4ee;text-align:center;
+}
+.prop-card .name{font-weight:700;color:var(--navy);font-size:.85rem;}
+.prop-card .formula{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--orange);margin-top:4px;}
+.prop-card .desc{font-size:.75rem;color:var(--gray);margin-top:4px;}
+
+/* proportion table */
+.prop-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;}
+.prop-table th{background:var(--navy);color:var(--gold);padding:6px 12px;text-align:center;font-size:.8rem;}
+.prop-table td{background:var(--white);padding:6px 12px;text-align:center;font-size:.85rem;border-bottom:1px solid #eef1f5;font-family:'JetBrains Mono',monospace;}
+.prop-table tr:nth-child(even) td{background:#f8fafc;}
+
+/* cover slide */
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,var(--orange) 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+/* ─── NAV ─── */
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+/* ─── TRANSITIONS ─── */
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col,.prop-grid{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+  .nav-links .nav-btn{font-size:.7rem;padding:5px 10px;}
+  #progress-wrap{max-width:120px;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══════════════════════════════════ SLIDE 1 – COVER ══════════════════════════════════ -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">📐</div>
+    <div class="cover-level">Eje Álgebra · Clase 06</div>
+    <div class="cover-title">Proporcionalidad<br><span>Escuela Naval 2027</span></div>
+    <div class="cover-sub">Razones, proporciones directas e inversas. Herramientas esenciales para cálculos de velocidad, escalas, conversiones y proporcionalidad compuesta.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">📊 Razones</span>
+      <span class="cover-tag">📈 Proporción Directa</span>
+      <span class="cover-tag">📉 Proporción Inversa</span>
+      <span class="cover-tag">🧮 Regla de 3</span>
+      <span class="cover-tag">⚓ Aplicaciones</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 2 – RAZONES ══════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Razones</h2>
+    <span class="s-num">02 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Una <strong>razón</strong> es la comparación ordenada entre dos cantidades o magnitudes mediante su <strong>cociente</strong>.</p>
+    <div class="math-block">
+      \[
+      \text{Razón} = \frac{a}{b} = a : b
+      \]
+      <span class="comment">a: antecedente · b: consecuente</span>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ejemplos</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.9rem;line-height:2;">
+            La razón entre 10 y 5 es \(\frac{10}{5} = 2\)<br>
+            La razón entre 3 y 7 es \(\frac{3}{7} \approx 0.428\)<br>
+            La razón entre 15 y 20 es \(\frac{15}{20} = \frac{3}{4}\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Lectura</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.9rem;line-height:2;">
+            \(10:5\) se lee "10 es a 5"<br>
+            \(3:7\) se lee "3 es a 7"<br>
+            \(15:20\) se lee "15 es a 20"
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">💡</span><div class="content"><strong>Importante:</strong> El orden de una razón <strong>no es intercambiable</strong>. \(a:b \neq b:a\) (a menos que \(a=b\)).</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 3 – PROPORCIONES ══════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Proporciones</h2>
+    <span class="s-num">03 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Una <strong>proporción</strong> es una igualdad entre dos o más razones. Presenta una <strong>constante de proporcionalidad</strong> \(k\).</p>
+    <div class="math-block">
+      \[
+      \frac{a}{b} = \frac{c}{d} = k
+      \]
+      <span class="comment">k: constante de proporcionalidad</span>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ejemplo 1</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.9rem;line-height:2;">
+            \(\frac{1}{2} = \frac{2}{4} = \frac{3}{6} = 0.5\)<br>
+            <span style="font-size:.8rem;color:var(--gray);">Constante \(k = 0.5\)</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Ejemplo 2</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.9rem;line-height:2;">
+            \(\frac{1}{0.5} = \frac{4}{2} = \frac{0.1}{0.05} = 2\)<br>
+            <span style="font-size:.8rem;color:var(--gray);">Constante \(k = 2\)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rule-box gold" style="margin-top:8px;">
+      <div class="title">📌 Tipos de proporcionalidad</div>
+      <div class="three-col">
+        <div class="ex" style="font-size:.85rem;text-align:center;">📈 Directa<br>\(a \propto b\)</div>
+        <div class="ex" style="font-size:.85rem;text-align:center;">📉 Inversa<br>\(a \propto \frac{1}{b}\)</div>
+        <div class="ex" style="font-size:.85rem;text-align:center;">📊 Compuesta<br>(M2)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 4 – PROPORCIÓN DIRECTA ══════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Proporción Directa</h2>
+    <span class="s-num">04 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Dos magnitudes son <strong>directamente proporcionales</strong> si al <strong>aumentar</strong> una, la otra también <strong>aumenta</strong> en la misma proporción (y viceversa).</p>
+    <div class="math-block">
+      \[
+      \frac{a}{b} = k \quad \Rightarrow \quad a = k \cdot b
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Tabla de proporcionalidad</div>
+        <table class="prop-table">
+          <thead><tr><th>\(x\)</th><th>\(y\)</th><th>\(k = \frac{x}{y}\)</th></tr></thead>
+          <tbody>
+            <tr><td>2</td><td>6</td><td>\(\frac{1}{3}\)</td></tr>
+            <tr><td>3</td><td>9</td><td>\(\frac{1}{3}\)</td></tr>
+            <tr><td>4</td><td>12</td><td>\(\frac{1}{3}\)</td></tr>
+            <tr><td>5</td><td>15</td><td>\(\frac{1}{3}\)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="sec-label">📌 Características</div>
+        <div class="rule-box green">
+          <ul>
+            <li>Gráfica: <strong>recta</strong> que pasa por el origen \((0,0)\)</li>
+            <li>Constante \(k\): <strong>cociente</strong> entre las magnitudes</li>
+            <li>Regla de 3: <strong>multiplicar cruzado</strong></li>
+          </ul>
+        </div>
+        <div class="canvas-wrap" style="margin-top:6px;min-height:140px;">
+          <canvas id="directaCanvas" width="400" height="120"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Regla de 3 directa:</strong> \(\frac{a}{b} = \frac{c}{d} \rightarrow a \cdot d = b \cdot c\)</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 5 – PROPORCIÓN INVERSA ══════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Proporción Inversa</h2>
+    <span class="s-num">05 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Dos magnitudes son <strong>inversamente proporcionales</strong> si al <strong>aumentar</strong> una, la otra <strong>disminuye</strong> en la misma proporción (y viceversa).</p>
+    <div class="math-block">
+      \[
+      a \cdot b = k \quad \Rightarrow \quad a = \frac{k}{b}
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Tabla de proporcionalidad</div>
+        <table class="prop-table">
+          <thead><tr><th>\(x\)</th><th>\(y\)</th><th>\(k = x \cdot y\)</th></tr></thead>
+          <tbody>
+            <tr><td>4</td><td>6</td><td>24</td></tr>
+            <tr><td>6</td><td>4</td><td>24</td></tr>
+            <tr><td>8</td><td>3</td><td>24</td></tr>
+            <tr><td>12</td><td>2</td><td>24</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="sec-label">📌 Características</div>
+        <div class="rule-box orange">
+          <ul>
+            <li>Gráfica: <strong>curva</strong> (hipérbola) que no toca los ejes</li>
+            <li>Constante \(k\): <strong>producto</strong> entre las magnitudes</li>
+            <li>Regla de 3: <strong>multiplicar lineal y dividir</strong></li>
+          </ul>
+        </div>
+        <div class="canvas-wrap" style="margin-top:6px;min-height:140px;">
+          <canvas id="inversaCanvas" width="400" height="120"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Regla de 3 inversa:</strong> \(a_1 \cdot b_1 = a_2 \cdot b_2\)</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 6 – EJEMPLOS: PROPORCIÓN DIRECTA ══════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">EJEMPLOS</span>
+    <h2>Proporción Directa — Ejemplos</h2>
+    <span class="s-num">06 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📌 Ejemplo 1 — Máquinas y costo</div>
+      <div class="ex">
+        5 máquinas tienen un costo de $610. ¿Cuántas máquinas se pueden comprar con $1.342?<br><br>
+        <span class="key">Solución:</span> Regla de 3 directa:<br>
+        \(\frac{5}{610} = \frac{x}{1342} \rightarrow x = \frac{1342 \cdot 5}{610} = 11\)<br>
+        <strong>Respuesta:</strong> Se pueden comprar 11 máquinas.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📌 Ejemplo 2 — Velocidad y distancia</div>
+      <div class="ex">
+        Un barco recorre 240 km en 6 horas. ¿Qué distancia recorre en 10 horas a la misma velocidad?<br><br>
+        <span class="key">Solución:</span> \(\frac{240}{6} = \frac{x}{10} \rightarrow x = \frac{240 \cdot 10}{6} = 400\) km<br>
+        <strong>Respuesta:</strong> Recorre 400 km.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📌 Ejemplo 3 — Proporcionalidad en la cocina</div>
+      <div class="ex">
+        Una receta para 4 personas usa 2 tazas de harina. ¿Cuánta harina se necesita para 6 personas?<br><br>
+        <span class="key">Solución:</span> \(\frac{2}{4} = \frac{x}{6} \rightarrow x = \frac{2 \cdot 6}{4} = 3\) tazas<br>
+        <strong>Respuesta:</strong> Se necesitan 3 tazas de harina.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 7 – EJEMPLOS: PROPORCIÓN INVERSA ══════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">EJEMPLOS</span>
+    <h2>Proporción Inversa — Ejemplos</h2>
+    <span class="s-num">07 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📌 Ejemplo 1 — Obreros y días</div>
+      <div class="ex">
+        5 obreros construyen una casa en 15 días. ¿Cuántos días se demorarán 3 obreros?<br><br>
+        <span class="key">Solución:</span> Regla de 3 inversa:<br>
+        \(5 \cdot 15 = 3 \cdot x \rightarrow x = \frac{5 \cdot 15}{3} = 25\) días<br>
+        <strong>Respuesta:</strong> Se demorarán 25 días.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📌 Ejemplo 2 — Velocidad y tiempo</div>
+      <div class="ex">
+        Un auto viaja a 60 km/h y tarda 4 horas en llegar. ¿Cuánto tardará a 80 km/h?<br><br>
+        <span class="key">Solución:</span> \(60 \cdot 4 = 80 \cdot x \rightarrow x = \frac{60 \cdot 4}{80} = 3\) horas<br>
+        <strong>Respuesta:</strong> Tardará 3 horas.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📌 Ejemplo 3 — Caudal de agua</div>
+      <div class="ex">
+        Un grifo llena un estanque en 6 horas con un caudal de 8 L/min. ¿Cuánto tardará con un caudal de 12 L/min?<br><br>
+        <span class="key">Solución:</span> \(6 \cdot 8 = x \cdot 12 \rightarrow x = \frac{6 \cdot 8}{12} = 4\) horas<br>
+        <strong>Respuesta:</strong> Tardará 4 horas.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 8 – PROPORCIÓN COMPUESTA ══════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">TEORÍA (M2)</span>
+    <h2>Proporción Compuesta</h2>
+    <span class="s-num">08 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">La <strong>proporcionalidad compuesta</strong> (regla de tres compuesta) ocurre cuando intervienen <strong>más de dos magnitudes</strong> relacionadas entre sí.</p>
+    <div class="math-block">
+      \[
+      \text{DDD} \rightarrow a_1b_1c_1 = a_2b_2c_2
+      \]
+      \[
+      \text{DDI} \rightarrow \frac{a_1b_1}{c_1} = \frac{a_2b_2}{c_2}
+      \]
+      \[
+      \text{DII} \rightarrow \frac{a_1}{b_1c_1} = \frac{a_2}{b_2c_2}
+      \]
+    </div>
+    <div class="rule-box gold" style="margin-top:8px;">
+      <div class="title">📌 Ejemplo</div>
+      <div class="ex">
+        6 máquinas producen 480 piezas en 8 horas. ¿Cuántas piezas producen 9 máquinas en 5 horas?<br><br>
+        <span class="key">Solución:</span> Máquinas y tiempo son <strong>inversas</strong>; piezas y tiempo son <strong>directas</strong>.<br>
+        \(\frac{6 \cdot 8}{480} = \frac{9 \cdot 5}{x} \rightarrow x = \frac{480 \cdot 9 \cdot 5}{6 \cdot 8} = 450\)<br>
+        <strong>Respuesta:</strong> Producen 450 piezas.
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Estrategia:</strong> Identifica qué variables son <strong>directas</strong> (DD) y cuáles <strong>inversas</strong> (II) para aplicar la fórmula correcta.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 9 – EJEMPLOS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejemplos tipo examen</h2>
+    <span class="s-num">09 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Ejercicios <strong>similares a las preguntas PAES</strong> sobre proporcionalidad.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 1 — Proporción directa</div>
+      <div class="ex">
+        Si 3 kg de manzanas cuestan $4.500, ¿cuánto cuestan 5 kg?<br>
+        <span class="key">Solución:</span> \(\frac{3}{4500} = \frac{5}{x} \rightarrow x = \frac{5 \cdot 4500}{3} = 7.500\)<br>
+        <strong>Respuesta:</strong> $7.500
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 2 — Proporción inversa</div>
+      <div class="ex">
+        4 trabajadores hacen una obra en 12 días. ¿Cuánto tardan 6 trabajadores?<br>
+        <span class="key">Solución:</span> \(4 \cdot 12 = 6 \cdot x \rightarrow x = \frac{4 \cdot 12}{6} = 8\) días<br>
+        <strong>Respuesta:</strong> 8 días
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejemplo 3 — Proporción compuesta</div>
+      <div class="ex">
+        3 máquinas producen 120 unidades en 4 horas. ¿Cuántas unidades producen 5 máquinas en 6 horas?<br>
+        <span class="key">Solución:</span> \(\frac{3 \cdot 4}{120} = \frac{5 \cdot 6}{x} \rightarrow x = \frac{120 \cdot 5 \cdot 6}{3 \cdot 4} = 300\)<br>
+        <strong>Respuesta:</strong> 300 unidades
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 10 – RESOLUCIÓN DE PROBLEMAS ══════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Resolución de Problemas</h2>
+    <span class="s-num">10 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 1 — Velocidad de un buque</div>
+      <div class="ex">
+        Un buque navega a 15 nudos y recorre una distancia en 12 horas. ¿Qué velocidad debe mantener para recorrer la misma distancia en 10 horas?<br><br>
+        <span class="key">Solución:</span> Proporción inversa:<br>
+        \(15 \cdot 12 = v \cdot 10 \rightarrow v = \frac{180}{10} = 18\) nudos<br>
+        <strong>Respuesta:</strong> 18 nudos.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 2 — Combustible</div>
+      <div class="ex">
+        Un buque consume 2.000 litros de combustible en 5 días. ¿Cuánto consumirá en 8 días al mismo ritmo?<br><br>
+        <span class="key">Solución:</span> Proporción directa:<br>
+        \(\frac{2000}{5} = \frac{x}{8} \rightarrow x = \frac{2000 \cdot 8}{5} = 3.200\) litros<br>
+        <strong>Respuesta:</strong> 3.200 litros.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📝 Problema 3 — Escala en carta náutica</div>
+      <div class="ex">
+        En una carta náutica, 3 cm representan 15 km. ¿Qué distancia real representan 7 cm?<br><br>
+        <span class="key">Solución:</span> Proporción directa:<br>
+        \(\frac{3}{15} = \frac{7}{x} \rightarrow x = \frac{7 \cdot 15}{3} = 35\) km<br>
+        <strong>Respuesta:</strong> 35 km.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 11 – EJERCICIOS DE PRÁCTICA ══════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Ejercicios de Práctica</h2>
+    <span class="s-num">11 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Resuelve estos ejercicios <strong>antes de ver la solución</strong>.</p>
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">1. Si 4 kg de harina cuestan $2.800, ¿cuánto cuestan 7 kg?</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) $4.200</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) $4.900 ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) $5.600</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) $6.300</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(\frac{4}{2800} = \frac{7}{x} \rightarrow x = \frac{7 \cdot 2800}{4} = 4.900\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">2. 6 trabajadores tardan 10 días. ¿Cuánto tardan 4 trabajadores?</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) 12 días</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) 15 días ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) 18 días</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) 20 días</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(6 \cdot 10 = 4 \cdot x \rightarrow x = 15\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">3. 5 máquinas producen 300 piezas en 6 horas. ¿Cuántas piezas producen 8 máquinas en 9 horas?</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) 640</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) 720 ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) 800</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) 960</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(\frac{5 \cdot 6}{300} = \frac{8 \cdot 9}{x} \rightarrow x = \frac{300 \cdot 8 \cdot 9}{5 \cdot 6} = 720\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 12 – MÁS EJERCICIOS ══════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Más Ejercicios de Práctica</h2>
+    <span class="s-num">12 / 20</span>
+  </div>
+  <div class="s-body">
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">4. Un auto recorre 360 km en 4 horas. ¿Qué distancia recorre en 7 horas?</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) 540 km</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) 630 km ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) 720 km</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) 810 km</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(\frac{360}{4} = \frac{x}{7} \rightarrow x = 630\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">5. 8 personas consumen 12 kg de pan en 15 días. ¿Cuánto consumen 10 personas en 20 días?</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) 18 kg</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">b) 20 kg</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">c) 20 kg ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) 24 kg</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(\frac{8 \cdot 15}{12} = \frac{10 \cdot 20}{x} \rightarrow x = 20\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">6. Si 3 obreros construyen un muro en 8 días, ¿cuántos obreros se necesitan para construirlo en 4 días?</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) 4</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) 6 ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) 8</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) 12</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(3 \cdot 8 = x \cdot 4 \rightarrow x = 6\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 13 – PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Preguntas estilo examen</h2>
+    <span class="s-num">13 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 1 — PAES M1</div>
+      <div class="ex">
+        Si \(2x = 5y\), entonces la razón \(x:y\) es:<br><br>
+        a) 2:5 &nbsp; b) 5:2 &nbsp; c) 5:3 &nbsp; d) 3:5<br>
+        <span class="key">Solución:</span> \(2x = 5y \rightarrow \frac{x}{y} = \frac{5}{2} \rightarrow x:y = 5:2\)<br>
+        <strong>Respuesta:</strong> b) 5:2
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 2 — PAES M1</div>
+      <div class="ex">
+        Un automóvil recorre 300 km con 25 litros de combustible. ¿Cuántos litros necesita para recorrer 540 km?<br><br>
+        a) 40 L &nbsp; b) 45 L &nbsp; c) 50 L &nbsp; d) 55 L<br>
+        <span class="key">Solución:</span> \(\frac{300}{25} = \frac{540}{x} \rightarrow x = \frac{540 \cdot 25}{300} = 45\) L<br>
+        <strong>Respuesta:</strong> b) 45 L
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 3 — PAES M1</div>
+      <div class="ex">
+        Si 4 obreros hacen una obra en 9 días, ¿cuántos obreros se necesitan para hacerla en 6 días?<br><br>
+        a) 5 &nbsp; b) 6 &nbsp; c) 7 &nbsp; d) 8<br>
+        <span class="key">Solución:</span> \(4 \cdot 9 = x \cdot 6 \rightarrow x = \frac{36}{6} = 6\)<br>
+        <strong>Respuesta:</strong> b) 6
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 14 – MÁS PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Más preguntas estilo examen</h2>
+    <span class="s-num">14 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 4 — PAES M1</div>
+      <div class="ex">
+        En un mapa, 2 cm representan 5 km. ¿Qué distancia real representan 7 cm?<br><br>
+        a) 14 km &nbsp; b) 15 km &nbsp; c) 17.5 km &nbsp; d) 20 km<br>
+        <span class="key">Solución:</span> \(\frac{2}{5} = \frac{7}{x} \rightarrow x = \frac{7 \cdot 5}{2} = 17.5\) km<br>
+        <strong>Respuesta:</strong> c) 17.5 km
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 5 — PAES M1</div>
+      <div class="ex">
+        Si \(a\) es directamente proporcional a \(b\), y \(a=12\) cuando \(b=4\), ¿cuál es el valor de \(a\) cuando \(b=7\)?<br><br>
+        a) 14 &nbsp; b) 18 &nbsp; c) 21 &nbsp; d) 24<br>
+        <span class="key">Solución:</span> \(k = \frac{12}{4} = 3 \rightarrow a = 3 \cdot 7 = 21\)<br>
+        <strong>Respuesta:</strong> c) 21
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 6 — PAES M1</div>
+      <div class="ex">
+        Si \(a\) es inversamente proporcional a \(b\), y \(a=10\) cuando \(b=6\), ¿cuál es el valor de \(a\) cuando \(b=15\)?<br><br>
+        a) 2 &nbsp; b) 3 &nbsp; c) 4 &nbsp; d) 5<br>
+        <span class="key">Solución:</span> \(k = 10 \cdot 6 = 60 \rightarrow a = \frac{60}{15} = 4\)<br>
+        <strong>Respuesta:</strong> c) 4
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 15 – APLICACIONES NAVALES ══════════════════════════════════ -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Proporcionalidad en Contextos Navales</h2>
+    <span class="s-num">15 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">La proporcionalidad es <strong>esencial</strong> en navegación, logística, combustible y planificación de rutas.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">⚓ Velocidad y tiempo de navegación</div>
+      <div class="ex">
+        Un buque navega a 20 nudos y tarda 15 horas en llegar a su destino. ¿Cuánto tardaría a 25 nudos?<br><br>
+        <span class="key">Solución:</span> \(20 \cdot 15 = 25 \cdot x \rightarrow x = \frac{300}{25} = 12\) horas<br>
+        <strong>Respuesta:</strong> Tardaría 12 horas.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">⛽ Consumo de combustible</div>
+      <div class="ex">
+        Un buque consume 5.000 L de combustible en 8 días de navegación. ¿Cuánto consumirá en 12 días?<br><br>
+        <span class="key">Solución:</span> \(\frac{5000}{8} = \frac{x}{12} \rightarrow x = \frac{5000 \cdot 12}{8} = 7.500\) L<br>
+        <strong>Respuesta:</strong> Consumirá 7.500 L.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">🧭 Proporciones en cartas náuticas</div>
+      <div class="ex">
+        En una carta, 2.5 cm representan 10 millas náuticas. ¿Cuántos cm representan 25 millas?<br><br>
+        <span class="key">Solución:</span> \(\frac{2.5}{10} = \frac{x}{25} \rightarrow x = \frac{2.5 \cdot 25}{10} = 6.25\) cm<br>
+        <strong>Respuesta:</strong> 6.25 cm.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 16 – MÁS APLICACIONES ══════════════════════════════════ -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Más Aplicaciones Prácticas</h2>
+    <span class="s-num">16 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">👨‍✈️ Tripulación y provisiones</div>
+      <div class="ex">
+        Un buque con 60 tripulantes tiene provisiones para 30 días. ¿Cuántos días durarán si se incorporan 15 tripulantes más?<br><br>
+        <span class="key">Solución:</span> \(60 \cdot 30 = 75 \cdot x \rightarrow x = \frac{1800}{75} = 24\) días<br>
+        <strong>Respuesta:</strong> Durarán 24 días.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📐 Escala de planos</div>
+      <div class="ex">
+        El plano de un buque está a escala 1:200. Si una sala mide 4 cm en el plano, ¿cuánto mide en la realidad?<br><br>
+        <span class="key">Solución:</span> \(4 \cdot 200 = 800\) cm = 8 m<br>
+        <strong>Respuesta:</strong> 8 metros.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">⚡ Rendimiento de motores</div>
+      <div class="ex">
+        Un motor consume 120 L de combustible en 4 horas de operación. ¿Cuánto consumirá en 7 horas?<br><br>
+        <span class="key">Solución:</span> \(\frac{120}{4} = \frac{x}{7} \rightarrow x = \frac{120 \cdot 7}{4} = 210\) L<br>
+        <strong>Respuesta:</strong> Consumirá 210 L.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 17 – EJERCICIOS ADICIONALES ══════════════════════════════════ -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejercicios Adicionales</h2>
+    <span class="s-num">17 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 1 — Proporcionalidad directa</div>
+      <div class="ex">
+        Si 7 kg de fruta cuestan $9.100, ¿cuánto cuestan 11 kg?<br>
+        <span class="key">Solución:</span> \(\frac{7}{9100} = \frac{11}{x} \rightarrow x = \frac{11 \cdot 9100}{7} = 14.300\)<br>
+        <strong>Respuesta:</strong> $14.300
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 2 — Proporcionalidad inversa</div>
+      <div class="ex">
+        8 grifos llenan un estanque en 3 horas. ¿Cuánto tardan 6 grifos?<br>
+        <span class="key">Solución:</span> \(8 \cdot 3 = 6 \cdot x \rightarrow x = \frac{24}{6} = 4\) horas<br>
+        <strong>Respuesta:</strong> 4 horas
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejercicio 3 — Proporción compuesta</div>
+      <div class="ex">
+        4 máquinas producen 200 piezas en 5 horas. ¿Cuántas piezas producen 6 máquinas en 8 horas?<br>
+        <span class="key">Solución:</span> \(\frac{4 \cdot 5}{200} = \frac{6 \cdot 8}{x} \rightarrow x = \frac{200 \cdot 6 \cdot 8}{4 \cdot 5} = 480\)<br>
+        <strong>Respuesta:</strong> 480 piezas
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 18 – EJERCICIOS AVANZADOS ══════════════════════════════════ -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejercicios Avanzados</h2>
+    <span class="s-num">18 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 4 — Combinación de proporciones</div>
+      <div class="ex">
+        10 obreros trabajando 8 horas diarias construyen un muro en 15 días. ¿Cuántos días tardarán 12 obreros trabajando 6 horas diarias?<br><br>
+        <span class="key">Solución:</span> \(\frac{10 \cdot 8 \cdot 15}{12 \cdot 6} = \frac{1200}{72} = 16.67\) días<br>
+        <strong>Respuesta:</strong> Aproximadamente 17 días.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 5 — Velocidad y distancia</div>
+      <div class="ex">
+        Un avión recorre 1.200 km en 2 horas. ¿Qué distancia recorre en 5 horas a la misma velocidad?<br>
+        <span class="key">Solución:</span> \(\frac{1200}{2} = \frac{x}{5} \rightarrow x = 3.000\) km<br>
+        <strong>Respuesta:</strong> 3.000 km
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejercicio 6 — Proporción en mezclas</div>
+      <div class="ex">
+        Una mezcla contiene cemento y arena en razón 2:5. Si se usan 6 kg de cemento, ¿cuánta arena se necesita?<br>
+        <span class="key">Solución:</span> \(\frac{2}{5} = \frac{6}{x} \rightarrow x = \frac{6 \cdot 5}{2} = 15\) kg<br>
+        <strong>Respuesta:</strong> 15 kg de arena.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 19 – EJERCICIOS TIPO PAES M2 ══════════════════════════════════ -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Preguntas estilo examen (M2)</h2>
+    <span class="s-num">19 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 7 — PAES M2</div>
+      <div class="ex">
+        5 máquinas, trabajando 6 horas diarias, producen 900 piezas en 8 días. ¿Cuántas piezas producen 8 máquinas, trabajando 9 horas diarias, en 10 días?<br><br>
+        a) 2.160 &nbsp; b) 2.400 &nbsp; c) 2.700 &nbsp; d) 3.000<br>
+        <span class="key">Solución:</span> \(\frac{5 \cdot 6 \cdot 8}{900} = \frac{8 \cdot 9 \cdot 10}{x} \rightarrow x = \frac{900 \cdot 8 \cdot 9 \cdot 10}{5 \cdot 6 \cdot 8} = 2.700\)<br>
+        <strong>Respuesta:</strong> c) 2.700
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 8 — PAES M2</div>
+      <div class="ex">
+        6 pintores, trabajando 8 horas diarias, pintan un edificio en 12 días. ¿Cuántos días tardarán 9 pintores trabajando 6 horas diarias?<br><br>
+        a) 8 días &nbsp; b) 9 días &nbsp; c) 10 días &nbsp; d) 12 días<br>
+        <span class="key">Solución:</span> \(\frac{6 \cdot 8 \cdot 12}{9 \cdot 6} = \frac{576}{54} = 10.67\) días<br>
+        <strong>Respuesta:</strong> c) 10 días (aproximadamente)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 9 — PAES M2</div>
+      <div class="ex">
+        4 grifos, con un caudal de 10 L/min, llenan un estanque en 8 horas. ¿Cuánto tardarán 5 grifos con un caudal de 8 L/min?<br><br>
+        a) 6 horas &nbsp; b) 7 horas &nbsp; c) 8 horas &nbsp; d) 10 horas<br>
+        <span class="key">Solución:</span> \(\frac{4 \cdot 10 \cdot 8}{5 \cdot 8} = \frac{320}{40} = 8\) horas<br>
+        <strong>Respuesta:</strong> c) 8 horas
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 20 – RESUMEN Y ESTRATEGIAS ══════════════════════════════════ -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">RESUMEN — CLASE 06</span>
+    <h2>Resumen: Proporcionalidad</h2>
+    <span class="s-num">20 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Contenidos clave</div>
+        <div class="rule-box green">
+          <ul style="padding-left:18px;font-size:.9rem;line-height:2;">
+            <li><strong>Razón:</strong> \(\frac{a}{b} = a:b\)</li>
+            <li><strong>Proporción:</strong> \(\frac{a}{b} = \frac{c}{d}\)</li>
+            <li><strong>Proporción Directa:</strong> \(\frac{a}{b} = k\) → \(a = k \cdot b\)</li>
+            <li><strong>Regla de 3 directa:</strong> \(\frac{a_1}{b_1} = \frac{a_2}{b_2}\)</li>
+            <li><strong>Proporción Inversa:</strong> \(a \cdot b = k\) → \(a = \frac{k}{b}\)</li>
+            <li><strong>Regla de 3 inversa:</strong> \(a_1 \cdot b_1 = a_2 \cdot b_2\)</li>
+            <li><strong>Proporción Compuesta:</strong> 3 o más magnitudes</li>
+            <li><strong>Gráfica directa:</strong> recta que pasa por el origen</li>
+            <li><strong>Gráfica inversa:</strong> curva (hipérbola)</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">🎯 Estrategias para el examen</div>
+        <div class="rule-box gold">
+          <ul style="padding-left:18px;font-size:.88rem;line-height:1.9;">
+            <li><strong>Identifica</strong> si la proporción es directa o inversa.</li>
+            <li>Para directa: <strong>multiplica cruzado</strong> (\(a \cdot d = b \cdot c\)).</li>
+            <li>Para inversa: <strong>multiplica lineal</strong> (\(a_1 \cdot b_1 = a_2 \cdot b_2\)).</li>
+            <li>En proporción compuesta: <strong>identifica D e I</strong> y aplica la fórmula.</li>
+            <li><strong>Grafica</strong> mentalmente para verificar el tipo de proporción.</li>
+            <li><strong>Verifica</strong> que el resultado tenga sentido en el contexto.</li>
+          </ul>
+        </div>
+        <div class="rule-box" style="margin-top:10px;">
+          <div class="title">📊 Próxima clase</div>
+          <p><strong>Clase 07:</strong> Ecuaciones de Primer Grado — Resolución y aplicaciones.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><div class="content"><strong>"Un hombre que se atreve a perder una hora no ha descubierto el valor de la vida." Charles Darwin</strong> — Genial!. Has completado la clase 6. Ahora puedes continuar con ejercicios.</div></div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:5%"></div></div>
+    <div id="slide-label">Slide 1 / 20</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Curso</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E6.html'">✏️ Ejercicios</button>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// NAVEGACIÓN
+// ════════════════════════════════════════════════════════════════
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: PROPORCIÓN DIRECTA
+// ════════════════════════════════════════════════════════════════
+function drawDirecta() {
+  const canvas = document.getElementById('directaCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 30;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+
+  // Datos: (x, y) = (2,6), (3,9), (4,12), (5,15)
+  const points = [[2,6], [3,9], [4,12], [5,15]];
+  const maxX = 6, maxY = 16;
+
+  // Ejes
+  ctx.beginPath();
+  ctx.moveTo(margin, margin);
+  ctx.lineTo(margin, margin + graphH);
+  ctx.lineTo(margin + graphW, margin + graphH);
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Etiquetas de ejes
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('x', margin + graphW + 6, margin + graphH);
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('y', margin - 6, margin);
+
+  // Puntos y línea
+  ctx.beginPath();
+  points.forEach((p, i) => {
+    const px = margin + (p[0] / maxX) * graphW;
+    const py = margin + graphH - (p[1] / maxY) * graphH;
+    if (i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+    
+    // Círculo
+    ctx.beginPath();
+    ctx.arc(px, py, 4, 0, 2 * Math.PI);
+    ctx.fillStyle = '#1a6fa8';
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  });
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Línea de extensión hasta el origen (0,0)
+  ctx.beginPath();
+  ctx.moveTo(margin, margin + graphH);
+  ctx.lineTo(margin + (5 / maxX) * graphW, margin + graphH - (15 / maxY) * graphH);
+  ctx.strokeStyle = 'rgba(26, 111, 168, 0.2)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 4]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Etiqueta
+  ctx.fillStyle = '#1a6fa8';
+  ctx.font = '11px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('k = 1/3', w - 10, h - 6);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: PROPORCIÓN INVERSA
+// ════════════════════════════════════════════════════════════════
+function drawInversa() {
+  const canvas = document.getElementById('inversaCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 30;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin;
+
+  // Datos: (x, y) = (4,6), (6,4), (8,3), (12,2)
+  const points = [[4,6], [6,4], [8,3], [12,2]];
+  const maxX = 14, maxY = 7;
+
+  // Ejes
+  ctx.beginPath();
+  ctx.moveTo(margin, margin);
+  ctx.lineTo(margin, margin + graphH);
+  ctx.lineTo(margin + graphW, margin + graphH);
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Etiquetas
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('x', margin + graphW + 6, margin + graphH);
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('y', margin - 6, margin);
+
+  // Curva
+  ctx.beginPath();
+  points.forEach((p, i) => {
+    const px = margin + (p[0] / maxX) * graphW;
+    const py = margin + graphH - (p[1] / maxY) * graphH;
+    if (i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+    
+    // Círculo
+    ctx.beginPath();
+    ctx.arc(px, py, 4, 0, 2 * Math.PI);
+    ctx.fillStyle = '#c06020';
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  });
+  ctx.strokeStyle = '#c06020';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // Etiqueta
+  ctx.fillStyle = '#c06020';
+  ctx.font = '11px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('k = 24', w - 10, h - 6);
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER KATEX Y CANVAS
+// ════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement === 'function') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });
+  }
+
+  setTimeout(() => {
+    drawDirecta();
+    drawInversa();
+  }, 100);
+});
+
+// Redibujar al cambiar de slide
+const observer = new MutationObserver(() => {
+  setTimeout(() => {
+    drawDirecta();
+    drawInversa();
+  }, 50);
+});
+
+slides.forEach(s => {
+  observer.observe(s, { attributes: true, attributeFilter: ['class'] });
+});
+</script>
+</body>
+</html>

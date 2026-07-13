@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Ejercicios: Función Cuadrática | PAES M1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<!-- KaTeX CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<style>
+:root{
+  --primary:#1a2a4a;
+  --primary2:#1e3a6a;
+  --primary3:#1a4a7a;
+  --math-blue:#1a5a8a;
+  --math-blue2:#2a7aaa;
+  --gold:#d4a84a;
+  --gold2:#e8c86a;
+  --white:#ffffff;
+  --light:#f0f4f8;
+  --lighter:#f7f9fc;
+  --green:#1a7a4a;
+  --green2:#e8f7ef;
+  --green3:#0f5c37;
+  --red:#b02a2a;
+  --red2:#fde8e8;
+  --gray:#5a6a7a;
+  --border:#d0dce8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Source Sans 3',sans-serif;
+  background:linear-gradient(160deg,var(--primary) 0%,var(--primary2) 40%,var(--primary3) 100%);
+  min-height:100vh;color:#1a2a3a;
+}
+
+/* ── TOP BAR ── */
+#topbar{
+  position:sticky;top:0;z-index:200;
+  background:var(--primary);border-bottom:3px solid var(--gold);
+  padding:12px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+#topbar .logo{font-size:1.6rem;}
+#topbar h1{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.25rem;font-weight:700;flex:1;
+}
+#topbar h1 span{color:var(--gold);}
+#score-pill{
+  background:rgba(212,168,74,.15);border:1px solid var(--gold);
+  color:var(--gold2);font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;padding:5px 14px;border-radius:20px;white-space:nowrap;
+}
+
+/* ── PROGRESS BAR ── */
+#prog-wrap{background:rgba(255,255,255,.08);height:6px;}
+#prog-fill{height:100%;background:var(--gold);transition:width .4s;width:0%;}
+
+/* ── MAIN ── */
+#main{max-width:820px;margin:0 auto;padding:28px 20px 120px;}
+
+/* ── INTRO CARD ── */
+#intro-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.25);
+  animation:fadeUp .5s ease forwards;
+}
+#intro-card .anchor{font-size:3rem;margin-bottom:12px;}
+#intro-card h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--primary);margin-bottom:10px;}
+#intro-card p{color:var(--gray);font-size:1rem;line-height:1.7;margin-bottom:24px;}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;}
+.tag{
+  background:var(--light);border:1px solid var(--border);border-radius:20px;
+  padding:4px 14px;font-size:.82rem;color:var(--primary);font-weight:600;
+}
+.info-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;
+  background:var(--light);border-radius:16px;padding:16px;margin-top:16px;
+}
+.info-item{text-align:center;}
+.info-item .num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--primary);}
+.info-item .label{font-size:.75rem;color:var(--gray);}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  border:none;cursor:pointer;border-radius:10px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.95rem;padding:11px 24px;transition:all .2s;
+}
+.btn-gold{background:var(--gold);color:var(--primary);}
+.btn-gold:hover{background:var(--gold2);transform:scale(1.03);}
+.btn-sky{background:var(--math-blue);color:var(--white);}
+.btn-sky:hover{background:var(--math-blue2);transform:scale(1.03);}
+.btn-green{background:var(--green);color:var(--white);}
+.btn-green:hover{background:var(--green3);transform:scale(1.03);}
+.btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold);}
+.btn-outline:hover{background:rgba(212,168,74,.12);}
+.btn-red{background:var(--red);color:var(--white);}
+.btn-red:hover{background:#8a1a1a;transform:scale(1.03);}
+
+/* ── QUESTION CARDS ── */
+#questions-wrap{display:none;flex-direction:column;gap:20px;}
+.q-card{
+  background:var(--white);border-radius:16px;padding:22px 26px;
+  box-shadow:0 4px 16px rgba(0,0,0,.12);
+  border-left:5px solid var(--border);
+  transition:border-color .2s;
+  animation:fadeUp .4s ease both;
+}
+.q-card.answered-correct{border-left-color:var(--green);}
+.q-card.answered-wrong{border-left-color:var(--red);}
+
+.q-num{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  color:var(--gray);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase;
+}
+.q-text{
+  font-size:1rem;font-weight:600;color:var(--primary);line-height:1.8;margin-bottom:14px;
+}
+.q-text .katex{font-size:1.05rem;}
+.q-text .math{background:var(--light);padding:2px 6px;border-radius:6px;font-family:'JetBrains Mono',monospace;}
+.q-text img{max-width:220px;height:auto;display:block;margin:10px 0;border-radius:8px;}
+
+/* options */
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt{
+  display:flex;align-items:center;gap:12px;
+  border:2px solid var(--border);border-radius:10px;
+  padding:10px 14px;cursor:pointer;transition:all .18s;
+  background:var(--light);user-select:none;
+}
+.opt:hover:not(.locked){border-color:var(--math-blue);background:#e8f0fc;}
+.opt.selected{border-color:var(--math-blue);background:#dbe8ff;}
+.opt.correct{border-color:var(--green);background:var(--green2);}
+.opt.wrong{border-color:var(--red);background:var(--red2);}
+.opt.locked{cursor:default;}
+.opt-letter{
+  width:26px;height:26px;border-radius:50%;border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;
+  color:var(--gray);flex-shrink:0;transition:all .18s;background:var(--white);
+}
+.opt.selected .opt-letter{border-color:var(--math-blue);color:var(--math-blue);background:#dbe8ff;}
+.opt.correct .opt-letter{border-color:var(--green);color:var(--green);background:var(--green2);}
+.opt.wrong .opt-letter{border-color:var(--red);color:var(--red);background:var(--red2);}
+.opt-text{font-size:.93rem;color:#1a2a3a;line-height:1.4;}
+.opt-text img{max-width:160px;height:auto;border-radius:6px;vertical-align:middle;}
+
+/* feedback */
+.q-feedback{display:none;margin-top:10px;font-size:.88rem;font-weight:600;padding:7px 12px;border-radius:8px;}
+.q-feedback.correct{display:flex;align-items:center;gap:6px;color:var(--green);background:var(--green2);}
+.q-feedback.wrong{display:flex;align-items:center;gap:6px;color:var(--red);background:var(--red2);}
+
+/* ── SUBMIT BAR ── */
+#submit-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:var(--primary);border-top:2px solid var(--gold);
+  padding:10px 24px;display:flex;align-items:center;gap:14px;
+  justify-content:space-between;flex-wrap:wrap;
+}
+#answered-count{color:#a0b8d0;font-family:'JetBrains Mono',monospace;font-size:.8rem;}
+
+/* ── RESULTS ── */
+#results-wrap{display:none;animation:fadeUp .5s ease forwards;}
+#results-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  box-shadow:0 12px 40px rgba(0,0,0,.25);margin-bottom:28px;text-align:center;
+}
+.score-ring{
+  width:140px;height:140px;border-radius:50%;margin:0 auto 20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;
+  border:8px solid var(--gold);background:var(--light);
+  transition:border-color .4s;
+}
+.score-ring .score-num{font-size:2.8rem;font-weight:900;color:var(--primary);line-height:1;}
+.score-ring .score-of{font-size:.9rem;color:var(--gray);}
+#result-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--primary);margin-bottom:8px;}
+#result-msg{color:var(--gray);font-size:1rem;line-height:1.6;margin-bottom:24px;}
+.result-stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+.stat-box{background:var(--light);border-radius:12px;padding:12px 22px;text-align:center;border:1px solid var(--border);}
+.stat-box .sv{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;}
+.stat-box .sl{font-size:.78rem;color:var(--gray);margin-top:2px;}
+.stat-box.ok .sv{color:var(--green);}
+.stat-box.err .sv{color:var(--red);}
+.stat-box.skip .sv{color:var(--gold);}
+.stat-box.grade .sv{color:var(--math-blue);}
+
+.grade-box{
+  font-size:1.2rem;text-align:center;padding:12px;
+  border-radius:40px;margin-top:16px;font-weight:700;
+}
+.approved{background:var(--green2);color:var(--green3);border:2px solid var(--green);}
+.failed{background:var(--red2);color:var(--red);border:2px solid var(--red);}
+
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px;}
+
+#review-wrap{display:flex;flex-direction:column;gap:16px;}
+.review-title{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.3rem;font-weight:700;margin-bottom:6px;
+}
+.review-card{
+  background:var(--white);border-radius:16px;padding:16px 20px;
+  border-left:4px solid var(--border);
+}
+.review-card.correct{border-left-color:var(--green);background:var(--green2);}
+.review-card.wrong{border-left-color:var(--red);background:var(--red2);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:600px){
+  #main{padding:16px 12px 100px;}
+  #intro-card,#results-card{padding:24px 18px;}
+  .result-actions{flex-direction:column;}
+  .btn{justify-content:center;}
+  .q-card{padding:16px;}
+  .q-text img{max-width:160px;}
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <span class="logo">📐</span>
+  <h1>Ejercicios M1 — <span>Función Cuadrática</span></h1>
+  <div id="score-pill">25 preguntas · 1 punto cada pregunta</div>
+</div>
+<div id="prog-wrap"><div id="prog-fill"></div></div>
+
+<div id="main">
+
+  <!-- INTRO -->
+  <div id="intro-card">
+    <div class="anchor">📝</div>
+    <h2>Función Cuadrática — Práctica PAES M1</h2>
+    <p>Este test selecciona <strong>25 preguntas aleatorias</strong> de un banco de 54, con alternativas en orden aleatorio. Al finalizar verás tu puntaje, tu nota y una revisión completa.</p>
+    <div class="tag-row">
+      <span class="tag">📈 Concavidad</span>
+      <span class="tag">🎯 Vértice</span>
+      <span class="tag">📐 Eje de simetría</span>
+      <span class="tag">🔢 Raíces</span>
+      <span class="tag">📊 Discriminante</span>
+      <span class="tag">🔄 Transformaciones</span>
+    </div>
+    <div class="info-grid">
+      <div class="info-item"><div class="num">54</div><div class="label">Preguntas en banco</div></div>
+      <div class="info-item"><div class="num">25</div><div class="label">Preguntas por test</div></div>
+      <div class="info-item"><div class="num">1 punto</div><div class="label">Por respuesta correcta</div></div>
+    </div>
+    <button class="btn btn-gold" onclick="startTest()">🚀 Iniciar Test</button>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="questions-wrap"></div>
+
+  <!-- RESULTS -->
+  <div id="results-wrap">
+    <div id="results-card">
+      <div class="score-ring">
+        <div class="score-num" id="r-score">0</div>
+        <div class="score-of" id="r-of">/ 25</div>
+      </div>
+      <div id="result-title"></div>
+      <div id="result-msg"></div>
+      <div class="result-stats">
+        <div class="stat-box ok"><div class="sv" id="r-correct">0</div><div class="sl">✅ Correctas</div></div>
+        <div class="stat-box err"><div class="sv" id="r-wrong">0</div><div class="sl">❌ Incorrectas</div></div>
+        <div class="stat-box skip"><div class="sv" id="r-skip">0</div><div class="sl">⚪ Sin responder</div></div>
+      </div>
+      <div class="grade-box" id="grade-box"></div>
+      <div class="result-actions">
+        <button class="btn btn-gold" onclick="restartTest()">🔄 Nuevo Test</button>
+        <button class="btn btn-sky" onclick="window.location.href='index.html'">📘 Volver al curso</button>
+        <button class="btn btn-green" onclick="window.location.href='C15.html'">📖 Volver a la clase</button>
+      </div>
+    </div>
+    <div class="review-title">📋 Revisión de Respuestas</div>
+    <div id="review-wrap"></div>
+  </div>
+
+</div>
+
+<!-- SUBMIT BAR -->
+<div id="submit-bar" style="display:none">
+  <div id="answered-count">Respondidas: 0 / 25</div>
+  <div style="display:flex;gap:10px">
+    <button class="btn btn-outline" onclick="cancelTest()">← Cancelar</button>
+    <button class="btn btn-gold" onclick="submitTest()">Finalizar Test ✓</button>
+  </div>
+</div>
+
+<script>
+
+// ============================================================
+// POOL DE PREGUNTAS - Geometría (Triángulos, Cuadriláteros y Círculos)
+// Fuente: Matemática Para Nacional, Capítulos 14 y 15
+// 46 preguntas con respuestas del solucionario
+// Adaptado con KaTeX y formato consistente
+// ============================================================
+
+const POOL = [
+  // Pregunta 1
+  {
+    q: 'Se tiene un triángulo equilátero, cuyo perímetro es $9\\sqrt{3}$ centímetros. Con esta información, se sabe que su altura es:',
+    opts: [
+      '$4$ centímetros',
+      '$4,5$ centímetros',
+      '$5$ centímetros',
+      '$6$ centímetros'
+    ],
+    ans: 1
+  },
+  // Pregunta 2
+  {
+    q: 'Antonella es una pastelera que realiza pasteles rectangulares de $36$ cm de largo por $20$ cm de ancho y una altura de $6$ cm. Un cliente le solicitó que necesita que la base se reduzca en un $10\\%$ y que este nuevo pastel se corte en $8$ trozos con forma de triángulos congruentes. ¿Qué área basal tendrá cada trozo de pastel?',
+    opts: [
+      '$40$ cm²',
+      '$57$ cm²',
+      '$77$ cm²',
+      '$81$ cm²',
+      '$90$ cm²'
+    ],
+    ans: 3
+  },
+  // Pregunta 3
+  {
+    q: 'Una empresa de diseño de jardines construye un estanque circular con radio de $7$ metros. Dentro del estanque, se inscribe un triángulo equilátero para colocar tres fuentes en sus vértices. ¿Cuál es el perímetro total del triángulo formado por las fuentes?',
+    opts: [
+      '$21\\pi$ m',
+      '$42$ m',
+      '$21\\sqrt{3}$ m',
+      '$14\\sqrt{3}$ cm'
+    ],
+    ans: 2
+  },
+  // Pregunta 4
+  {
+    q: 'En un parque infantil, se instala un columpio, que visto de manera frontal, posee forma de trapecio isósceles. Las bases miden $1,2$ m (superior) y $2$ m (inferior), y la altura entre bases es $2,0$ m. ¿Qué área ocuparía dicho columpio visto de manera frontal?<br><br><img src="https://i.ibb.co/vCQyqb2n/ME8-M1-P4.jpg" alt="Pregunta 4" style="max-width:250px;height:auto;border-radius:8px;margin-top:8px;">',
+    opts: [
+      '$3$ m²',
+      '$3,5$ m²',
+      '$3,2$ m²',
+      '$2,8$ m²'
+    ],
+    ans: 2
+  },
+  // Pregunta 5
+  {
+    q: 'Una empresa de repostería apila bandejas circulares que tienen sus radios en forma decreciente. Cada bandeja superior reduce su radio en $0,5$ cm, con respecto a su bandeja inferior. Si inicialmente, el perímetro de la primera bandeja es de $200\\pi$ cm. ¿Cuál es el área de la bandeja número $101$?',
+    opts: [
+      '$2500\\pi$ cm²',
+      '$2450,25\\pi$ cm²',
+      '$5625\\pi$ cm²',
+      '$3025\\pi$ cm²'
+    ],
+    ans: 0
+  },
+  // Pregunta 6
+  {
+    q: 'Se tiene una estrella de $6$ puntas, la cual, al dividir en triángulos congruentes, se tiene la siguiente imagen:<br><br><img src="https://i.ibb.co/6RkL9n6Q/ME8-M1-P6.jpg" alt="Pregunta 6" style="max-width:220px;height:auto;border-radius:8px;margin-top:8px;"><br><br>Si se sabe que el área de uno de los triángulos pequeños es $\\sqrt{3}$ cm², entonces el perímetro de la estrella de $6$ puntas es:',
+    opts: [
+      '$12\\sqrt{3}$ cm',
+      '$12$ cm',
+      '$24$ cm',
+      '$24\\sqrt{3}$ cm'
+    ],
+    ans: 2
+  },
+  // Pregunta 7
+  {
+    q: 'Isidora inventó un logo compuesto por dos triángulos equiláteros, los cuales, al superponerse uno sobre otro, forma una estrella de $6$ puntas, el cual se encuentra inscrito en un círculo, cuyo diámetro es $8\\sqrt{3}$ cm.<br><br><img src="https://i.ibb.co/FL53B5kS/ME8-M1-P7.jpg" alt="Pregunta 7" style="max-width:220px;height:auto;border-radius:8px;margin-top:8px;"><br><br>Si se sabe que, los triángulos superpuestos generan $12$ triángulos equiláteros congruentes. ¿Cuál de las siguientes alternativas presenta correctamente el área verde de la figura?',
+    opts: [
+      '$12(\\pi - \\sqrt{3})$ cm²',
+      '$24(\\pi - \\sqrt{3})$ cm²',
+      '$36(\\pi - \\sqrt{3})$ cm²',
+      '$48(\\pi - \\sqrt{3})$ cm²'
+    ],
+    ans: 3
+  },
+  // Pregunta 8
+  {
+    q: 'Fabricio trabaja en un teatro, donde una de sus funciones es alumbrar correctamente a las actrices y actores en el escenario. Como regla, para poder alumbrar correctamente a alguien en el escenario, según la altura de la persona, se le agrega $50$ centímetros de diámetro al círculo que deben alumbrar. Si una persona mide $1,82$ metros. ¿Cuál deberá ser el área aproximada de la luz que debe alumbrar a esa persona? Considere $\\pi = 3$.',
+    opts: [
+      '$3,9662$ m²',
+      '$4,0368$ m²',
+      '$4,1798$ m²',
+      '$16,1472$ m²'
+    ],
+    ans: 1
+  },
+  // Pregunta 9
+  {
+    q: 'Francisca compró una torta clásica con forma cilíndrica. Para poder colocarla torta en una base circular, esta debe tener un grosor del $5\\%$ extra en su diámetro. Sabiendo esta información, entonces el aumento de área entre la torta y su base es:',
+    opts: [
+      '$5\\%$',
+      '$7,5\\%$',
+      '$10\\%$',
+      '$10,25\\%$'
+    ],
+    ans: 3
+  },
+  // Pregunta 10
+  {
+    q: 'Para el cálculo del área de una elipse, se calcula como la multiplicación del valor $\\pi$ por el semieje horizontal $(a)$ por el semieje vertical $(b)$.<br><br>$A = \\pi \\cdot a \\cdot b$<br><br>Con esto presente, el área de la mitad de la elipse que se presenta a continuación es:<br><br><img src="https://i.ibb.co/7tfW6mwV/ME8-M1-P10.jpg" alt="Pregunta 10" style="max-width:220px;height:auto;border-radius:8px;margin-top:8px;">',
+    opts: [
+      '$20\\pi$ cm²',
+      '$40\\pi$ cm²',
+      '$50\\pi$ cm²',
+      '$80\\pi$ cm²'
+    ],
+    ans: 0
+  },
+  // Pregunta 11
+  {
+    q: 'Para el cálculo del área de una elipse, se calcula como la multiplicación del valor $\\pi$ por el semieje horizontal $(a)$ por el semieje vertical $(b)$.<br><br>$A = \\pi \\cdot a \\cdot b$<br><br>Si se sabe que el área de una elipse es $14\\pi$ cm². ¿Cuál es el área del triángulo inscrito en la elipse, sabiendo que las medidas de los semiejes son números naturales?<br><br><img src="https://i.ibb.co/JWR0LwTt/ME8-M1-P11.jpg" alt="Pregunta 11" style="max-width:220px;height:auto;border-radius:8px;margin-top:8px;">',
+    opts: [
+      '$12$ cm²',
+      '$14$ cm²',
+      '$28$ cm²',
+      '$28\\pi$ cm²'
+    ],
+    ans: 1
+  },
+  // Pregunta 12
+  {
+    q: 'Para el cálculo del área de una elipse, se calcula como la multiplicación del valor $\\pi$ por el semieje horizontal $(a)$ por el semieje vertical $(b)$.<br><br>$A = \\pi \\cdot a \\cdot b$<br><br>Dorian es un dibujante amateur que está aprendiendo a dibujar ojos. Para ello, debe dibujar un círculo inscrito en una elipse, que es tangente en dos puntos a la elipse, como se muestra en la figura.<br><br><img src="https://i.ibb.co/xtkxH4Zm/ME8-M1-P12.jpg" alt="Pregunta 12" style="max-width:220px;height:auto;border-radius:8px;margin-top:8px;"><br><br>Si se sabe que el área del círculo es $36\\pi$ cm². ¿Cuál es el área de la elipse, si se sabe que el eje horizontal es $8$ unidades mayor que el eje vertical de la elipse?',
+    opts: [
+      '$24\\pi$ cm²',
+      '$40\\pi$ cm²',
+      '$56\\pi$ cm²',
+      '$60\\pi$ cm²'
+    ],
+    ans: 3
+  },
+  // Pregunta 13
+  {
+    q: 'Carlos quiere vender omelettes gigantes. Para ello, él sabe que cuando utiliza $1$ huevo, puede generar un omelette circular, de área $25\\pi$ cm². Si quisiera armar un omelette de diámetro $1,2$ m. ¿Cuántos huevos necesitaría?',
+    opts: [
+      '$288$ huevos',
+      '$216$ huevos',
+      '$144$ huevos',
+      '$12$ huevos'
+    ],
+    ans: 2
+  },
+  // Pregunta 14
+  {
+    q: 'Un restaurant corta el pan que ofrece, de modo que forman cuadrados. Las distancias de este pan, se dividen en $5$ partes, donde todos sus lados están distribuidos equitativamente.<br><br><img src="https://i.ibb.co/DHN2pgdX/ME8-M1-P14.jpg" alt="Pregunta 14" style="max-width:220px;height:auto;border-radius:8px;margin-top:8px;"><br><br>¿Cuál será la suma de las áreas de las zonas identificadas como $3$ y $5$?',
+    opts: [
+      '$20$ cm²',
+      '$36$ cm²',
+      '$48$ cm²',
+      '$56$ cm²',
+      '$60$ cm²'
+    ],
+    ans: 3
+  },
+  // Pregunta 15
+  {
+    q: 'Un cuadrado, se divide en $2$ partes iguales. Luego, en una de esas partes, se generó un triángulo equilátero con el lado más largo. ¿Cuál es el perímetro del triángulo equilátero formado, sabiendo que el área de una de las mitades generadas es de $98$ cm²?',
+    opts: [
+      '$21$ cm',
+      '$28$ cm',
+      '$15$ cm',
+      '$42$ cm',
+      '$39$ cm'
+    ],
+    ans: 3
+  },
+  // Pregunta 16
+  {
+    q: 'Si en un terreno rectangular de $\\sqrt{72}$ de ancho por $30$ m de largo, cerrado con alambres, amarramos una vaca a un poste que está ubicado exactamente al centro del terreno, con una soga de $4$ metros de largo, ¿cuánto es la superficie máxima de pasto que la vaca podría comer si la soga no se enrolla al girar en torno al poste? (Considera $\\pi = 3$)',
+    opts: [
+      '$28$ m²',
+      '$36$ m²',
+      '$40$ m²',
+      '$48$ m²'
+    ],
+    ans: 3
+  },
+  // Pregunta 17
+  {
+    q: 'Dave tiene una empresa de repostería, que apila bandejas circulares decrecientes. La bandeja del piso $k$ tiene diámetro dado por la siguiente expresión.<br><br><img src="https://i.ibb.co/6Rn9PyTw/ME8-M1-P17.jpg" alt="Pregunta 17" style="max-width:220px;height:auto;border-radius:8px;margin-top:8px;"><br><br>¿Cuál es el área de la bandeja del tercer piso?',
+    opts: [
+      '$225\\pi$ cm²',
+      '$196\\pi$ cm²',
+      '$144\\pi$ cm²',
+      '$64\\pi$ cm²'
+    ],
+    ans: 2
+  },
+  // Pregunta 18
+  {
+    q: 'Un hexágono regular, cuyos lados miden $5$ cm, su área es:',
+    opts: [
+      '$\\frac{5\\sqrt{3}}{2}$ cm²',
+      '$\\frac{5\\sqrt{3}}{4}$ cm²',
+      '$\\frac{25\\sqrt{3}}{4}$ cm²',
+      '$\\frac{150\\sqrt{3}}{2}$ cm²',
+      '$\\frac{75\\sqrt{3}}{2}$ cm²'
+    ],
+    ans: 4
+  },
+  // Pregunta 19
+  {
+    q: 'Francisca tiene una foto muy importante de su madre. La foto presenta las dimensiones de $11,7$ cm $\\times$ $14,3$ cm. Ella decide crear un cuadro para su foto, la cual tendrá un borde de $3$ cm. ¿Cuál será el área del borde del cuadro creado?',
+    opts: [
+      '$192$ cm²',
+      '$187$ cm²',
+      '$149,1$ cm²',
+      '$96$ cm²'
+    ],
+    ans: 0
+  },
+  // Pregunta 20
+  {
+    q: 'El área de la figura es:<br><br><img src="https://i.ibb.co/9kM3vYrm/ME8-M1-P20.jpg" alt="Pregunta 20" style="max-width:400px;height:auto;border-radius:8px;margin-top:8px;">',
+    opts: [
+      '$3x^2 + 9xy + 2y^2$',
+      '$3x^2 + \\frac{3}{2}y^2 + 3xy$',
+      '$\\frac{9}{2}y^2 + \\frac{3}{2}xy + 3x^2$',
+      '$\\frac{9}{2}xy + 3x^2 + \\frac{3}{2}y^2$'
+    ],
+    ans: 3
+  },
+  // Pregunta 21
+  {
+    q: 'De la figura adjunta, se sabe que $AF = GB = 2$ cm; $FGCE$ es un cuadrado de lado $4$ cm.<br><br><img src="https://i.ibb.co/35b5d36y/ME8-M1-P21.jpg" alt="Pregunta 21" style="max-width:220px;height:auto;border-radius:8px;margin-top:8px;"><br><br>Si se sabe que el área total de la figura completa es de $36$ cm², entonces la altura del triángulo $ECD$, con base $EC$ es:',
+    opts: [
+      '$1$ cm',
+      '$2$ cm',
+      '$3$ cm',
+      '$4$ cm'
+    ],
+    ans: 1
+  },
+  // Pregunta 22
+  {
+    q: 'Alejandro realizará cajitas de cartón sin tapa para iniciar un emprendimiento. Para ello usará láminas cuadradas de cartón que cortará en cada esquina para formar la caja, tal como se muestra en la figura.<br><br><img src="https://i.ibb.co/G1p4WCM/ME8-M1-P22.jpg" alt="Pregunta 22" style="max-width:400px;height:auto;border-radius:8px;margin-top:8px;"><br><br>Si el área ocupada en cada cajita fue de $240$ cm², ¿cuánto mide la longitud de cada lado de una lámina de cartón?',
+    opts: [
+      '$10$ cm',
+      '$14$ cm',
+      '$16$ cm',
+      '$18$ cm'
+    ],
+    ans: 2
+  },
+  // Pregunta 23
+  {
+    q: 'Se tiene un rectángulo inscrito en un círculo, los cuales son concéntricos y tiene $4$ puntos tangentes con el círculo como se muestra en la figura:<br><br><img src="https://i.ibb.co/WN1JZZwV/ME8-M1-P23.jpg" alt="Pregunta 23" style="max-width:220px;height:auto;border-radius:8px;margin-top:8px;"><br><br>Javiera quiere saber las medidas del rectángulo, donde solamente sabe lo siguiente:<br><ul><li>El perímetro del círculo es $17\\pi$ cm</li><li>El lado mayor del rectángulo supera a su lado menor en $7$ cm.</li></ul>Con esta información el lado mayor mide:',
+    opts: [
+      '$12$ cm',
+      '$14$ cm',
+      '$15$ cm',
+      '$17$ cm'
+    ],
+    ans: 2
+  },
+  // Pregunta 24
+  {
+    q: 'En la figura adjunta, $AB = BC = 13$, $CD = 5$ y $DA = 12$.<br><br><img src="https://i.ibb.co/1tvJXMFq/ME8-M1-P24.jpg" alt="Pregunta 24" style="max-width:200px;height:auto;border-radius:8px;margin-top:8px;"><br><br>El área del cuadrilátero $ABCD$ es:',
+    opts: [
+      '$30 + \\frac{13\\sqrt{3}}{2}$ cm²',
+      '$30 + \\frac{169\\sqrt{3}}{2}$ cm²',
+      '$30 + \\frac{169\\sqrt{3}}{4}$ cm²',
+      '$108$ cm²'
+    ],
+    ans: 2
+  },
+  // Pregunta 25
+  {
+    q: 'En la figura adjunta, ¿cuánto suman los perímetros de todos los cuadrados ubicados sobre la hipotenusa del triángulo rectángulo de catetos $20$ cm y $21$ cm?<br><br><img src="https://i.ibb.co/rf4K8tDR/ME8-M1-P25.jpg" alt="Pregunta 25" style="max-width:200px;height:auto;border-radius:8px;margin-top:8px;">',
+    opts: [
+      '$120$ cm',
+      '$116$ cm',
+      '$125$ cm',
+      '$130$ cm'
+    ],
+    ans: 1
+  },
+  // Pregunta 26
+  {
+    q: 'Las diagonales de un trapecio isósceles miden $13$ cm y su altura mide $5$ cm. ¿Cuál es el área de este trapecio?',
+    opts: [
+      '$60$ cm²',
+      '$64$ cm²',
+      '$65$ cm²',
+      '$80$ cm²'
+    ],
+    ans: 0
+  },
+  // Pregunta 27
+  {
+    q: 'El perímetro de un triángulo isósceles de base $b$ y lados $a$, mide $36$ cm. ¿Cuál es el área de este triángulo, si se sabe que $a - b = 3$ cm?',
+    opts: [
+      '$48$ cm²',
+      '$60$ cm²',
+      '$65$ cm²',
+      '$120$ cm²'
+    ],
+    ans: 1
+  },
+  // Pregunta 28
+  {
+    q: 'En un triángulo $ABC$, el ángulo $A$ mide el doble del ángulo $B$, y el ángulo $C$ mide $30°$ más que el ángulo $B$. ¿Cuánto mide el ángulo $A$?',
+    opts: [
+      '$50°$',
+      '$60°$',
+      '$75°$',
+      '$80°$'
+    ],
+    ans: 2
+  },
+  // Pregunta 29
+  {
+    q: 'El complemento de un ángulo $\\alpha$ es igual al suplemento del ángulo $2\\alpha$. ¿Cuánto mide el ángulo $\\alpha$?',
+    opts: [
+      '$30°$',
+      '$45°$',
+      '$60°$',
+      '$90°$'
+    ],
+    ans: 3
+  },
+  // Pregunta 30
+  {
+    q: 'En un triángulo rectángulo, uno de los ángulos agudos mide $20°$ menos que el otro. ¿Cuánto mide el ángulo agudo mayor?',
+    opts: [
+      '$35°$',
+      '$45°$',
+      '$55°$',
+      '$65°$'
+    ],
+    ans: 2
+  },
+  // Pregunta 31
+  {
+    q: 'El suplemento del complemento de un ángulo $\\alpha$ es $120°$. ¿Cuánto mide el ángulo $\\alpha$?',
+    opts: [
+      '$10°$',
+      '$20°$',
+      '$30°$',
+      '$40°$'
+    ],
+    ans: 2
+  },
+  // Pregunta 32
+  {
+    q: 'En un triángulo isósceles, el ángulo del vértice mide $40°$. ¿Cuánto mide cada uno de los ángulos basales?',
+    opts: [
+      '$60°$',
+      '$65°$',
+      '$70°$',
+      '$75°$'
+    ],
+    ans: 2
+  },
+  // Pregunta 33
+  {
+    q: 'Dos ángulos son complementarios. Si uno de ellos es $15°$ mayor que el doble del otro, ¿cuánto mide el ángulo mayor?',
+    opts: [
+      '$45°$',
+      '$55°$',
+      '$65°$',
+      '$75°$'
+    ],
+    ans: 2
+  },
+  // Pregunta 34
+  {
+    q: 'En un triángulo, la medida del ángulo exterior en un vértice es $120°$ y los ángulos interiores no adyacentes a él están en la razón $2:3$. ¿Cuánto mide el ángulo interior menor de ese triángulo?',
+    opts: [
+      '$36°$',
+      '$48°$',
+      '$54°$',
+      '$72°$'
+    ],
+    ans: 1
+  },
+  // Pregunta 35
+  {
+    q: 'El triple del complemento de un ángulo $\\alpha$ es igual al suplemento del ángulo $\\alpha$. ¿Cuánto mide el ángulo $\\alpha$?',
+    opts: [
+      '$45°$',
+      '$50°$',
+      '$55°$',
+      '$60°$'
+    ],
+    ans: 0
+  },
+  // Pregunta 36
+  {
+    q: 'Si en un polígono convexo la suma de sus ángulos interiores es igual a $1.440°$, entonces el polígono es un:',
+    opts: [
+      'Hexágono',
+      'Octógono',
+      'Decágono',
+      'Dodecágono'
+    ],
+    ans: 2
+  },
+  // Pregunta 37
+  {
+    q: 'Con respecto a un pentágono regular, ¿cuál(es) de las siguientes afirmaciones es (son) verdadera(s)?<br><br>I) La medida del ángulo exterior es $72°$.<br>II) La suma de los ángulos interiores es $540°$.<br>III) El número de triángulos que se determinan al trazar todas las diagonales posibles desde un mismo vértice son tres.',
+    opts: [
+      'Solo II',
+      'Solo III',
+      'Solo II y III',
+      'I, II y III'
+    ],
+    ans: 3
+  },
+  // Pregunta 38
+  {
+    q: '¿En cuál de los siguientes polígonos regulares, el ángulo interior y el ángulo exterior están en la razón $2 : 1$, respectivamente?',
+    opts: [
+      'Triángulo',
+      'Pentágono',
+      'Hexágono',
+      'Decágono'
+    ],
+    ans: 2
+  },
+  // Pregunta 39
+  {
+    q: 'Desde un vértice de un polígono regular se pueden trazar $15$ diagonales. ¿Cuánto mide cada ángulo exterior de este polígono?',
+    opts: [
+      '$12°$',
+      '$15°$',
+      '$18°$',
+      '$20°$'
+    ],
+    ans: 3
+  },
+  // Pregunta 40
+  {
+    q: 'Si el total de diagonales trazadas en un polígono regular son $20$, entonces corresponde a un:',
+    opts: [
+      'Heptágono',
+      'Octágono',
+      'Nonágono',
+      'Decágono'
+    ],
+    ans: 1
+  },
+  // Pregunta 41
+  {
+    q: 'En un trapecio isósceles, los ángulos opuestos están en la razón $2 : 7$. ¿Cuánto mide el ángulo mayor del trapecio?',
+    opts: [
+      '$120°$',
+      '$130°$',
+      '$140°$',
+      '$150°$'
+    ],
+    ans: 2
+  },
+  // Pregunta 42
+  {
+    q: 'La diferencia entre el número de diagonales de un octógono y el número de diagonales de un hexágono es:',
+    opts: [
+      '$10$',
+      '$11$',
+      '$12$',
+      '$13$'
+    ],
+    ans: 1
+  },
+  // Pregunta 43
+  {
+    q: 'En un rombo, uno de sus ángulos interiores mide $40°$. ¿Cuánto mide el ángulo formado por la diagonal menor y uno de los lados del rombo?',
+    opts: [
+      '$20°$',
+      '$40°$',
+      '$50°$',
+      '$70°$'
+    ],
+    ans: 3
+  },
+  // Pregunta 44
+  {
+    q: '¿Cuál es la longitud de una circunferencia circunscrita a un cuadrado cuya área mide $100$ cm²?',
+    opts: [
+      '$50$ cm',
+      '$100$ cm',
+      '$5\\sqrt{2}\\pi$ cm',
+      '$10\\sqrt{2}\\pi$ cm'
+    ],
+    ans: 3
+  },
+  // Pregunta 45
+  {
+    q: 'Sean $A$ y $B$ dos cuadrados de modo que el perímetro de $A$ es el $50\\%$ del perímetro de $B$. ¿En qué razón están las áreas de los círculos inscritos en $A$ y $B$, respectivamente?',
+    opts: [
+      '$1 : 2$',
+      '$1 : 4$',
+      '$3 : 4$',
+      '$1 : 8$'
+    ],
+    ans: 1
+  },
+  // Pregunta 46
+  {
+    q: 'Dos circunferencias son concéntricas de centro $O$. Si el radio de la circunferencia menor es la mitad del radio de la circunferencia mayor, y el área del círculo menor es $16\\pi$ cm², ¿cuál es el área de la corona circular?',
+    opts: [
+      '$32\\pi$ cm²',
+      '$48\\pi$ cm²',
+      '$64\\pi$ cm²',
+      '$80\\pi$ cm²'
+    ],
+    ans: 1
+  },
+  // Pregunta 47
+  {
+    q: 'El perímetro de un cuadrado es $48$ cm. ¿Cuál es el área de la circunferencia circunscrita a dicho cuadrado?',
+    opts: [
+      '$36\\pi$ cm²',
+      '$48\\pi$ cm²',
+      '$64\\pi$ cm²',
+      '$72\\pi$ cm²'
+    ],
+    ans: 3
+  },
+  // Pregunta 48
+  {
+    q: 'Dos circunferencias son tangentes exteriormente. Sus radios miden $18$ cm y $8$ cm respectivamente. ¿Cuál es la distancia entre sus centros?',
+    opts: [
+      '$10$ cm',
+      '$20$ cm',
+      '$26$ cm',
+      '$30$ cm'
+    ],
+    ans: 2
+  }
+];
+
+
+// ============================================================
+// CONFIGURACIÓN DEL TEST
+// ============================================================
+const TOTAL_QUESTIONS = 25;
+let selectedQuestions = [];
+let shuffledOptions = [];
+let userAnswers = [];
+let submitted = false;
+
+// ============================================================
+// UTILIDADES
+// ============================================================
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getRandomQuestions() {
+  const shuffledPool = shuffleArray([...POOL]);
+  return shuffledPool.slice(0, TOTAL_QUESTIONS);
+}
+
+function shuffleOptionsForQuestion(q) {
+  const indices = [0, 1, 2, 3];
+  const shuffledIndices = shuffleArray(indices);
+  const newOpts = shuffledIndices.map(i => q.opts[i]);
+  const newAns = shuffledIndices.indexOf(q.ans);
+  return { opts: newOpts, ansIdx: newAns };
+}
+
+function buildTest() {
+  selectedQuestions = getRandomQuestions();
+  shuffledOptions = selectedQuestions.map(q => shuffleOptionsForQuestion(q));
+  userAnswers = Array(TOTAL_QUESTIONS).fill(null);
+}
+
+// ============================================================
+// RENDERIZADO
+// ============================================================
+function renderQuestions() {
+  const wrap = document.getElementById('questions-wrap');
+  wrap.innerHTML = '';
+  
+  selectedQuestions.forEach((q, idx) => {
+    const optData = shuffledOptions[idx];
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `qcard-${idx}`;
+    card.style.animationDelay = `${idx * 0.02}s`;
+    
+    let optsHtml = '';
+    const letters = ['a', 'b', 'c', 'd'];
+    optData.opts.forEach((opt, optIdx) => {
+      optsHtml += `
+        <div class="opt" id="opt-${idx}-${optIdx}" onclick="selectOption(${idx}, ${optIdx})">
+          <div class="opt-letter">${letters[optIdx]}</div>
+          <div class="opt-text">${opt}</div>
+        </div>
+      `;
+    });
+    
+    card.innerHTML = `
+      <div class="q-num">Pregunta ${idx + 1} de ${TOTAL_QUESTIONS}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">${optsHtml}</div>
+      <div class="q-feedback" id="qfb-${idx}"></div>
+    `;
+    wrap.appendChild(card);
+  });
+  
+  // Re-renderizar KaTeX en las nuevas preguntas
+  setTimeout(function() {
+    renderKaTeX(wrap);
+  }, 300);
+}
+
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  if (userAnswers[qIdx] !== null) {
+    const prevOpt = document.getElementById(`opt-${qIdx}-${userAnswers[qIdx]}`);
+    if (prevOpt) prevOpt.classList.remove('selected');
+  }
+  userAnswers[qIdx] = optIdx;
+  const selectedOpt = document.getElementById(`opt-${qIdx}-${optIdx}`);
+  if (selectedOpt) selectedOpt.classList.add('selected');
+  updateProgress();
+}
+
+function updateProgress() {
+  const answered = userAnswers.filter(a => a !== null).length;
+  document.getElementById('answered-count').textContent = `Respondidas: ${answered} / ${TOTAL_QUESTIONS}`;
+  document.getElementById('prog-fill').style.width = `${(answered / TOTAL_QUESTIONS) * 100}%`;
+}
+
+function calculateGrade(correct, total) {
+  // Nota = cantidad de respuestas correctas (1 punto cada una)
+  const grade = correct;
+  const percentage = Math.round((correct / total) * 100);
+  return { grade, percentage };
+}
+
+function submitTest() {
+  if (submitted) return;
+  
+  const answered = userAnswers.filter(a => a !== null).length;
+  if (answered < TOTAL_QUESTIONS) {
+    if (!confirm(`Tienes ${TOTAL_QUESTIONS - answered} pregunta(s) sin responder. ¿Deseas finalizar igual?`)) {
+      return;
+    }
+  }
+  
+  submitted = true;
+  
+  let correctCount = 0;
+  selectedQuestions.forEach((_, idx) => {
+    const chosen = userAnswers[idx];
+    const correctAns = shuffledOptions[idx].ansIdx;
+    const card = document.getElementById(`qcard-${idx}`);
+    const fb = document.getElementById(`qfb-${idx}`);
+    const letters = ['a', 'b', 'c', 'd'];
+    
+    // Bloquear todas las opciones
+    for (let i = 0; i < 4; i++) {
+      const opt = document.getElementById(`opt-${idx}-${i}`);
+      if (opt) opt.classList.add('locked');
+    }
+    
+    if (chosen === null) {
+      // Sin responder: marcar la correcta
+      const correctOpt = document.getElementById(`opt-${idx}-${correctAns}`);
+      if (correctOpt) correctOpt.classList.add('correct');
+      card.classList.add('answered-wrong');
+      fb.className = 'q-feedback wrong';
+      fb.innerHTML = `⚪ Sin responder — La respuesta correcta era: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    } else if (chosen === correctAns) {
+      correctCount++;
+      const chosenOpt = document.getElementById(`opt-${idx}-${chosen}`);
+      if (chosenOpt) {
+        chosenOpt.classList.remove('selected');
+        chosenOpt.classList.add('correct');
+      }
+      card.classList.add('answered-correct');
+      fb.className = 'q-feedback correct';
+      fb.innerHTML = '✅ ¡Correcto!';
+    } else {
+      const chosenOpt = document.getElementById(`opt-${idx}-${chosen}`);
+      const correctOpt = document.getElementById(`opt-${idx}-${correctAns}`);
+      if (chosenOpt) {
+        chosenOpt.classList.remove('selected');
+        chosenOpt.classList.add('wrong');
+      }
+      if (correctOpt) correctOpt.classList.add('correct');
+      card.classList.add('answered-wrong');
+      fb.className = 'q-feedback wrong';
+      fb.innerHTML = `❌ Incorrecto — La respuesta correcta era: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    }
+  });
+  
+  const wrongCount = userAnswers.filter((v, i) => v !== null && v !== shuffledOptions[i].ansIdx).length;
+  const skippedCount = userAnswers.filter(v => v === null).length;
+  const { grade, percentage } = calculateGrade(correctCount, TOTAL_QUESTIONS);
+  const isApproved = grade >= 4.0;
+  
+  // Mostrar resultados
+// Mostrar resultados
+document.getElementById('r-score').textContent = correctCount;
+document.getElementById('r-of').textContent = `/ ${TOTAL_QUESTIONS}`;
+document.getElementById('r-correct').textContent = correctCount;
+document.getElementById('r-wrong').textContent = wrongCount;
+document.getElementById('r-skip').textContent = skippedCount;
+
+const gradeBox = document.getElementById('grade-box');
+// La nota ahora es simplemente la cantidad de correctas
+gradeBox.className = `grade-box ${correctCount >= 13 ? 'approved' : 'failed'}`;
+gradeBox.innerHTML = `<strong>${correctCount >= 13 ? '🎉 APROBADO 🎉' : '📖 REPROBADO 📖'}</strong><br>Puntaje: ${correctCount} / ${TOTAL_QUESTIONS} correctas (${percentage}% de logro)`;
+
+let title, msg;
+if (percentage >= 90) {
+  title = '🏆 ¡Excelente!';
+  msg = 'Dominas la función cuadrática con solidez. ¡Sigue así!';
+} else if (percentage >= 70) {
+  title = '👍 ¡Muy bien!';
+  msg = 'Tienes un buen dominio. Repasa los temas donde fallaste para mejorar.';
+} else if (percentage >= 50) {
+  title = '📚 Sigue practicando';
+  msg = 'Vas por buen camino, pero necesitas repasar más la materia.';
+} else {
+  title = '💪 No te rindas';
+  msg = 'Revisa la clase y vuelve a intentarlo. ¡Puedes mejorar!';
+}
+document.getElementById('result-title').textContent = title;
+document.getElementById('result-msg').textContent = msg;
+  
+  // Cambiar color del anillo
+  const ring = document.querySelector('.score-ring');
+  if (ring) ring.style.borderColor = percentage >= 70 ? 'var(--green)' : percentage >= 50 ? 'var(--gold)' : 'var(--red)';
+  
+  // Ocultar preguntas y mostrar resultados
+  document.getElementById('questions-wrap').style.display = 'none';
+  document.getElementById('submit-bar').style.display = 'none';
+  document.getElementById('results-wrap').style.display = 'block';
+  document.getElementById('prog-fill').style.width = '100%';
+  
+  // Generar revisión de respuestas
+  renderReview();
+  
+  // Re-renderizar KaTeX en los resultados
+  setTimeout(function() {
+    renderKaTeX(document.getElementById('results-wrap'));
+  }, 300);
+  
+  // Scroll a resultados
+  document.getElementById('results-wrap').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderReview() {
+  const reviewWrap = document.getElementById('review-wrap');
+  reviewWrap.innerHTML = '';
+  
+  selectedQuestions.forEach((q, idx) => {
+    const chosen = userAnswers[idx];
+    const correctAns = shuffledOptions[idx].ansIdx;
+    const isCorrect = chosen === correctAns;
+    const letters = ['a', 'b', 'c', 'd'];
+    
+    const reviewCard = document.createElement('div');
+    reviewCard.className = `review-card ${isCorrect ? 'correct' : 'wrong'}`;
+    
+    let answerStatus = '';
+    if (chosen === null) {
+      answerStatus = `<span style="color:var(--gold);">⚪ Sin responder</span> — Respuesta correcta: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    } else if (isCorrect) {
+      answerStatus = `<span style="color:var(--green);">✅ Correcta</span> — Elegiste: <strong>${letters[chosen]}) ${shuffledOptions[idx].opts[chosen]}</strong>`;
+    } else {
+      answerStatus = `<span style="color:var(--red);">❌ Incorrecta</span> — Elegiste: <strong>${letters[chosen]}) ${shuffledOptions[idx].opts[chosen]}</strong> — Respuesta correcta: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    }
+    
+    reviewCard.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+        <strong style="color:var(--primary);">Pregunta ${idx + 1}</strong>
+        <span style="font-size:.7rem;color:var(--gray);">${isCorrect ? '✓ Correcta' : (chosen === null ? '○ Sin responder' : '✗ Incorrecta')}</span>
+      </div>
+      <div style="font-size:.85rem;margin-bottom:8px;">${q.q.substring(0, 120)}${q.q.length > 120 ? '...' : ''}</div>
+      <div style="font-size:.8rem;">${answerStatus}</div>
+    `;
+    reviewWrap.appendChild(reviewCard);
+  });
+}
+
+// ============================================================
+// FUNCIONES DE CONTROL
+// ============================================================
+function startTest() {
+  buildTest();
+  submitted = false;
+  document.getElementById('intro-card').style.display = 'none';
+  document.getElementById('results-wrap').style.display = 'none';
+  renderQuestions();
+  document.getElementById('questions-wrap').style.display = 'flex';
+  document.getElementById('submit-bar').style.display = 'flex';
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartTest() {
+  buildTest();
+  submitted = false;
+  document.getElementById('results-wrap').style.display = 'none';
+  renderQuestions();
+  document.getElementById('questions-wrap').style.display = 'flex';
+  document.getElementById('submit-bar').style.display = 'flex';
+  updateProgress();
+  document.getElementById('intro-card').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelTest() {
+  if (confirm('¿Estás seguro de que quieres cancelar el test? Perderás tu progreso.')) {
+    document.getElementById('questions-wrap').style.display = 'none';
+    document.getElementById('submit-bar').style.display = 'none';
+    document.getElementById('intro-card').style.display = 'block';
+    document.getElementById('prog-fill').style.width = '0%';
+    submitted = false;
+  }
+}
+// ─── FUNCIÓN PARA RENDERIZAR KATEX ───
+function renderKaTeX(element) {
+  if (typeof renderMathInElement === 'function') {
+    try {
+      renderMathInElement(element || document.body, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '\\[', right: '\\]', display: true},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+      });
+    } catch(e) {
+      console.warn('KaTeX render error:', e);
+    }
+  }
+}
+// ─── INICIALIZACIÓN ───
+document.addEventListener("DOMContentLoaded", function() {
+  // Esperar a que KaTeX esté completamente cargado
+  setTimeout(function() {
+    renderKaTeX(document.body);
+  }, 500);
+  
+  // Configurar eventos de los botones
+  document.getElementById('submitTestBtn')?.addEventListener('click', submitTest);
+  document.getElementById('cancelTestBtn')?.addEventListener('click', cancelTest);
+  document.getElementById('restartTestBtn')?.addEventListener('click', restartTest);
+  document.getElementById('goToCourseBtn')?.addEventListener('click', () => window.location.href = 'index.html');
+  document.getElementById('goToClassBtn')?.addEventListener('click', () => window.location.href = 'C15.html');
+});
+</script>
+</body>
+</html>

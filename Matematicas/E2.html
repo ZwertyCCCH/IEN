@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Ejercicios: Función Cuadrática | PAES M1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<!-- KaTeX CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<style>
+:root{
+  --primary:#1a2a4a;
+  --primary2:#1e3a6a;
+  --primary3:#1a4a7a;
+  --math-blue:#1a5a8a;
+  --math-blue2:#2a7aaa;
+  --gold:#d4a84a;
+  --gold2:#e8c86a;
+  --white:#ffffff;
+  --light:#f0f4f8;
+  --lighter:#f7f9fc;
+  --green:#1a7a4a;
+  --green2:#e8f7ef;
+  --green3:#0f5c37;
+  --red:#b02a2a;
+  --red2:#fde8e8;
+  --gray:#5a6a7a;
+  --border:#d0dce8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Source Sans 3',sans-serif;
+  background:linear-gradient(160deg,var(--primary) 0%,var(--primary2) 40%,var(--primary3) 100%);
+  min-height:100vh;color:#1a2a3a;
+}
+
+/* ── TOP BAR ── */
+#topbar{
+  position:sticky;top:0;z-index:200;
+  background:var(--primary);border-bottom:3px solid var(--gold);
+  padding:12px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+#topbar .logo{font-size:1.6rem;}
+#topbar h1{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.25rem;font-weight:700;flex:1;
+}
+#topbar h1 span{color:var(--gold);}
+#score-pill{
+  background:rgba(212,168,74,.15);border:1px solid var(--gold);
+  color:var(--gold2);font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;padding:5px 14px;border-radius:20px;white-space:nowrap;
+}
+
+/* ── PROGRESS BAR ── */
+#prog-wrap{background:rgba(255,255,255,.08);height:6px;}
+#prog-fill{height:100%;background:var(--gold);transition:width .4s;width:0%;}
+
+/* ── MAIN ── */
+#main{max-width:820px;margin:0 auto;padding:28px 20px 120px;}
+
+/* ── INTRO CARD ── */
+#intro-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.25);
+  animation:fadeUp .5s ease forwards;
+}
+#intro-card .anchor{font-size:3rem;margin-bottom:12px;}
+#intro-card h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--primary);margin-bottom:10px;}
+#intro-card p{color:var(--gray);font-size:1rem;line-height:1.7;margin-bottom:24px;}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;}
+.tag{
+  background:var(--light);border:1px solid var(--border);border-radius:20px;
+  padding:4px 14px;font-size:.82rem;color:var(--primary);font-weight:600;
+}
+.info-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;
+  background:var(--light);border-radius:16px;padding:16px;margin-top:16px;
+}
+.info-item{text-align:center;}
+.info-item .num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--primary);}
+.info-item .label{font-size:.75rem;color:var(--gray);}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  border:none;cursor:pointer;border-radius:10px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.95rem;padding:11px 24px;transition:all .2s;
+}
+.btn-gold{background:var(--gold);color:var(--primary);}
+.btn-gold:hover{background:var(--gold2);transform:scale(1.03);}
+.btn-sky{background:var(--math-blue);color:var(--white);}
+.btn-sky:hover{background:var(--math-blue2);transform:scale(1.03);}
+.btn-green{background:var(--green);color:var(--white);}
+.btn-green:hover{background:var(--green3);transform:scale(1.03);}
+.btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold);}
+.btn-outline:hover{background:rgba(212,168,74,.12);}
+.btn-red{background:var(--red);color:var(--white);}
+.btn-red:hover{background:#8a1a1a;transform:scale(1.03);}
+
+/* ── QUESTION CARDS ── */
+#questions-wrap{display:none;flex-direction:column;gap:20px;}
+.q-card{
+  background:var(--white);border-radius:16px;padding:22px 26px;
+  box-shadow:0 4px 16px rgba(0,0,0,.12);
+  border-left:5px solid var(--border);
+  transition:border-color .2s;
+  animation:fadeUp .4s ease both;
+}
+.q-card.answered-correct{border-left-color:var(--green);}
+.q-card.answered-wrong{border-left-color:var(--red);}
+
+.q-num{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  color:var(--gray);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase;
+}
+.q-text{
+  font-size:1rem;font-weight:600;color:var(--primary);line-height:1.8;margin-bottom:14px;
+}
+.q-text .katex{font-size:1.05rem;}
+.q-text .math{background:var(--light);padding:2px 6px;border-radius:6px;font-family:'JetBrains Mono',monospace;}
+.q-text img{max-width:220px;height:auto;display:block;margin:10px 0;border-radius:8px;}
+
+/* options */
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt{
+  display:flex;align-items:center;gap:12px;
+  border:2px solid var(--border);border-radius:10px;
+  padding:10px 14px;cursor:pointer;transition:all .18s;
+  background:var(--light);user-select:none;
+}
+.opt:hover:not(.locked){border-color:var(--math-blue);background:#e8f0fc;}
+.opt.selected{border-color:var(--math-blue);background:#dbe8ff;}
+.opt.correct{border-color:var(--green);background:var(--green2);}
+.opt.wrong{border-color:var(--red);background:var(--red2);}
+.opt.locked{cursor:default;}
+.opt-letter{
+  width:26px;height:26px;border-radius:50%;border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;
+  color:var(--gray);flex-shrink:0;transition:all .18s;background:var(--white);
+}
+.opt.selected .opt-letter{border-color:var(--math-blue);color:var(--math-blue);background:#dbe8ff;}
+.opt.correct .opt-letter{border-color:var(--green);color:var(--green);background:var(--green2);}
+.opt.wrong .opt-letter{border-color:var(--red);color:var(--red);background:var(--red2);}
+.opt-text{font-size:.93rem;color:#1a2a3a;line-height:1.4;}
+.opt-text img{max-width:160px;height:auto;border-radius:6px;vertical-align:middle;}
+
+/* feedback */
+.q-feedback{display:none;margin-top:10px;font-size:.88rem;font-weight:600;padding:7px 12px;border-radius:8px;}
+.q-feedback.correct{display:flex;align-items:center;gap:6px;color:var(--green);background:var(--green2);}
+.q-feedback.wrong{display:flex;align-items:center;gap:6px;color:var(--red);background:var(--red2);}
+
+/* ── SUBMIT BAR ── */
+#submit-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:var(--primary);border-top:2px solid var(--gold);
+  padding:10px 24px;display:flex;align-items:center;gap:14px;
+  justify-content:space-between;flex-wrap:wrap;
+}
+#answered-count{color:#a0b8d0;font-family:'JetBrains Mono',monospace;font-size:.8rem;}
+
+/* ── RESULTS ── */
+#results-wrap{display:none;animation:fadeUp .5s ease forwards;}
+#results-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  box-shadow:0 12px 40px rgba(0,0,0,.25);margin-bottom:28px;text-align:center;
+}
+.score-ring{
+  width:140px;height:140px;border-radius:50%;margin:0 auto 20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;
+  border:8px solid var(--gold);background:var(--light);
+  transition:border-color .4s;
+}
+.score-ring .score-num{font-size:2.8rem;font-weight:900;color:var(--primary);line-height:1;}
+.score-ring .score-of{font-size:.9rem;color:var(--gray);}
+#result-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--primary);margin-bottom:8px;}
+#result-msg{color:var(--gray);font-size:1rem;line-height:1.6;margin-bottom:24px;}
+.result-stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+.stat-box{background:var(--light);border-radius:12px;padding:12px 22px;text-align:center;border:1px solid var(--border);}
+.stat-box .sv{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;}
+.stat-box .sl{font-size:.78rem;color:var(--gray);margin-top:2px;}
+.stat-box.ok .sv{color:var(--green);}
+.stat-box.err .sv{color:var(--red);}
+.stat-box.skip .sv{color:var(--gold);}
+.stat-box.grade .sv{color:var(--math-blue);}
+
+.grade-box{
+  font-size:1.2rem;text-align:center;padding:12px;
+  border-radius:40px;margin-top:16px;font-weight:700;
+}
+.approved{background:var(--green2);color:var(--green3);border:2px solid var(--green);}
+.failed{background:var(--red2);color:var(--red);border:2px solid var(--red);}
+
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px;}
+
+#review-wrap{display:flex;flex-direction:column;gap:16px;}
+.review-title{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.3rem;font-weight:700;margin-bottom:6px;
+}
+.review-card{
+  background:var(--white);border-radius:16px;padding:16px 20px;
+  border-left:4px solid var(--border);
+}
+.review-card.correct{border-left-color:var(--green);background:var(--green2);}
+.review-card.wrong{border-left-color:var(--red);background:var(--red2);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:600px){
+  #main{padding:16px 12px 100px;}
+  #intro-card,#results-card{padding:24px 18px;}
+  .result-actions{flex-direction:column;}
+  .btn{justify-content:center;}
+  .q-card{padding:16px;}
+  .q-text img{max-width:160px;}
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <span class="logo">📐</span>
+  <h1>Ejercicios M1 — <span>Función Cuadrática</span></h1>
+  <div id="score-pill">25 preguntas · 1 punto cada pregunta</div>
+</div>
+<div id="prog-wrap"><div id="prog-fill"></div></div>
+
+<div id="main">
+
+  <!-- INTRO -->
+  <div id="intro-card">
+    <div class="anchor">📝</div>
+    <h2>Función Cuadrática — Práctica PAES M1</h2>
+    <p>Este test selecciona <strong>25 preguntas aleatorias</strong> de un banco de 54, con alternativas en orden aleatorio. Al finalizar verás tu puntaje, tu nota y una revisión completa.</p>
+    <div class="tag-row">
+      <span class="tag">📈 Concavidad</span>
+      <span class="tag">🎯 Vértice</span>
+      <span class="tag">📐 Eje de simetría</span>
+      <span class="tag">🔢 Raíces</span>
+      <span class="tag">📊 Discriminante</span>
+      <span class="tag">🔄 Transformaciones</span>
+    </div>
+    <div class="info-grid">
+      <div class="info-item"><div class="num">54</div><div class="label">Preguntas en banco</div></div>
+      <div class="info-item"><div class="num">25</div><div class="label">Preguntas por test</div></div>
+      <div class="info-item"><div class="num">1 punto</div><div class="label">Por respuesta correcta</div></div>
+    </div>
+    <button class="btn btn-gold" onclick="startTest()">🚀 Iniciar Test</button>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="questions-wrap"></div>
+
+  <!-- RESULTS -->
+  <div id="results-wrap">
+    <div id="results-card">
+      <div class="score-ring">
+        <div class="score-num" id="r-score">0</div>
+        <div class="score-of" id="r-of">/ 25</div>
+      </div>
+      <div id="result-title"></div>
+      <div id="result-msg"></div>
+      <div class="result-stats">
+        <div class="stat-box ok"><div class="sv" id="r-correct">0</div><div class="sl">✅ Correctas</div></div>
+        <div class="stat-box err"><div class="sv" id="r-wrong">0</div><div class="sl">❌ Incorrectas</div></div>
+        <div class="stat-box skip"><div class="sv" id="r-skip">0</div><div class="sl">⚪ Sin responder</div></div>
+      </div>
+      <div class="grade-box" id="grade-box"></div>
+      <div class="result-actions">
+        <button class="btn btn-gold" onclick="restartTest()">🔄 Nuevo Test</button>
+        <button class="btn btn-sky" onclick="window.location.href='index.html'">📘 Volver al curso</button>
+        <button class="btn btn-green" onclick="window.location.href='C2.html'">📖 Volver a la clase</button>
+      </div>
+    </div>
+    <div class="review-title">📋 Revisión de Respuestas</div>
+    <div id="review-wrap"></div>
+  </div>
+
+</div>
+
+<!-- SUBMIT BAR -->
+<div id="submit-bar" style="display:none">
+  <div id="answered-count">Respondidas: 0 / 25</div>
+  <div style="display:flex;gap:10px">
+    <button class="btn btn-outline" onclick="cancelTest()">← Cancelar</button>
+    <button class="btn btn-gold" onclick="submitTest()">Finalizar Test ✓</button>
+  </div>
+</div>
+
+<script>
+
+// ============================================================
+// POOL DE PREGUNTAS - Capítulo 2: Números Racionales (M1)
+// Fuente: Matemática Para Nacional, Evaluación Formativa M1
+// 65 preguntas con respuestas del solucionario
+// ============================================================
+
+const POOL = [
+  // Pregunta 1
+  {
+    q: '$\\frac{2}{5} - \\frac{9}{5} + \\frac{1}{3} - \\frac{9}{10} =$',
+    opts: ['$-\\frac{2}{15}$', '$\\frac{1}{30}$', '$\\frac{1}{3}$', '$0$'],
+    ans: 3
+  },
+  // Pregunta 2
+  {
+    q: '¿Qué resultado se obtiene si al doble de $2,4$ se le resta el triple de $3,2$?',
+    opts: ['$4,8$', '$5,2$', '$-5,2$', '$-4,8$'],
+    ans: 3
+  },
+  // Pregunta 3
+  {
+    q: '$7 - \\frac{3}{2} - \\frac{3}{6} =$',
+    opts: ['$6$', '$5$', '$\\frac{4}{5}$', '$-\\frac{11}{2}$'],
+    ans: 1
+  },
+  // Pregunta 4
+  {
+    q: 'Andrés debe recorrer $15,4$ kilómetros y ha avanzado $8.750$ metros. ¿Cuánto le falta por recorrer?',
+    opts: ['$6,29$ kilómetros', '$6,65$ kilómetros', '$7,65$ kilómetros', '$7,75$ kilómetros'],
+    ans: 1
+  },
+  // Pregunta 5
+  {
+    q: 'En una competencia de natación, Anita, Cata y Maca demoraron $25,4$ segundos, $25,03$ segundos y $25,3$ segundos en llegar a la meta, respectivamente. ¿Cuál de las siguientes afirmaciones es verdadera?',
+    opts: [
+      'Anita llegó antes de Maca',
+      'Maca llegó $27$ centésimas antes de Cata',
+      'Cata llegó primera',
+      'Anita ganó la competencia'
+    ],
+    ans: 2
+  },
+  // Pregunta 6
+  {
+    q: '¿Cuánto se obtiene si el producto $0,5 \\cdot 0,05$ se divide por el producto $2,5 \\cdot 0,025$?',
+    opts: ['$0,04$', '$0,4$', '$2,5$', '$25$'],
+    ans: 1
+  },
+  // Pregunta 7
+  {
+    q: 'Un partido se desarrolla en dos tiempos de $45$ minutos cada uno. ¿Qué fracción del partido resta cuando han transcurrido $20$ minutos del segundo tiempo?',
+    opts: ['$\\frac{2}{9}$', '$\\frac{4}{9}$', '$\\frac{5}{9}$', '$\\frac{5}{18}$'],
+    ans: 2
+  },
+  // Pregunta 8
+  {
+    q: 'La tercera parte de la mitad del triple del cuádruple de la décima parte de $70$ es:',
+    opts: ['$\\frac{7}{8}$', '$7$', '$14$', '$140$'],
+    ans: 2
+  },
+  // Pregunta 9
+  {
+    q: '¿Cuál de las siguientes afirmaciones es verdadera?',
+    opts: [
+      'El inverso multiplicativo de $-\\frac{3}{4}$ es $\\frac{4}{3}$',
+      'El inverso aditivo de $5$ es $-16$',
+      '$0,36 + 0,64 = 1$',
+      'El opuesto de $4$ es $0,25$'
+    ],
+    ans: 2
+  },
+  // Pregunta 10
+  {
+    q: 'Si se sabe que $a = 4$, $b = 2$ y $c = 0,2$, ¿cuál es el valor de la expresión $\\frac{a - b + c}{5}$?',
+    opts: ['$-\\frac{23}{20}$', '$-\\frac{17}{20}$', '$\\frac{27}{20}$', '$\\frac{33}{20}$'],
+    ans: 2
+  },
+  // Pregunta 11
+  {
+    q: '¿Cuál de las siguientes afirmaciones es correcta?',
+    opts: [
+      'Para cada número racional $a$ es posible encontrar en los racionales un número $b$ tal que $a + b = 0$',
+      'Para cada número racional $a$ podremos encontrar un número racional $b$ tal que $ab = 1$',
+      'La división de dos números racionales siempre da como resultado un número racional',
+      'La sustracción de dos números racionales siempre da como resultado un número negativo'
+    ],
+    ans: 0
+  },
+  // Pregunta 12
+  {
+    q: '¿Cuál de las siguientes afirmaciones es verdadera?',
+    opts: [
+      '$\\frac{3}{4} = \\frac{3}{20}$',
+      '$0,75 = \\frac{25}{33}$',
+      '$\\frac{6}{7} > \\frac{3}{2}$',
+      '$0,343 > 0,43$'
+    ],
+    ans: 1
+  },
+  // Pregunta 13
+  {
+    q: '¿Cuánto es el doble de la quinta parte de $\\frac{\\frac{12}{5}}{3}$?',
+    opts: ['$\\frac{36}{125}$', '$\\frac{4}{5}$', '$\\frac{16}{5}$', '$8$'],
+    ans: 3
+  },
+  // Pregunta 14
+  {
+    q: 'Si el recíproco de $-\\frac{2}{3}$ es $A$ y el opuesto de $\\frac{1}{2}$ es $B$, ¿cuál es el valor de $\\frac{A}{B}$?',
+    opts: ['$-3$', '$-\\frac{1}{3}$', '$\\frac{1}{3}$', '$3$'],
+    ans: 0
+  },
+  // Pregunta 15
+  {
+    q: 'El hervidor de agua de Teresa está a $\\frac{1}{4}$ de su capacidad con agua. Teresa agrega tres décimas partes de un litro y luego lo pone a hervir. Si se sirve una taza de té de $150$ ml y por un descuido bota la octava parte de un litro del agua hervida, ¿cuál es la capacidad máxima de dicho hervidor si en su interior quedaron $300$ ml de agua hervida?',
+    opts: ['$750$ ml', '$800$ ml', '$1.000$ ml', '$1.100$ ml'],
+    ans: 2
+  },
+  // Pregunta 16
+  {
+    q: 'Si $3,xy$ corresponde a la aproximación por redondeo a la centésima del número $3,2457$ y $w,3z$ es la aproximación por defecto a la centésima de $1,34895$, ¿cuál es el valor de $x + y + w + z$?',
+    opts: ['$8$', '$10$', '$11$', '$12$'],
+    ans: 1
+  },
+  // Pregunta 17
+  {
+    q: '$(0,3 + 3,9)^2 =$',
+    opts: ['$15,4$', '$16,2$', '$18,7$', '$18,9$'],
+    ans: 1
+  },
+  // Pregunta 18
+  {
+    q: '$1 - \\frac{1}{1 - \\frac{1}{1 - \\frac{1}{5}}} =$',
+    opts: ['$-3$', '$\\frac{24}{5}$', '$\\frac{5}{4}$', '$5$'],
+    ans: 0
+  },
+  // Pregunta 19
+  {
+    q: 'Si al cuociente entre $\\frac{6}{12}$ y $\\frac{2}{14}$ se le resta $\\frac{15}{10}$ se obtiene:',
+    opts: ['$-\\frac{10}{7}$', '$-\\frac{7}{19}$', '$1$', '$2$'],
+    ans: 2
+  },
+  // Pregunta 20
+  {
+    q: '¿Cuál de los siguientes números está entre $\\frac{1}{5}$ y $\\frac{2}{3}$?',
+    opts: ['$\\frac{1}{9}$', '$\\frac{4}{5}$', '$\\frac{4}{15}$', '$\\frac{7}{10}$'],
+    ans: 2
+  },
+  // Pregunta 21
+  {
+    q: 'Si $T = -2\\frac{1}{2}$ y $S = -4\\frac{3}{4}$, entonces $S - T =$',
+    opts: ['$-7\\frac{1}{4}$', '$-2\\frac{1}{4}$', '$-1\\frac{1}{4}$', '$2\\frac{1}{4}$'],
+    ans: 1
+  },
+  // Pregunta 22
+  {
+    q: 'Uno de los alumnos de una clase hace la siguiente pregunta: "Profesor, una fracción positiva, ¿cuándo aumenta su valor?" El profesor pregunta al curso si alguien puede contestar a esa pregunta y estas fueron algunas de las respuestas de sus compañeros: Juan: "Yo creo que una fracción positiva solo puede aumentar su valor si aumentamos su numerador y mantenemos su denominador." Rosita: "Yo creo que una fracción positiva aumenta su valor si la amplificamos por un valor mayor que 1." Josefina: "Yo creo que una fracción positiva aumenta su valor solo si la multiplicamos por un racional positivo." Ramón: "Yo creo que una fracción positiva aumenta si aumentamos su numerador o si disminuimos su denominador." ¿Cuál de los alumnos dio una respuesta más completa a lo que preguntó su compañero?',
+    opts: ['Juan', 'Rosita', 'Josefina', 'Ramón'],
+    ans: 3
+  },
+  // Pregunta 23
+  {
+    q: 'Si a la cuarta parte de un cuarto le restamos el triple de un sexto, se obtiene:',
+    opts: ['$-15$', '$-7$', '$1$', '$\\frac{1}{2}$'],
+    ans: 0
+  },
+  // Pregunta 24
+  {
+    q: '$\\frac{1}{8} + \\frac{11}{3} =$',
+    opts: ['$61$', '$65$', '$17$', '$\\frac{1}{4}$'],
+    ans: 0
+  },
+  // Pregunta 25
+  {
+    q: '$\\frac{0,8 : 0,2}{0,02} =$',
+    opts: ['$1$', '$\\frac{1}{2}$', '$0,02$', '$200$'],
+    ans: 3
+  },
+  // Pregunta 26
+  {
+    q: '¿Cuál es el resultado de $\\frac{1}{1 + \\frac{1}{2 + \\frac{1}{3 + \\frac{1}{4}}}}$?',
+    opts: ['$\\frac{18}{11}$', '$\\frac{3}{2}$', '$1$', '$\\frac{7}{11}$'],
+    ans: 3
+  },
+  // Pregunta 27
+  {
+    q: 'En un curso de $42$ alumnos, faltaron $14$ de ellos. ¿Cuál de las siguientes afirmaciones es verdadera?',
+    opts: [
+      'Los alumnos presentes representan el doble del total del curso',
+      'Los alumnos ausentes representan la mitad del curso',
+      'El cuociente entre los ausentes y los presentes es $\\frac{1}{2}$',
+      'El cuociente entre los presentes y el total de alumnos es $0,7$'
+    ],
+    ans: 2
+  },
+  // Pregunta 28
+  {
+    q: '$\\frac{1}{5} + \\frac{1}{5} + \\frac{1}{5} + \\frac{1}{5} =$',
+    opts: ['$\\frac{1}{54}$', '$\\frac{4}{54}$', '$\\frac{4}{20}$', '$\\frac{4}{5}$'],
+    ans: 3
+  },
+  // Pregunta 29
+  {
+    q: 'Al redondear a la milésima el número $4,5387$, resulta:',
+    opts: ['$4,500$', '$4,540$', '$4,538$', '$4,539$'],
+    ans: 3
+  },
+  // Pregunta 30
+  {
+    q: '¿Cuál de las siguientes igualdades es verdadera?',
+    opts: ['$7,9 = \\frac{70}{9}$', '$3,46 = \\frac{52}{15}$', '$\\frac{7}{11} = 0,636$', '$\\frac{4}{3} = 1,3$'],
+    ans: 1
+  },
+  // Pregunta 31
+  {
+    q: 'Si las tres quintas partes de un número $a$ es $2b$, entonces la cuarta parte de $b$ es:',
+    opts: ['$\\frac{8}{5}a$', '$\\frac{3}{40}a$', '$\\frac{5}{8}a$', '$\\frac{3}{10}a$'],
+    ans: 1
+  },
+  // Pregunta 32
+  {
+    q: '¿Cuál es el resultado de truncar a la centésima el número $3,6765$?',
+    opts: ['$3,600$', '$3,670$', '$3,680$', '$3,676$'],
+    ans: 3
+  },
+  // Pregunta 33
+  {
+    q: '¿Cuál de las siguientes afirmaciones es verdadera?',
+    opts: [
+      '$\\frac{1}{4} < \\frac{1}{5}$',
+      '$\\frac{3}{4} > \\frac{4}{5}$',
+      '$\\frac{2}{3} < \\frac{3}{4}$',
+      '$\\frac{5}{6} > \\frac{6}{7}$'
+    ],
+    ans: 2
+  },
+  // Pregunta 34
+  {
+    q: '$[\\frac{1}{4} - (5 \\cdot \\frac{3}{2} + 1)] - 3^2 : 2 =$',
+    opts: ['$-\\frac{39}{4}$', '$-\\frac{37}{4}$', '$-\\frac{35}{4}$', '$-\\frac{33}{4}$'],
+    ans: 3
+  },
+  // Pregunta 35
+  {
+    q: 'Si el numerador y el denominador de una fracción propia aumentan en la misma cantidad, entonces es verdadero que la fracción resultante:',
+    opts: [
+      'Es siempre mayor que la fracción original, porque entre más crezcan ambos, más se parecen entre ellos y por tanto cada vez se parece más a $1$ el cociente',
+      'Es siempre menor que la fracción original, porque si aumentamos el denominador, esto implicará que el numerador se estará dividiendo en más partes, independiente de cuánto este haya crecido',
+      'Es igual que la fracción original, pues si aumentamos en la misma cantidad tanto el numerador como el denominador, obtendremos una fracción equivalente',
+      'Es menor o igual que la fracción original. Menor porque aumenta el denominador por un lado o igual en caso de que tanto numerador como denominador sean pares o impares'
+    ],
+    ans: 0
+  },
+  // Pregunta 36
+  {
+    q: 'Si $n$ es un número natural, entonces la expresión $\\frac{2n}{2n + 1}$ representa siempre:',
+    opts: [
+      'Un número impar, porque un número par dividido por un impar, da impar',
+      'Una fracción impropia, porque al simplificar por $2n$, nos da $1$',
+      'Un número mixto, porque la división no es exacta',
+      'Una fracción irreducible, por tratarse de dos números consecutivos'
+    ],
+    ans: 3
+  },
+  // Pregunta 37
+  {
+    q: 'El inverso aditivo de $-4$, menos el inverso multiplicativo de $\\frac{4}{24}$ es:',
+    opts: ['$-10$', '$-\\frac{23}{6}$', '$-\\frac{25}{6}$', '$-2$'],
+    ans: 0
+  },
+  // Pregunta 38
+  {
+    q: '$800$ menos los $\\frac{3}{20}$ de la tercera parte de $1.200$ es:',
+    opts: ['$740$', '$680$', '$640$', '$340$'],
+    ans: 2
+  },
+  // Pregunta 39
+  {
+    q: 'Tres amigos compraron carne para un asado. Andrés compró los $\\frac{7}{9}$ de un kilogramo, Carlos los $\\frac{4}{5}$ de un kilogramo y Marco los $\\frac{9}{11}$ de un kilogramo. ¿Cuál de las siguientes afirmaciones es verdadera?',
+    opts: [
+      'Andrés compró más carne que Carlos',
+      'Marco compró más carne que Carlos',
+      'Andrés compró más carne que Marco',
+      'Carlos es el que compró menos carne'
+    ],
+    ans: 2
+  },
+  // Pregunta 40
+  {
+    q: 'Una barra mide $50$ cm. Por efecto del calor se ha expandido una centésima parte de su longitud. ¿Cuál es su actual medida?',
+    opts: ['$0,51$ m', '$0,55$ m', '$0,505$ m', '$0,5005$ m'],
+    ans: 2
+  },
+  // Pregunta 41
+  {
+    q: 'Si $A = 1,7 + 3,75$, $B = 3,3 + 2,12$ y $C = 3,21 + 2,24$, ¿cuál de las siguientes relaciones es verdadera?',
+    opts: ['$B > C > A$', '$A = C > B$', '$C > B > A$', '$B > A > C$'],
+    ans: 0
+  },
+  // Pregunta 42
+  {
+    q: 'Si $m = \\frac{2}{3}$ y $n = \\frac{1}{4}$, entonces ¿cuál de las siguientes expresiones equivale a un número entero?',
+    opts: ['$(m + n)(m - n)$', '$6mn$', '$\\frac{8m}{3n}$', '$3m - 2n$'],
+    ans: 1
+  },
+  // Pregunta 43
+  {
+    q: 'Los racionales $\\frac{3}{4}$, $\\frac{5}{6}$, $\\frac{7}{8}$, $\\frac{7}{9}$ ordenados de mayor a menor son:',
+    opts: [
+      '$\\frac{3}{4}, \\frac{5}{6}, \\frac{7}{8}, \\frac{7}{9}$',
+      '$\\frac{7}{8}, \\frac{7}{9}, \\frac{3}{4}, \\frac{5}{6}$',
+      '$\\frac{7}{8}, \\frac{5}{6}, \\frac{7}{9}, \\frac{3}{4}$',
+      '$\\frac{7}{9}, \\frac{7}{8}, \\frac{5}{6}, \\frac{3}{4}$'
+    ],
+    ans: 2
+  },
+  // Pregunta 44
+  {
+    q: 'La expresión $\\frac{2 + \\frac{1}{3}}{1 - \\frac{1}{3}} : \\frac{5 - \\frac{2}{6}}{1 + \\frac{2}{3}}$ equivale a:',
+    opts: ['$\\frac{5}{4}$', '$\\frac{4}{5}$', '$\\frac{3}{4}$', '$\\frac{49}{5}$'],
+    ans: 0
+  },
+  // Pregunta 45
+  {
+    q: '$\\frac{9}{18} - \\frac{0,5 + \\frac{3}{15} - 0,65}{0,1} =$',
+    opts: ['$1$', '$0,5$', '$0$', '$-1$'],
+    ans: 3
+  },
+  // Pregunta 46
+  {
+    q: 'En una calculadora, cada vez que se suman números decimales, el resultado final que muestra el visor está truncado a la centésima. Si se efectúa la suma $0,2333 + 0,0236 + 0,162$, ¿cuál de los siguientes valores será el resultado que mostrará el visor de esta calculadora?',
+    opts: ['$0,418$', '$0,419$', '$0,41$', '$0,42$'],
+    ans: 2
+  },
+  // Pregunta 47
+  {
+    q: 'Camila gastó $\\frac{1}{4}$ de su presupuesto total $S$ en zapatillas, $\\frac{1}{5}$ de lo que gastó en zapatillas lo gastó en una polera y con un $\\frac{1}{10}$ de lo que gastó en la polera se compró una bebida. ¿Cuál de las siguientes expresiones nos permitiría conocer el monto de lo que gastó Camila?',
+    opts: [
+      '$\\frac{1}{4}S + \\frac{1}{5}S + \\frac{1}{10}S$',
+      '$S - (\\frac{1}{4}S + \\frac{1}{5}S + \\frac{1}{10}S)$',
+      '$\\frac{1}{4}S + \\frac{1}{4}S \\cdot \\frac{1}{5}$',
+      '$\\frac{1}{4}S + \\frac{1}{5} \\cdot \\frac{1}{4}S + \\frac{1}{10} \\cdot \\frac{1}{5} \\cdot \\frac{1}{4}S$'
+    ],
+    ans: 3
+  },
+  // Pregunta 48
+  {
+    q: 'El valor de $\\frac{\\frac{3}{4} - \\frac{2}{5}}{\\frac{1}{2} + \\frac{1}{3}}$ es:',
+    opts: ['$\\frac{9}{28}$', '$\\frac{21}{10}$', '$\\frac{6}{5}$', '$-\\frac{1}{4}$'],
+    ans: 0
+  },
+  // Pregunta 49
+  {
+    q: 'Si $x < y < z$, ¿cuál de las siguientes expresiones es positiva?',
+    opts: ['$x - z$', '$-\\frac{z - y}{z - x}$', '$\\frac{y - x}{y - z}$', '$\\frac{x - y}{y - z}$'],
+    ans: 1
+  },
+  // Pregunta 50
+  {
+    q: 'Si al dejar caer una pelota de una cierta altura $H$, cada vez que da un bote esta lograr llegar solo a la tercera parte de la altura previa al respectivo bote, ¿cuál será la altura a la que llega la pelota luego del $k$-ésimo bote?',
+    opts: ['$\\frac{k}{3} \\cdot H$', '$H - \\frac{k}{3}$', '$\\frac{H}{3k}$', '$\\frac{1}{3^k}H$'],
+    ans: 3
+  },
+  // Pregunta 51
+  {
+    q: 'Si $P = 0,001$, $Q = 0,01$ y $R = 0,1$, entonces el valor de $P + Q \\cdot R$ es:',
+    opts: ['$0,00101$', '$0,0101$', '$0,0022$', '$0,002$'],
+    ans: 3
+  },
+  // Pregunta 52
+  {
+    q: 'El orden de los números $a = 5\\frac{2}{3}$, $b = 5\\frac{5}{6}$ y $c = 5\\frac{7}{8}$, de menor a mayor es:',
+    opts: ['$a, b, c$', '$a, c, b$', '$b, a, c$', '$c, a, b$'],
+    ans: 0
+  },
+  // Pregunta 53
+  {
+    q: '¿Cuál de las siguientes afirmaciones es verdadera?',
+    opts: [
+      '$0,72 + 0,28 = 1$',
+      '$1 - 0,\\overline{7} = \\frac{8}{9}$',
+      'El recíproco de $-5$ es $\\frac{1}{5}$',
+      '$0,1 + 0,2 = 0,3$'
+    ],
+    ans: 3
+  },
+  // Pregunta 54
+  {
+    q: '¿Cuál de las siguientes afirmaciones es verdadera?',
+    opts: [
+      '$0,1\\overline{6} = \\frac{1}{6}$',
+      '$0,4\\overline{1} + 0,59 = 1$',
+      '$4,\\overline{9} = 4,9$',
+      '$1,05 - 0,05 = 1$'
+    ],
+    ans: 0
+  },
+  // Pregunta 55
+  {
+    q: 'Se tienen 3 chocolates rectangulares del mismo tamaño, pero divididos en una distinta cantidad de sub-rectángulitos iguales entre sí en cada chocolate. Si entre 3 niños se están comiendo estos chocolates y en la figura aparecen marcados en gris los distintos rectangulitos que ya se han comido, ¿cuál de las siguientes figuras nos permite representar correctamente qué fracción del total de los chocolates se han comido (gris) y qué fracción les queda por comer (en blanco)?',
+    opts: [
+      'Figura A',
+      'Figura B',
+      'Figura C',
+      'Figura D'
+    ],
+    ans: 2
+  },
+  // Pregunta 56
+  {
+    q: 'Si $n$ es un número entero negativo distinto de $-1$, ¿cuál de las siguientes fracciones es la mayor?',
+    opts: ['$\\frac{1}{n}$', '$\\frac{1}{n-1}$', '$\\frac{1}{n+1}$', '$\\frac{n}{n-1}$'],
+    ans: 1
+  },
+  // Pregunta 57
+  {
+    q: 'Se debe repartir en partes iguales $67,20$ kg de harina entre $12$ personas. ¿Cuántos kg de harina recibirán $7$ de estas personas?',
+    opts: ['$3,92$ kg', '$5,60$ kg', '$9,60$ kg', '$39,20$ kg'],
+    ans: 3
+  },
+  // Pregunta 58
+  {
+    q: 'Un barman está preparando un trago y tiene dos dosificadores para preparar un pedido para el cual ocupa $4$ medidas de un licor $1$ (representado en la imagen en color gris oscuro), con uno de los dosificadores, y $6$ medidas de un licor $2$ (representado en la imagen en color gris claro) con el otro dosificador más pequeño. Si se sabe que el dosificador más pequeño tiene como capacidad máxima $\\frac{2}{3}$ de la capacidad máxima del más grande, ¿cómo se vería el vaso desde un costado, si los licores aún no se mezclan, entre los dos licores ocupan $\\frac{2}{3}$ de la capacidad del vaso, y los dosificadores se usaron a su máxima capacidad?',
+    opts: [
+      'Opción A',
+      'Opción B',
+      'Opción C',
+      'Opción D'
+    ],
+    ans: 1
+  },
+  // Pregunta 59
+  {
+    q: 'Respecto del número $\\frac{62}{7}$, ¿cuál de las siguientes afirmaciones es verdadera?',
+    opts: [
+      'Redondeado a la unidad es $8$',
+      'Redondeado a la décima es $8,8$',
+      'Redondeado a la centésima es $8,86$',
+      'Redondeado a la milésima es $8,856$'
+    ],
+    ans: 2
+  },
+  // Pregunta 60
+  {
+    q: 'Si $x = 5,13$ y $y = 5,12$, ¿cuál de las siguientes afirmaciones es verdadera?',
+    opts: [
+      '$y$ es la aproximación por truncamiento a la milésima de $5,12819$',
+      '$y$ es la aproximación por redondeo a la centésima de $5,12819$',
+      '$x$ es la aproximación por redondeo a la milésima de $5,12819$',
+      '$x$ es la aproximación por redondeo a la centésima de $5,12819$'
+    ],
+    ans: 3
+  },
+  // Pregunta 61
+  {
+    q: '¿Cuál de los siguientes números racionales es el menor?',
+    opts: ['$\\frac{11}{119}$', '$\\frac{1}{10}$', '$\\frac{2}{21}$', '$\\frac{4}{39}$'],
+    ans: 0
+  },
+  // Pregunta 62
+  {
+    q: 'Una persona compró dos séptimos de $3\\frac{1}{2}$ docenas de naranjas. ¿Cuántas naranjas compró?',
+    opts: ['$1\\frac{1}{2}$ docenas', '$1\\frac{1}{4}$ docenas', '$1$ docena', '$1$ naranja'],
+    ans: 0
+  },
+  // Pregunta 63
+  {
+    q: 'Si $p = \\frac{4}{6}$, $q = \\frac{15}{18}$ y $r = \\frac{5}{20}$, entonces, ¿cuál de las siguientes afirmaciones es verdadera?',
+    opts: ['$p > q$', '$r > p$', '$p + q = \\frac{3}{2}$', '$r - q > 0$'],
+    ans: 2
+  },
+  // Pregunta 64
+  {
+    q: 'La tabla adjunta se estaba completando con la información aportada por $24$ encuestados. Si bien hay $2$ celdas vacías, la tabla se debería completar considerando que entre los fumadores jóvenes menores de $18$ años y los adultos mayores no fumadores son $\\frac{1}{2}$ del total de encuestados, y que los adultos jóvenes no fumadores son $2,5$ veces los adultos jóvenes fumadores. ¿Qué fracción de los no fumadores corresponden a adultos jóvenes?',
+    opts: ['$\\frac{1}{5}$', '$\\frac{1}{4}$', '$\\frac{1}{3}$', '$\\frac{1}{2}$'],
+    ans: 1
+  },
+  // Pregunta 65
+  {
+    q: 'Sea la expresión $A = \\frac{p}{q}r$, con $p$, $q$ y $r$ números enteros y $r \\neq 0$. ¿Cuál de las siguientes condiciones hace la expresión $A$ positiva?',
+    opts: [
+      '$p \\cdot q > 0$',
+      '$\\frac{p}{r} < 0$ y $q > 0$',
+      '$q \\cdot r < 0$ y $p < 0$',
+      '$p \\cdot r > 0$ y $q < 0$'
+    ],
+    ans: 2
+  }
+];
+
+
+// ============================================================
+// CONFIGURACIÓN DEL TEST
+// ============================================================
+const TOTAL_QUESTIONS = 25;
+let selectedQuestions = [];
+let shuffledOptions = [];
+let userAnswers = [];
+let submitted = false;
+
+// ============================================================
+// UTILIDADES
+// ============================================================
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getRandomQuestions() {
+  const shuffledPool = shuffleArray([...POOL]);
+  return shuffledPool.slice(0, TOTAL_QUESTIONS);
+}
+
+function shuffleOptionsForQuestion(q) {
+  const indices = [0, 1, 2, 3];
+  const shuffledIndices = shuffleArray(indices);
+  const newOpts = shuffledIndices.map(i => q.opts[i]);
+  const newAns = shuffledIndices.indexOf(q.ans);
+  return { opts: newOpts, ansIdx: newAns };
+}
+
+function buildTest() {
+  selectedQuestions = getRandomQuestions();
+  shuffledOptions = selectedQuestions.map(q => shuffleOptionsForQuestion(q));
+  userAnswers = Array(TOTAL_QUESTIONS).fill(null);
+}
+
+// ============================================================
+// RENDERIZADO
+// ============================================================
+function renderQuestions() {
+  const wrap = document.getElementById('questions-wrap');
+  wrap.innerHTML = '';
+  
+  selectedQuestions.forEach((q, idx) => {
+    const optData = shuffledOptions[idx];
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `qcard-${idx}`;
+    card.style.animationDelay = `${idx * 0.02}s`;
+    
+    let optsHtml = '';
+    const letters = ['a', 'b', 'c', 'd'];
+    optData.opts.forEach((opt, optIdx) => {
+      optsHtml += `
+        <div class="opt" id="opt-${idx}-${optIdx}" onclick="selectOption(${idx}, ${optIdx})">
+          <div class="opt-letter">${letters[optIdx]}</div>
+          <div class="opt-text">${opt}</div>
+        </div>
+      `;
+    });
+    
+    card.innerHTML = `
+      <div class="q-num">Pregunta ${idx + 1} de ${TOTAL_QUESTIONS}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">${optsHtml}</div>
+      <div class="q-feedback" id="qfb-${idx}"></div>
+    `;
+    wrap.appendChild(card);
+  });
+  
+  // Re-renderizar KaTeX en las nuevas preguntas
+  setTimeout(function() {
+    renderKaTeX(wrap);
+  }, 300);
+}
+
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  if (userAnswers[qIdx] !== null) {
+    const prevOpt = document.getElementById(`opt-${qIdx}-${userAnswers[qIdx]}`);
+    if (prevOpt) prevOpt.classList.remove('selected');
+  }
+  userAnswers[qIdx] = optIdx;
+  const selectedOpt = document.getElementById(`opt-${qIdx}-${optIdx}`);
+  if (selectedOpt) selectedOpt.classList.add('selected');
+  updateProgress();
+}
+
+function updateProgress() {
+  const answered = userAnswers.filter(a => a !== null).length;
+  document.getElementById('answered-count').textContent = `Respondidas: ${answered} / ${TOTAL_QUESTIONS}`;
+  document.getElementById('prog-fill').style.width = `${(answered / TOTAL_QUESTIONS) * 100}%`;
+}
+
+function calculateGrade(correct, total) {
+  // Nota = cantidad de respuestas correctas (1 punto cada una)
+  const grade = correct;
+  const percentage = Math.round((correct / total) * 100);
+  return { grade, percentage };
+}
+
+function submitTest() {
+  if (submitted) return;
+  
+  const answered = userAnswers.filter(a => a !== null).length;
+  if (answered < TOTAL_QUESTIONS) {
+    if (!confirm(`Tienes ${TOTAL_QUESTIONS - answered} pregunta(s) sin responder. ¿Deseas finalizar igual?`)) {
+      return;
+    }
+  }
+  
+  submitted = true;
+  
+  let correctCount = 0;
+  selectedQuestions.forEach((_, idx) => {
+    const chosen = userAnswers[idx];
+    const correctAns = shuffledOptions[idx].ansIdx;
+    const card = document.getElementById(`qcard-${idx}`);
+    const fb = document.getElementById(`qfb-${idx}`);
+    const letters = ['a', 'b', 'c', 'd'];
+    
+    // Bloquear todas las opciones
+    for (let i = 0; i < 4; i++) {
+      const opt = document.getElementById(`opt-${idx}-${i}`);
+      if (opt) opt.classList.add('locked');
+    }
+    
+    if (chosen === null) {
+      // Sin responder: marcar la correcta
+      const correctOpt = document.getElementById(`opt-${idx}-${correctAns}`);
+      if (correctOpt) correctOpt.classList.add('correct');
+      card.classList.add('answered-wrong');
+      fb.className = 'q-feedback wrong';
+      fb.innerHTML = `⚪ Sin responder — La respuesta correcta era: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    } else if (chosen === correctAns) {
+      correctCount++;
+      const chosenOpt = document.getElementById(`opt-${idx}-${chosen}`);
+      if (chosenOpt) {
+        chosenOpt.classList.remove('selected');
+        chosenOpt.classList.add('correct');
+      }
+      card.classList.add('answered-correct');
+      fb.className = 'q-feedback correct';
+      fb.innerHTML = '✅ ¡Correcto!';
+    } else {
+      const chosenOpt = document.getElementById(`opt-${idx}-${chosen}`);
+      const correctOpt = document.getElementById(`opt-${idx}-${correctAns}`);
+      if (chosenOpt) {
+        chosenOpt.classList.remove('selected');
+        chosenOpt.classList.add('wrong');
+      }
+      if (correctOpt) correctOpt.classList.add('correct');
+      card.classList.add('answered-wrong');
+      fb.className = 'q-feedback wrong';
+      fb.innerHTML = `❌ Incorrecto — La respuesta correcta era: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    }
+  });
+  
+  const wrongCount = userAnswers.filter((v, i) => v !== null && v !== shuffledOptions[i].ansIdx).length;
+  const skippedCount = userAnswers.filter(v => v === null).length;
+  const { grade, percentage } = calculateGrade(correctCount, TOTAL_QUESTIONS);
+  const isApproved = grade >= 4.0;
+  
+  // Mostrar resultados
+// Mostrar resultados
+document.getElementById('r-score').textContent = correctCount;
+document.getElementById('r-of').textContent = `/ ${TOTAL_QUESTIONS}`;
+document.getElementById('r-correct').textContent = correctCount;
+document.getElementById('r-wrong').textContent = wrongCount;
+document.getElementById('r-skip').textContent = skippedCount;
+
+const gradeBox = document.getElementById('grade-box');
+// La nota ahora es simplemente la cantidad de correctas
+gradeBox.className = `grade-box ${correctCount >= 13 ? 'approved' : 'failed'}`;
+gradeBox.innerHTML = `<strong>${correctCount >= 13 ? '🎉 APROBADO 🎉' : '📖 REPROBADO 📖'}</strong><br>Puntaje: ${correctCount} / ${TOTAL_QUESTIONS} correctas (${percentage}% de logro)`;
+
+let title, msg;
+if (percentage >= 90) {
+  title = '🏆 ¡Excelente!';
+  msg = 'Dominas la función cuadrática con solidez. ¡Sigue así!';
+} else if (percentage >= 70) {
+  title = '👍 ¡Muy bien!';
+  msg = 'Tienes un buen dominio. Repasa los temas donde fallaste para mejorar.';
+} else if (percentage >= 50) {
+  title = '📚 Sigue practicando';
+  msg = 'Vas por buen camino, pero necesitas repasar más la materia.';
+} else {
+  title = '💪 No te rindas';
+  msg = 'Revisa la clase y vuelve a intentarlo. ¡Puedes mejorar!';
+}
+document.getElementById('result-title').textContent = title;
+document.getElementById('result-msg').textContent = msg;
+  
+  // Cambiar color del anillo
+  const ring = document.querySelector('.score-ring');
+  if (ring) ring.style.borderColor = percentage >= 70 ? 'var(--green)' : percentage >= 50 ? 'var(--gold)' : 'var(--red)';
+  
+  // Ocultar preguntas y mostrar resultados
+  document.getElementById('questions-wrap').style.display = 'none';
+  document.getElementById('submit-bar').style.display = 'none';
+  document.getElementById('results-wrap').style.display = 'block';
+  document.getElementById('prog-fill').style.width = '100%';
+  
+  // Generar revisión de respuestas
+  renderReview();
+  
+  // Re-renderizar KaTeX en los resultados
+  setTimeout(function() {
+    renderKaTeX(document.getElementById('results-wrap'));
+  }, 300);
+  
+  // Scroll a resultados
+  document.getElementById('results-wrap').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderReview() {
+  const reviewWrap = document.getElementById('review-wrap');
+  reviewWrap.innerHTML = '';
+  
+  selectedQuestions.forEach((q, idx) => {
+    const chosen = userAnswers[idx];
+    const correctAns = shuffledOptions[idx].ansIdx;
+    const isCorrect = chosen === correctAns;
+    const letters = ['a', 'b', 'c', 'd'];
+    
+    const reviewCard = document.createElement('div');
+    reviewCard.className = `review-card ${isCorrect ? 'correct' : 'wrong'}`;
+    
+    let answerStatus = '';
+    if (chosen === null) {
+      answerStatus = `<span style="color:var(--gold);">⚪ Sin responder</span> — Respuesta correcta: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    } else if (isCorrect) {
+      answerStatus = `<span style="color:var(--green);">✅ Correcta</span> — Elegiste: <strong>${letters[chosen]}) ${shuffledOptions[idx].opts[chosen]}</strong>`;
+    } else {
+      answerStatus = `<span style="color:var(--red);">❌ Incorrecta</span> — Elegiste: <strong>${letters[chosen]}) ${shuffledOptions[idx].opts[chosen]}</strong> — Respuesta correcta: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    }
+    
+    reviewCard.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+        <strong style="color:var(--primary);">Pregunta ${idx + 1}</strong>
+        <span style="font-size:.7rem;color:var(--gray);">${isCorrect ? '✓ Correcta' : (chosen === null ? '○ Sin responder' : '✗ Incorrecta')}</span>
+      </div>
+      <div style="font-size:.85rem;margin-bottom:8px;">${q.q.substring(0, 120)}${q.q.length > 120 ? '...' : ''}</div>
+      <div style="font-size:.8rem;">${answerStatus}</div>
+    `;
+    reviewWrap.appendChild(reviewCard);
+  });
+}
+
+// ============================================================
+// FUNCIONES DE CONTROL
+// ============================================================
+function startTest() {
+  buildTest();
+  submitted = false;
+  document.getElementById('intro-card').style.display = 'none';
+  document.getElementById('results-wrap').style.display = 'none';
+  renderQuestions();
+  document.getElementById('questions-wrap').style.display = 'flex';
+  document.getElementById('submit-bar').style.display = 'flex';
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartTest() {
+  buildTest();
+  submitted = false;
+  document.getElementById('results-wrap').style.display = 'none';
+  renderQuestions();
+  document.getElementById('questions-wrap').style.display = 'flex';
+  document.getElementById('submit-bar').style.display = 'flex';
+  updateProgress();
+  document.getElementById('intro-card').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelTest() {
+  if (confirm('¿Estás seguro de que quieres cancelar el test? Perderás tu progreso.')) {
+    document.getElementById('questions-wrap').style.display = 'none';
+    document.getElementById('submit-bar').style.display = 'none';
+    document.getElementById('intro-card').style.display = 'block';
+    document.getElementById('prog-fill').style.width = '0%';
+    submitted = false;
+  }
+}
+// ─── FUNCIÓN PARA RENDERIZAR KATEX ───
+function renderKaTeX(element) {
+  if (typeof renderMathInElement === 'function') {
+    try {
+      renderMathInElement(element || document.body, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '\\[', right: '\\]', display: true},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+      });
+    } catch(e) {
+      console.warn('KaTeX render error:', e);
+    }
+  }
+}
+// ─── INICIALIZACIÓN ───
+document.addEventListener("DOMContentLoaded", function() {
+  // Esperar a que KaTeX esté completamente cargado
+  setTimeout(function() {
+    renderKaTeX(document.body);
+  }, 500);
+  
+  // Configurar eventos de los botones
+  document.getElementById('submitTestBtn')?.addEventListener('click', submitTest);
+  document.getElementById('cancelTestBtn')?.addEventListener('click', cancelTest);
+  document.getElementById('restartTestBtn')?.addEventListener('click', restartTest);
+  document.getElementById('goToCourseBtn')?.addEventListener('click', () => window.location.href = 'index.html');
+  document.getElementById('goToClassBtn')?.addEventListener('click', () => window.location.href = 'C2.html');
+});
+</script>
+</body>
+</html>

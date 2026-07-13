@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matemáticas C5 · Expresiones Algebraicas · Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --teal:#0d7377;--orange:#c06020;--purple:#7a3a8a;--coral:#c06040;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+
+/* ─── LAYOUT ─── */
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+/* ─── SLIDES ─── */
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+.s-body{padding-bottom:16px !important;}
+
+/* slide header bar */
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--teal) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+/* slide body */
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+/* ─── CONTENT COMPONENTS ─── */
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--teal);}
+
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box.orange{border-left-color:var(--orange);}
+.rule-box.purple{border-left-color:var(--purple);}
+.rule-box.teal{border-left-color:var(--teal);}
+.rule-box.coral{border-left-color:var(--coral);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+/* math block */
+.math-block{
+  background:var(--navy);color:var(--gold2);border-radius:10px;
+  padding:14px 20px;font-size:.95rem;line-height:2;overflow-x:auto;
+}
+.math-block .comment{color:#6b8ab0;font-size:.8rem;}
+
+/* example strip */
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--teal);font-weight:700;}
+
+/* two-col layout */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.four-col{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;}
+
+/* tip box */
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+/* property grid */
+.prop-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.prop-card{
+  background:var(--white);border-radius:10px;padding:10px 14px;
+  border:1px solid #dde4ee;text-align:center;
+}
+.prop-card .name{font-weight:700;color:var(--navy);font-size:.85rem;}
+.prop-card .formula{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--teal);margin-top:4px;}
+.prop-card .desc{font-size:.75rem;color:var(--gray);margin-top:4px;}
+
+/* algebra table */
+.algebra-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;}
+.algebra-table th{background:var(--navy);color:var(--gold);padding:6px 12px;text-align:left;font-size:.8rem;}
+.algebra-table td{background:var(--white);padding:6px 12px;font-size:.85rem;border-bottom:1px solid #eef1f5;}
+.algebra-table tr:nth-child(even) td{background:#f8fafc;}
+
+/* cover slide */
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,var(--teal) 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+/* ─── NAV ─── */
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+/* ─── TRANSITIONS ─── */
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col,.four-col,.prop-grid{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+  .nav-links .nav-btn{font-size:.7rem;padding:5px 10px;}
+  #progress-wrap{max-width:120px;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══════════════════════════════════ SLIDE 1 – COVER ══════════════════════════════════ -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">📐</div>
+    <div class="cover-level">Eje Álgebra · Clase 05</div>
+    <div class="cover-title">Expresiones Algebraicas<br><span>Escuela Naval 2027</span></div>
+    <div class="cover-sub">Monomios, polinomios, lenguaje algebraico, productos notables y factorización. Base del razonamiento algebraico para la PAES.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">🔤 Lenguaje Algebraico</span>
+      <span class="cover-tag">📊 Monomios</span>
+      <span class="cover-tag">📈 Polinomios</span>
+      <span class="cover-tag">✖️ Productos Notables</span>
+      <span class="cover-tag">🧩 Factorización</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 2 – LENGUAJE ALGEBRAICO (100 EXPRESIONES) ══════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Lenguaje Algebraico — 100 Expresiones</h2>
+    <span class="s-num">02 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El <strong>lenguaje algebraico</strong> utiliza <strong>letras</strong> (variables) para representar cantidades desconocidas. Domina estas <strong>100 expresiones</strong> para la PAES.</p>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:0.82rem;">
+      
+      <!-- Columna 1 -->
+      <div>
+        <div class="sec-label">📌 Expresiones (1-25)</div>
+        <div class="rule-box green" style="padding:10px 14px;line-height:1.9;">
+          <strong>1.</strong> Un número → \(x\)<br>
+          <strong>2.</strong> Un número par → \(2x\)<br>
+          <strong>3.</strong> Un número impar → \(2x+1\)<br>
+          <strong>4.</strong> Un número aumentado en cuatro → \(x+4\)<br>
+          <strong>5.</strong> Un número aumentado en cien → \(x+100\)<br>
+          <strong>6.</strong> Un número disminuido en ocho → \(x-8\)<br>
+          <strong>7.</strong> Un número disminuido en cinco → \(x-5\)<br>
+          <strong>8.</strong> El doble de un número → \(2x\)<br>
+          <strong>9.</strong> El triple de un número → \(3x\)<br>
+          <strong>10.</strong> El cuádruple de un número → \(4x\)<br>
+          <strong>11.</strong> El quíntuple de un número → \(5x\)<br>
+          <strong>12.</strong> La mitad de un número → \(\frac{x}{2}\)<br>
+          <strong>13.</strong> La tercera parte de un número → \(\frac{x}{3}\)<br>
+          <strong>14.</strong> La cuarta parte de un número → \(\frac{x}{4}\)<br>
+          <strong>15.</strong> La quinta parte de un número → \(\frac{x}{5}\)<br>
+          <strong>16.</strong> La décima parte de un número → \(\frac{x}{10}\)<br>
+          <strong>17.</strong> El sucesor de un número → \(x+1\)<br>
+          <strong>18.</strong> El antecesor de un número → \(x-1\)<br>
+          <strong>19.</strong> El sucesor de un número par → \(2x+1\)<br>
+          <strong>20.</strong> El antecesor de un número par → \(2x-1\)<br>
+          <strong>21.</strong> El sucesor par de un número par → \(2x+2\)<br>
+          <strong>22.</strong> El antecesor par de un número par → \(2x-2\)<br>
+          <strong>23.</strong> El cuadrado de un número → \(x^2\)<br>
+          <strong>24.</strong> El cubo de un número → \(x^3\)<br>
+          <strong>25.</strong> La cuarta potencia de un número → \(x^4\)
+        </div>
+      </div>
+
+      <!-- Columna 2 -->
+      <div>
+        <div class="sec-label">📌 Expresiones (26-50)</div>
+        <div class="rule-box green" style="padding:10px 14px;line-height:1.9;">
+          <strong>26.</strong> El recíproco de un número → \(\frac{1}{x}\)<br>
+          <strong>27.</strong> Tres cuartas partes de un número → \(\frac{3x}{4}\)<br>
+          <strong>28.</strong> Siete novenas partes de un número → \(\frac{7x}{9}\)<br>
+          <strong>29.</strong> El 30% de un número → \(0.3x\)<br>
+          <strong>30.</strong> El 22% de un número → \(0.22x\)<br>
+          <strong>31.</strong> Un número aumentado en un 20% → \(1.2x\)<br>
+          <strong>32.</strong> Un número aumentado en un 50% → \(1.5x\)<br>
+          <strong>33.</strong> Un número aumentado en un 300% → \(4x\)<br>
+          <strong>34.</strong> La raíz cuadrada de un número → \(\sqrt{x}\)<br>
+          <strong>35.</strong> La raíz cúbica de un número → \(\sqrt[3]{x}\)<br>
+          <strong>36.</strong> La raíz cuadrada de un número par → \(\sqrt{2x}\)<br>
+          <strong>37.</strong> La raíz cúbica de un número impar → \(\sqrt[3]{2x+1}\)<br>
+          <strong>38.</strong> El logaritmo de un número → \(\log x\)<br>
+          <strong>39.</strong> El logaritmo en base "a" de un número → \(\log_a x\)<br>
+          <strong>40.</strong> El logaritmo del sucesor de un número → \(\log(x+1)\)<br>
+          <strong>41.</strong> El "a%" de un número → \(\frac{ax}{100}\)<br>
+          <strong>42.</strong> La diferencia de dos números distintos → \(x-y\)<br>
+          <strong>43.</strong> La diferencia de un número y su cubo → \(x-x^3\)<br>
+          <strong>44.</strong> La suma de dos números distintos → \(x+y\)<br>
+          <strong>45.</strong> La suma de tres números distintos → \(x+y+z\)<br>
+          <strong>46.</strong> La suma de dos números al cuadrado → \((x+y)^2\)<br>
+          <strong>47.</strong> La suma del cuadrado de dos números → \(x^2+y^2\)<br>
+          <strong>48.</strong> La suma de tres números al cuadrado → \((x+y+z)^2\)<br>
+          <strong>49.</strong> La suma del cuadrado de tres números → \(x^2+y^2+z^2\)<br>
+          <strong>50.</strong> La suma de dos números al cubo → \((x+y)^3\)
+        </div>
+      </div>
+
+      <!-- Columna 3 -->
+      <div>
+        <div class="sec-label">📌 Expresiones (51-75)</div>
+        <div class="rule-box orange" style="padding:10px 14px;line-height:1.9;">
+          <strong>51.</strong> La suma del cubo de dos números → \(x^3+y^3\)<br>
+          <strong>52.</strong> La diferencia del cuadrado de dos números → \(x^2-y^2\)<br>
+          <strong>53.</strong> La diferencia del cubo de dos números → \(x^3-y^3\)<br>
+          <strong>54.</strong> El doble de un número, disminuido en cinco → \(2x-5\)<br>
+          <strong>55.</strong> La diferencia entre la décima parte de un número y el triple del mismo número → \(\frac{x}{10}-3x\)<br>
+          <strong>56.</strong> La raíz cuadrada de la diferencia de dos números → \(\sqrt{x-y}\)<br>
+          <strong>57.</strong> La diferencia de la raíz cúbica de dos números → \(\sqrt[3]{x}-\sqrt[3]{y}\)<br>
+          <strong>58.</strong> La cuarta parte de un número al cuadrado → \(\frac{x^2}{4}\)<br>
+          <strong>59.</strong> El cuadrado de la cuarta parte de un número → \(\left(\frac{x}{4}\right)^2\)<br>
+          <strong>60.</strong> El doble de la diferencia de dos números → \(2(x-y)\)<br>
+          <strong>61.</strong> El doble del triple de un número → \(2\cdot3x\)<br>
+          <strong>62.</strong> La tercera parte de la quinta parte de un número → \(\frac{1}{3}\cdot\frac{x}{5}\)<br>
+          <strong>63.</strong> La mitad del quíntuple del sucesor de un número → \(\frac{1}{2}\cdot5(x+1)\)<br>
+          <strong>64.</strong> El triple del triple del doble de un número → \(3\cdot3\cdot2x\)<br>
+          <strong>65.</strong> El 2% del 200% de un número → \(0.02\cdot2x\)<br>
+          <strong>66.</strong> La mitad del cuádruple de la diferencia de dos números → \(\frac{1}{2}\cdot4(x-y)\)<br>
+          <strong>67.</strong> El óctuple de la suma de tres números → \(8(x+y+z)\)<br>
+          <strong>68.</strong> El 15% de un número al cubo → \(0.15x^3\)<br>
+          <strong>69.</strong> El cuadrado del 20% de un número → \((0.2x)^2\)<br>
+          <strong>70.</strong> El "p%" del "q%" del cuádruple de un número → \(\frac{p}{100}\cdot\frac{q}{100}\cdot4x\)<br>
+          <strong>71.</strong> La suma de un número y su raíz cuadrada → \(x+\sqrt{x}\)<br>
+          <strong>72.</strong> La suma de un número, su antecesor y su sucesor → \(x+(x-1)+(x+1)\)<br>
+          <strong>73.</strong> La suma de dos números pares distintos → \(2x+2y\)<br>
+          <strong>74.</strong> La suma de tres números pares consecutivos → \(2x+(2x+2)+(2x+4)\)<br>
+          <strong>75.</strong> La diferencia del sucesor de un número y el antecesor de otro número → \((x+1)-(y-1)\)
+        </div>
+      </div>
+
+      <!-- Columna 4 -->
+      <div>
+        <div class="sec-label">📌 Expresiones (76-100)</div>
+        <div class="rule-box purple" style="padding:10px 14px;line-height:1.9;">
+          <strong>76.</strong> El cociente entre dos números distintos → \(\frac{x}{y}\)<br>
+          <strong>77.</strong> El producto de dos números distintos → \(xy\)<br>
+          <strong>78.</strong> El cociente entre el antecesor y el sucesor de un número → \(\frac{x-1}{x+1}\)<br>
+          <strong>79.</strong> El producto de un número y su raíz cúbica → \(x\cdot\sqrt[3]{x}\)<br>
+          <strong>80.</strong> El producto del doble de un número y su sucesor → \(2x\cdot(x+1)\)<br>
+          <strong>81.</strong> El producto de un número y su recíproco → \(x\cdot\frac{1}{x}\)<br>
+          <strong>82.</strong> La suma de un número y su inverso aditivo → \(x+(-x)\)<br>
+          <strong>83.</strong> La diferencia del triple de un número y su inverso aditivo → \(3x-(-x)\)<br>
+          <strong>84.</strong> El cociente entre un número y su sucesor → \(\frac{x}{x+1}\)<br>
+          <strong>85.</strong> El cociente entre el doble de un número y el triple de otro número → \(\frac{2x}{3y}\)<br>
+          <strong>86.</strong> El producto entre la suma de dos números al cuadrado y el cubo del segundo número → \((x+y)^2\cdot y^3\)<br>
+          <strong>87.</strong> La raíz cuadrada de la raíz cúbica del cuadrado, del cubo de un número → \(\sqrt{\sqrt[3]{x^2 \cdot x^3}}\)<br>
+          <strong>88.</strong> El cuadrado, del cuadrado, del cubo del antecesor de un número → \((((x-1)^3)^2)^2\)<br>
+          <strong>89.</strong> La diferencia del cociente de dos números y su recíproco → \(\frac{x}{y}-\frac{y}{x}\)<br>
+          <strong>90.</strong> La suma de los recíprocos de tres números → \(\frac{1}{x}+\frac{1}{y}+\frac{1}{z}\)<br>
+          <strong>91.</strong> El doble de la diferencia entre un número y el triple de otro → \(2(x-3y)\)<br>
+          <strong>92.</strong> El producto de la suma de dos números y la diferencia de los mismos → \((x+y)(x-y)\)<br>
+          <strong>93.</strong> La raíz cúbica del producto de dos números → \(\sqrt[3]{xy}\)<br>
+          <strong>94.</strong> El cuadrado de la suma de tres números → \((x+y+z)^2\)<br>
+          <strong>95.</strong> La mitad de la diferencia entre un número y el doble de otro → \(\frac{x-2y}{2}\)<br>
+          <strong>96.</strong> El triple del cociente entre un número y su sucesor → \(3\cdot\frac{x}{x+1}\)<br>
+          <strong>97.</strong> El producto del cuadrado de un número y el cubo de otro → \(x^2 y^3\)<br>
+          <strong>98.</strong> La diferencia entre el doble de un número y el triple de su antecesor → \(2x-3(x-1)\)<br>
+          <strong>99.</strong> El cociente entre el cuadrado de un número y la raíz cuadrada de otro → \(\frac{x^2}{\sqrt{y}}\)<br>
+          <strong>100.</strong> La suma del sucesor de un número y el antecesor del mismo → \((x+1)+(x-1)\)
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 3 – MONOMIOS Y POLINOMIOS ══════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Monomios y Polinomios</h2>
+    <span class="s-num">03 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Un <strong>término algebraico</strong> combina números y letras. Según la cantidad de términos, las expresiones se clasifican en <strong>monomios, binomios, trinomios o polinomios</strong>.</p>
+    <div class="four-col">
+      <div class="rule-box green">
+        <div class="title">Monomio (1 término)</div>
+        <div class="ex" style="font-size:.8rem;line-height:1.8;">
+          \(x\)<br>
+          \(3x\)<br>
+          \(2x^2y\)<br>
+          \(15x^3y^4\)
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">Binomio (2 términos)</div>
+        <div class="ex" style="font-size:.8rem;line-height:1.8;">
+          \(x + y\)<br>
+          \(3x + 5y^2\)<br>
+          \(x^2 - 4\)<br>
+          \(7x^3 - 2x^5\)
+        </div>
+      </div>
+      <div class="rule-box purple">
+        <div class="title">Trinomio (3 términos)</div>
+        <div class="ex" style="font-size:.8rem;line-height:1.8;">
+          \(2x + 3y - 4z\)<br>
+          \(x^2 + 3x - 7\)<br>
+          \(x^2 + 2xy + y^2\)
+        </div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">Polinomio (2+ términos)</div>
+        <div class="ex" style="font-size:.8rem;line-height:1.8;">
+          \(x + 3y\)<br>
+          \(x^5 - 3x^4 + 2x^3 + 11x^2 - x + 9\)<br>
+          \(x^2 - y^2 + z^3 + 1\)
+        </div>
+      </div>
+    </div>
+    <div class="rule-box gold" style="margin-top:8px;">
+      <div class="title">📌 Grado de un término</div>
+      <p>El <strong>grado</strong> es la suma de los exponentes de todas las variables en el factor literal.</p>
+      <div class="ex" style="margin-top:4px;">
+        \(5x^2\) → grado 2 &nbsp;·&nbsp; \(x^3y\) → grado 4 &nbsp;·&nbsp; \(x^2y^3z\) → grado 6
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 4 – TÉRMINOS SEMEJANTES ══════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">OPERACIONES</span>
+    <h2>Términos Semejantes</h2>
+    <span class="s-num">04 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los <strong>términos semejantes</strong> tienen el <strong>mismo factor literal</strong> (mismas letras con los mismos exponentes). Se pueden <strong>sumar o restar</strong>.</p>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ejemplo 1</div>
+        <div class="rule-box green">
+          <div class="ex">
+            \(12ab + 4c + 6ab\)<br>
+            \(= 18ab + 4c\)
+          </div>
+          <p style="font-size:.82rem;color:var(--gray);margin-top:4px;">
+            <strong>Nota:</strong> \(12ab\) y \(6ab\) son semejantes. \(4c\) no lo es.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Ejemplo 2</div>
+        <div class="rule-box orange">
+          <div class="ex">
+            \(9m^2 + 7n - 4m^2 - n\)<br>
+            \(= 5m^2 + 6n\)
+          </div>
+          <p style="font-size:.82rem;color:var(--gray);margin-top:4px;">
+            <strong>Nota:</strong> \(9m^2\) y \(-4m^2\) son semejantes. \(7n\) y \(-n\) son semejantes.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="rule-box gold">
+      <div class="title">📌 Eliminación de paréntesis</div>
+      <div class="ex">
+        <strong>Regla 1:</strong> Si el paréntesis está precedido por \(+\), se elimina sin cambios.<br>
+        <strong>Regla 2:</strong> Si el paréntesis está precedido por \(-\), se cambia el signo de todos los términos.<br><br>
+        \(-(-(-(-x))) + (-(-(-(-x)))) = x + x = 2x\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 5 – MULTIPLICACIÓN DE POLINOMIOS ══════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">OPERACIONES</span>
+    <h2>Multiplicación de Polinomios</h2>
+    <span class="s-num">05 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="three-col">
+      <div>
+        <div class="sec-label">📌 Monomio × Monomio</div>
+        <div class="rule-box green">
+          <p>Multiplicar coeficientes y factores literales.</p>
+          <div class="ex" style="font-size:.85rem;margin-top:6px;">
+            \((3a^2b^3) \cdot (2a^5c)\)<br>
+            \(= 6a^7b^3c\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Monomio × Polinomio</div>
+        <div class="rule-box orange">
+          <p>Aplicar propiedad distributiva.</p>
+          <div class="ex" style="font-size:.85rem;margin-top:6px;">
+            \(-3m(2+m-4n)\)<br>
+            \(= -6m - 3m^2 + 12mn\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Polinomio × Polinomio</div>
+        <div class="rule-box purple">
+          <p>Multiplicar cada término del primero por cada término del segundo.</p>
+          <div class="ex" style="font-size:.85rem;margin-top:6px;">
+            \((x+2)(y-3)\)<br>
+            \(= xy - 3x + 2y - 6\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Recuerda:</strong> La propiedad distributiva dice que \(a(b+c) = ab + ac\). Se aplica siempre en multiplicación de polinomios.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 6 – PRODUCTOS NOTABLES: CUADRADO DE BINOMIO ══════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">PRODUCTOS NOTABLES</span>
+    <h2>Cuadrado de Binomio</h2>
+    <span class="s-num">06 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="math-block">
+      \[
+      (a \pm b)^2 = a^2 \pm 2ab + b^2
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Con suma</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.9rem;line-height:2;">
+            \((x+1)^2 = x^2 + 2x + 1\)<br>
+            \((x+5)^2 = x^2 + 10x + 25\)<br>
+            \((x+10)^2 = x^2 + 20x + 100\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Con resta</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.9rem;line-height:2;">
+            \((x-1)^2 = x^2 - 2x + 1\)<br>
+            \((x-5)^2 = x^2 - 10x + 25\)<br>
+            \((x-10)^2 = x^2 - 20x + 100\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">🧠</span><div class="content"><strong>Truco:</strong> "El cuadrado del primero, más/menos el doble producto del primero por el segundo, más el cuadrado del segundo".</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 7 – SUMA POR DIFERENCIA ══════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">PRODUCTOS NOTABLES</span>
+    <h2>Suma por Diferencia</h2>
+    <span class="s-num">07 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="math-block">
+      \[
+      (a + b)(a - b) = a^2 - b^2
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ejemplos</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.9rem;line-height:2;">
+            \((x+1)(x-1) = x^2 - 1\)<br>
+            \((x+3)(x-3) = x^2 - 9\)<br>
+            \((x+7)(x-7) = x^2 - 49\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Con coeficientes</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.9rem;line-height:2;">
+            \((2x+3)(2x-3) = 4x^2 - 9\)<br>
+            \((5x+2)(5x-2) = 25x^2 - 4\)<br>
+            \((x^2+4)(x^2-4) = x^4 - 16\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Importante:</strong> El resultado siempre es la <strong>diferencia de cuadrados</strong> \(a^2 - b^2\).</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 8 – BINOMIOS CON TÉRMINO COMÚN ══════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">PRODUCTOS NOTABLES</span>
+    <h2>Binomios con Término Común</h2>
+    <span class="s-num">08 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="math-block">
+      \[
+      (x + a)(x + b) = x^2 + (a + b)x + ab
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ambos positivos</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.85rem;line-height:2;">
+            \((x+2)(x+3) = x^2 + 5x + 6\)<br>
+            \((x+4)(x+7) = x^2 + 11x + 28\)<br>
+            \((x+6)(x+10) = x^2 + 16x + 60\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Uno negativo</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.85rem;line-height:2;">
+            \((x+3)(x-2) = x^2 + x - 6\)<br>
+            \((x-7)(x+3) = x^2 - 4x - 21\)<br>
+            \((x-10)(x+17) = x^2 + 7x - 170\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Regla:</strong> El término de grado 1 es la <strong>suma</strong> de los términos independientes. El término de grado 0 es su <strong>producto</strong>.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 9 – CUBO DE BINOMIO ══════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">PRODUCTOS NOTABLES</span>
+    <h2>Cubo de Binomio</h2>
+    <span class="s-num">09 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="math-block">
+      \[
+      (a \pm b)^3 = a^3 \pm 3a^2b + 3ab^2 \pm b^3
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Con suma</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.85rem;line-height:2;">
+            \((x+1)^3 = x^3 + 3x^2 + 3x + 1\)<br>
+            \((x+2)^3 = x^3 + 6x^2 + 12x + 8\)<br>
+            \((x+3)^3 = x^3 + 9x^2 + 27x + 27\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Con resta</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.85rem;line-height:2;">
+            \((x-1)^3 = x^3 - 3x^2 + 3x - 1\)<br>
+            \((x-2)^3 = x^3 - 6x^2 + 12x - 8\)<br>
+            \((x-3)^3 = x^3 - 9x^2 + 27x - 27\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">🧮</span><div class="content"><strong>Patrón:</strong> Coeficientes 1, 3, 3, 1. Los signos alternan en la resta: \(+ - + -\).</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 10 – FACTOR COMÚN ══════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">FACTORIZACIÓN</span>
+    <h2>Factor Común</h2>
+    <span class="s-num">10 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">La <strong>factorización</strong> es el proceso inverso al producto. El <strong>factor común</strong> consiste en extraer el factor que se repite en todos los términos.</p>
+    <div class="math-block">
+      \[
+      ax + bx = x(a + b)
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ejemplos</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.85rem;line-height:2;">
+            \(x^2 + 2x = x(x+2)\)<br>
+            \(x^3 - 5x^2 = x^2(x-5)\)<br>
+            \(2x^3 - 7x = x(2x^2-7)\)<br>
+            \(12x + 3 = 3(4x+1)\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Factor común compuesto</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.85rem;line-height:2;">
+            \(x+y-2x^2-2xy\)<br>
+            \(= (x+y) - 2x(x+y)\)<br>
+            \(= (x+y)(1-2x)\)<br><br>
+            \(3x+5+6xy+10y\)<br>
+            \(= (3x+5) + 2y(3x+5)\)<br>
+            \(= (3x+5)(1+2y)\)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 11 – DIFERENCIA DE CUADRADOS ══════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">FACTORIZACIÓN</span>
+    <h2>Diferencia de Cuadrados</h2>
+    <span class="s-num">11 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="math-block">
+      \[
+      a^2 - b^2 = (a + b)(a - b)
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ejemplos</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.85rem;line-height:2;">
+            \(x^2 - y^2 = (x+y)(x-y)\)<br>
+            \(x^2 - 4 = (x+2)(x-2)\)<br>
+            \(x^2 - 49 = (x+7)(x-7)\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Con coeficientes</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.85rem;line-height:2;">
+            \(4x^2 - 9y^2 = (2x+3y)(2x-3y)\)<br>
+            \(x^4 - 16 = (x^2+4)(x^2-4)\)<br>
+            \(25x^2 - 1 = (5x+1)(5x-1)\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Identifica:</strong> Debes tener una <strong>resta</strong> de dos <strong>cuadrados perfectos</strong> para aplicar esta factorización.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 12 – TRINOMIO CUADRADO PERFECTO ══════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">FACTORIZACIÓN</span>
+    <h2>Trinomio Cuadrado Perfecto</h2>
+    <span class="s-num">12 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="math-block">
+      \[
+      a^2 + 2ab + b^2 = (a + b)^2
+      \]
+      \[
+      a^2 - 2ab + b^2 = (a - b)^2
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ejemplos</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.85rem;line-height:2;">
+            \(x^2 + 2x + 1 = (x+1)^2\)<br>
+            \(x^2 + 14x + 49 = (x+7)^2\)<br>
+            \(x^2 + 20x + 100 = (x+10)^2\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Con resta</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.85rem;line-height:2;">
+            \(x^2 - 4x + 4 = (x-2)^2\)<br>
+            \(x^2 - 16x + 64 = (x-8)^2\)<br>
+            \(x^2 - 10x + 25 = (x-5)^2\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">🔍</span><div class="content"><strong>Verificación:</strong> El término de grado 1 debe ser el <strong>doble producto</strong> de las raíces cuadradas del primer y último término.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 13 – TRINOMIO CUADRADO IMPERFECTO ══════════════════════════════════ -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">FACTORIZACIÓN</span>
+    <h2>Trinomio Cuadrado Imperfecto</h2>
+    <span class="s-num">13 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="math-block">
+      \[
+      x^2 + (a + b)x + ab = (x + a)(x + b)
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ambos positivos</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.85rem;line-height:2;">
+            \(x^2 + 5x + 6 = (x+2)(x+3)\)<br>
+            \(x^2 + 4x + 3 = (x+3)(x+1)\)<br>
+            \(x^2 + 7x - 30 = (x+10)(x-3)\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Uno negativo</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.85rem;line-height:2;">
+            \(x^2 - 2x - 15 = (x-5)(x+2)\)<br>
+            \(x^2 - 7x + 12 = (x-4)(x-3)\)<br>
+            \(x^2 + 4x - 117 = (x+13)(x-9)\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">🧩</span><div class="content"><strong>Estrategia:</strong> Busca dos números que <strong>sumen</strong> el coeficiente de \(x\) y <strong>multipliquen</strong> al término independiente.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 14 – EJEMPLOS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejemplos tipo examen</h2>
+    <span class="s-num">14 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Ejercicios <strong>similares a las preguntas PAES</strong> sobre expresiones algebraicas.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 1 — Producto notable</div>
+      <div class="ex">
+        Desarrolla: \((x+4)^2\)<br>
+        <span class="key">Solución:</span> \(x^2 + 8x + 16\)<br>
+        <strong>Respuesta:</strong> \(x^2 + 8x + 16\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 2 — Factorización</div>
+      <div class="ex">
+        Factoriza: \(x^2 - 6x + 9\)<br>
+        <span class="key">Solución:</span> \((x-3)^2\)<br>
+        <strong>Respuesta:</strong> \((x-3)^2\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejemplo 3 — Reducción de términos</div>
+      <div class="ex">
+        Simplifica: \(3x^2 + 5x - 2x^2 + 3x\)<br>
+        <span class="key">Solución:</span> \(x^2 + 8x\)<br>
+        <strong>Respuesta:</strong> \(x^2 + 8x\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 15 – RESOLUCIÓN DE PROBLEMAS ══════════════════════════════════ -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Resolución de Problemas</h2>
+    <span class="s-num">15 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 1 — Área de un cuadrado</div>
+      <div class="ex">
+        El lado de un cuadrado mide \((x+3)\) cm. ¿Cuál es su área?<br><br>
+        <span class="key">Solución:</span> \(A = (x+3)^2 = x^2 + 6x + 9\)<br>
+        <strong>Respuesta:</strong> El área es \(x^2 + 6x + 9\) cm².
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 2 — Producto de binomios</div>
+      <div class="ex">
+        El largo de un rectángulo mide \((x+5)\) y el ancho \((x-2)\). ¿Cuál es su área?<br><br>
+        <span class="key">Solución:</span> \(A = (x+5)(x-2) = x^2 + 3x - 10\)<br>
+        <strong>Respuesta:</strong> El área es \(x^2 + 3x - 10\).
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📝 Problema 3 — Diferencia de cuadrados</div>
+      <div class="ex">
+        Un terreno cuadrado de lado \(x\) tiene un área de \(144\) m². Encuentra el valor de \(x\).<br><br>
+        <span class="key">Solución:</span> \(x^2 = 144 \rightarrow x = 12\)<br>
+        <strong>Respuesta:</strong> \(x = 12\) metros.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 16 – EJERCICIOS DE PRÁCTICA ══════════════════════════════════ -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Ejercicios de Práctica</h2>
+    <span class="s-num">16 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Resuelve estos ejercicios <strong>antes de ver la solución</strong>.</p>
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">1. Desarrolla: \((x+3)^2\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \(x^2+9\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \(x^2+6x+9\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(x^2+9x+3\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(x^2+6x+3\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\((x+3)^2 = x^2 + 2\cdot x \cdot 3 + 3^2 = x^2+6x+9\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">2. Factoriza: \(x^2 - 25\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \((x+5)(x+5)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \((x+5)(x-5)\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \((x-25)(x+1)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \((x-5)(x-5)\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(x^2 - 25 = x^2 - 5^2 = (x+5)(x-5)\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">3. Simplifica: \(4x^2 + 3x - 2x^2 + 5x\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \(2x^2+8x\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \(2x^2+8x\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(6x^2+8x\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(2x^2+15x\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(4x^2-2x^2 = 2x^2\), \(3x+5x=8x\) → \(2x^2+8x\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 17 – MÁS EJERCICIOS ══════════════════════════════════ -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Más Ejercicios de Práctica</h2>
+    <span class="s-num">17 / 20</span>
+  </div>
+  <div class="s-body">
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">4. Desarrolla: \((2x+3)(2x-3)\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \(4x^2-9\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \(4x^2-9\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(4x^2+12x-9\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(4x^2-12x+9\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\((2x)^2 - 3^2 = 4x^2 - 9\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">5. Factoriza: \(x^2 + 6x + 9\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \((x+3)(x+3)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \((x+3)^2\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \((x-3)^2\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \((x+9)(x+1)\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(x^2+6x+9 = x^2+2\cdot x\cdot3+3^2 = (x+3)^2\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">6. Factoriza: \(x^2 + 5x + 6\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \((x+2)(x+3)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \((x+2)(x+3)\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \((x+1)(x+6)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \((x-2)(x-3)\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">Números que suman 5 y multiplican 6: 2 y 3 → \((x+2)(x+3)\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 18 – PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Preguntas estilo examen</h2>
+    <span class="s-num">18 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 1 — PAES M1</div>
+      <div class="ex">
+        Si \(x=3\), ¿cuál es el valor de \(x^2 + 2x - 1\)?<br><br>
+        a) 10 &nbsp; b) 12 &nbsp; c) 14 &nbsp; d) 16<br>
+        <span class="key">Solución:</span> \(3^2 + 2\cdot3 - 1 = 9 + 6 - 1 = 14\)<br>
+        <strong>Respuesta:</strong> c) 14
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 2 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es el resultado de \((x+2)^2\)?<br><br>
+        a) \(x^2+4\) &nbsp; b) \(x^2+2x+4\) &nbsp; c) \(x^2+4x+4\) &nbsp; d) \(x^2+4x+2\)<br>
+        <span class="key">Solución:</span> \((x+2)^2 = x^2 + 2\cdot x\cdot2 + 2^2 = x^2 + 4x + 4\)<br>
+        <strong>Respuesta:</strong> c) \(x^2+4x+4\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 3 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es la factorización de \(x^2 - 9\)?<br><br>
+        a) \((x-9)(x+1)\) &nbsp; b) \((x+3)(x-3)\) &nbsp; c) \((x+9)(x-1)\) &nbsp; d) \((x-3)^2\)<br>
+        <span class="key">Solución:</span> \(x^2 - 9 = x^2 - 3^2 = (x+3)(x-3)\)<br>
+        <strong>Respuesta:</strong> b) \((x+3)(x-3)\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 19 – MÁS PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Más preguntas estilo examen</h2>
+    <span class="s-num">19 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 4 — PAES M1</div>
+      <div class="ex">
+        Simplifica: \(3x^2y + 5xy^2 - 2x^2y + xy^2\)<br><br>
+        a) \(x^2y + 6xy^2\) &nbsp; b) \(5x^2y + 6xy^2\) &nbsp; c) \(x^2y + 6xy^2\) &nbsp; d) \(5x^2y + 4xy^2\)<br>
+        <span class="key">Solución:</span> \(3x^2y - 2x^2y = x^2y\), \(5xy^2 + xy^2 = 6xy^2\)<br>
+        <strong>Respuesta:</strong> a) \(x^2y + 6xy^2\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 5 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es el valor de \((x-3)^2\) cuando \(x=5\)?<br><br>
+        a) 2 &nbsp; b) 4 &nbsp; c) 6 &nbsp; d) 8<br>
+        <span class="key">Solución:</span> \((5-3)^2 = 2^2 = 4\)<br>
+        <strong>Respuesta:</strong> b) 4
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 6 — PAES M1</div>
+      <div class="ex">
+        Factoriza: \(x^2 + 8x + 16\)<br><br>
+        a) \((x+4)(x+4)\) &nbsp; b) \((x+4)^2\) &nbsp; c) \((x+8)(x+2)\) &nbsp; d) \((x-4)^2\)<br>
+        <span class="key">Solución:</span> \(x^2+8x+16 = x^2+2\cdot x\cdot4+4^2 = (x+4)^2\)<br>
+        <strong>Respuesta:</strong> b) \((x+4)^2\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 20 – RESUMEN Y ESTRATEGIAS ══════════════════════════════════ -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">RESUMEN — CLASE 05</span>
+    <h2>Resumen: Expresiones Algebraicas</h2>
+    <span class="s-num">20 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Contenidos clave</div>
+        <div class="rule-box green">
+          <ul style="padding-left:18px;font-size:.9rem;line-height:2;">
+            <li><strong>Variable:</strong> Letra que representa un valor desconocido.</li>
+            <li><strong>Monomio:</strong> 1 término (ej: \(3x^2y\))</li>
+            <li><strong>Binomio:</strong> 2 términos (ej: \(x+y\))</li>
+            <li><strong>Trinomio:</strong> 3 términos (ej: \(x^2+2xy+y^2\))</li>
+            <li><strong>Términos semejantes:</strong> Mismo factor literal.</li>
+            <li><strong>Cuadrado de binomio:</strong> \((a \pm b)^2 = a^2 \pm 2ab + b^2\)</li>
+            <li><strong>Suma por diferencia:</strong> \((a+b)(a-b)=a^2-b^2\)</li>
+            <li><strong>Binomios con término común:</strong> \((x+a)(x+b)=x^2+(a+b)x+ab\)</li>
+            <li><strong>Cubo de binomio:</strong> \((a\pm b)^3 = a^3 \pm 3a^2b + 3ab^2 \pm b^3\)</li>
+            <li><strong>Factorización:</strong> Factor común, diferencia de cuadrados, trinomio cuadrado perfecto, trinomio cuadrado imperfecto.</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">🎯 Estrategias para el examen</div>
+        <div class="rule-box gold">
+          <ul style="padding-left:18px;font-size:.88rem;line-height:1.9;">
+            <li><strong>Identifica</strong> términos semejantes antes de simplificar.</li>
+            <li>Para productos notables: <strong>memoriza</strong> las fórmulas y practica.</li>
+            <li>Para factorización: <strong>identifica</strong> el tipo de expresión.</li>
+            <li><strong>Verifica</strong> tus factorizaciones multiplicando.</li>
+            <li>En problemas con valor numérico: <strong>sustituye</strong> y calcula.</li>
+            <li>Recuerda: \((a+b)^2 \neq a^2 + b^2\) (falta el término \(2ab\)).</li>
+          </ul>
+        </div>
+        <div class="rule-box" style="margin-top:10px;">
+          <div class="title">📊 Próxima clase</div>
+          <p><strong>Clase 06:</strong> Proporcionalidad — Razones, proporciones directas e inversas.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><div class="content"><strong>"Cada frase que pronuncio no puede considerarse una afirmación sino una pregunta." Niels Bohr</strong> Genial!. Has completado la clase 5. Ahora puedes continuar con ejercicios..</div></div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:5%"></div></div>
+    <div id="slide-label">Slide 1 / 20</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Curso</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E5.html'">✏️ Ejercicios</button>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// NAVEGACIÓN
+// ════════════════════════════════════════════════════════════════
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+
+// ════════════════════════════════════════════════════════════════
+// RENDER KATEX
+// ════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement === 'function') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });
+  }
+});
+</script>
+</body>
+</html>

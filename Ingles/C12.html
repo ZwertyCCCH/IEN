@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inglés B2 – Reported Speech, Passive Voice, Gerund/Infinitive & Vocabulary | Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --accent:#e63946;--teal:#0d7377;--orange:#e67e22;--purple:#7a3a9a;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+.s-body{padding-bottom:16px !important;}
+
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--purple) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--sky);}
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box.teal{border-left-color:var(--teal);}
+.rule-box.orange{border-left-color:var(--orange);}
+.rule-box.purple{border-left-color:var(--purple);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--sky);font-weight:700;}
+.ex span.orange{color:var(--orange);font-weight:700;}
+.ex span.purple{color:var(--purple);font-weight:700;}
+.ex span.teal{color:var(--teal);font-weight:700;}
+.ex .trans{color:var(--gray);font-size:.75rem;font-family:'Source Sans 3',sans-serif;}
+
+.vocab-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;
+}
+.vocab-card{
+  background:var(--white);border-radius:10px;padding:10px 12px;
+  border:1px solid #dde4ee;display:flex;align-items:center;gap:10px;
+}
+.vocab-card .emoji{font-size:1.2rem;width:30px;text-align:center;}
+.vocab-card .word{font-weight:700;font-size:.88rem;color:var(--navy);}
+.vocab-card .trans{font-size:.72rem;color:var(--gray);}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+mark{background:#fef3c7;color:#92400e;border-radius:4px;padding:1px 5px;font-weight:600;}
+
+.wh-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;}
+.wh-table th{background:var(--navy);color:var(--gold);padding:8px 14px;text-align:left;font-size:.85rem;}
+.wh-table td{background:var(--white);padding:8px 14px;font-size:.88rem;border-bottom:1px solid #eef1f5;}
+.wh-table tr:nth-child(even) td{background:#f8fafc;}
+.wh-table td:first-child{font-weight:700;color:var(--sky);font-family:'JetBrains Mono',monospace;font-size:.95rem;}
+
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,#0d3060 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+.dialogue{background:var(--white);border-radius:12px;overflow:hidden;border:1px solid #dde4ee;}
+.dialogue-line{padding:10px 16px;display:flex;gap:10px;align-items:flex-start;border-bottom:1px solid #eef1f5;}
+.dialogue-line:last-child{border-bottom:none;}
+.dialogue-line.a{background:#f0f7ff;}
+.dialogue-line .speaker{font-weight:700;font-size:.75rem;color:var(--sky);min-width:70px;margin-top:2px;}
+.dialogue-line.b .speaker{color:var(--teal);}
+.dialogue-line .text{font-size:.9rem;color:#1a2a3a;line-height:1.5;}
+.dialogue-line .text .key{color:var(--sky);font-weight:700;}
+.dialogue-line .text .trans{color:var(--gray);font-size:.7rem;font-family:'Source Sans 3',sans-serif;}
+
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- SLIDE 1 – COVER -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">⚖️</div>
+    <div class="cover-level">CEFR Level B2</div>
+    <div class="cover-title">Reported Speech, Passive Voice &<br><span>Vocabulary for Life</span></div>
+    <div class="cover-sub">Domina el Reported Speech y la Passive Voice. Aprende la estructura causativa y la diferencia entre gerundio e infinitivo. Amplía tu vocabulario sobre crimen, arte, cultura y ciencia.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">🗣️ Reported Speech</span>
+      <span class="cover-tag">📝 Passive Voice</span>
+      <span class="cover-tag">🔧 Causative</span>
+      <span class="cover-tag">📚 Gerund vs Infinitive</span>
+      <span class="cover-tag">⏰ Future Perfect</span>
+      <span class="cover-tag">⚖️ Crime Vocabulary</span>
+      <span class="cover-tag">🎨 Art & Culture</span>
+      <span class="cover-tag">🔬 Science Vocabulary</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 1: REPORTED SPEECH ========== -->
+
+<!-- SLIDE 2 – Reported Speech: Introducción -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B2</span>
+    <h2>Reported Speech – Introducción</h2>
+    <span class="s-num">02 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El <strong>Reported Speech</strong> (estilo indirecto) se usa para <strong>repetir lo que alguien dijo</strong> sin usar las palabras exactas. Los tiempos verbales suelen <strong>retroceder</strong> al pasado.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">💬 Direct Speech</div>
+        <p>Palabras exactas de la persona.</p>
+        <div class="ex" style="margin-top:6px">
+          She said: "<span class="key">I am tired</span>."<br>
+          <span class="trans">Ella dijo: "Estoy cansada."</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🗣️ Reported Speech</div>
+        <p>Repetir el mensaje sin comillas.</p>
+        <div class="ex" style="margin-top:6px">
+          She said <span class="key">that she was tired</span>.<br>
+          <span class="trans">Ella dijo que estaba cansada.</span>
+        </div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>Regla básica:</strong> Los verbos en presente pasan a pasado, el pasado a pasado perfecto. <strong>SAY</strong> y <strong>TELL</strong> son los verbos introductorios más comunes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3 – Reported Speech: Cambios de tiempo -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B2</span>
+    <h2>Reported Speech – Cambios de tiempo</h2>
+    <span class="s-num">03 / 44</span>
+  </div>
+  <div class="s-body">
+    <table class="wh-table">
+      <thead><tr><th>Direct Speech</th><th>Reported Speech</th></tr></thead>
+      <tbody>
+        <tr><td>"I <strong>am</strong> tired."</td><td>She said she <strong>was</strong> tired.</td></tr>
+        <tr><td>"I <strong>study</strong> English."</td><td>He said he <strong>studied</strong> English.</td></tr>
+        <tr><td>"I <strong>studied</strong> English."</td><td>She said she <strong>had studied</strong> English.</td></tr>
+        <tr><td>"I <strong>will help</strong> you."</td><td>He said he <strong>would help</strong> me.</td></tr>
+        <tr><td>"I <strong>can swim</strong>."</td><td>She said she <strong>could swim</strong>.</td></tr>
+        <tr><td>"I <strong>have eaten</strong>."</td><td>He said he <strong>had eaten</strong>.</td></tr>
+        <tr><td>"I <strong>am studying</strong>."</td><td>She said she <strong>was studying</strong>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SLIDE 4 – Reported Speech: SAY vs TELL -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B2</span>
+    <h2>Reported Speech – SAY vs TELL</h2>
+    <span class="s-num">04 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🗣️ SAY + (that) + oración</div>
+        <div class="ex">
+          He <span class="key">said</span> (that) he was tired.<br>
+          <span class="trans">Él dijo que estaba cansado.</span><br><br>
+          She <span class="key">said</span> (that) she would come.<br>
+          <span class="trans">Ella dijo que vendría.</span><br><br>
+          <span class="key">Nota:</span> No se usa objeto directo con "say".
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🗣️ TELL + objeto + (that) + oración</div>
+        <div class="ex">
+          He <span class="key">told</span> me (that) he was tired.<br>
+          <span class="trans">Él me dijo que estaba cansado.</span><br><br>
+          She <span class="key">told</span> us (that) she would come.<br>
+          <span class="trans">Ella nos dijo que vendría.</span><br><br>
+          <span class="key">Nota:</span> "Tell" siempre lleva objeto (me, him, her, us, them).
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      ❌ He <span class="wrong">said me</span> that...<br>
+      ✅ He <span class="correct">told me</span> that...<br>
+      ✅ He <span class="correct">said</span> (that)...
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5 – Reported Speech: Órdenes y solicitudes -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B2</span>
+    <h2>Reported Speech – Órdenes y solicitudes</h2>
+    <span class="s-num">05 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para reportar <strong>órdenes</strong> o <strong>solicitudes</strong>, usamos <strong>tell/ask + objeto + to + infinitivo</strong>.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📝 Órdenes</div>
+        <div class="ex">
+          <strong>Direct:</strong> "Close the door," he said.<br>
+          <span class="trans">"Cierra la puerta," dijo él.</span><br><br>
+          <strong>Reported:</strong> He <span class="key">told</span> me <span class="key">to close</span> the door.<br>
+          <span class="trans">Él me dijo que cerrara la puerta.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Solicitudes</div>
+        <div class="ex">
+          <strong>Direct:</strong> "Please help me," she said.<br>
+          <span class="trans">"Por favor, ayúdame," dijo ella.</span><br><br>
+          <strong>Reported:</strong> She <span class="key">asked</span> me <span class="key">to help</span> her.<br>
+          <span class="trans">Ella me pidió que la ayudara.</span>
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      ❌ <strong>Negativas:</strong> "Don't be late," he said. → He told me <span class="key">not to be</span> late.
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 2: PASSIVE VOICE ========== -->
+
+<!-- SLIDE 6 – Passive Voice: Introducción -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B2</span>
+    <h2>Passive Voice – Introducción</h2>
+    <span class="s-num">06 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">La <strong>voz pasiva</strong> se usa cuando el <strong>sujeto recibe</strong> la acción, en lugar de realizarla. Se forma con el verbo <strong>TO BE</strong> + <strong>past participle</strong>.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">✅ Voz Activa</div>
+        <p>El sujeto <strong>realiza</strong> la acción.</p>
+        <div class="ex" style="margin-top:6px">
+          <span class="key">She</span> <strong>wrote</strong> the book.<br>
+          <span class="trans">Ella escribió el libro.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">✅ Voz Pasiva</div>
+        <p>El sujeto <strong>recibe</strong> la acción.</p>
+        <div class="ex" style="margin-top:6px">
+          The book <span class="key">was written</span> by her.<br>
+          <span class="trans">El libro fue escrito por ella.</span>
+        </div>
+      </div>
+    </div>
+    <div class="formula" style="margin-top:8px">
+      <mark>Sujeto + verbo TO BE + past participle + (by + agente)</mark>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7 – Passive Voice: Formación -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B2</span>
+    <h2>Passive Voice – Formación</h2>
+    <span class="s-num">07 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="three-col">
+      <div class="rule-box green">
+        <div class="title">📝 Present Simple</div>
+        <div class="ex">
+          <strong>Active:</strong> They <span class="key">clean</span> the room.<br>
+          <strong>Passive:</strong> The room <span class="key">is cleaned</span>.
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Past Simple</div>
+        <div class="ex">
+          <strong>Active:</strong> They <span class="key">built</span> the house.<br>
+          <strong>Passive:</strong> The house <span class="key">was built</span>.
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">📝 Present Perfect</div>
+        <div class="ex">
+          <strong>Active:</strong> They <span class="key">have finished</span> the project.<br>
+          <strong>Passive:</strong> The project <span class="key">has been finished</span>.
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Futuro:</strong> They will build the house. → The house <span class="key">will be built</span>.
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8 – Passive Voice: Usos -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B2</span>
+    <h2>Passive Voice – Usos</h2>
+    <span class="s-num">08 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📝 Cuándo usar Passive Voice</div>
+        <ul>
+          <li>Cuando el <strong>agente</strong> es desconocido: <em>My wallet was stolen.</em></li>
+          <li>Cuando el <strong>agente</strong> es obvio: <em>He was arrested.</em></li>
+          <li>Para dar <strong>énfasis</strong> al objeto: <em>The painting was sold for $1M.</em></li>
+          <li>En textos <strong>formales/académicos</strong></li>
+        </ul>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">⚠️ Cuándo NO usar Passive Voice</div>
+        <ul>
+          <li>Cuando el <strong>agente</strong> es importante: <em>Shakespeare wrote Hamlet.</em> (no "Hamlet was written by Shakespeare")</li>
+          <li>En lenguaje <strong>informal</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 3: CAUSATIVE GET/HAVE ========== -->
+
+<!-- SLIDE 9 – Causative: Introducción -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B2</span>
+    <h2>Causative GET / HAVE – Introducción</h2>
+    <span class="s-num">09 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">La estructura <strong>causativa</strong> se usa cuando <strong>hacemos que alguien más haga algo</strong> por nosotros.</p>
+    <div class="formula">
+      <mark>HAVE / GET + objeto + past participle</mark>
+    </div>
+    <div class="ex">
+      ✅ I <span class="key">had my hair cut</span>.<br>
+      <span class="trans">Me corté el pelo (alguien más lo hizo).</span><br><br>
+      ✅ We <span class="key">are having the house painted</span>.<br>
+      <span class="trans">Estamos pintando la casa (estamos pagando a alguien).</span><br><br>
+      ✅ She <span class="key">got her car fixed</span>.<br>
+      <span class="trans">Ella arregló su auto (alguien más lo hizo).</span>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>Diferencia:</strong> <span class="key">HAVE</span> es más formal; <span class="key">GET</span> es más informal/cotidiano.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10 – Causative: Ejemplos -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B2</span>
+    <h2>Causative – Ejemplos</h2>
+    <span class="s-num">10 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🔧 HAVE</div>
+        <div class="ex">
+          I <span class="key">had</span> my <span class="key">hair cut</span> yesterday.<br>
+          <span class="trans">Me corté el pelo ayer.</span><br><br>
+          She <span class="key">had</span> her <span class="key">car repaired</span>.<br>
+          <span class="trans">Ella arregló su auto.</span><br><br>
+          We <span class="key">are having</span> a new <span class="key">kitchen installed</span>.<br>
+          <span class="trans">Estamos instalando una cocina nueva.</span><br><br>
+          They <span class="key">will have</span> their <span class="key">house painted</span>.<br>
+          <span class="trans">Ellos pintarán su casa.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🔧 GET</div>
+        <div class="ex">
+          I <span class="key">got</span> my <span class="key">hair cut</span> yesterday.<br>
+          <span class="trans">Me corté el pelo ayer.</span><br><br>
+          He <span class="key">got</span> his <span class="key">phone repaired</span>.<br>
+          <span class="trans">Él arregló su teléfono.</span><br><br>
+          We <span class="key">are getting</span> our <span class="key">roof fixed</span>.<br>
+          <span class="trans">Estamos arreglando el techo.</span><br><br>
+          She <span class="key">got</span> her <span class="key">nails done</span>.<br>
+          <span class="trans">Ella se hizo las uñas.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 4: GERUND vs INFINITIVE ========== -->
+
+<!-- SLIDE 11 – Gerund vs Infinitive: Introducción -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B2</span>
+    <h2>Gerund vs Infinitive – Introducción</h2>
+    <span class="s-num">11 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Algunos verbos requieren <strong>gerundio (-ing)</strong>, otros <strong>infinitivo (to + base)</strong>, y algunos pueden usar ambos con diferente significado.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📝 Verbo + Gerundio (-ing)</div>
+        <div class="ex">
+          I enjoy <span class="key">swimming</span>.<br>
+          She finished <span class="key">reading</span>.<br>
+          They avoid <span class="key">eating</span> meat.<br>
+          He admitted <span class="key">making</span> a mistake.
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Verbo + Infinitivo (to +)</div>
+        <div class="ex">
+          I want <span class="key">to travel</span>.<br>
+          She needs <span class="key">to study</span>.<br>
+          They hope <span class="key">to win</span>.<br>
+          He decided <span class="key">to leave</span>.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12 – Verbos que cambian significado -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B2</span>
+    <h2>Gerund vs Infinitive – Verbos con cambio de significado</h2>
+    <span class="s-num">12 / 44</span>
+  </div>
+  <div class="s-body">
+    <table class="wh-table">
+      <thead><tr><th>Verbo</th><th>Gerundio (-ing)</th><th>Infinitivo (to +)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>remember</strong></td><td>Recordar <strong>haber hecho</strong> algo</td><td>Recordar <strong>hacer</strong> algo (antes de olvidarlo)</td></tr>
+        <tr><td><strong>forget</strong></td><td>Olvidar <strong>haber hecho</strong> algo</td><td>Olvidar <strong>hacer</strong> algo</td></tr>
+        <tr><td><strong>stop</strong></td><td>Dejar de hacer algo</td><td>Parar para hacer algo</td></tr>
+        <tr><td><strong>try</strong></td><td>Probar / experimentar</td><td>Intentar / esforzarse</td></tr>
+      </tbody>
+    </table>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Ejemplos:</strong><br>
+      I remember <span class="key">locking</span> the door. (Recuerdo haber cerrado la puerta.)<br>
+      I remembered <span class="key">to lock</span> the door. (Recordé cerrar la puerta.)<br><br>
+      I stopped <span class="key">smoking</span>. (Dejé de fumar.)<br>
+      I stopped <span class="key">to smoke</span>. (Paré para fumar.)
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 5: FUTURE PERFECT & CONTINUOUS ========== -->
+
+<!-- SLIDE 13 – Future Perfect: Introducción -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B2</span>
+    <h2>Future Perfect – Introducción</h2>
+    <span class="s-num">13 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El <strong>Future Perfect</strong> se usa para expresar que una acción <strong>estará completada</strong> en un momento específico del futuro.</p>
+    <div class="formula">
+      <mark>WILL HAVE + past participle</mark>
+    </div>
+    <div class="ex">
+      ✅ By next year, I <span class="key">will have finished</span> university.<br>
+      <span class="trans">Para el próximo año, habré terminado la universidad.</span><br><br>
+      ✅ She <span class="key">will have left</span> by the time you arrive.<br>
+      <span class="trans">Ella habrá salido para cuando tú llegues.</span><br><br>
+      ✅ They <span class="key">will have built</span> the new bridge by 2028.<br>
+      <span class="trans">Habrán construido el nuevo puente para 2028.</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 14 – Future Continuous: Introducción -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B2</span>
+    <h2>Future Continuous – Introducción</h2>
+    <span class="s-num">14 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El <strong>Future Continuous</strong> se usa para expresar que una acción <strong>estará en progreso</strong> en un momento específico del futuro.</p>
+    <div class="formula">
+      <mark>WILL BE + verb + -ING</mark>
+    </div>
+    <div class="ex">
+      ✅ This time tomorrow, I <span class="key">will be flying</span> to Paris.<br>
+      <span class="trans">Mañana a esta hora, estaré volando a París.</span><br><br>
+      ✅ At 8 pm tonight, she <span class="key">will be watching</span> the movie.<br>
+      <span class="trans">A las 8 pm de esta noche, estará viendo la película.</span><br><br>
+      ✅ Don't call at 9 am. I <span class="key">will be working</span>.<br>
+      <span class="trans">No llames a las 9 am. Estaré trabajando.</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 15 – Future Perfect vs Continuous: Contraste -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA B2</span>
+    <h2>Future Perfect vs Continuous</h2>
+    <span class="s-num">15 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">⏰ Future Perfect</div>
+        <p>Acción <strong>completada</strong> en el futuro.</p>
+        <div class="ex" style="margin-top:6px">
+          By 8 pm, I <span class="key">will have finished</span> my homework.<br>
+          <span class="trans">Para las 8 pm, habré terminado mi tarea.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">⏳ Future Continuous</div>
+        <p>Acción <strong>en progreso</strong> en el futuro.</p>
+        <div class="ex" style="margin-top:6px">
+          At 8 pm, I <span class="key">will be doing</span> my homework.<br>
+          <span class="trans">A las 8 pm, estaré haciendo mi tarea.</span>
+        </div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content"><span class="key">Future Perfect</span> = "¿Habré terminado?" / <span class="key">Future Continuous</span> = "¿Qué estaré haciendo?"</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 6: VOCABULARY – CRIME, LAW & JUSTICE ========== -->
+
+<!-- SLIDE 16 – Crime & Law Vocabulary -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B2</span>
+    <h2>Crime, Law & Justice</h2>
+    <span class="s-num">16 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">⚖️</span><div><div class="word">crime</div><div class="trans">crimen</div></div></div>
+      <div class="vocab-card"><span class="emoji">🚔</span><div><div class="word">theft</div><div class="trans">robo (sin violencia)</div></div></div>
+      <div class="vocab-card"><span class="emoji">🔫</span><div><div class="word">robbery</div><div class="trans">robo (con violencia)</div></div></div>
+      <div class="vocab-card"><span class="emoji">🏠</span><div><div class="word">burglary</div><div class="trans">robo (entrar en una propiedad)</div></div></div>
+      <div class="vocab-card"><span class="emoji">⚖️</span><div><div class="word">justice</div><div class="trans">justicia</div></div></div>
+      <div class="vocab-card"><span class="emoji">👨‍⚖️</span><div><div class="word">judge</div><div class="trans">juez</div></div></div>
+      <div class="vocab-card"><span class="emoji">⚖️</span><div><div class="word">lawyer</div><div class="trans">abogado</div></div></div>
+      <div class="vocab-card"><span class="emoji">👮</span><div><div class="word">police officer</div><div class="trans">policía</div></div></div>
+      <div class="vocab-card"><span class="emoji">⚖️</span><div><div class="word">court</div><div class="trans">tribunal</div></div></div>
+      <div class="vocab-card"><span class="emoji">🔒</span><div><div class="word">prison</div><div class="trans">prisión / cárcel</div></div></div>
+      <div class="vocab-card"><span class="emoji">⚖️</span><div><div class="word">evidence</div><div class="trans">evidencia / prueba</div></div></div>
+      <div class="vocab-card"><span class="emoji">⚖️</span><div><div class="word">witness</div><div class="trans">testigo</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 17 – Crime & Law: Verbos -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B2</span>
+    <h2>Crime & Law – Verbos</h2>
+    <span class="s-num">17 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">🚔</span><div><div class="word">steal (stole, stolen)</div><div class="trans">robar (objeto)</div></div></div>
+      <div class="vocab-card"><span class="emoji">🏠</span><div><div class="word">rob</div><div class="trans">robar (a alguien/lugar)</div></div></div>
+      <div class="vocab-card"><span class="emoji">🔫</span><div><div class="word">murder</div><div class="trans">asesinar</div></div></div>
+      <div class="vocab-card"><span class="emoji">⚖️</span><div><div class="word">arrest</div><div class="trans">arrestar</div></div></div>
+      <div class="vocab-card"><span class="emoji">⚖️</span><div><div class="word">charge</div><div class="trans">acusar</div></div></div>
+      <div class="vocab-card"><span class="emoji">⚖️</span><div><div class="word">convict</div><div class="trans">declarar culpable</div></div></div>
+      <div class="vocab-card"><span class="emoji">⚖️</span><div><div class="word">sentence</div><div class="trans">sentenciar</div></div></div>
+      <div class="vocab-card"><span class="emoji">⚖️</span><div><div class="word">investigate</div><div class="trans">investigar</div></div></div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Ejemplos:</strong><br>
+      The thief <span class="key">stole</span> the car. (Robó el auto.)<br>
+      He <span class="key">robbed</span> the bank. (Robó el banco.)<br>
+      The judge <span class="key">sentenced</span> him to 5 years in prison.
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 7: VOCABULARY – ART, CULTURE & TRENDS ========== -->
+
+<!-- SLIDE 18 – Art & Culture Vocabulary -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B2</span>
+    <h2>Art, Culture & Trends</h2>
+    <span class="s-num">18 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">🎨</span><div><div class="word">art</div><div class="trans">arte</div></div></div>
+      <div class="vocab-card"><span class="emoji">🖼️</span><div><div class="word">painting</div><div class="trans">pintura</div></div></div>
+      <div class="vocab-card"><span class="emoji">🗿</span><div><div class="word">sculpture</div><div class="trans">escultura</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎨</span><div><div class="word">exhibition</div><div class="trans">exhibición</div></div></div>
+      <div class="vocab-card"><span class="emoji">🏛️</span><div><div class="word">museum</div><div class="trans">museo</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎭</span><div><div class="word">theater</div><div class="trans">teatro</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎵</span><div><div class="word">music</div><div class="trans">música</div></div></div>
+      <div class="vocab-card"><span class="emoji">💃</span><div><div class="word">dance</div><div class="trans">baile</div></div></div>
+      <div class="vocab-card"><span class="emoji">📚</span><div><div class="word">literature</div><div class="trans">literatura</div></div></div>
+      <div class="vocab-card"><span class="emoji">📸</span><div><div class="word">photography</div><div class="trans">fotografía</div></div></div>
+      <div class="vocab-card"><span class="emoji">📺</span><div><div class="word">trend</div><div class="trans">tendencia</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎬</span><div><div class="word">cinema</div><div class="trans">cine</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 19 – Art & Culture: Verbos -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B2</span>
+    <h2>Art & Culture – Verbos</h2>
+    <span class="s-num">19 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">🎨</span><div><div class="word">create</div><div class="trans">crear</div></div></div>
+      <div class="vocab-card"><span class="emoji">🖼️</span><div><div class="word">paint</div><div class="trans">pintar</div></div></div>
+      <div class="vocab-card"><span class="emoji">🗿</span><div><div class="word">sculpt</div><div class="trans">esculpir</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎵</span><div><div class="word">compose</div><div class="trans">componer</div></div></div>
+      <div class="vocab-card"><span class="emoji">💃</span><div><div class="word">perform</div><div class="trans">interpretar / actuar</div></div></div>
+      <div class="vocab-card"><span class="emoji">📸</span><div><div class="word">capture</div><div class="trans">capturar</div></div></div>
+      <div class="vocab-card"><span class="emoji">📚</span><div><div class="word">write</div><div class="trans">escribir</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎬</span><div><div class="word">direct</div><div class="trans">dirigir</div></div></div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Ejemplos:</strong><br>
+      The artist <span class="key">created</span> a beautiful sculpture.<br>
+      She <span class="key">performs</span> in a famous theater.<br>
+      The director <span class="key">directed</span> an award-winning film.
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 8: VOCABULARY – SCIENCE ========== -->
+
+<!-- SLIDE 20 – Science Vocabulary -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B2</span>
+    <h2>Science & Research</h2>
+    <span class="s-num">20 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">🔬</span><div><div class="word">science</div><div class="trans">ciencia</div></div></div>
+      <div class="vocab-card"><span class="emoji">🧪</span><div><div class="word">experiment</div><div class="trans">experimento</div></div></div>
+      <div class="vocab-card"><span class="emoji">🔬</span><div><div class="word">research</div><div class="trans">investigación</div></div></div>
+      <div class="vocab-card"><span class="emoji">🧬</span><div><div class="word">biology</div><div class="trans">biología</div></div></div>
+      <div class="vocab-card"><span class="emoji">⚛️</span><div><div class="word">chemistry</div><div class="trans">química</div></div></div>
+      <div class="vocab-card"><span class="emoji">🔭</span><div><div class="word">astronomy</div><div class="trans">astronomía</div></div></div>
+      <div class="vocab-card"><span class="emoji">📐</span><div><div class="word">physics</div><div class="trans">física</div></div></div>
+      <div class="vocab-card"><span class="emoji">📊</span><div><div class="word">data</div><div class="trans">datos</div></div></div>
+      <div class="vocab-card"><span class="emoji">🧪</span><div><div class="word">laboratory</div><div class="trans">laboratorio</div></div></div>
+      <div class="vocab-card"><span class="emoji">🔬</span><div><div class="word">discovery</div><div class="trans">descubrimiento</div></div></div>
+      <div class="vocab-card"><span class="emoji">📖</span><div><div class="word">theory</div><div class="trans">teoría</div></div></div>
+      <div class="vocab-card"><span class="emoji">🔬</span><div><div class="word">hypothesis</div><div class="trans">hipótesis</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 21 – Science: Verbos -->
+<div class="slide" id="s21">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO B2</span>
+    <h2>Science – Verbos</h2>
+    <span class="s-num">21 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">🔬</span><div><div class="word">research</div><div class="trans">investigar</div></div></div>
+      <div class="vocab-card"><span class="emoji">🧪</span><div><div class="word">experiment</div><div class="trans">experimentar</div></div></div>
+      <div class="vocab-card"><span class="emoji">📊</span><div><div class="word">analyze</div><div class="trans">analizar</div></div></div>
+      <div class="vocab-card"><span class="emoji">💡</span><div><div class="word">discover</div><div class="trans">descubrir</div></div></div>
+      <div class="vocab-card"><span class="emoji">📐</span><div><div class="word">measure</div><div class="trans">medir</div></div></div>
+      <div class="vocab-card"><span class="emoji">📊</span><div><div class="word">observe</div><div class="trans">observar</div></div></div>
+      <div class="vocab-card"><span class="emoji">💡</span><div><div class="word">prove</div><div class="trans">probar</div></div></div>
+      <div class="vocab-card"><span class="emoji">📖</span><div><div class="word">publish</div><div class="trans">publicar</div></div></div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Ejemplos:</strong><br>
+      Scientists <span class="key">discovered</span> a new planet.<br>
+      They <span class="key">analyzed</span> the data carefully.<br>
+      The theory was <span class="key">proved</span> by the experiment.
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 9: FUNCTIONAL LANGUAGE – NARRATING, PRESENTING, REPORTING ========== -->
+
+<!-- SLIDE 22 – Narrating Sequences: Conectores -->
+<div class="slide" id="s22">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL B2</span>
+    <h2>Narrating Sequences – Conectores</h2>
+    <span class="s-num">22 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para <strong>narrar una secuencia de eventos</strong>, usa conectores de tiempo y secuencia.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📖 Conectores temporales</div>
+        <div class="ex">
+          <span class="key">First of all</span> (Primero que todo)<br>
+          <span class="key">To begin with</span> (Para empezar)<br>
+          <span class="key">Then</span> (Luego)<br>
+          <span class="key">After that</span> (Después de eso)<br>
+          <span class="key">Later</span> (Más tarde)<br>
+          <span class="key">Meanwhile</span> (Mientras tanto)<br>
+          <span class="key">Eventually</span> (Finalmente)<br>
+          <span class="key">In the end</span> (Al final)<br>
+          <span class="key">Finally</span> (Finalmente)
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📖 Conectores de razón</div>
+        <div class="ex">
+          <span class="key">As a result</span> (Como resultado)<br>
+          <span class="key">Consequently</span> (En consecuencia)<br>
+          <span class="key">Therefore</span> (Por lo tanto)<br>
+          <span class="key">Due to</span> (Debido a)<br>
+          <span class="key">Because of</span> (Debido a)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 23 – Presenting Ideas Logically -->
+<div class="slide" id="s23">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL B2</span>
+    <h2>Presenting Ideas Logically</h2>
+    <span class="s-num">23 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para <strong>presentar ideas de forma lógica</strong>, usa estructuras de organización.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📝 Estructuras para presentar</div>
+        <div class="ex">
+          <span class="key">Firstly, ...</span> (Primeramente, ...)<br>
+          <span class="key">In addition, ...</span> (Además, ...)<br>
+          <span class="key">Furthermore, ...</span> (Además, ...)<br>
+          <span class="key">On the one hand, ...</span> (Por un lado, ...)<br>
+          <span class="key">On the other hand, ...</span> (Por otro lado, ...)<br>
+          <span class="key">In conclusion, ...</span> (En conclusión, ...)<br>
+          <span class="key">To sum up, ...</span> (Para resumir, ...)
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Ejemplo</div>
+        <div class="ex">
+          <span class="key">Firstly</span>, we need to reduce pollution.<br>
+          <span class="key">In addition</span>, we should use renewable energy.<br>
+          <span class="key">To sum up</span>, we must act now.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 24 – Expressing Regrets -->
+<div class="slide" id="s24">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL B2</span>
+    <h2>Expressing Regrets</h2>
+    <span class="s-num">24 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para <strong>expresar arrepentimiento</strong>, usa <strong>I wish / If only</strong> (repaso) y otras expresiones.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">😔 Expresiones de arrepentimiento</div>
+        <div class="ex">
+          <span class="key">I wish I had ...</span> (Ojalá hubiera...)<br>
+          <span class="key">If only I had ...</span> (Ojalá hubiera...)<br>
+          <span class="key">I regret ...</span> (Lamento...)<br>
+          <span class="key">I should have ...</span> (Debería haber...)<br>
+          <span class="key">I shouldn't have ...</span> (No debería haber...)
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Ejemplos</div>
+        <div class="ex">
+          <span class="key">I wish I had</span> studied more.<br>
+          <span class="key">If only I had</span> listened to you.<br>
+          <span class="key">I regret</span> not going to university.<br>
+          <span class="key">I should have</span> called you.<br>
+          <span class="key">I shouldn't have</span> said that.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 25 – Repeating Someone Else's Message -->
+<div class="slide" id="s25">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL B2</span>
+    <h2>Repeating Someone Else's Message</h2>
+    <span class="s-num">25 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para <strong>repetir el mensaje de alguien</strong>, usa <strong>Reported Speech</strong> y otras expresiones.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🗣️ Expresiones para repetir</div>
+        <div class="ex">
+          <span class="key">She said that ...</span> (Ella dijo que...)<br>
+          <span class="key">He told me that ...</span> (Él me dijo que...)<br>
+          <span class="key">She mentioned that ...</span> (Ella mencionó que...)<br>
+          <span class="key">He explained that ...</span> (Él explicó que...)<br>
+          <span class="key">They informed us that ...</span> (Nos informaron que...)
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Ejemplos</div>
+        <div class="ex">
+          She <span class="key">said that</span> she would arrive late.<br>
+          He <span class="key">told me that</span> he was tired.<br>
+          They <span class="key">informed us that</span> the meeting was cancelled.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 26 – Talking About Services -->
+<div class="slide" id="s26">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL B2</span>
+    <h2>Talking About Services</h2>
+    <span class="s-num">26 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para <strong>hablar sobre servicios</strong>, usa el <strong>causativo (have/get + object + past participle)</strong> y expresiones relacionadas.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🔧 Expresiones para servicios</div>
+        <div class="ex">
+          <span class="key">I need to have my car repaired.</span><br>
+          <span class="key">I'm going to get my hair cut.</span><br>
+          <span class="key">We had our house painted.</span><br>
+          <span class="key">She got her phone fixed.</span><br>
+          <span class="key">They are having a new roof installed.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Ejemplos en contexto</div>
+        <div class="ex">
+          "I <span class="key">need to have</span> my laptop repaired."<br>
+          "She <span class="key">got</span> her <span class="key">nails done</span> at the salon."<br>
+          "We <span class="key">are having</span> our <span class="key">garden redesigned</span>."
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDES DE REPASO ========== -->
+
+<!-- SLIDE 27 – Reported Speech: Resumen -->
+<div class="slide" id="s27">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Reported Speech – Resumen</h2>
+    <span class="s-num">27 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box purple">
+      <div class="title">🗣️ Reported Speech</div>
+      <ul>
+        <li><strong>SAY + (that):</strong> He said (that) he was tired.</li>
+        <li><strong>TELL + objeto + (that):</strong> He told me (that) he was tired.</li>
+        <li><strong>Órdenes:</strong> He told me to close the door.</li>
+        <li><strong>Solicitudes:</strong> He asked me to help him.</li>
+      </ul>
+      <div class="ex" style="margin-top:8px">
+        "I am tired." → She said she was tired.<br>
+        "Close the door." → He told me to close the door.<br>
+        "Don't be late." → He told me not to be late.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 28 – Passive Voice: Resumen -->
+<div class="slide" id="s28">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Passive Voice – Resumen</h2>
+    <span class="s-num">28 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box teal">
+      <div class="title">📝 Passive Voice</div>
+      <ul>
+        <li><strong>Estructura:</strong> Sujeto + TO BE + past participle</li>
+        <li><strong>Usos:</strong> Agente desconocido, agente obvio, énfasis en el objeto</li>
+      </ul>
+      <div class="ex" style="margin-top:8px">
+        The house <span class="key">was built</span> in 1900.<br>
+        The project <span class="key">has been finished</span>.<br>
+        The book <span class="key">is being read</span> by many students.<br>
+        The concert <span class="key">will be held</span> next month.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 29 – Causative: Resumen -->
+<div class="slide" id="s29">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Causative – Resumen</h2>
+    <span class="s-num">29 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box orange">
+      <div class="title">🔧 Causative (HAVE / GET)</div>
+      <ul>
+        <li><strong>Estructura:</strong> HAVE/GET + objeto + past participle</li>
+        <li><strong>Uso:</strong> Pagar a alguien para que haga algo por nosotros</li>
+        <li><strong>HAVE:</strong> más formal / <strong>GET:</strong> más informal</li>
+      </ul>
+      <div class="ex" style="margin-top:8px">
+        I had my hair cut.<br>
+        She got her car repaired.<br>
+        We are having the house painted.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 30 – Gerund vs Infinitive: Resumen -->
+<div class="slide" id="s30">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Gerund vs Infinitive – Resumen</h2>
+    <span class="s-num">30 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📝 Gerundio (-ing)</div>
+        <ul>
+          <li>like, love, hate, enjoy</li>
+          <li>finish, avoid, admit</li>
+          <li>I enjoy <span class="key">swimming</span>.</li>
+        </ul>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Infinitivo (to +)</div>
+        <ul>
+          <li>want, need, hope, decide</li>
+          <li>promise, plan, would like</li>
+          <li>I want <span class="key">to travel</span>.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content"><span class="key">Verbos con cambio de significado:</span> remember, forget, stop, try</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 31 – Future Perfect & Continuous: Resumen -->
+<div class="slide" id="s31">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Future Perfect & Continuous – Resumen</h2>
+    <span class="s-num">31 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">⏰ Future Perfect</div>
+        <ul>
+          <li><strong>Estructura:</strong> will have + past participle</li>
+          <li><strong>Uso:</strong> Acción <strong>completada</strong> en el futuro</li>
+          <li><strong>Palabra clave:</strong> by + tiempo</li>
+        </ul>
+        <div class="ex" style="margin-top:6px">
+          By 8 pm, I <span class="key">will have finished</span>.<br>
+          By next year, she <span class="key">will have graduated</span>.
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">⏳ Future Continuous</div>
+        <ul>
+          <li><strong>Estructura:</strong> will be + -ing</li>
+          <li><strong>Uso:</strong> Acción <strong>en progreso</strong> en el futuro</li>
+          <li><strong>Palabra clave:</strong> at + tiempo</li>
+        </ul>
+        <div class="ex" style="margin-top:6px">
+          At 8 pm, I <span class="key">will be watching</span> TV.<br>
+          This time tomorrow, she <span class="key">will be flying</span>.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 32 – Crime & Law: Resumen -->
+<div class="slide" id="s32">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Crime & Law – Resumen</h2>
+    <span class="s-num">32 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">⚖️ Términos clave</div>
+        <div class="ex">
+          crime, theft, robbery, burglary<br>
+          justice, judge, lawyer, police officer<br>
+          court, prison, evidence, witness
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🚔 Verbos clave</div>
+        <div class="ex">
+          steal / rob / murder<br>
+          arrest / charge / convict / sentence<br>
+          investigate
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 33 – Art & Culture: Resumen -->
+<div class="slide" id="s33">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Art & Culture – Resumen</h2>
+    <span class="s-num">33 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🎨 Términos clave</div>
+        <div class="ex">
+          art, painting, sculpture, exhibition<br>
+          museum, theater, music, dance<br>
+          literature, photography, trend, cinema
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🎨 Verbos clave</div>
+        <div class="ex">
+          create, paint, sculpt, compose<br>
+          perform, capture, write, direct
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 34 – Science: Resumen -->
+<div class="slide" id="s34">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Science – Resumen</h2>
+    <span class="s-num">34 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🔬 Términos clave</div>
+        <div class="ex">
+          science, experiment, research<br>
+          biology, chemistry, astronomy, physics<br>
+          data, laboratory, discovery, theory, hypothesis
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🔬 Verbos clave</div>
+        <div class="ex">
+          research, experiment, analyze<br>
+          discover, measure, observe, prove, publish
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 35 – Functional Language: Resumen -->
+<div class="slide" id="s35">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Functional Language – Resumen</h2>
+    <span class="s-num">35 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📖 Narrating Sequences</div>
+        <div class="ex">
+          First of all, Then, After that, Later, Meanwhile, Eventually, Finally
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Presenting Ideas Logically</div>
+        <div class="ex">
+          Firstly, In addition, Furthermore, On the one hand, On the other hand, In conclusion
+        </div>
+      </div>
+      <div class="rule-box purple">
+        <div class="title">😔 Expressing Regrets</div>
+        <div class="ex">
+          I wish I had..., If only I had..., I regret..., I should have...
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">🗣️ Repeating Messages</div>
+        <div class="ex">
+          She said that..., He told me that..., She mentioned that...
+        </div>
+      </div>
+      <div class="rule-box teal">
+        <div class="title">🔧 Talking About Services</div>
+        <div class="ex">
+          I need to have my car repaired., I'm going to get my hair cut.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 36 – Common Mistakes: Reported Speech -->
+<div class="slide" id="s36">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Common Mistakes – Reported Speech</h2>
+    <span class="s-num">36 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box red">
+        <div class="title">❌ Errores comunes</div>
+        <div class="ex">
+          ❌ He <span class="wrong">said me</span> that he was tired.<br>
+          ✅ He <span class="correct">told me</span> that he was tired.<br><br>
+          ❌ She said <span class="wrong">to me</span> that she would come.<br>
+          ✅ She <span class="correct">told me</span> that she would come.<br><br>
+          ❌ He told me <span class="wrong">to not</span> be late.<br>
+          ✅ He told me <span class="correct">not to</span> be late.
+        </div>
+      </div>
+      <div class="rule-box green">
+        <div class="title">✅ Recordatorio</div>
+        <div class="ex">
+          <strong>SAY</strong> + (that) + oración<br>
+          <strong>TELL</strong> + objeto + (that) + oración<br>
+          <strong>TELL/ASK</strong> + objeto + <span class="correct">to + infinitive</span><br>
+          <strong>Negativa:</strong> <span class="correct">not to</span> + infinitive
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 37 – Common Mistakes: Passive Voice -->
+<div class="slide" id="s37">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Common Mistakes – Passive Voice</h2>
+    <span class="s-num">37 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box red">
+        <div class="title">❌ Errores comunes</div>
+        <div class="ex">
+          ❌ The house <span class="wrong">was build</span> in 1900.<br>
+          ✅ The house <span class="correct">was built</span> in 1900.<br><br>
+          ❌ The project <span class="wrong">is finish</span>.<br>
+          ✅ The project <span class="correct">is finished</span>.<br><br>
+          ❌ The book <span class="wrong">was wrote</span> by her.<br>
+          ✅ The book <span class="correct">was written</span> by her.
+        </div>
+      </div>
+      <div class="rule-box green">
+        <div class="title">✅ Recordatorio</div>
+        <div class="ex">
+          <strong>TO BE</strong> + <span class="correct">past participle</span><br>
+          Usa la forma correcta del verbo TO BE (am/is/are, was/were, have/has been, will be)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 38 – Common Mistakes: Gerund vs Infinitive -->
+<div class="slide" id="s38">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Common Mistakes – Gerund vs Infinitive</h2>
+    <span class="s-num">38 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box red">
+        <div class="title">❌ Errores comunes</div>
+        <div class="ex">
+          ❌ I enjoy <span class="wrong">to swim</span>.<br>
+          ✅ I enjoy <span class="correct">swimming</span>.<br><br>
+          ❌ I want <span class="wrong">studying</span>.<br>
+          ✅ I want <span class="correct">to study</span>.<br><br>
+          ❌ I remember <span class="wrong">to lock</span> the door. (Si ya lo hice)<br>
+          ✅ I remember <span class="correct">locking</span> the door.
+        </div>
+      </div>
+      <div class="rule-box green">
+        <div class="title">✅ Recordatorio</div>
+        <div class="ex">
+          <strong>like/love/hate/enjoy</strong> + <span class="correct">-ing</span><br>
+          <strong>want/need/hope/decide</strong> + <span class="correct">to + infinitive</span><br>
+          <strong>remember/forget/stop/try</strong> → depende del significado
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 39 – Resumen Final -->
+<div class="slide" id="s39">
+  <div class="s-header">
+    <span class="badge">RESUMEN B2</span>
+    <h2>¡Has completado la clase C12!</h2>
+    <span class="s-num">39 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="summary-grid">
+      <div class="summary-card"><h4>🗣️ Reported Speech</h4><p>SAY vs TELL, cambios de tiempo, órdenes</p></div>
+      <div class="summary-card"><h4>📝 Passive Voice</h4><p>TO BE + past participle, usos y formación</p></div>
+      <div class="summary-card"><h4>🔧 Causative</h4><p>HAVE/GET + object + past participle</p></div>
+      <div class="summary-card"><h4>📚 Gerund vs Infinitive</h4><p>-ing vs to +, verbos con cambio de significado</p></div>
+      <div class="summary-card"><h4>⏰ Future Perfect</h4><p>will have + past participle (acción completada)</p></div>
+      <div class="summary-card"><h4>⏳ Future Continuous</h4><p>will be + -ing (acción en progreso)</p></div>
+      <div class="summary-card"><h4>⚖️ Crime Vocabulary</h4><p>theft, robbery, burglary, judge, lawyer, court</p></div>
+      <div class="summary-card"><h4>🎨 Art & Culture</h4><p>painting, sculpture, exhibition, museum</p></div>
+      <div class="summary-card"><h4>🔬 Science Vocabulary</h4><p>experiment, research, theory, laboratory</p></div>
+      <div class="summary-card"><h4>📖 Functional Language</h4><p>narrating, presenting, regretting, reporting</p></div>
+    </div>
+    <div class="tip" style="margin-top:12px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>¡Listo para practicar!</strong> Ahora dirígete a los <strong>Ejercicios B2 (E12.html)</strong> para poner a prueba todo lo que has aprendido en esta clase.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:2.3%"></div></div>
+    <div id="slide-label">Slide 1 / 39</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Course</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E12.html'">✏️ Exercises</button>
+  </div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+</script>
+</body>
+</html>

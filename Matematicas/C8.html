@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matemáticas C8 · Inecuaciones Lineales · Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --teal:#0d7377;--orange:#c06020;--purple:#7a3a8a;--coral:#c06040;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+
+/* ─── LAYOUT ─── */
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+/* ─── SLIDES ─── */
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+.s-body{padding-bottom:16px !important;}
+
+/* slide header bar */
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--red) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+/* slide body */
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+/* ─── CONTENT COMPONENTS ─── */
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--red);}
+
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box.orange{border-left-color:var(--orange);}
+.rule-box.purple{border-left-color:var(--purple);}
+.rule-box.teal{border-left-color:var(--teal);}
+.rule-box.coral{border-left-color:var(--coral);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+/* math block */
+.math-block{
+  background:var(--navy);color:var(--gold2);border-radius:10px;
+  padding:14px 20px;font-size:.95rem;line-height:2;overflow-x:auto;
+}
+.math-block .comment{color:#6b8ab0;font-size:.8rem;}
+
+/* example strip */
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--red);font-weight:700;}
+
+/* two-col layout */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+
+/* tip box */
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+/* canvas wrapper */
+.canvas-wrap{
+  background:var(--white);border-radius:12px;border:1px solid #dde4ee;
+  padding:16px;display:flex;justify-content:center;align-items:center;
+  width:100%;min-height:120px;overflow-x:auto;
+}
+.canvas-wrap canvas{max-width:100%;height:auto;border-radius:6px;background:var(--white);}
+
+/* property grid */
+.prop-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.prop-card{
+  background:var(--white);border-radius:10px;padding:10px 14px;
+  border:1px solid #dde4ee;text-align:center;
+}
+.prop-card .name{font-weight:700;color:var(--navy);font-size:.85rem;}
+.prop-card .formula{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--red);margin-top:4px;}
+.prop-card .desc{font-size:.75rem;color:var(--gray);margin-top:4px;}
+
+/* inequality table */
+.ineq-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;}
+.ineq-table th{background:var(--navy);color:var(--gold);padding:6px 12px;text-align:left;font-size:.8rem;}
+.ineq-table td{background:var(--white);padding:6px 12px;font-size:.85rem;border-bottom:1px solid #eef1f5;}
+.ineq-table tr:nth-child(even) td{background:#f8fafc;}
+
+/* cover slide */
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,var(--red) 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+/* ─── NAV ─── */
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+/* ─── TRANSITIONS ─── */
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col,.prop-grid{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+  .nav-links .nav-btn{font-size:.7rem;padding:5px 10px;}
+  #progress-wrap{max-width:120px;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══════════════════════════════════ SLIDE 1 – COVER ══════════════════════════════════ -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">📐</div>
+    <div class="cover-level">Eje Álgebra · Clase 08</div>
+    <div class="cover-title">Inecuaciones Lineales<br><span>Escuela Naval 2027</span></div>
+    <div class="cover-sub">Desigualdades, conjuntos solución, representación gráfica y aplicaciones. Herramienta fundamental para modelar restricciones en problemas reales.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">🔢 Desigualdades</span>
+      <span class="cover-tag">📐 Intervalos</span>
+      <span class="cover-tag">📊 Conjunto Solución</span>
+      <span class="cover-tag">🧮 Resolución</span>
+      <span class="cover-tag">⚓ Aplicaciones</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 2 – DEFINICIÓN DE INECUACIÓN ══════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Definición de Inecuación</h2>
+    <span class="s-num">02 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Una <strong>inecuación</strong> es una expresión matemática que establece una <strong>relación de desigualdad</strong> entre dos cantidades o expresiones.</p>
+    <div class="math-block">
+      \[
+      x > 4 \quad \text{(mayor que, sin incluir el 4)}
+      \]
+      \[
+      x \geq -3 \quad \text{(mayor o igual que, incluyendo el -3)}
+      \]
+      \[
+      x < 10 \quad \text{(menor que, sin incluir el 10)}
+      \]
+      \[
+      x \leq \sqrt{3} \quad \text{(menor o igual que, incluyendo el }\sqrt{3}\text{)}
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Símbolos de desigualdad</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.9rem;line-height:2;">
+            \(>\) : Mayor que<br>
+            \(<\) : Menor que<br>
+            \(\geq\) : Mayor o igual que<br>
+            \(\leq\) : Menor o igual que
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Ejemplos</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.9rem;line-height:2;">
+            \(x > 4\) → \(x\) es mayor que 4<br>
+            \(x < 10\) → \(x\) es menor que 10<br>
+            \(x \geq -3\) → \(x\) es mayor o igual a -3<br>
+            \(x \leq 5\) → \(x\) es menor o igual a 5
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">💡</span><div class="content"><strong>Importante:</strong> En una inecuación, el <strong>conjunto solución</strong> suele ser un <strong>intervalo</strong> de números reales, no un único valor.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 3 – REPRESENTACIÓN GRÁFICA ══════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Representación Gráfica</h2>
+    <span class="s-num">03 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Las inecuaciones se representan en la <strong>recta numérica</strong> usando <strong>círculos abiertos</strong> (sin incluir) o <strong>cerrados</strong> (incluyendo).</p>
+    
+    <!-- Gráfica 1: x > 5 -->
+    <div class="rule-box gold" style="padding:8px 14px;">
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+        <div style="font-weight:700;color:var(--navy);font-family:'JetBrains Mono',monospace;min-width:120px;">\(x > 5\)</div>
+        <div style="flex:1;min-width:200px;">
+          <div class="canvas-wrap" style="min-height:60px;padding:4px 8px;">
+            <canvas id="recta1Canvas" width="500" height="50"></canvas>
+          </div>
+        </div>
+        <div style="font-size:.8rem;color:var(--gray);min-width:100px;">\(x \in ]5, \infty[\)</div>
+      </div>
+    </div>
+
+    <!-- Gráfica 2: x ≥ 8 -->
+    <div class="rule-box green" style="padding:8px 14px;">
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+        <div style="font-weight:700;color:var(--navy);font-family:'JetBrains Mono',monospace;min-width:120px;">\(x \geq 8\)</div>
+        <div style="flex:1;min-width:200px;">
+          <div class="canvas-wrap" style="min-height:60px;padding:4px 8px;">
+            <canvas id="recta2Canvas" width="500" height="50"></canvas>
+          </div>
+        </div>
+        <div style="font-size:.8rem;color:var(--gray);min-width:100px;">\(x \in [8, \infty[\)</div>
+      </div>
+    </div>
+
+    <!-- Gráfica 3: x < -2 -->
+    <div class="rule-box orange" style="padding:8px 14px;">
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+        <div style="font-weight:700;color:var(--navy);font-family:'JetBrains Mono',monospace;min-width:120px;">\(x < -2\)</div>
+        <div style="flex:1;min-width:200px;">
+          <div class="canvas-wrap" style="min-height:60px;padding:4px 8px;">
+            <canvas id="recta3Canvas" width="500" height="50"></canvas>
+          </div>
+        </div>
+        <div style="font-size:.8rem;color:var(--gray);min-width:100px;">\(x \in ]-\infty, -2[\)</div>
+      </div>
+    </div>
+
+    <!-- Gráfica 4: x ≤ -10 -->
+    <div class="rule-box purple" style="padding:8px 14px;">
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+        <div style="font-weight:700;color:var(--navy);font-family:'JetBrains Mono',monospace;min-width:120px;">\(x \leq -10\)</div>
+        <div style="flex:1;min-width:200px;">
+          <div class="canvas-wrap" style="min-height:60px;padding:4px 8px;">
+            <canvas id="recta4Canvas" width="500" height="50"></canvas>
+          </div>
+        </div>
+        <div style="font-size:.8rem;color:var(--gray);min-width:100px;">\(x \in ]-\infty, -10]\)</div>
+      </div>
+    </div>
+
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Símbolos:</strong> ⚪ = no incluye (estricto) · ⬤ = incluye (no estricto) · → = hacia infinito.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 4 – PROPIEDADES DE LAS DESIGUALDADES ══════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Propiedades de las Desigualdades</h2>
+    <span class="s-num">04 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Al resolver inecuaciones, es crucial conocer cómo se comportan las <strong>desigualdades</strong> con las operaciones.</p>
+    <div class="prop-grid">
+      <div class="prop-card" style="border-top:4px solid var(--green);">
+        <div class="name">Suma o resta</div>
+        <div class="formula">\(a < b \Rightarrow a + c < b + c\)</div>
+        <div class="desc">El sentido NO cambia</div>
+      </div>
+      <div class="prop-card" style="border-top:4px solid var(--green);">
+        <div class="name">Multiplicar por positivo</div>
+        <div class="formula">\(a < b \Rightarrow a \cdot c < b \cdot c\)</div>
+        <div class="desc">El sentido NO cambia (\(c > 0\))</div>
+      </div>
+      <div class="prop-card" style="border-top:4px solid var(--red);">
+        <div class="name">Multiplicar por negativo</div>
+        <div class="formula">\(a < b \Rightarrow a \cdot c > b \cdot c\)</div>
+        <div class="desc">El sentido SÍ cambia (\(c < 0\))</div>
+      </div>
+      <div class="prop-card" style="border-top:4px solid var(--orange);">
+        <div class="name">Inversos (mismo signo)</div>
+        <div class="formula">\(0 < a < b \Rightarrow \frac{1}{a} > \frac{1}{b}\)</div>
+        <div class="desc">El sentido SÍ cambia</div>
+      </div>
+      <div class="prop-card" style="border-top:4px solid var(--green);">
+        <div class="name">Inversos (distinto signo)</div>
+        <div class="formula">\(a < 0 < b \Rightarrow \frac{1}{a} < \frac{1}{b}\)</div>
+        <div class="desc">El sentido NO cambia</div>
+      </div>
+      <div class="prop-card" style="border-top:4px solid var(--purple);">
+        <div class="name">Elevar a potencia (positivos)</div>
+        <div class="formula">\(0 < a < b \Rightarrow a^n < b^n\)</div>
+        <div class="desc">El sentido NO cambia (\(n > 0\))</div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">⚠️</span><div class="content"><strong>¡Regla de oro!</strong> Al multiplicar o dividir por un número <strong>negativo</strong>, el sentido de la desigualdad se <strong>invierte</strong>.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 5 – RESOLUCIÓN DE INECUACIONES ══════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Resolución de Inecuaciones</h2>
+    <span class="s-num">05 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para resolver una inecuación, se <strong>aísla la incógnita</strong> aplicando las propiedades de las desigualdades.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📌 Ejemplo 1 — Inecuación simple</div>
+      <div class="ex" style="font-size:.9rem;line-height:2.2;">
+        \(3x + 5 > 20\)<br>
+        <span class="key">Paso 1:</span> Restar 5 → \(3x > 15\)<br>
+        <span class="key">Paso 2:</span> Dividir por 3 → \(x > 5\)<br>
+        <span class="key">Solución:</span> \(x \in ]5, \infty[\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📌 Ejemplo 2 — Con signo negativo</div>
+      <div class="ex" style="font-size:.9rem;line-height:2.2;">
+        \(-2x + 3 \leq 7\)<br>
+        <span class="key">Paso 1:</span> Restar 3 → \(-2x \leq 4\)<br>
+        <span class="key">Paso 2:</span> Dividir por -2 → \(x \geq -2\) <span style="color:var(--red);font-weight:700;">(¡se invierte!)</span><br>
+        <span class="key">Solución:</span> \(x \in [-2, \infty[\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📌 Ejemplo 3 — Con denominadores</div>
+      <div class="ex" style="font-size:.9rem;line-height:2.2;">
+        \(\frac{x}{2} + 3 < 5\)<br>
+        <span class="key">Paso 1:</span> Restar 3 → \(\frac{x}{2} < 2\)<br>
+        <span class="key">Paso 2:</span> Multiplicar por 2 → \(x < 4\)<br>
+        <span class="key">Solución:</span> \(x \in ]-\infty, 4[\)
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Recuerda:</strong> El conjunto solución se escribe como <strong>intervalo</strong> o en <strong>notación de conjunto</strong>.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 6 – INECUACIONES CON PARÉNTESIS ══════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Inecuaciones con Paréntesis</h2>
+    <span class="s-num">06 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Al igual que con las ecuaciones, primero se <strong>eliminan paréntesis</strong> aplicando la <strong>propiedad distributiva</strong>.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📌 Ejemplo 1</div>
+      <div class="ex" style="font-size:.9rem;line-height:2.2;">
+        \(2(x + 3) < 12\)<br>
+        <span class="key">Paso 1:</span> Distribuir → \(2x + 6 < 12\)<br>
+        <span class="key">Paso 2:</span> Restar 6 → \(2x < 6\)<br>
+        <span class="key">Paso 3:</span> Dividir por 2 → \(x < 3\)<br>
+        <span class="key">Solución:</span> \(x \in ]-\infty, 3[\)
+      </div>
+    </div>
+    <div class="rule-box green">
+      <div class="title">📌 Ejemplo 2 (signo negativo)</div>
+      <div class="ex" style="font-size:.9rem;line-height:2.2;">
+        \(3(x - 2) - 4x \geq 10\)<br>
+        <span class="key">Paso 1:</span> Distribuir → \(3x - 6 - 4x \geq 10\)<br>
+        <span class="key">Paso 2:</span> Reducir → \(-x - 6 \geq 10\)<br>
+        <span class="key">Paso 3:</span> Sumar 6 → \(-x \geq 16\)<br>
+        <span class="key">Paso 4:</span> Multiplicar por -1 → \(x \leq -16\) <span style="color:var(--red);font-weight:700;">(¡se invierte!)</span><br>
+        <span class="key">Solución:</span> \(x \in ]-\infty, -16]\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 7 – SISTEMAS DE INECUACIONES ══════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Sistemas de Inecuaciones</h2>
+    <span class="s-num">07 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Un <strong>sistema de inecuaciones</strong> es un conjunto de dos o más inecuaciones que deben cumplirse <strong>simultáneamente</strong>.</p>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Intersección (Y)</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.85rem;line-height:2;">
+            \(x > 3\) y \(x \leq 7\)<br>
+            Solución: \(x \in ]3, 7]\)<br><br>
+            \(x \geq -2\) y \(x < 5\)<br>
+            Solución: \(x \in [-2, 5[\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Unión (O)</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.85rem;line-height:2;">
+            \(x < 2\) o \(x > 5\)<br>
+            Solución: \(x \in ]-\infty, 2[ \cup ]5, \infty[\)<br><br>
+            \(x \leq -1\) o \(x \geq 4\)<br>
+            Solución: \(x \in ]-\infty, -1] \cup [4, \infty[\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="canvas-wrap" style="min-height:120px;">
+      <canvas id="sistemasCanvas" width="700" height="100"></canvas>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Intersección (∩):</strong> ambas condiciones se cumplen · <strong>Unión (∪):</strong> al menos una se cumple.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 8 – INECUACIONES CON VALOR ABSOLUTO ══════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">TEORÍA (M2)</span>
+    <h2>Inecuaciones con Valor Absoluto</h2>
+    <span class="s-num">08 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Las inecuaciones con <strong>valor absoluto</strong> se resuelven considerando dos casos: el valor positivo y el negativo.</p>
+    <div class="math-block">
+      \[
+      |x| < a \iff -a < x < a
+      \]
+      \[
+      |x| > a \iff x < -a \quad \text{o} \quad x > a
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ejemplo 1</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.9rem;line-height:2;">
+            \(|x| < 5\)<br>
+            \(-5 < x < 5\)<br>
+            \(x \in ]-5, 5[\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Ejemplo 2</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.9rem;line-height:2;">
+            \(|x| \geq 3\)<br>
+            \(x \leq -3\) o \(x \geq 3\)<br>
+            \(x \in ]-\infty, -3] \cup [3, \infty[\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rule-box red" style="margin-top:8px;">
+      <div class="title">📌 Ejemplo 3 — Con expresión</div>
+      <div class="ex" style="font-size:.9rem;line-height:2;">
+        \(|2x - 1| \leq 3\)<br>
+        \(-3 \leq 2x - 1 \leq 3\)<br>
+        \(-2 \leq 2x \leq 4\)<br>
+        \(-1 \leq x \leq 2\)<br>
+        \(x \in [-1, 2]\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 9 – EJEMPLOS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejemplos tipo examen</h2>
+    <span class="s-num">09 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Ejercicios <strong>similares a las preguntas PAES</strong> sobre inecuaciones lineales.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 1 — Inecuación simple</div>
+      <div class="ex">
+        Resuelve: \(4x - 7 \leq 5\)<br>
+        <span class="key">Solución:</span> \(4x \leq 12 \rightarrow x \leq 3\)<br>
+        <strong>Respuesta:</strong> \(x \in ]-\infty, 3]\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 2 — Con paréntesis</div>
+      <div class="ex">
+        Resuelve: \(3(x + 2) > 2(x - 1)\)<br>
+        <span class="key">Solución:</span> \(3x + 6 > 2x - 2\)<br>
+        \(3x - 2x > -2 - 6\)<br>
+        \(x > -8\)<br>
+        <strong>Respuesta:</strong> \(x \in ]-8, \infty[\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejemplo 3 — Con denominadores</div>
+      <div class="ex">
+        Resuelve: \(\frac{x}{2} + 3 < \frac{x}{3} + 5\)<br>
+        <span class="key">Solución:</span> MCM(2,3)=6<br>
+        \(3x + 18 < 2x + 30\)<br>
+        \(x < 12\)<br>
+        <strong>Respuesta:</strong> \(x \in ]-\infty, 12[\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 10 – RESOLUCIÓN DE PROBLEMAS ══════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Resolución de Problemas</h2>
+    <span class="s-num">10 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 1 — Velocidad mínima</div>
+      <div class="ex">
+        Un buque debe recorrer al menos 240 millas en 8 horas. ¿Qué velocidad mínima debe mantener?<br><br>
+        <span class="key">Solución:</span> \(v \cdot 8 \geq 240 \rightarrow v \geq 30\) nudos<br>
+        <strong>Respuesta:</strong> Velocidad mínima: 30 nudos.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 2 — Presupuesto</div>
+      <div class="ex">
+        Un buque tiene un presupuesto de $100.000 para combustible. Si cada litro cuesta $500, ¿cuántos litros puede comprar como máximo?<br><br>
+        <span class="key">Solución:</span> \(500x \leq 100000 \rightarrow x \leq 200\) litros<br>
+        <strong>Respuesta:</strong> Puede comprar como máximo 200 litros.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📝 Problema 3 — Tripulación</div>
+      <div class="ex">
+        Un buque necesita al menos 40 tripulantes para operar. Si actualmente tiene 28, ¿cuántos debe contratar como mínimo?<br><br>
+        <span class="key">Solución:</span> \(28 + x \geq 40 \rightarrow x \geq 12\)<br>
+        <strong>Respuesta:</strong> Debe contratar al menos 12 tripulantes.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 11 – EJERCICIOS DE PRÁCTICA ══════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Ejercicios de Práctica</h2>
+    <span class="s-num">11 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Resuelve estos ejercicios <strong>antes de ver la solución</strong>.</p>
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">1. Resuelve: \(2x + 5 \leq 13\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \(x \leq 3\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \(x \leq 4\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(x \leq 5\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(x \leq 6\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(2x \leq 8 \rightarrow x \leq 4\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">2. Resuelve: \(3(x - 2) < 15\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \(x < 5\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \(x < 7\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(x < 8\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(x < 9\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(3x - 6 < 15 \rightarrow 3x < 21 \rightarrow x < 7\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">3. Resuelve: \(\frac{x}{4} + 3 \geq 8\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \(x \geq 15\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \(x \geq 20\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(x \geq 25\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(x \geq 30\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(\frac{x}{4} \geq 5 \rightarrow x \geq 20\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 12 – MÁS EJERCICIOS ══════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Más Ejercicios de Práctica</h2>
+    <span class="s-num">12 / 20</span>
+  </div>
+  <div class="s-body">
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">4. Resuelve: \(2x + 3 \geq 4x - 5\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \(x \leq 2\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \(x \leq 4\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(x \geq 4\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(x \geq 2\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(2x - 4x \geq -5 - 3 \rightarrow -2x \geq -8 \rightarrow x \leq 4\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">5. Resuelve: \(5(2x - 1) > 3(2x + 3)\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \(x > 2\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \(x > 3.5\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(x > 4\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(x > 5\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(10x - 5 > 6x + 9 \rightarrow 4x > 14 \rightarrow x > 3.5\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">6. Resuelve: \(\frac{2x}{3} - 1 \leq \frac{x}{2} + 2\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \(x \leq 10\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \(x \leq 12\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(x \leq 14\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(x \leq 16\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">MCM(3,2)=6 → \(4x - 6 \leq 3x + 12 \rightarrow x \leq 18\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 13 – PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Preguntas estilo examen</h2>
+    <span class="s-num">13 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 1 — PAES M1</div>
+      <div class="ex">
+        Si \(3x + 7 > 22\), entonces \(x\) es:<br><br>
+        a) \(x > 3\) &nbsp; b) \(x > 4\) &nbsp; c) \(x > 5\) &nbsp; d) \(x > 6\)<br>
+        <span class="key">Solución:</span> \(3x > 15 \rightarrow x > 5\)<br>
+        <strong>Respuesta:</strong> c) \(x > 5\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 2 — PAES M1</div>
+      <div class="ex">
+        La solución de \(2(x - 3) \leq 4x + 2\) es:<br><br>
+        a) \(x \geq -4\) &nbsp; b) \(x \geq -3\) &nbsp; c) \(x \geq -2\) &nbsp; d) \(x \geq -1\)<br>
+        <span class="key">Solución:</span> \(2x - 6 \leq 4x + 2 \rightarrow -2x \leq 8 \rightarrow x \geq -4\)<br>
+        <strong>Respuesta:</strong> a) \(x \geq -4\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 3 — PAES M1</div>
+      <div class="ex">
+        Si \(\frac{x}{2} + 3 < \frac{x}{3} + 5\), entonces \(x\) es:<br><br>
+        a) \(x < 6\) &nbsp; b) \(x < 8\) &nbsp; c) \(x < 10\) &nbsp; d) \(x < 12\)<br>
+        <span class="key">Solución:</span> MCM(2,3)=6 → \(3x + 18 < 2x + 30 \rightarrow x < 12\)<br>
+        <strong>Respuesta:</strong> d) \(x < 12\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 14 – MÁS PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Más preguntas estilo examen</h2>
+    <span class="s-num">14 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 4 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es el conjunto solución de \(5x - 8 < 2x + 16\)?<br><br>
+        a) \(x < 6\) &nbsp; b) \(x < 8\) &nbsp; c) \(x < 10\) &nbsp; d) \(x < 12\)<br>
+        <span class="key">Solución:</span> \(5x - 2x < 16 + 8 \rightarrow 3x < 24 \rightarrow x < 8\)<br>
+        <strong>Respuesta:</strong> b) \(x < 8\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 5 — PAES M1</div>
+      <div class="ex">
+        Si \(|x| \leq 5\), ¿cuál es el conjunto solución?<br><br>
+        a) \(-5 \leq x \leq 5\) &nbsp; b) \(x \leq -5\) o \(x \geq 5\) &nbsp; c) \(-5 < x < 5\) &nbsp; d) \(x < -5\) o \(x > 5\)<br>
+        <span class="key">Solución:</span> \(|x| \leq 5 \iff -5 \leq x \leq 5\)<br>
+        <strong>Respuesta:</strong> a) \(-5 \leq x \leq 5\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 6 — PAES M1</div>
+      <div class="ex">
+        Un número \(x\) cumple que \(2x + 3 \leq 11\). ¿Cuál es el máximo valor entero de \(x\)?<br><br>
+        a) 2 &nbsp; b) 3 &nbsp; c) 4 &nbsp; d) 5<br>
+        <span class="key">Solución:</span> \(2x \leq 8 \rightarrow x \leq 4\) → máximo entero = 4<br>
+        <strong>Respuesta:</strong> c) 4
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 15 – APLICACIONES NAVALES ══════════════════════════════════ -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Inecuaciones en Contextos Navales</h2>
+    <span class="s-num">15 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Las inecuaciones son <strong>esenciales</strong> para modelar restricciones, límites y condiciones en contextos navales.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">⚓ Capacidad máxima</div>
+      <div class="ex">
+        Un buque tiene capacidad máxima de 5.000 toneladas. Si actualmente transporta 3.200 toneladas, ¿cuántas toneladas más puede cargar?<br><br>
+        <span class="key">Solución:</span> \(3.200 + x \leq 5.000 \rightarrow x \leq 1.800\) toneladas<br>
+        <strong>Respuesta:</strong> Puede cargar hasta 1.800 toneladas adicionales.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">⛽ Autonomía mínima</div>
+      <div class="ex">
+        Un buque necesita al menos 1.500 litros de combustible para completar su travesía. Si tiene 800 litros, ¿cuántos debe repostar como mínimo?<br><br>
+        <span class="key">Solución:</span> \(800 + x \geq 1.500 \rightarrow x \geq 700\) litros<br>
+        <strong>Respuesta:</strong> Debe repostar al menos 700 litros.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">🧭 Profundidad operativa</div>
+      <div class="ex">
+        Un submarino puede operar a profundidades entre 50 m y 200 m. Expresa esta condición como una inecuación.<br><br>
+        <span class="key">Solución:</span> \(50 \leq p \leq 200\)<br>
+        <strong>Respuesta:</strong> \(p \in [50, 200]\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 16 – MÁS APLICACIONES ══════════════════════════════════ -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Más Aplicaciones Prácticas</h2>
+    <span class="s-num">16 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📊 Presupuesto de mantenimiento</div>
+      <div class="ex">
+        Un buque tiene un presupuesto de $50.000 para mantenimiento. Si cada hora de trabajo cuesta $5.000 y ya se han gastado $10.000, ¿cuántas horas más puede contratar?<br><br>
+        <span class="key">Solución:</span> \(10.000 + 5.000x \leq 50.000\)<br>
+        \(5.000x \leq 40.000 \rightarrow x \leq 8\) horas<br>
+        <strong>Respuesta:</strong> Puede contratar hasta 8 horas más.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📐 Dimensiones de diseño</div>
+      <div class="ex">
+        El largo de un compartimento debe ser al menos 3 veces el ancho. Si el ancho es \(w\), expresa la condición para el largo \(L\).<br><br>
+        <span class="key">Solución:</span> \(L \geq 3w\)<br>
+        <strong>Respuesta:</strong> \(L \geq 3w\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">👨‍✈️ Tripulación mínima</div>
+      <div class="ex">
+        Un buque requiere al menos 1 tripulante por cada 20 pasajeros. Si tiene 300 pasajeros, ¿cuántos tripulantes debe tener como mínimo?<br><br>
+        <span class="key">Solución:</span> \(t \geq \frac{300}{20} = 15\)<br>
+        <strong>Respuesta:</strong> Al menos 15 tripulantes.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 17 – EJERCICIOS ADICIONALES ══════════════════════════════════ -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejercicios Adicionales</h2>
+    <span class="s-num">17 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 1 — Inecuación con fracciones</div>
+      <div class="ex">
+        Resuelve: \(\frac{2x}{5} - \frac{3}{10} < \frac{x}{2}\)<br>
+        <span class="key">Solución:</span> MCM(5,10,2) = 10<br>
+        \(4x - 3 < 5x \rightarrow -3 < x \rightarrow x > -3\)<br>
+        <strong>Respuesta:</strong> \(x \in ]-3, \infty[\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 2 — Problema de compras</div>
+      <div class="ex">
+        Juan tiene $20.000 y quiere comprar cuadernos que cuestan $1.500 cada uno. ¿Cuántos cuadernos puede comprar como máximo?<br><br>
+        <span class="key">Solución:</span> \(1.500n \leq 20.000 \rightarrow n \leq 13.33\)<br>
+        <strong>Respuesta:</strong> Puede comprar como máximo 13 cuadernos.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejercicio 3 — Sistema de inecuaciones</div>
+      <div class="ex">
+        Encuentra el conjunto solución de: \(x > -2\) y \(x \leq 5\)<br>
+        <span class="key">Solución:</span> Intersección → \(-2 < x \leq 5\)<br>
+        <strong>Respuesta:</strong> \(x \in ]-2, 5]\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 18 – EJERCICIOS AVANZADOS ══════════════════════════════════ -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejercicios Avanzados</h2>
+    <span class="s-num">18 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 4 — Inecuación compuesta</div>
+      <div class="ex">
+        Resuelve: \(-5 < 2x - 1 < 7\)<br>
+        <span class="key">Solución:</span> Sumar 1 → \(-4 < 2x < 8\)<br>
+        Dividir por 2 → \(-2 < x < 4\)<br>
+        <strong>Respuesta:</strong> \(x \in ]-2, 4[\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 5 — Valor absoluto</div>
+      <div class="ex">
+        Resuelve: \(|x - 3| \geq 2\)<br>
+        <span class="key">Solución:</span> \(x - 3 \leq -2\) o \(x - 3 \geq 2\)<br>
+        \(x \leq 1\) o \(x \geq 5\)<br>
+        <strong>Respuesta:</strong> \(x \in ]-\infty, 1] \cup [5, \infty[\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejercicio 6 — Problema de aplicación</div>
+      <div class="ex">
+        La temperatura en un motor debe estar entre 80°C y 120°C. Si la temperatura actual es \(T\), expresa la condición.<br><br>
+        <span class="key">Solución:</span> \(80 \leq T \leq 120\)<br>
+        <strong>Respuesta:</strong> \(T \in [80, 120]\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 19 – EJERCICIOS TIPO PAES M2 ══════════════════════════════════ -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Preguntas estilo examen (M2)</h2>
+    <span class="s-num">19 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 7 — PAES M2</div>
+      <div class="ex">
+        Si \(2x + 3 > 5x - 6\), entonces el conjunto solución es:<br><br>
+        a) \(x > 3\) &nbsp; b) \(x < 3\) &nbsp; c) \(x > -3\) &nbsp; d) \(x < -3\)<br>
+        <span class="key">Solución:</span> \(2x - 5x > -6 - 3 \rightarrow -3x > -9 \rightarrow x < 3\)<br>
+        <strong>Respuesta:</strong> b) \(x < 3\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 8 — PAES M2</div>
+      <div class="ex">
+        ¿Cuál es el conjunto solución de \(|2x - 1| \leq 5\)?<br><br>
+        a) \(-2 \leq x \leq 3\) &nbsp; b) \(-3 \leq x \leq 2\) &nbsp; c) \(-2 < x < 3\) &nbsp; d) \(-3 < x < 2\)<br>
+        <span class="key">Solución:</span> \(-5 \leq 2x - 1 \leq 5 \rightarrow -4 \leq 2x \leq 6 \rightarrow -2 \leq x \leq 3\)<br>
+        <strong>Respuesta:</strong> a) \(-2 \leq x \leq 3\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 9 — PAES M2</div>
+      <div class="ex">
+        Un número \(x\) cumple que \(2x - 3 \leq 7\) y \(x + 1 > 2\). ¿Cuál es el conjunto solución?<br><br>
+        a) \(x \leq 5\) &nbsp; b) \(x > 1\) &nbsp; c) \(1 < x \leq 5\) &nbsp; d) \(1 \leq x < 5\)<br>
+        <span class="key">Solución:</span> \(2x \leq 10 \rightarrow x \leq 5\) y \(x > 1\)<br>
+        <strong>Respuesta:</strong> c) \(1 < x \leq 5\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 20 – RESUMEN Y ESTRATEGIAS ══════════════════════════════════ -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">RESUMEN — CLASE 08</span>
+    <h2>Resumen: Inecuaciones Lineales</h2>
+    <span class="s-num">20 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Contenidos clave</div>
+        <div class="rule-box green">
+          <ul style="padding-left:18px;font-size:.9rem;line-height:2;">
+            <li><strong>Inecuación:</strong> Desigualdad con incógnita(s)</li>
+            <li><strong>Símbolos:</strong> \(>, <, \geq, \leq\)</li>
+            <li><strong>Conjunto solución:</strong> Intervalo de números reales</li>
+            <li><strong>Representación:</strong> Recta numérica (⚪ o ⬤)</li>
+            <li><strong>Propiedades:</strong> Suma/resta NO cambia</li>
+            <li><strong>Multiplicar por negativo:</strong> El sentido <strong>SÍ cambia</strong></li>
+            <li><strong>Valor absoluto:</strong> \(|x| < a \iff -a < x < a\)</li>
+            <li><strong>Sistemas:</strong> Intersección (Y) o Unión (O)</li>
+            <li><strong>Inversos:</strong> Según el signo de los números</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">🎯 Estrategias para el examen</div>
+        <div class="rule-box gold">
+          <ul style="padding-left:18px;font-size:.88rem;line-height:1.9;">
+            <li><strong>Identifica</strong> el tipo de desigualdad.</li>
+            <li><strong>Multiplicar por negativo</strong> → invertir el signo.</li>
+            <li><strong>Representa</strong> gráficamente para visualizar la solución.</li>
+            <li>En sistemas: <strong>intersección</strong> (Y) o <strong>unión</strong> (O).</li>
+            <li>Con valor absoluto: <strong>abre en dos casos</strong>.</li>
+            <li>En problemas verbales: <strong>traduce</strong> a lenguaje algebraico.</li>
+            <li>Recuerda: \(x > a\) o \(x < b\) → dos intervalos separados.</li>
+          </ul>
+        </div>
+        <div class="rule-box" style="margin-top:10px;">
+          <div class="title">📊 Próxima clase</div>
+          <p><strong>Clase 09:</strong> Sistema de Ecuaciones Lineales — Métodos de resolución (sustitución, igualación, reducción).</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><div class="content"><strong>"La naturaleza nos ha dado las semillas del conocimiento, no el conocimiento mismo." Séneca</strong> — Genial!. Has completado la clase 8. Ahora puedes continuar con ejercicios.</div></div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:5%"></div></div>
+    <div id="slide-label">Slide 1 / 20</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Curso</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E8.html'">✏️ Ejercicios</button>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// NAVEGACIÓN
+// ════════════════════════════════════════════════════════════════
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: RECTAS NUMÉRICAS INDIVIDUALES (Slide 3)
+// ════════════════════════════════════════════════════════════════
+
+// Gráfica 1: x > 5
+function drawRecta1() {
+  const canvas = document.getElementById('recta1Canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const cy = h/2;
+  const margin = 20;
+  const startX = margin;
+  const endX = w - margin;
+
+  // Línea principal
+  ctx.beginPath();
+  ctx.moveTo(startX, cy);
+  ctx.lineTo(endX, cy);
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Flecha derecha
+  ctx.beginPath();
+  ctx.moveTo(endX, cy);
+  ctx.lineTo(endX - 8, cy - 5);
+  ctx.moveTo(endX, cy);
+  ctx.lineTo(endX - 8, cy + 5);
+  ctx.stroke();
+
+  // Marcas
+  const marks = [-2, 0, 2, 4, 5, 6, 8];
+  marks.forEach(m => {
+    const px = startX + ((m + 2) / 10) * (endX - startX);
+    ctx.beginPath();
+    ctx.moveTo(px, cy - 4);
+    ctx.lineTo(px, cy + 4);
+    ctx.strokeStyle = '#1a2a4a';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.fillStyle = '#1a2a4a';
+    ctx.font = '9px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(m, px, cy + 6);
+  });
+
+  // Círculo abierto en 5
+  const px5 = startX + ((5 + 2) / 10) * (endX - startX);
+  ctx.beginPath();
+  ctx.arc(px5, cy, 8, 0, 2 * Math.PI);
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  ctx.fillStyle = '#fff';
+  ctx.fill();
+
+  // Línea de solución (desde 5 hacia la derecha)
+  ctx.beginPath();
+  ctx.moveTo(px5 + 8, cy);
+  ctx.lineTo(endX, cy);
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+}
+
+// Gráfica 2: x ≥ 8
+function drawRecta2() {
+  const canvas = document.getElementById('recta2Canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const cy = h/2;
+  const margin = 20;
+  const startX = margin;
+  const endX = w - margin;
+
+  ctx.beginPath();
+  ctx.moveTo(startX, cy);
+  ctx.lineTo(endX, cy);
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(endX, cy);
+  ctx.lineTo(endX - 8, cy - 5);
+  ctx.moveTo(endX, cy);
+  ctx.lineTo(endX - 8, cy + 5);
+  ctx.stroke();
+
+  const marks = [0, 2, 4, 6, 8, 10, 12];
+  marks.forEach(m => {
+    const px = startX + ((m) / 12) * (endX - startX);
+    ctx.beginPath();
+    ctx.moveTo(px, cy - 4);
+    ctx.lineTo(px, cy + 4);
+    ctx.strokeStyle = '#1a2a4a';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.fillStyle = '#1a2a4a';
+    ctx.font = '9px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(m, px, cy + 6);
+  });
+
+  const px8 = startX + ((8) / 12) * (endX - startX);
+  ctx.beginPath();
+  ctx.arc(px8, cy, 8, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a7a4a';
+  ctx.fill();
+  ctx.strokeStyle = '#1a7a4a';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(px8 + 8, cy);
+  ctx.lineTo(endX, cy);
+  ctx.strokeStyle = '#1a7a4a';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+}
+
+// Gráfica 3: x < -2
+function drawRecta3() {
+  const canvas = document.getElementById('recta3Canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const cy = h/2;
+  const margin = 20;
+  const startX = margin;
+  const endX = w - margin;
+
+  ctx.beginPath();
+  ctx.moveTo(startX, cy);
+  ctx.lineTo(endX, cy);
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Flecha izquierda
+  ctx.beginPath();
+  ctx.moveTo(startX, cy);
+  ctx.lineTo(startX + 8, cy - 5);
+  ctx.moveTo(startX, cy);
+  ctx.lineTo(startX + 8, cy + 5);
+  ctx.stroke();
+
+  const marks = [-8, -6, -4, -2, 0, 2, 4];
+  marks.forEach(m => {
+    const px = startX + ((m + 8) / 12) * (endX - startX);
+    ctx.beginPath();
+    ctx.moveTo(px, cy - 4);
+    ctx.lineTo(px, cy + 4);
+    ctx.strokeStyle = '#1a2a4a';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.fillStyle = '#1a2a4a';
+    ctx.font = '9px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(m, px, cy + 6);
+  });
+
+  const px2 = startX + ((-2 + 8) / 12) * (endX - startX);
+  ctx.beginPath();
+  ctx.arc(px2, cy, 8, 0, 2 * Math.PI);
+  ctx.strokeStyle = '#c06020';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  ctx.fillStyle = '#fff';
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(startX, cy);
+  ctx.lineTo(px2 - 8, cy);
+  ctx.strokeStyle = '#c06020';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+}
+
+// Gráfica 4: x ≤ -10
+function drawRecta4() {
+  const canvas = document.getElementById('recta4Canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const cy = h/2;
+  const margin = 20;
+  const startX = margin;
+  const endX = w - margin;
+
+  ctx.beginPath();
+  ctx.moveTo(startX, cy);
+  ctx.lineTo(endX, cy);
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(startX, cy);
+  ctx.lineTo(startX + 8, cy - 5);
+  ctx.moveTo(startX, cy);
+  ctx.lineTo(startX + 8, cy + 5);
+  ctx.stroke();
+
+  const marks = [-16, -14, -12, -10, -8, -6, -4];
+  marks.forEach(m => {
+    const px = startX + ((m + 16) / 12) * (endX - startX);
+    ctx.beginPath();
+    ctx.moveTo(px, cy - 4);
+    ctx.lineTo(px, cy + 4);
+    ctx.strokeStyle = '#1a2a4a';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.fillStyle = '#1a2a4a';
+    ctx.font = '9px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(m, px, cy + 6);
+  });
+
+  const px10 = startX + ((-10 + 16) / 12) * (endX - startX);
+  ctx.beginPath();
+  ctx.arc(px10, cy, 8, 0, 2 * Math.PI);
+  ctx.fillStyle = '#7a3a9a';
+  ctx.fill();
+  ctx.strokeStyle = '#7a3a9a';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(startX, cy);
+  ctx.lineTo(px10 - 8, cy);
+  ctx.strokeStyle = '#7a3a9a';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: SISTEMAS DE INECUACIONES (Slide 7)
+// ════════════════════════════════════════════════════════════════
+function drawSistemas() {
+  const canvas = document.getElementById('sistemasCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const cy = h/2 - 10;
+
+  // ── Intersección: x > 3 y x ≤ 7 ──
+  const x1 = 50, x2 = 300;
+  const mid1 = (x1 + x2) / 2;
+  
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '12px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('Intersección (Y): x > 3 y x ≤ 7 → ]3, 7]', mid1, cy - 28);
+
+  // Línea
+  ctx.beginPath();
+  ctx.moveTo(x1, cy);
+  ctx.lineTo(x2, cy);
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  // Círculo abierto en 3
+  ctx.beginPath();
+  ctx.arc(x1, cy, 8, 0, 2 * Math.PI);
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  ctx.fillStyle = '#fff';
+  ctx.fill();
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '12px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('3', x1, cy + 10);
+
+  // Círculo cerrado en 7
+  ctx.beginPath();
+  ctx.arc(x2, cy, 8, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a6fa8';
+  ctx.fill();
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  ctx.fillStyle = '#fff';
+  ctx.font = '12px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('7', x2, cy + 10);
+
+  // ── Unión: x < 2 o x > 5 ──
+  const x3 = 400, x4 = 450, x5 = 550, x6 = 650;
+  const mid2 = (x3 + x6) / 2;
+
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '12px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('Unión (O): x < 2 o x > 5 → ]-∞, 2[ ∪ ]5, ∞[', mid2, cy - 28);
+
+  // Línea 1 (izquierda)
+  ctx.beginPath();
+  ctx.moveTo(x3, cy);
+  ctx.lineTo(x4, cy);
+  ctx.strokeStyle = '#c06020';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  // Círculo abierto en 2
+  ctx.beginPath();
+  ctx.arc(x4, cy, 8, 0, 2 * Math.PI);
+  ctx.strokeStyle = '#c06020';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  ctx.fillStyle = '#fff';
+  ctx.fill();
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '12px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('2', x4, cy + 10);
+
+  // Línea 2 (derecha)
+  ctx.beginPath();
+  ctx.moveTo(x5, cy);
+  ctx.lineTo(x6, cy);
+  ctx.strokeStyle = '#c06020';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  // Círculo abierto en 5
+  ctx.beginPath();
+  ctx.arc(x5, cy, 8, 0, 2 * Math.PI);
+  ctx.strokeStyle = '#c06020';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  ctx.fillStyle = '#fff';
+  ctx.fill();
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '12px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('5', x5, cy + 10);
+
+  // ── Título ──
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '10px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('Sistemas de inecuaciones: intersección y unión', w - 10, h - 4);
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER KATEX Y CANVAS
+// ════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement === 'function') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });
+  }
+
+  setTimeout(() => {
+    drawRecta1();
+    drawRecta2();
+    drawRecta3();
+    drawRecta4();
+    drawSistemas();
+  }, 100);
+});
+
+// Redibujar al cambiar de slide
+const observer = new MutationObserver(() => {
+  setTimeout(() => {
+    drawRecta1();
+    drawRecta2();
+    drawRecta3();
+    drawRecta4();
+    drawSistemas();
+  }, 50);
+});
+
+slides.forEach(s => {
+  observer.observe(s, { attributes: true, attributeFilter: ['class'] });
+});
+</script>
+</body>
+</html>

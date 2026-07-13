@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matemáticas C9 · Sistema de Ecuaciones Lineales · Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --teal:#0d7377;--orange:#c06020;--purple:#7a3a8a;--coral:#c06040;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+
+/* ─── LAYOUT ─── */
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+/* ─── SLIDES ─── */
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+.s-body{padding-bottom:16px !important;}
+
+/* slide header bar */
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--purple) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+/* slide body */
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+/* ─── CONTENT COMPONENTS ─── */
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--purple);}
+
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box.orange{border-left-color:var(--orange);}
+.rule-box.purple{border-left-color:var(--purple);}
+.rule-box.teal{border-left-color:var(--teal);}
+.rule-box.coral{border-left-color:var(--coral);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+/* math block */
+.math-block{
+  background:var(--navy);color:var(--gold2);border-radius:10px;
+  padding:14px 20px;font-size:.95rem;line-height:2;overflow-x:auto;
+}
+.math-block .comment{color:#6b8ab0;font-size:.8rem;}
+
+/* example strip */
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--purple);font-weight:700;}
+
+/* two-col layout */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+
+/* tip box */
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+/* canvas wrapper */
+.canvas-wrap{
+  background:var(--white);border-radius:12px;border:1px solid #dde4ee;
+  padding:16px;display:flex;justify-content:center;align-items:center;
+  width:100%;min-height:200px;overflow-x:auto;
+}
+.canvas-wrap canvas{max-width:100%;height:auto;border-radius:6px;background:var(--white);}
+
+/* property grid */
+.prop-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.prop-card{
+  background:var(--white);border-radius:10px;padding:10px 14px;
+  border:1px solid #dde4ee;text-align:center;
+}
+.prop-card .name{font-weight:700;color:var(--navy);font-size:.85rem;}
+.prop-card .formula{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--purple);margin-top:4px;}
+.prop-card .desc{font-size:.75rem;color:var(--gray);margin-top:4px;}
+
+/* equation table */
+.sys-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;}
+.sys-table th{background:var(--navy);color:var(--gold);padding:6px 12px;text-align:left;font-size:.8rem;}
+.sys-table td{background:var(--white);padding:6px 12px;font-size:.85rem;border-bottom:1px solid #eef1f5;}
+.sys-table tr:nth-child(even) td{background:#f8fafc;}
+
+/* cover slide */
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,var(--purple) 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+/* ─── NAV ─── */
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+/* ─── TRANSITIONS ─── */
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col,.prop-grid{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+  .nav-links .nav-btn{font-size:.7rem;padding:5px 10px;}
+  #progress-wrap{max-width:120px;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══════════════════════════════════ SLIDE 1 – COVER ══════════════════════════════════ -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">📐</div>
+    <div class="cover-level">Eje Álgebra · Clase 09</div>
+    <div class="cover-title">Sistema de Ecuaciones Lineales<br><span>Escuela Naval 2027</span></div>
+    <div class="cover-sub">Métodos de resolución: sustitución, igualación y reducción. Sistemas 2×2, tipos de soluciones y aplicaciones.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">🔢 2×2</span>
+      <span class="cover-tag">📐 Sustitución</span>
+      <span class="cover-tag">📊 Igualación</span>
+      <span class="cover-tag">🧮 Reducción</span>
+      <span class="cover-tag">⚓ Aplicaciones</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 2 – SISTEMA DE ECUACIONES 2×2 ══════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Sistema de Ecuaciones 2×2</h2>
+    <span class="s-num">02 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Un <strong>sistema de ecuaciones 2×2</strong> tiene <strong>2 ecuaciones</strong> con <strong>2 incógnitas</strong> (\(x\) e \(y\)). La forma general es:</p>
+    <div class="math-block">
+      \[
+      \begin{cases}
+      ax + by = c \\
+      dx + ey = f
+      \end{cases}
+      \]
+      <span class="comment">a, b, c, d, e, f ∈ ℝ</span>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Ejemplo 1</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:.9rem;line-height:2;">
+            \(\begin{cases} x + y = 2 \\ 2x - y = 5 \end{cases}\)<br><br>
+            \(a=1, b=1, c=2\)<br>
+            \(d=2, e=-1, f=5\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Ejemplo 2</div>
+        <div class="rule-box orange">
+          <div class="ex" style="font-size:.9rem;line-height:2;">
+            \(\begin{cases} -3x - 5y = 9 \\ 6x + 10y = -18 \end{cases}\)<br><br>
+            \(a=-3, b=-5, c=9\)<br>
+            \(d=6, e=10, f=-18\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Solución:</strong> Es un <strong>par ordenado</strong> \((x,y)\) que satisface <strong>ambas</strong> ecuaciones simultáneamente.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 3 – TIPOS DE SOLUCIONES ══════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Tipos de Soluciones</h2>
+    <span class="s-num">03 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Un sistema de ecuaciones 2×2 puede tener <strong>3 tipos de soluciones</strong>, según la relación entre las rectas que representan.</p>
+    
+    <div class="three-col">
+      <!-- Caso 1: Solución única -->
+      <div class="rule-box green">
+        <div class="title">✅ Solución única</div>
+        <div style="font-size:.82rem;line-height:1.6;color:#2d3a4a;">
+          <strong>¿Cuándo ocurre?</strong><br>
+          Las rectas se <strong>intersectan</strong> en un solo punto.<br>
+          <strong>Condición:</strong> \(\frac{a}{d} \neq \frac{b}{e}\)
+        </div>
+        <div class="ex" style="font-size:.78rem;margin-top:6px;line-height:1.8;">
+          \(\begin{cases} x + y = 3 \\ x - y = 1 \end{cases}\)<br>
+          Solución: \((2, 1)\)
+        </div>
+      </div>
+      
+      <!-- Caso 2: Sin solución -->
+      <div class="rule-box red">
+        <div class="title">❌ Sin solución</div>
+        <div style="font-size:.82rem;line-height:1.6;color:#2d3a4a;">
+          <strong>¿Cuándo ocurre?</strong><br>
+          Las rectas son <strong>paralelas</strong> (nunca se intersectan).<br>
+          <strong>Condición:</strong> \(\frac{a}{d} = \frac{b}{e} \neq \frac{c}{f}\)
+        </div>
+        <div class="ex" style="font-size:.78rem;margin-top:6px;line-height:1.8;">
+          \(\begin{cases} x + y = 3 \\ x + y = 2 \end{cases}\)<br>
+          Solución: \(\varnothing\)
+        </div>
+      </div>
+      
+      <!-- Caso 3: Infinitas soluciones -->
+      <div class="rule-box orange">
+        <div class="title">♾️ Infinitas soluciones</div>
+        <div style="font-size:.82rem;line-height:1.6;color:#2d3a4a;">
+          <strong>¿Cuándo ocurre?</strong><br>
+          Las rectas son <strong>coincidentes</strong> (son la misma recta).<br>
+          <strong>Condición:</strong> \(\frac{a}{d} = \frac{b}{e} = \frac{c}{f}\)
+        </div>
+        <div class="ex" style="font-size:.78rem;margin-top:6px;line-height:1.8;">
+          \(\begin{cases} x + y = 3 \\ 2x + 2y = 6 \end{cases}\)<br>
+          Solución: \((x, 3-x)\)
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas-wrap" style="min-height:200px;">
+      <canvas id="tiposCanvas" width="750" height="180"></canvas>
+    </div>
+    
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Regla práctica:</strong> Compara las razones \(\frac{a}{d}\), \(\frac{b}{e}\) y \(\frac{c}{f}\) para determinar el tipo de solución.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 4 – MÉTODO DE SUSTITUCIÓN ══════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">MÉTODOS</span>
+    <h2>Método de Sustitución</h2>
+    <span class="s-num">04 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El <strong>método de sustitución</strong> consiste en <strong>despejar</strong> una variable en una ecuación y <strong>sustituir</strong> en la otra.</p>
+    <div class="rule-box gold">
+      <div class="title">📌 Pasos</div>
+      <ol style="padding-left:18px;font-size:.9rem;line-height:2;">
+        <li><strong>Despejar</strong> una variable en una de las ecuaciones.</li>
+        <li><strong>Sustituir</strong> esa expresión en la otra ecuación.</li>
+        <li><strong>Resolver</strong> la ecuación resultante.</li>
+        <li><strong>Calcular</strong> el valor de la otra variable.</li>
+        <li><strong>Verificar</strong> en ambas ecuaciones.</li>
+      </ol>
+    </div>
+    <div class="rule-box green" style="margin-top:8px;">
+      <div class="title">📌 Ejemplo</div>
+      <div class="ex" style="font-size:.85rem;line-height:2.2;">
+        \(\begin{cases} x + y = 5 \\ 2x - y = 4 \end{cases}\)<br><br>
+        <span class="key">Paso 1:</span> Despejo \(x\) en la primera: \(x = 5 - y\)<br>
+        <span class="key">Paso 2:</span> Sustituyo en la segunda: \(2(5 - y) - y = 4\)<br>
+        <span class="key">Paso 3:</span> Resuelvo: \(10 - 2y - y = 4 \rightarrow -3y = -6 \rightarrow y = 2\)<br>
+        <span class="key">Paso 4:</span> Calculo \(x\): \(x = 5 - 2 = 3\)<br>
+        <span class="key">Verificación:</span> \(3 + 2 = 5\) ✅ · \(2(3) - 2 = 4\) ✅<br>
+        <strong>Solución:</strong> \((3, 2)\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 5 – MÉTODO DE IGUALACIÓN ══════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">MÉTODOS</span>
+    <h2>Método de Igualación</h2>
+    <span class="s-num">05 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El <strong>método de igualación</strong> consiste en <strong>despejar</strong> la misma variable en ambas ecuaciones y <strong>igualar</strong> las expresiones.</p>
+    <div class="rule-box gold">
+      <div class="title">📌 Pasos</div>
+      <ol style="padding-left:18px;font-size:.9rem;line-height:2;">
+        <li><strong>Despejar</strong> la misma variable en ambas ecuaciones.</li>
+        <li><strong>Igualar</strong> las expresiones obtenidas.</li>
+        <li><strong>Resolver</strong> la ecuación resultante.</li>
+        <li><strong>Calcular</strong> el valor de la otra variable.</li>
+        <li><strong>Verificar</strong> en ambas ecuaciones.</li>
+      </ol>
+    </div>
+    <div class="rule-box orange" style="margin-top:8px;">
+      <div class="title">📌 Ejemplo</div>
+      <div class="ex" style="font-size:.85rem;line-height:2.2;">
+        \(\begin{cases} x + y = 6 \\ 2x - y = 3 \end{cases}\)<br><br>
+        <span class="key">Paso 1:</span> Despejo \(y\) en ambas:<br>
+        \(y = 6 - x\) y \(y = 2x - 3\)<br>
+        <span class="key">Paso 2:</span> Igualo: \(6 - x = 2x - 3\)<br>
+        <span class="key">Paso 3:</span> Resuelvo: \(-x - 2x = -3 - 6 \rightarrow -3x = -9 \rightarrow x = 3\)<br>
+        <span class="key">Paso 4:</span> Calculo \(y\): \(y = 6 - 3 = 3\)<br>
+        <span class="key">Verificación:</span> \(3 + 3 = 6\) ✅ · \(2(3) - 3 = 3\) ✅<br>
+        <strong>Solución:</strong> \((3, 3)\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 6 – MÉTODO DE REDUCCIÓN ══════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">MÉTODOS</span>
+    <h2>Método de Reducción</h2>
+    <span class="s-num">06 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El <strong>método de reducción</strong> consiste en <strong>sumar o restar</strong> las ecuaciones para eliminar una variable.</p>
+    <div class="rule-box gold">
+      <div class="title">📌 Pasos</div>
+      <ol style="padding-left:18px;font-size:.9rem;line-height:2;">
+        <li><strong>Multiplicar</strong> (si es necesario) las ecuaciones para que una variable tenga coeficientes <strong>opuestos</strong>.</li>
+        <li><strong>Sumar</strong> las ecuaciones para eliminar esa variable.</li>
+        <li><strong>Resolver</strong> la ecuación resultante.</li>
+        <li><strong>Calcular</strong> el valor de la otra variable.</li>
+        <li><strong>Verificar</strong> en ambas ecuaciones.</li>
+      </ol>
+    </div>
+    <div class="rule-box purple" style="margin-top:8px;">
+      <div class="title">📌 Ejemplo</div>
+      <div class="ex" style="font-size:.85rem;line-height:2.2;">
+        \(\begin{cases} 3x + 2y = 12 \\ 5x - 2y = 8 \end{cases}\)<br><br>
+        <span class="key">Paso 1:</span> Los coeficientes de \(y\) son \(2\) y \(-2\) (opuestos).<br>
+        <span class="key">Paso 2:</span> Sumo las ecuaciones:<br>
+        \(3x + 2y = 12\)<br>
+        \(5x - 2y = 8\)<br>
+        \(8x = 20\)<br>
+        <span class="key">Paso 3:</span> \(x = \frac{20}{8} = 2.5\)<br>
+        <span class="key">Paso 4:</span> Calculo \(y\): \(3(2.5) + 2y = 12 \rightarrow 7.5 + 2y = 12 \rightarrow y = 2.25\)<br>
+        <span class="key">Verificación:</span> \(5(2.5) - 2(2.25) = 12.5 - 4.5 = 8\) ✅<br>
+        <strong>Solución:</strong> \((2.5, 2.25)\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 7 – RESUMEN DE MÉTODOS ══════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">MÉTODOS</span>
+    <h2>Resumen de Métodos</h2>
+    <span class="s-num">07 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Cada método tiene sus <strong>ventajas</strong> según el sistema. Elige el más adecuado para cada caso.</p>
+    <div class="three-col">
+      <div class="rule-box green">
+        <div class="title">📌 Sustitución</div>
+        <div class="ex" style="font-size:.8rem;line-height:1.8;">
+          <strong>Ventaja:</strong> Simple cuando una variable ya está despejada.<br>
+          <strong>Cuándo usar:</strong> Cuando una ecuación tiene coeficiente 1 en \(x\) o \(y\).<br>
+          <strong>Ejemplo:</strong> \(y = 2x + 1\)
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">📌 Igualación</div>
+        <div class="ex" style="font-size:.8rem;line-height:1.8;">
+          <strong>Ventaja:</strong> Útil cuando ambas ecuaciones están despejadas para la misma variable.<br>
+          <strong>Cuándo usar:</strong> Cuando \(y = ...\) en ambas ecuaciones.<br>
+          <strong>Ejemplo:</strong> \(y = 3x - 2\) y \(y = -x + 6\)
+        </div>
+      </div>
+      <div class="rule-box purple">
+        <div class="title">📌 Reducción</div>
+        <div class="ex" style="font-size:.8rem;line-height:1.8;">
+          <strong>Ventaja:</strong> Rápido cuando hay coeficientes opuestos.<br>
+          <strong>Cuándo usar:</strong> Cuando al sumar/restar se elimina una variable fácilmente.<br>
+          <strong>Ejemplo:</strong> \(2x + y = 5\) y \(3x - y = 10\)
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">💡</span><div class="content"><strong>Consejo:</strong> Practica los tres métodos para identificar cuál es más eficiente en cada sistema.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 8 – EJEMPLOS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejemplos tipo examen</h2>
+    <span class="s-num">08 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Ejercicios <strong>similares a las preguntas PAES</strong> sobre sistemas de ecuaciones.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 1 — Sustitución</div>
+      <div class="ex">
+        Resuelve: \(\begin{cases} x + y = 7 \\ 2x - y = 5 \end{cases}\)<br>
+        <span class="key">Solución:</span> \(x = 7 - y\) → \(2(7 - y) - y = 5\) → \(14 - 2y - y = 5\) → \(y = 3\) → \(x = 4\)<br>
+        <strong>Respuesta:</strong> \((4, 3)\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 2 — Igualación</div>
+      <div class="ex">
+        Resuelve: \(\begin{cases} y = 2x + 3 \\ y = -x + 6 \end{cases}\)<br>
+        <span class="key">Solución:</span> \(2x + 3 = -x + 6\) → \(3x = 3\) → \(x = 1\) → \(y = 5\)<br>
+        <strong>Respuesta:</strong> \((1, 5)\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejemplo 3 — Reducción</div>
+      <div class="ex">
+        Resuelve: \(\begin{cases} 2x + y = 8 \\ 3x - y = 7 \end{cases}\)<br>
+        <span class="key">Solución:</span> Sumando: \(5x = 15\) → \(x = 3\) → \(2(3) + y = 8\) → \(y = 2\)<br>
+        <strong>Respuesta:</strong> \((3, 2)\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 9 – RESOLUCIÓN DE PROBLEMAS ══════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Resolución de Problemas</h2>
+    <span class="s-num">09 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 1 — Edades</div>
+      <div class="ex">
+        La suma de las edades de dos hermanos es 30 años. La diferencia de sus edades es 6 años. ¿Cuántos años tiene cada uno?<br><br>
+        <span class="key">Solución:</span> \(x + y = 30\), \(x - y = 6\)<br>
+        Sumando: \(2x = 36 \rightarrow x = 18\), \(y = 12\)<br>
+        <strong>Respuesta:</strong> 18 y 12 años.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 2 — Precios</div>
+      <div class="ex">
+        En una tienda, 2 lápices y 3 cuadernos cuestan $3.500. 3 lápices y 2 cuadernos cuestan $3.000. ¿Cuánto cuesta cada uno?<br><br>
+        <span class="key">Solución:</span> \(2x + 3y = 3500\), \(3x + 2y = 3000\)<br>
+        Multiplicando y restando: \(6x + 9y = 10500\), \(6x + 4y = 6000\) → \(5y = 4500\) → \(y = 900\), \(x = 400\)<br>
+        <strong>Respuesta:</strong> Lápiz: $400, Cuaderno: $900.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📝 Problema 3 — Números</div>
+      <div class="ex">
+        Un número es el doble de otro. La suma de ambos números es 45. ¿Cuáles son los números?<br><br>
+        <span class="key">Solución:</span> \(x = 2y\), \(x + y = 45\) → \(2y + y = 45\) → \(y = 15\), \(x = 30\)<br>
+        <strong>Respuesta:</strong> 15 y 30.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 10 – EJERCICIOS DE PRÁCTICA ══════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Ejercicios de Práctica</h2>
+    <span class="s-num">10 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Resuelve estos ejercicios <strong>antes de ver la solución</strong>.</p>
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">1. Resuelve: \(\begin{cases} x + y = 10 \\ x - y = 4 \end{cases}\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \((5,5)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \((7,3)\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \((6,4)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \((8,2)\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">Sumando: \(2x=14 \rightarrow x=7\), \(y=3\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">2. Resuelve: \(\begin{cases} y = 2x - 1 \\ y = -x + 5 \end{cases}\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \((1,3)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \((2,3)\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \((3,5)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \((2,5)\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(2x-1 = -x+5 \rightarrow 3x=6 \rightarrow x=2, y=3\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">3. Resuelve: \(\begin{cases} 2x + y = 7 \\ 3x - y = 8 \end{cases}\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \((3,1)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \((3,1)\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \((2,3)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \((1,5)\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">Sumando: \(5x=15 \rightarrow x=3, y=1\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 11 – MÁS EJERCICIOS ══════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Más Ejercicios de Práctica</h2>
+    <span class="s-num">11 / 20</span>
+  </div>
+  <div class="s-body">
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">4. Resuelve: \(\begin{cases} 2x + 3y = 8 \\ 4x - 3y = 10 \end{cases}\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \((3,1)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \((3, \frac{2}{3})\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \((2,1)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \((4,0)\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">Sumando: \(6x=18 \rightarrow x=3, y=\frac{2}{3}\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">5. Resuelve: \(\begin{cases} x - 2y = 3 \\ 3x + 2y = 17 \end{cases}\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \((5,1)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \((5,1)\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \((4,2)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \((3,0)\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">Sumando: \(4x=20 \rightarrow x=5, y=1\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">6. Resuelve: \(\begin{cases} 2x + y = 5 \\ 4x + 2y = 10 \end{cases}\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \((1,3)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">b) \((2,1)\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">c) Infinitas ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) Sin solución</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(4x+2y = 2(2x+y) = 10\) → misma ecuación → infinitas soluciones</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 12 – PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Preguntas estilo examen</h2>
+    <span class="s-num">12 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 1 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es la solución del sistema \(\begin{cases} x + y = 5 \\ 2x - y = 4 \end{cases}\)?<br><br>
+        a) \((1,4)\) &nbsp; b) \((2,3)\) &nbsp; c) \((3,2)\) &nbsp; d) \((4,1)\)<br>
+        <span class="key">Solución:</span> Sumando: \(3x = 9 \rightarrow x = 3, y = 2\)<br>
+        <strong>Respuesta:</strong> c) \((3,2)\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 2 — PAES M1</div>
+      <div class="ex">
+        El sistema \(\begin{cases} 2x + y = 6 \\ 4x + 2y = 12 \end{cases}\) tiene:<br><br>
+        a) Solución única &nbsp; b) Infinitas soluciones &nbsp; c) Sin solución &nbsp; d) Dos soluciones<br>
+        <span class="key">Solución:</span> \(4x+2y = 2(2x+y) = 12\) → misma ecuación → infinitas soluciones<br>
+        <strong>Respuesta:</strong> b) Infinitas soluciones
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 3 — PAES M1</div>
+      <div class="ex">
+        La suma de dos números es 20 y su diferencia es 4. ¿Cuáles son los números?<br><br>
+        a) 8 y 12 &nbsp; b) 10 y 10 &nbsp; c) 12 y 8 &nbsp; d) 14 y 6<br>
+        <span class="key">Solución:</span> \(x+y=20, x-y=4\) → \(2x=24 \rightarrow x=12, y=8\)<br>
+        <strong>Respuesta:</strong> c) 12 y 8
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 13 – MÁS PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Más preguntas estilo examen</h2>
+    <span class="s-num">13 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 4 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es el valor de \(x\) en el sistema \(\begin{cases} 3x + 2y = 12 \\ x - y = 4 \end{cases}\)?<br><br>
+        a) 2 &nbsp; b) 3 &nbsp; c) 4 &nbsp; d) 5<br>
+        <span class="key">Solución:</span> \(x = 4 + y\) → \(3(4+y)+2y=12\) → \(12+5y=12\) → \(y=0, x=4\)<br>
+        <strong>Respuesta:</strong> c) 4
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 5 — PAES M1</div>
+      <div class="ex">
+        Si \(2x + 3y = 13\) y \(x - y = -1\), ¿cuál es el valor de \(y\)?<br><br>
+        a) 1 &nbsp; b) 2 &nbsp; c) 3 &nbsp; d) 4<br>
+        <span class="key">Solución:</span> \(x = y - 1\) → \(2(y-1)+3y=13\) → \(5y-2=13\) → \(y=3\)<br>
+        <strong>Respuesta:</strong> c) 3
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 6 — PAES M1</div>
+      <div class="ex">
+        Un sistema de ecuaciones tiene como solución \((3, -2)\). ¿Cuál de los siguientes sistemas podría ser?<br><br>
+        a) \(\begin{cases} x+y=1 \\ x-y=5 \end{cases}\) &nbsp; b) \(\begin{cases} x+y=1 \\ x-y=5 \end{cases}\) &nbsp; c) \(\begin{cases} x+y=-1 \\ x-y=5 \end{cases}\) &nbsp; d) \(\begin{cases} x+y=1 \\ x-y=-5 \end{cases}\)<br>
+        <span class="key">Solución:</span> \(x=3, y=-2\) → \(x+y=1\), \(x-y=5\)<br>
+        <strong>Respuesta:</strong> a) \(\begin{cases} x+y=1 \\ x-y=5 \end{cases}\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 14 – APLICACIONES NAVALES ══════════════════════════════════ -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Sistemas en Contextos Navales</h2>
+    <span class="s-num">14 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los sistemas de ecuaciones son <strong>esenciales</strong> para modelar problemas de navegación, logística y planificación.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">⚓ Velocidad y corriente</div>
+      <div class="ex">
+        Un barco recorre 120 km río abajo en 4 horas y río arriba en 6 horas. ¿Cuál es la velocidad del barco y la corriente?<br><br>
+        <span class="key">Solución:</span> \(v+c = 30\), \(v-c=20\) → \(2v=50 \rightarrow v=25\), \(c=5\)<br>
+        <strong>Respuesta:</strong> Barco: 25 km/h, Corriente: 5 km/h.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">⛽ Combustible y distancia</div>
+      <div class="ex">
+        Un buque consume 1.000 L diarios y 1.200 L diarios dependiendo de la velocidad. Si en un viaje de 15 días consumió 16.000 L, ¿cuántos días navegó a cada velocidad?<br><br>
+        <span class="key">Solución:</span> \(x+y=15\), \(1000x+1200y=16000\) → \(y=5\), \(x=10\)<br>
+        <strong>Respuesta:</strong> 10 días a 1.000 L, 5 días a 1.200 L.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">🧭 Tripulación</div>
+      <div class="ex">
+        En un buque hay 120 tripulantes entre oficiales y marineros. Cada oficial tiene 2 marineros a su cargo. ¿Cuántos oficiales y marineros hay?<br><br>
+        <span class="key">Solución:</span> \(x+y=120\), \(y=2x\) → \(3x=120 \rightarrow x=40\) oficiales, \(y=80\) marineros<br>
+        <strong>Respuesta:</strong> 40 oficiales, 80 marineros.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 15 – MÁS APLICACIONES ══════════════════════════════════ -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Más Aplicaciones Prácticas</h2>
+    <span class="s-num">15 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📐 Dimensiones</div>
+      <div class="ex">
+        El perímetro de un rectángulo es 30 m. El largo es 3 m mayor que el ancho. ¿Cuáles son las dimensiones?<br><br>
+        <span class="key">Solución:</span> \(2(L+A)=30\) → \(L+A=15\), \(L=A+3\) → \(2A+3=15\) → \(A=6\), \(L=9\)<br>
+        <strong>Respuesta:</strong> Ancho: 6 m, Largo: 9 m.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📊 Inversión</div>
+      <div class="ex">
+        Se invierten $500.000 en dos cuentas. Una da 5% y otra 8%. Si el interés anual es $31.000, ¿cuánto se invirtió en cada una?<br><br>
+        <span class="key">Solución:</span> \(x+y=500000\), \(0.05x+0.08y=31000\) → \(x=300000\), \(y=200000\)<br>
+        <strong>Respuesta:</strong> $300.000 al 5%, $200.000 al 8%.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">🧪 Mezcla</div>
+      <div class="ex">
+        Se mezclan 20 L de solución al 30% con \(x\) L de solución al 50% para obtener una mezcla al 40%. ¿Cuántos litros de la segunda solución se necesitan?<br><br>
+        <span class="key">Solución:</span> \(0.3(20)+0.5x=0.4(20+x)\) → \(6+0.5x=8+0.4x\) → \(0.1x=2\) → \(x=20\) L<br>
+        <strong>Respuesta:</strong> 20 L.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 16 – EJERCICIOS ADICIONALES ══════════════════════════════════ -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejercicios Adicionales</h2>
+    <span class="s-num">16 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 1 — Sistema con fracciones</div>
+      <div class="ex">
+        Resuelve: \(\begin{cases} \frac{x}{2} + \frac{y}{3} = 4 \\ \frac{x}{3} - \frac{y}{2} = 1 \end{cases}\)<br>
+        <span class="key">Solución:</span> Multiplicar por MCM(2,3)=6 → \(3x+2y=24\), \(2x-3y=6\) → Resolviendo: \(x=6, y=3\)<br>
+        <strong>Respuesta:</strong> \((6, 3)\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 2 — Sin solución</div>
+      <div class="ex">
+        \(\begin{cases} 2x + 3y = 8 \\ 4x + 6y = 15 \end{cases}\)<br>
+        <span class="key">Solución:</span> \(4x+6y = 2(2x+3y) = 16 \neq 15\) → Sin solución<br>
+        <strong>Respuesta:</strong> \(\varnothing\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejercicio 3 — Infinitas soluciones</div>
+      <div class="ex">
+        \(\begin{cases} x - 2y = 3 \\ 2x - 4y = 6 \end{cases}\)<br>
+        <span class="key">Solución:</span> \(2x-4y = 2(x-2y) = 6\) → misma ecuación → infinitas soluciones<br>
+        <strong>Respuesta:</strong> \((3+2y, y)\) con \(y \in \mathbb{R}\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 17 – EJERCICIOS AVANZADOS ══════════════════════════════════ -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejercicios Avanzados</h2>
+    <span class="s-num">17 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 4 — Sistema 3×3 (M2)</div>
+      <div class="ex">
+        \(\begin{cases} x + y + z = 6 \\ x - y + z = 4 \\ 2x + y - z = 5 \end{cases}\)<br>
+        <span class="key">Solución:</span> Sumando las dos primeras: \(2x+2z=10 \rightarrow x+z=5\)<br>
+        De la primera: \(y=6-x-z=6-5=1\) → Resolviendo: \(x=3, z=2\)<br>
+        <strong>Respuesta:</strong> \((3, 1, 2)\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 5 — Problema de edades</div>
+      <div class="ex">
+        La edad de un padre es el triple de la edad de su hijo. Hace 5 años, la suma de sus edades era 50 años. ¿Cuántos años tienen?<br><br>
+        <span class="key">Solución:</span> \(P = 3H\), \((P-5)+(H-5)=50\) → \(P+H=60\) → \(4H=60\) → \(H=15\), \(P=45\)<br>
+        <strong>Respuesta:</strong> Padre: 45 años, Hijo: 15 años.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejercicio 6 — Sistema con parámetros</div>
+      <div class="ex">
+        \(\begin{cases} 2x + ky = 4 \\ 3x - y = 6 \end{cases}\)<br>
+        Encuentra \(k\) para que el sistema tenga solución única.<br>
+        <span class="key">Solución:</span> \(\frac{2}{3} \neq \frac{k}{-1} \rightarrow k \neq -\frac{2}{3}\)<br>
+        <strong>Respuesta:</strong> \(k \neq -\frac{2}{3}\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 18 – PREGUNTAS TIPO PAES M2 ══════════════════════════════════ -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Preguntas estilo examen (M2)</h2>
+    <span class="s-num">18 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 7 — PAES M2</div>
+      <div class="ex">
+        ¿Para qué valor de \(k\) el sistema \(\begin{cases} 2x + 3y = 5 \\ 4x + ky = 10 \end{cases}\) tiene infinitas soluciones?<br><br>
+        a) 3 &nbsp; b) 4 &nbsp; c) 5 &nbsp; d) 6<br>
+        <span class="key">Solución:</span> \(4x+ky = 2(2x+3y) = 10\) → \(k=6\)<br>
+        <strong>Respuesta:</strong> d) 6
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 8 — PAES M2</div>
+      <div class="ex">
+        En un sistema de ecuaciones \(\begin{cases} ax + by = c \\ dx + ey = f \end{cases}\), ¿qué condición debe cumplirse para que tenga solución única?<br><br>
+        a) \(\frac{a}{d} = \frac{b}{e}\) &nbsp; b) \(\frac{a}{d} \neq \frac{b}{e}\) &nbsp; c) \(\frac{a}{d} = \frac{c}{f}\) &nbsp; d) \(\frac{b}{e} = \frac{c}{f}\)<br>
+        <span class="key">Solución:</span> Para solución única: \(\frac{a}{d} \neq \frac{b}{e}\)<br>
+        <strong>Respuesta:</strong> b) \(\frac{a}{d} \neq \frac{b}{e}\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 9 — PAES M2</div>
+      <div class="ex">
+        La solución del sistema \(\begin{cases} 2x + y = 7 \\ x - y = 2 \end{cases}\) es \((3, 1)\). ¿Cuál es el valor de \(2x + y\) para esta solución?<br><br>
+        a) 5 &nbsp; b) 6 &nbsp; c) 7 &nbsp; d) 8<br>
+        <span class="key">Solución:</span> \(2(3)+1 = 7\)<br>
+        <strong>Respuesta:</strong> c) 7
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 19 – TIPOS DE SOLUCIONES ══════════════════════════════════ -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Tipos de Soluciones — Resumen Gráfico</h2>
+    <span class="s-num">19 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Un sistema de ecuaciones 2×2 puede tener <strong>3 tipos de soluciones</strong> según la relación entre las rectas que representan.</p>
+    
+    <!-- Gráficas de los 3 casos -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+      
+      <!-- Caso 1: Solución única -->
+      <div style="background:var(--white);border-radius:12px;border:1px solid #dde4ee;padding:12px;text-align:center;border-top:4px solid var(--green);">
+        <div style="font-weight:700;font-size:.9rem;color:var(--navy);">✅ Solución única</div>
+        <div class="canvas-wrap" style="min-height:120px;padding:4px;">
+          <canvas id="unicaCanvas" width="220" height="110"></canvas>
+        </div>
+        <div style="font-size:.78rem;color:var(--gray);margin-top:4px;">
+          <strong>Rectas que se intersectan</strong><br>
+          \(\frac{a}{d} \neq \frac{b}{e}\)
+        </div>
+        <div class="ex" style="font-size:.72rem;margin-top:4px;padding:6px 10px;">
+          \(\begin{cases} x + y = 3 \\ x - y = 1 \end{cases}\) → \((2,1)\)
+        </div>
+      </div>
+      
+      <!-- Caso 2: Sin solución -->
+      <div style="background:var(--white);border-radius:12px;border:1px solid #dde4ee;padding:12px;text-align:center;border-top:4px solid var(--red);">
+        <div style="font-weight:700;font-size:.9rem;color:var(--navy);">❌ Sin solución</div>
+        <div class="canvas-wrap" style="min-height:120px;padding:4px;">
+          <canvas id="sinSolCanvas" width="220" height="110"></canvas>
+        </div>
+        <div style="font-size:.78rem;color:var(--gray);margin-top:4px;">
+          <strong>Rectas paralelas</strong><br>
+          \(\frac{a}{d} = \frac{b}{e} \neq \frac{c}{f}\)
+        </div>
+        <div class="ex" style="font-size:.72rem;margin-top:4px;padding:6px 10px;">
+          \(\begin{cases} x + y = 3 \\ x + y = 2 \end{cases}\) → \(\varnothing\)
+        </div>
+      </div>
+      
+      <!-- Caso 3: Infinitas soluciones -->
+      <div style="background:var(--white);border-radius:12px;border:1px solid #dde4ee;padding:12px;text-align:center;border-top:4px solid var(--orange);">
+        <div style="font-weight:700;font-size:.9rem;color:var(--navy);">♾️ Infinitas soluciones</div>
+        <div class="canvas-wrap" style="min-height:120px;padding:4px;">
+          <canvas id="infinitasCanvas" width="220" height="110"></canvas>
+        </div>
+        <div style="font-size:.78rem;color:var(--gray);margin-top:4px;">
+          <strong>Rectas coincidentes</strong><br>
+          \(\frac{a}{d} = \frac{b}{e} = \frac{c}{f}\)
+        </div>
+        <div class="ex" style="font-size:.72rem;margin-top:4px;padding:6px 10px;">
+          \(\begin{cases} x + y = 3 \\ 2x + 2y = 6 \end{cases}\) → \((x, 3-x)\)
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- Resumen de condiciones -->
+    <div class="rule-box gold" style="margin-top:8px;">
+      <div class="title">📌 Resumen de condiciones</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;font-size:.82rem;text-align:center;">
+        <div style="background:#e8f4fb;padding:10px;border-radius:8px;">
+          <strong style="color:var(--green);">Solución única</strong><br>
+          \(\frac{a}{d} \neq \frac{b}{e}\)<br>
+          <span style="font-size:.7rem;color:var(--gray);">Rectas se intersectan</span>
+        </div>
+        <div style="background:#fceaea;padding:10px;border-radius:8px;">
+          <strong style="color:var(--red);">Sin solución</strong><br>
+          \(\frac{a}{d} = \frac{b}{e} \neq \frac{c}{f}\)<br>
+          <span style="font-size:.7rem;color:var(--gray);">Rectas paralelas</span>
+        </div>
+        <div style="background:#eaf7f4;padding:10px;border-radius:8px;">
+          <strong style="color:var(--orange);">Infinitas soluciones</strong><br>
+          \(\frac{a}{d} = \frac{b}{e} = \frac{c}{f}\)<br>
+          <span style="font-size:.7rem;color:var(--gray);">Rectas coincidentes</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip"><span class="icon">💡</span><div class="content"><strong>Consejo:</strong> Para determinar el tipo de solución, compara las razones \(\frac{a}{d}\), \(\frac{b}{e}\) y \(\frac{c}{f}\). Si son todas iguales → infinitas soluciones. Si solo las dos primeras son iguales → sin solución. Si son todas distintas → solución única.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 20 – RESUMEN Y ESTRATEGIAS ══════════════════════════════════ -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">RESUMEN — CLASE 09</span>
+    <h2>Resumen: Sistema de Ecuaciones Lineales</h2>
+    <span class="s-num">20 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Contenidos clave</div>
+        <div class="rule-box green">
+          <ul style="padding-left:18px;font-size:.9rem;line-height:2;">
+            <li><strong>Sistema 2×2:</strong> \(ax + by = c\), \(dx + ey = f\)</li>
+            <li><strong>Solución:</strong> Par ordenado \((x,y)\) que satisface ambas ecuaciones</li>
+            <li><strong>Sustitución:</strong> Despejar y reemplazar</li>
+            <li><strong>Igualación:</strong> Despejar la misma variable e igualar</li>
+            <li><strong>Reducción:</strong> Sumar/restar para eliminar una variable</li>
+            <li><strong>Solución única:</strong> \(\frac{a}{d} \neq \frac{b}{e}\)</li>
+            <li><strong>Sin solución:</strong> \(\frac{a}{d} = \frac{b}{e} \neq \frac{c}{f}\)</li>
+            <li><strong>Infinitas soluciones:</strong> \(\frac{a}{d} = \frac{b}{e} = \frac{c}{f}\)</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">🎯 Estrategias para el examen</div>
+        <div class="rule-box gold">
+          <ul style="padding-left:18px;font-size:.88rem;line-height:1.9;">
+            <li><strong>Identifica</strong> qué método es más eficiente.</li>
+            <li>Con coeficientes 1: <strong>sustitución</strong> o <strong>igualación</strong>.</li>
+            <li>Con coeficientes opuestos: <strong>reducción</strong>.</li>
+            <li><strong>Verifica</strong> la solución en ambas ecuaciones.</li>
+            <li>En problemas verbales: <strong>traduce</strong> a sistema de ecuaciones.</li>
+            <li>Recuerda: \(\frac{a}{d}\), \(\frac{b}{e}\), \(\frac{c}{f}\) determinan el tipo de solución.</li>
+          </ul>
+        </div>
+        <div class="rule-box" style="margin-top:10px;">
+          <div class="title">📊 Próxima clase</div>
+          <p><strong>Clase 10:</strong> Funciones — Definición, dominio, recorrido y evaluación.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><div class="content"><strong>"La duda es la madre del descubrimiento." Ambrose Bierce</strong> — Genial!. Has completado la clase 9. Ahora puedes continuar con ejercicios.</div></div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:5%"></div></div>
+    <div id="slide-label">Slide 1 / 20</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Curso</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E9.html'">✏️ Ejercicios</button>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// NAVEGACIÓN
+// ════════════════════════════════════════════════════════════════
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: TIPOS DE SOLUCIONES (Slide 3 - Corregido)
+// ════════════════════════════════════════════════════════════════
+function drawTipos() {
+  const canvas = document.getElementById('tiposCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 25;
+  const graphW = (w - 4 * margin) / 3;
+  const graphH = h - 2 * margin - 20;
+  const yMin = margin + 15;
+  const yMax = margin + 15 + graphH;
+
+  // ── Gráfica 1: Solución única ──
+  const x1 = margin;
+  const x1_center = x1 + graphW/2;
+  
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = 'bold 12px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('Solución única', x1_center, yMin - 6);
+  
+  // Ejes
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(x1 + 15, yMin);
+  ctx.lineTo(x1 + 15, yMax);
+  ctx.lineTo(x1 + graphW - 5, yMax);
+  ctx.stroke();
+  
+  // Recta 1: y = -x + 5 (pendiente -1)
+  ctx.beginPath();
+  ctx.moveTo(x1 + 15, yMax - 15);
+  ctx.lineTo(x1 + graphW - 10, yMin + 15);
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  
+  // Recta 2: y = x - 1 (pendiente 1)
+  ctx.beginPath();
+  ctx.moveTo(x1 + 15, yMin + 10);
+  ctx.lineTo(x1 + graphW - 10, yMax - 10);
+  ctx.strokeStyle = '#c06020';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  
+  // Punto de intersección en (3,2)
+  const px = x1 + 15 + (graphW - 25) * 0.5;
+  const py = yMin + 10 + (yMax - yMin - 20) * 0.45;
+  ctx.beginPath();
+  ctx.arc(px, py, 7, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a7a4a';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.fillStyle = '#fff';
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('(3,2)', px, py - 10);
+  
+  // ── Gráfica 2: Sin solución ──
+  const x2 = x1 + graphW + margin;
+  const x2_center = x2 + graphW/2;
+  
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = 'bold 12px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('Sin solución', x2_center, yMin - 6);
+  
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(x2 + 15, yMin);
+  ctx.lineTo(x2 + 15, yMax);
+  ctx.lineTo(x2 + graphW - 5, yMax);
+  ctx.stroke();
+  
+  // Recta 1: y = x + 1
+  ctx.beginPath();
+  ctx.moveTo(x2 + 15, yMax - 15);
+  ctx.lineTo(x2 + graphW - 10, yMin + 15);
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  
+  // Recta 2: y = x - 1 (paralela)
+  ctx.beginPath();
+  ctx.moveTo(x2 + 15, yMax - 35);
+  ctx.lineTo(x2 + graphW - 10, yMin - 5);
+  ctx.strokeStyle = '#c06020';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  
+  // Etiqueta de rectas paralelas
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '10px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('Rectas paralelas', x2_center, yMax + 4);
+  
+  // ── Gráfica 3: Infinitas soluciones ──
+  const x3 = x2 + graphW + margin;
+  const x3_center = x3 + graphW/2;
+  
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = 'bold 12px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('Infinitas soluciones', x3_center, yMin - 6);
+  
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(x3 + 15, yMin);
+  ctx.lineTo(x3 + 15, yMax);
+  ctx.lineTo(x3 + graphW - 5, yMax);
+  ctx.stroke();
+  
+  // Recta única (coincidentes) - dibujar dos líneas ligeramente desplazadas
+  // Línea principal
+  ctx.beginPath();
+  ctx.moveTo(x3 + 15, yMax - 15);
+  ctx.lineTo(x3 + graphW - 10, yMin + 15);
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 3.5;
+  ctx.stroke();
+  
+  // Segunda línea ligeramente desplazada para mostrar coincidencia
+  ctx.beginPath();
+  ctx.moveTo(x3 + 15, yMax - 13);
+  ctx.lineTo(x3 + graphW - 10, yMin + 17);
+  ctx.strokeStyle = 'rgba(192, 96, 32, 0.25)';
+  ctx.lineWidth = 3.5;
+  ctx.stroke();
+  
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '10px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('Rectas coincidentes', x3_center, yMax + 4);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: SOLUCIÓN ÚNICA (Slide 19)
+// ════════════════════════════════════════════════════════════════
+function drawUnica() {
+  const canvas = document.getElementById('unicaCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 15;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin - 8;
+  const yMin = margin + 4;
+  const yMax = margin + 4 + graphH;
+
+  // Ejes
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(margin + 10, yMin);
+  ctx.lineTo(margin + 10, yMax);
+  ctx.lineTo(margin + graphW, yMax);
+  ctx.stroke();
+
+  // Recta 1: y = -x + 5 (pendiente -1)
+  ctx.beginPath();
+  ctx.moveTo(margin + 10, yMax - 10);
+  ctx.lineTo(margin + graphW - 5, yMin + 10);
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // Recta 2: y = x - 1 (pendiente 1)
+  ctx.beginPath();
+  ctx.moveTo(margin + 10, yMin + 5);
+  ctx.lineTo(margin + graphW - 5, yMax - 5);
+  ctx.strokeStyle = '#c06020';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // Punto de intersección en (3,2)
+  const px = margin + 10 + (graphW - 15) * 0.5;
+  const py = yMin + 10 + (yMax - yMin - 20) * 0.45;
+  ctx.beginPath();
+  ctx.arc(px, py, 6, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a7a4a';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  
+  ctx.fillStyle = '#1a7a4a';
+  ctx.font = '9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('(3,2)', px, py - 8);
+
+  // Etiquetas de rectas
+  ctx.fillStyle = '#1a6fa8';
+  ctx.font = '8px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('L₁', margin + graphW - 20, yMin + 12);
+  ctx.fillStyle = '#c06020';
+  ctx.fillText('L₂', margin + graphW - 20, yMax - 5);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: SIN SOLUCIÓN (Slide 19)
+// ════════════════════════════════════════════════════════════════
+function drawSinSol() {
+  const canvas = document.getElementById('sinSolCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 15;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin - 8;
+  const yMin = margin + 4;
+  const yMax = margin + 4 + graphH;
+
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(margin + 10, yMin);
+  ctx.lineTo(margin + 10, yMax);
+  ctx.lineTo(margin + graphW, yMax);
+  ctx.stroke();
+
+  // Recta 1: y = x + 1
+  ctx.beginPath();
+  ctx.moveTo(margin + 10, yMax - 10);
+  ctx.lineTo(margin + graphW - 5, yMin + 10);
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // Recta 2: y = x - 1 (paralela)
+  ctx.beginPath();
+  ctx.moveTo(margin + 10, yMax - 30);
+  ctx.lineTo(margin + graphW - 5, yMin - 10);
+  ctx.strokeStyle = '#c06020';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // Texto "paralelas"
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '9px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('Rectas paralelas', margin + graphW/2, yMax + 4);
+  
+  // Etiquetas
+  ctx.fillStyle = '#1a6fa8';
+  ctx.font = '8px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('L₁', margin + graphW - 20, yMin + 12);
+  ctx.fillStyle = '#c06020';
+  ctx.fillText('L₂', margin + graphW - 20, yMin + 28);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: INFINITAS SOLUCIONES (Slide 19)
+// ════════════════════════════════════════════════════════════════
+function drawInfinitas() {
+  const canvas = document.getElementById('infinitasCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = 15;
+  const graphW = w - 2 * margin;
+  const graphH = h - 2 * margin - 8;
+  const yMin = margin + 4;
+  const yMax = margin + 4 + graphH;
+
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(margin + 10, yMin);
+  ctx.lineTo(margin + 10, yMax);
+  ctx.lineTo(margin + graphW, yMax);
+  ctx.stroke();
+
+  // Recta principal
+  ctx.beginPath();
+  ctx.moveTo(margin + 10, yMax - 10);
+  ctx.lineTo(margin + graphW - 5, yMin + 10);
+  ctx.strokeStyle = '#1a6fa8';
+  ctx.lineWidth = 3.5;
+  ctx.stroke();
+
+  // Segunda línea ligeramente desplazada (coincidente)
+  ctx.beginPath();
+  ctx.moveTo(margin + 10, yMax - 8);
+  ctx.lineTo(margin + graphW - 5, yMin + 12);
+  ctx.strokeStyle = 'rgba(192, 96, 32, 0.2)';
+  ctx.lineWidth = 3.5;
+  ctx.stroke();
+
+  // Sombra de la línea
+  ctx.beginPath();
+  ctx.moveTo(margin + 10, yMax - 12);
+  ctx.lineTo(margin + graphW - 5, yMin + 8);
+  ctx.strokeStyle = 'rgba(192, 96, 32, 0.1)';
+  ctx.lineWidth = 3.5;
+  ctx.stroke();
+
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '9px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('Rectas coincidentes', margin + graphW/2, yMax + 4);
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER KATEX Y CANVAS
+// ════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement === 'function') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });
+  }
+
+  setTimeout(() => {
+    drawTipos();
+    drawUnica();
+    drawSinSol();
+    drawInfinitas();
+  }, 100);
+});
+
+// Redibujar al cambiar de slide
+const observer = new MutationObserver(() => {
+  setTimeout(() => {
+    drawTipos();
+    drawUnica();
+    drawSinSol();
+    drawInfinitas();
+  }, 50);
+});
+
+slides.forEach(s => {
+  observer.observe(s, { attributes: true, attributeFilter: ['class'] });
+});
+</script>
+</body>
+</html>

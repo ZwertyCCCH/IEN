@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matemáticas C2 · Números Racionales · Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --teal:#0d7377;--orange:#c06020;--purple:#7a3a8a;--coral:#c06040;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+
+/* ─── LAYOUT ─── */
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+/* ─── SLIDES ─── */
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+.s-body{padding-bottom:16px !important;}
+
+/* slide header bar */
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--teal) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+/* slide body */
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+/* ─── CONTENT COMPONENTS ─── */
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--teal);}
+
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box.orange{border-left-color:var(--orange);}
+.rule-box.purple{border-left-color:var(--purple);}
+.rule-box.teal{border-left-color:var(--teal);}
+.rule-box.coral{border-left-color:var(--coral);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+/* math block */
+.math-block{
+  background:var(--navy);color:var(--gold2);border-radius:10px;
+  padding:14px 20px;font-size:.95rem;line-height:2;overflow-x:auto;
+}
+.math-block .comment{color:#6b8ab0;font-size:.8rem;}
+
+/* example strip */
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--teal);font-weight:700;}
+
+/* two-col layout */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+
+/* tip box */
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+/* canvas wrapper */
+.canvas-wrap{
+  background: var(--white);
+  border-radius: 12px;
+  border: 1px solid #dde4ee;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 200px;
+  overflow-x: auto;
+}
+.canvas-wrap canvas {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  background: var(--white);
+}
+
+/* definition cards */
+.def-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.def-card{
+  background:var(--white);border-radius:10px;padding:12px 16px;
+  border:1px solid #dde4ee;text-align:center;
+}
+.def-card .symbol{font-size:1.6rem;font-weight:700;color:var(--teal);font-family:'Playfair Display',serif;}
+.def-card .meaning{font-size:.85rem;color:var(--gray);margin-top:4px;}
+.def-card .example{font-size:.82rem;color:#2d3a4a;margin-top:6px;font-family:'JetBrains Mono',monospace;}
+
+/* fraction display */
+.fraction-display{
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  font-family:'JetBrains Mono',monospace;font-size:1.2rem;padding:8px 0;
+}
+.fraction-display .frac{
+  display:flex;flex-direction:column;align-items:center;padding:0 6px;
+}
+.fraction-display .frac .num{border-bottom:2px solid var(--navy);padding:0 12px 2px;}
+.fraction-display .frac .den{padding-top:2px;}
+.fraction-display .arrow{font-size:1.6rem;color:var(--gold);}
+
+/* conversion table */
+.conv-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.conv-card{
+  background:var(--white);border-radius:10px;padding:10px 14px;
+  border:1px solid #dde4ee;text-align:center;
+}
+.conv-card .type{font-weight:700;color:var(--navy);font-size:.82rem;}
+.conv-card .example{font-family:'JetBrains Mono',monospace;font-size:.9rem;color:var(--teal);margin-top:4px;}
+.conv-card .desc{font-size:.72rem;color:var(--gray);margin-top:4px;}
+
+/* approximation grid */
+.approx-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.approx-card{
+  background:var(--white);border-radius:10px;padding:10px 14px;
+  border:1px solid #dde4ee;
+}
+.approx-card .name{font-weight:700;color:var(--navy);font-size:.85rem;}
+.approx-card .example{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:#2d3a4a;margin-top:4px;}
+
+/* cover slide */
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,var(--teal) 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+/* ─── NAV ─── */
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+/* ─── TRANSITIONS ─── */
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col,.def-grid,.conv-grid,.approx-grid{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+  .nav-links .nav-btn{font-size:.7rem;padding:5px 10px;}
+  #progress-wrap{max-width:120px;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══════════════════════════════════ SLIDE 1 – COVER ══════════════════════════════════ -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">📐</div>
+    <div class="cover-level">Eje Números · Clase 02</div>
+    <div class="cover-title">Números Racionales<br><span>Escuela Naval 2027</span></div>
+    <div class="cover-sub">Fracciones, decimales, operaciones y transformaciones. Base para el manejo de cantidades no enteras en contextos navales y científicos.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">🔢 ℚ</span>
+      <span class="cover-tag">➕ Fracciones</span>
+      <span class="cover-tag">🔁 Decimales</span>
+      <span class="cover-tag">✖️ Operaciones</span>
+      <span class="cover-tag">📊 Aproximación</span>
+      <span class="cover-tag">🔄 Conversión</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 2 – DEFINICIÓN ℚ ══════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Números Racionales (ℚ)</h2>
+    <span class="s-num">02 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los <strong>números racionales (ℚ)</strong> son todos aquellos que se pueden escribir como <strong>fracción</strong> de dos números enteros, con denominador distinto de cero.</p>
+    <div class="math-block">
+      \[
+      \mathbb{Q} = \left\{ \frac{a}{b} \;\middle|\; a,b \in \mathbb{Z},\; b \neq 0 \right\}
+      \]
+      <span class="comment">a: numerador · b: denominador · k: cociente</span>
+    </div>
+    <div class="def-grid">
+      <div class="def-card" style="border-top:4px solid var(--teal);">
+        <div class="symbol">\(\frac{3}{4}\)</div>
+        <div class="meaning">Fracción propia</div>
+        <div class="example">\(|a| < |b|\) → \(\frac{1}{2}, \frac{5}{7}, \frac{3}{8}\)</div>
+      </div>
+      <div class="def-card" style="border-top:4px solid var(--orange);">
+        <div class="symbol">\(\frac{7}{3}\)</div>
+        <div class="meaning">Fracción impropia</div>
+        <div class="example">\(|a| > |b|\) → \(\frac{5}{2}, \frac{9}{5}, \frac{7}{3}\)</div>
+      </div>
+    </div>
+    <div class="rule-box gold">
+      <div class="title">📌 Ejemplos de números racionales</div>
+      <div class="ex">
+        \(1,\; -1,\; \frac{3}{7},\; \sqrt{4}=2,\; \frac{0}{7}=0,\; 3.4,\; 0.\overline{35}\)
+      </div>
+    </div>
+    <div class="tip"><span class="icon">💡</span><div class="content"><strong>Nota:</strong> \(\pi\) <strong>no</strong> es racional porque es un decimal infinito no periódico: \(\pi = 3.1415926535\dots\)</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 3 – FRACCIONES MIXTAS ══════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Número Mixto</h2>
+    <span class="s-num">03 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Un <strong>número mixto</strong> combina una parte entera con una fracción propia. Se usa para representar cantidades mayores que 1 de forma más intuitiva.</p>
+    <div class="math-block">
+      \[
+      c\frac{a}{b} = \frac{c \cdot b + a}{b}
+      \]
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">Ejemplo de conversión</div>
+        <div class="rule-box green">
+          <div class="ex" style="font-size:1.1rem;">
+            \(2\frac{1}{5} = \frac{2 \cdot 5 + 1}{5} = \frac{11}{5}\)
+          </div>
+        </div>
+        <div class="rule-box gold" style="margin-top:10px;">
+          <div class="title">📌 Regla para convertir</div>
+          <p><strong>Multiplica</strong> la parte entera por el denominador, <strong>suma</strong> el numerador y <strong>conserva</strong> el denominador.</p>
+          <div class="ex" style="margin-top:6px;">
+            \(3\frac{2}{5} = \frac{3 \cdot 5 + 2}{5} = \frac{17}{5}\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">Visualización</div>
+        <div class="canvas-wrap">
+          <canvas id="mixtoCanvas" width="750" height="160"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📝</span><div class="content"><strong>Uso práctico:</strong> Los números mixtos son comunes en mediciones (ej: \(3\frac{1}{2}\) kg, \(2\frac{3}{4}\) metros, \(1\frac{1}{2}\) horas).</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 4 – CASOS ESPECIALES ══════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">TEORÍA</span>
+    <h2>Casos Especiales en Fracciones</h2>
+    <span class="s-num">04 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Existen dos casos especiales que <strong>no son números racionales</strong> porque no representan una cantidad definida.</p>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">🚫 Fracción Indefinida</div>
+        <div class="rule-box red">
+          <p>Denominador <strong>cero</strong> y numerador <strong>distinto de cero</strong>.</p>
+          <div class="math-block" style="margin-top:6px;background:#4a1a2a;color:#ff6b6b;">
+            \[
+            \frac{3}{0},\; \frac{-33}{0},\; \frac{15}{0}
+            \]
+          </div>
+          <div class="ex" style="margin-top:6px;">
+            ❌ <span class="wrong">No existe</span> · No es un número real
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">❓ Fracción Indeterminada</div>
+        <div class="rule-box orange">
+          <p>Numerador y denominador <strong>ambos cero</strong>.</p>
+          <div class="math-block" style="margin-top:6px;background:#4a3a1a;color:#ffcc66;">
+            \[
+            \frac{0}{0}
+            \]
+          </div>
+          <div class="ex" style="margin-top:6px;">
+            ❓ <span style="color:var(--orange);font-weight:700;">Indeterminado</span> · No tiene un valor único
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">⚠️</span><div class="content"><strong>Recuerda:</strong> El denominador <strong>nunca puede ser cero</strong> en una fracción válida. \(\frac{a}{0}\) no está definido en los números reales.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 5 – ADICIÓN Y SUSTRACCIÓN DE FRACCIONES ══════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">OPERACIONES EN ℚ</span>
+    <h2>Adición y Sustracción de Fracciones</h2>
+    <span class="s-num">05 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Mismo denominador</div>
+        <div class="rule-box green">
+          <p><strong>Se suman los numeradores y se mantiene el denominador.</strong></p>
+          <div class="math-block" style="margin-top:6px;">
+            \[
+            \frac{a}{c} + \frac{b}{c} = \frac{a+b}{c}
+            \]
+          </div>
+          <div class="ex" style="margin-top:6px;">
+            \(\frac{1}{7} + \frac{4}{7} = \frac{5}{7}\)<br>
+            \(\frac{16}{9} - \frac{7}{9} = \frac{9}{9} = 1\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Distinto denominador</div>
+        <div class="rule-box orange">
+          <p><strong>Se encuentra el MCM, se amplifica y se suman.</strong></p>
+          <div class="math-block" style="margin-top:6px;">
+            \[
+            \frac{a}{b} + \frac{c}{d} = \frac{ad + cb}{bd}
+            \]
+          </div>
+          <div class="ex" style="margin-top:6px;">
+            \(\frac{1}{3} + \frac{1}{2} = \frac{2}{6} + \frac{3}{6} = \frac{5}{6}\)<br>
+            \(\frac{2}{5} - \frac{4}{15} = \frac{6}{15} - \frac{4}{15} = \frac{2}{15}\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📐</span><div class="content"><strong>Estrategia:</strong> Simplifica el resultado final si es posible. Ej: \(\frac{4}{8} = \frac{1}{2}\).</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 6 – MULTIPLICACIÓN Y DIVISIÓN ══════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">OPERACIONES EN ℚ</span>
+    <h2>Multiplicación y División de Fracciones</h2>
+    <span class="s-num">06 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">✖️ Multiplicación</div>
+        <div class="rule-box green">
+          <p><strong>Se multiplica linealmente:</strong> numerador × numerador, denominador × denominador.</p>
+          <div class="math-block" style="margin-top:6px;">
+            \[
+            \frac{a}{b} \cdot \frac{c}{d} = \frac{a \cdot c}{b \cdot d}
+            \]
+          </div>
+          <div class="ex" style="margin-top:6px;">
+            \(\frac{2}{3} \cdot \frac{4}{7} = \frac{8}{21}\)<br>
+            \(\frac{1}{3} \cdot \frac{8}{5} = \frac{8}{15}\)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">➗ División</div>
+        <div class="rule-box orange">
+          <p><strong>Se invierte el divisor y se multiplica.</strong></p>
+          <div class="math-block" style="margin-top:6px;">
+            \[
+            \frac{a}{b} \div \frac{c}{d} = \frac{a}{b} \cdot \frac{d}{c} = \frac{a \cdot d}{b \cdot c}
+            \]
+          </div>
+          <div class="ex" style="margin-top:6px;">
+            \(\frac{1}{5} \div \frac{3}{2} = \frac{1}{5} \cdot \frac{2}{3} = \frac{2}{15}\)<br>
+            \(\frac{2}{3} \div \frac{1}{7} \div \frac{3}{5} = \frac{2}{3} \cdot \frac{7}{1} \cdot \frac{5}{3} = \frac{70}{9}\)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">🧮</span><div class="content"><strong>Simplificación cruzada:</strong> Puedes simplificar antes de multiplicar para evitar números grandes. Ej: \(\frac{2}{3} \cdot \frac{9}{4} = \frac{1}{3} \cdot \frac{9}{2} = \frac{3}{2}\).</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 7 – SIMPLIFICACIÓN DE FRACCIONES ══════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">OPERACIONES EN ℚ</span>
+    <h2>Simplificación de Fracciones</h2>
+    <span class="s-num">07 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">La <strong>simplificación</strong> consiste en dividir numerador y denominador por un mismo factor común para obtener una fracción <strong>equivalente</strong> con números más pequeños.</p>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Simplificación por descomposición</div>
+        <div class="rule-box gold">
+          <div class="ex" style="font-size:1rem;">
+            \(\frac{12}{18} = \frac{2 \cdot 2 \cdot 3}{2 \cdot 3 \cdot 3} = \frac{\cancel{2} \cdot 2 \cdot \cancel{3}}{\cancel{2} \cdot \cancel{3} \cdot 3} = \frac{2}{3}\)
+          </div>
+          <p style="margin-top:8px;"><strong>Pasos:</strong> Descomponer en factores primos y cancelar los comunes.</p>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">📌 Simplificación por MCD</div>
+        <div class="rule-box teal">
+          <div class="ex" style="font-size:1rem;">
+            \(\frac{24}{36} = \frac{24 \div 12}{36 \div 12} = \frac{2}{3}\)
+          </div>
+          <p style="margin-top:8px;"><strong>Pasos:</strong> Dividir numerador y denominador por su MCD.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-top:4px;">
+      <div class="title">✨ Simplificación de "ceros"</div>
+      <div class="ex">
+        \(\frac{200}{500} = \frac{2\cancel{00}}{5\cancel{00}} = \frac{2}{5}\)
+      </div>
+    </div>
+    <div class="canvas-wrap" style="margin-top:4px;">
+      <canvas id="simplifCanvas" width="600" height="120"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 8 – CONVERSIÓN FRACCIÓN ↔ DECIMAL ══════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">CONVERSIÓN</span>
+    <h2>Fracción ↔ Decimal</h2>
+    <span class="s-num">08 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Existen <strong>tres tipos</strong> de conversiones entre fracciones y decimales. Cada tipo tiene su propio método de transformación.</p>
+    
+    <!-- ─── TIPO 1: FRACCIÓN → DECIMAL ─── -->
+    <div class="rule-box green">
+      <div class="title">📌 Tipo 1: Fracción → Decimal</div>
+      <p><strong>Método:</strong> Dividir el <strong>numerador</strong> por el <strong>denominador</strong>.</p>
+      <div class="two-col" style="margin-top:8px;">
+        <div>
+          <div class="sec-label">Ejemplo 1: Fracción propia</div>
+          <div class="ex" style="font-size:0.95rem;">
+            \(\frac{1}{4} = 1 \div 4 = 0.25\)
+          </div>
+          <div style="font-size:0.82rem;color:var(--gray);margin-top:4px;">
+            <strong>Explicación:</strong> 1 dividido en 4 partes iguales da 0.25 cada parte.
+          </div>
+        </div>
+        <div>
+          <div class="sec-label">Ejemplo 2: Fracción impropia</div>
+          <div class="ex" style="font-size:0.95rem;">
+            \(\frac{3}{2} = 3 \div 2 = 1.5\)
+          </div>
+          <div style="font-size:0.82rem;color:var(--gray);margin-top:4px;">
+            <strong>Explicación:</strong> 3 dividido en 2 partes iguales da 1.5 cada parte.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── TIPO 2: DECIMAL FINITO → FRACCIÓN ─── -->
+    <div class="rule-box orange">
+      <div class="title">📌 Tipo 2: Decimal Finito → Fracción</div>
+      <p><strong>Método:</strong> Escribir el decimal sin coma en el numerador y una <strong>potencia de 10</strong> en el denominador (tantos ceros como decimales tenga). Luego <strong>simplificar</strong> si es posible.</p>
+      <div class="two-col" style="margin-top:8px;">
+        <div>
+          <div class="sec-label">Ejemplo 1: Un decimal</div>
+          <div class="ex" style="font-size:0.95rem;">
+            \(0.3 = \frac{3}{10}\)
+          </div>
+          <div style="font-size:0.82rem;color:var(--gray);margin-top:4px;">
+            <strong>Explicación:</strong> 0.3 tiene <strong>1 decimal</strong> → denominador \(10^1 = 10\).<br>
+            Numerador: 3 (sin coma). La fracción es \(\frac{3}{10}\).
+          </div>
+        </div>
+        <div>
+          <div class="sec-label">Ejemplo 2: Dos decimales</div>
+          <div class="ex" style="font-size:0.95rem;">
+            \(0.23 = \frac{23}{100}\)
+          </div>
+          <div style="font-size:0.82rem;color:var(--gray);margin-top:4px;">
+            <strong>Explicación:</strong> 0.23 tiene <strong>2 decimales</strong> → denominador \(10^2 = 100\).<br>
+            Numerador: 23 (sin coma). La fracción es \(\frac{23}{100}\).
+          </div>
+        </div>
+        <div>
+          <div class="sec-label">Ejemplo 3: Cuatro decimales</div>
+          <div class="ex" style="font-size:0.95rem;">
+            \(2.3876 = \frac{23876}{10000}\)
+          </div>
+          <div style="font-size:0.82rem;color:var(--gray);margin-top:4px;">
+            <strong>Explicación:</strong> 2.3876 tiene <strong>4 decimales</strong> → denominador \(10^4 = 10000\).<br>
+            Numerador: 23876 (sin coma). La fracción es \(\frac{23876}{10000}\).
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── TIPO 3: DECIMAL PERIÓDICO → FRACCIÓN ─── -->
+    <div class="rule-box purple">
+      <div class="title">📌 Tipo 3: Decimal Periódico → Fracción</div>
+      <p><strong>Método:</strong> Escribir el número sin coma ni <strong>vinculum</strong> (raya horizontal) en el numerador. En el denominador, escribir tantos <strong>nueves</strong> como decimales tenga el período.</p>
+      <div class="two-col" style="margin-top:8px;">
+        <div>
+          <div class="sec-label">Ejemplo 1: Un dígito periódico</div>
+          <div class="ex" style="font-size:0.95rem;">
+            \(0.\overline{1} = \frac{1}{9}\)
+          </div>
+          <div style="font-size:0.82rem;color:var(--gray);margin-top:4px;">
+            <strong>Explicación:</strong> \(0.\overline{1}\) tiene <strong>1 dígito</strong> bajo el vinculum (el 1).<br>
+            Numerador: 1. Denominador: un 9 → \( \frac{1}{9} \).
+          </div>
+        </div>
+        <div>
+          <div class="sec-label">Ejemplo 2: Dos dígitos periódicos</div>
+          <div class="ex" style="font-size:0.95rem;">
+            \(0.\overline{23} = \frac{23}{99}\)
+          </div>
+          <div style="font-size:0.82rem;color:var(--gray);margin-top:4px;">
+            <strong>Explicación:</strong> \(0.\overline{23}\) tiene <strong>2 dígitos</strong> bajo el vinculum (23).<br>
+            Numerador: 23. Denominador: dos nueves → \( \frac{23}{99} \).
+          </div>
+        </div>
+        <div>
+          <div class="sec-label">Ejemplo 3: Tres dígitos periódicos</div>
+          <div class="ex" style="font-size:0.95rem;">
+            \(0.\overline{3001} = \frac{3001}{9999}\)
+          </div>
+          <div style="font-size:0.82rem;color:var(--gray);margin-top:4px;">
+            <strong>Explicación:</strong> \(0.\overline{3001}\) tiene <strong>4 dígitos</strong> bajo el vinculum (el 3001).<br>
+            Numerador: 3001. Denominador: un 9 → \( \frac{3001}{9999} \).<br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── TIPO 4: DECIMAL SEMI-PERIÓDICO → FRACCIÓN ─── -->
+    <div class="rule-box coral">
+      <div class="title">📌 Tipo 4: Decimal Semi-Periódico → Fracción</div>
+      <p><strong>Método:</strong> Numerador: <strong>número completo (sin coma ni vinculum)</strong> − <strong>número que NO está bajo el vinculum</strong> (sin coma).<br>
+      Denominador: tantos <strong>nueves</strong> como dígitos bajo el vinculum y tantos <strong>ceros</strong> como dígitos que NO están bajo el vinculum.</p>
+      <div class="two-col" style="margin-top:8px;">
+        <div>
+          <div class="sec-label">Ejemplo 1: Un dígito no periódico + uno periódico</div>
+          <div class="ex" style="font-size:0.95rem;">
+            \(1.7\overline{3} = \frac{173 - 17}{90} = \frac{156}{90} = \frac{26}{15}\)
+          </div>
+          <div style="font-size:0.82rem;color:var(--gray);margin-top:4px;">
+            <strong>Explicación:</strong> \(1.7\overline{3}\) → número completo: 173, número sin vinculum: 17.<br>
+            Numerador: \(173 - 17 = 156\).<br>
+            Denominador: <strong>1 nueve</strong> (por el 3) y <strong>1 cero</strong> (por el 7) → 90.<br>
+            Simplificando: \(\frac{156}{90} = \frac{26}{15}\).
+          </div>
+        </div>
+        <div>
+          <div class="sec-label">Ejemplo 2: Dos dígitos no periódicos + uno periódico</div>
+          <div class="ex" style="font-size:0.95rem;">
+            \(0.04\overline{7} = \frac{47 - 4}{90} = \frac{43}{90}\)
+          </div>
+          <div style="font-size:0.82rem;color:var(--gray);margin-top:4px;">
+            <strong>Explicación:</strong> \(0.04\overline{7}\) → número completo: 47, número sin vinculum: 04 = 4.<br>
+            Numerador: \(47 - 4 = 43\).<br>
+            Denominador: <strong>1 nueve</strong> (por el 7) y <strong>2 ceros</strong> (por el 04) → 900.<br>
+            <em>Pero hay que tener cuidado con los ceros a la izquierda.</em>
+          </div>
+        </div>
+        <div>
+          <div class="sec-label">Ejemplo 3: Dos dígitos no periódicos + dos periódicos</div>
+          <div class="ex" style="font-size:0.95rem;">
+            \(2.05\overline{34} = \frac{20534 - 205}{9900} = \frac{20329}{9900}\)
+          </div>
+          <div style="font-size:0.82rem;color:var(--gray);margin-top:4px;">
+            <strong>Explicación:</strong> \(2.05\overline{34}\) → número completo: 20534, número sin vinculum: 205.<br>
+            Numerador: \(20534 - 205 = 20329\).<br>
+            Denominador: <strong>2 nueves</strong> (por el 34) y <strong>2 ceros</strong> (por el 05) → 9900.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── CANVAS: RESUMEN VISUAL ─── -->
+    <div class="canvas-wrap" style="margin-top:8px;">
+      <canvas id="decimalCanvas" width="750" height="120"></canvas>
+    </div>
+
+    <!-- ─── TIP ─── -->
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Resumen rápido:</strong> 
+      <ul style="margin-top:4px;padding-left:18px;font-size:0.85rem;">
+        <li><strong>Fracción → Decimal:</strong> Dividir numerador ÷ denominador.</li>
+        <li><strong>Decimal finito → Fracción:</strong> Potencia de 10 (tantos ceros como decimales).</li>
+        <li><strong>Decimal periódico → Fracción:</strong> Nueves (tantos como dígitos bajo el vinculum).</li>
+        <li><strong>Decimal semi-periódico → Fracción:</strong> Nueves y ceros combinados.</li>
+      </ul>
+    </div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 9 – APROXIMACIÓN ══════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">APROXIMACIÓN</span>
+    <h2>Métodos de Aproximación</h2>
+    <span class="s-num">09 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Métodos para <strong>redondear</strong> o <strong>truncar</strong> números decimales según la precisión requerida.</p>
+    <div class="approx-grid">
+      <div class="approx-card" style="border-left:4px solid var(--green);">
+        <div class="name">📈 Aproximación por exceso</div>
+        <div class="example">
+          Aproximar por exceso a la centésima: \(1.371 \to 1.38\)<br>
+          Aproximar por exceso a la unidad: \(15.008 \to 16\)
+        </div>
+      </div>
+      <div class="approx-card" style="border-left:4px solid var(--orange);">
+        <div class="name">📉 Aproximación por defecto</div>
+        <div class="example">
+          Aproximar por defecto a la décima: \(7.899 \to 7.8\)<br>
+          Aproximar por defecto a la decena: \(15.767 \to 10\)
+        </div>
+      </div>
+      <div class="approx-card" style="border-left:4px solid var(--purple);">
+        <div class="name">✂️ Truncar</div>
+        <div class="example">
+          Truncar a la milésima: \(0.09846 \to 0.098\)<br>
+          Truncar a la décima: \(19.9999 \to 19.9\)
+        </div>
+      </div>
+      <div class="approx-card" style="border-left:4px solid var(--gold);">
+        <div class="name">🎯 Redondear</div>
+        <div class="example">
+          Redondear a la centésima: \(1.953 \to 1.95\)<br>
+          Redondear a la décima: \(3.089 \to 3.1\)<br>
+          Redondear a la décima: \(4.9701 \to 5.0\)
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Regla de redondeo:</strong> Si el siguiente dígito es ≥ 5, se aumenta en 1 la posición a redondear. Si es < 5, se conserva.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 10 – EJEMPLOS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejemplos tipo examen</h2>
+    <span class="s-num">10 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Ejercicios <strong>similares a las preguntas PAES</strong> sobre números racionales.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 1 — Suma de fracciones</div>
+      <div class="ex">
+        Calcula: \(\frac{3}{4} + \frac{5}{6}\)<br>
+        <span class="key">Solución:</span> MCM(4,6) = 12<br>
+        \(\frac{3}{4} = \frac{9}{12}\) · \(\frac{5}{6} = \frac{10}{12}\)<br>
+        \(\frac{9}{12} + \frac{10}{12} = \frac{19}{12}\)<br>
+        <strong>Respuesta:</strong> \(\frac{19}{12}\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejemplo 2 — Multiplicación con simplificación</div>
+      <div class="ex">
+        Calcula: \(\frac{8}{15} \cdot \frac{5}{12}\)<br>
+        <span class="key">Solución:</span> \(\frac{8 \cdot 5}{15 \cdot 12} = \frac{40}{180} = \frac{2}{9}\)<br>
+        <strong>Respuesta:</strong> \(\frac{2}{9}\)
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejemplo 3 — División de fracciones</div>
+      <div class="ex">
+        Calcula: \(\frac{7}{10} \div \frac{14}{5}\)<br>
+        <span class="key">Solución:</span> \(\frac{7}{10} \cdot \frac{5}{14} = \frac{35}{140} = \frac{1}{4}\)<br>
+        <strong>Respuesta:</strong> \(\frac{1}{4}\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 11 – RESOLUCIÓN DE PROBLEMAS ══════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Resolución de Problemas</h2>
+    <span class="s-num">11 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 1 — Reparto de comida</div>
+      <div class="ex">
+        Un buque tiene provisiones para 30 días. Si se consumen \(\frac{2}{5}\) de las provisiones en los primeros 12 días, ¿qué fracción queda?<br><br>
+        <span class="key">Solución:</span> \(1 - \frac{2}{5} = \frac{3}{5}\)<br>
+        <strong>Respuesta:</strong> Quedan \(\frac{3}{5}\) de las provisiones.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">📝 Problema 2 — Velocidad</div>
+      <div class="ex">
+        Un barco recorre \(\frac{3}{4}\) de su ruta en 2 horas. ¿Qué fracción de la ruta recorre en 1 hora?<br><br>
+        <span class="key">Solución:</span> \(\frac{3}{4} \div 2 = \frac{3}{4} \cdot \frac{1}{2} = \frac{3}{8}\)<br>
+        <strong>Respuesta:</strong> Recorre \(\frac{3}{8}\) de la ruta por hora.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📝 Problema 3 — Combustible</div>
+      <div class="ex">
+        Un tanque contiene \(\frac{5}{8}\) de su capacidad. Si se agregan \(\frac{1}{4}\) más, ¿qué fracción del tanque está ocupada?<br><br>
+        <span class="key">Solución:</span> \(\frac{5}{8} + \frac{1}{4} = \frac{5}{8} + \frac{2}{8} = \frac{7}{8}\)<br>
+        <strong>Respuesta:</strong> El tanque está \(\frac{7}{8}\) lleno.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 12 – EJERCICIOS DE PRÁCTICA ══════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Ejercicios de Práctica</h2>
+    <span class="s-num">12 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Resuelve estos ejercicios <strong>antes de ver la solución</strong>.</p>
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">1. Calcula: \(\frac{2}{3} + \frac{1}{6}\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \(\frac{3}{9}\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \(\frac{5}{6}\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(\frac{1}{2}\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(\frac{4}{9}\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(\frac{2}{3} = \frac{4}{6}\) → \(\frac{4}{6} + \frac{1}{6} = \frac{5}{6}\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">2. Calcula: \(\frac{3}{8} \cdot \frac{4}{9}\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">a) \(\frac{1}{6}\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">b) \(\frac{12}{72}\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(\frac{7}{17}\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(\frac{3}{9}\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(\frac{3}{8} \cdot \frac{4}{9} = \frac{12}{72} = \frac{1}{6}\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">3. Convierte \(0.7\overline{3}\) a fracción</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \(\frac{7}{10}\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \(\frac{11}{15}\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(\frac{73}{100}\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(\frac{7}{9}\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(0.7\overline{3} = \frac{73-7}{90} = \frac{66}{90} = \frac{11}{15}\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 13 – MÁS EJERCICIOS ══════════════════════════════════ -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS</span>
+    <h2>Más Ejercicios de Práctica</h2>
+    <span class="s-num">13 / 20</span>
+  </div>
+  <div class="s-body">
+    <div style="display:grid;gap:12px;">
+      <div class="rule-box">
+        <div class="title">4. Calcula: \(\frac{5}{6} \div \frac{10}{3}\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">a) \(\frac{1}{4}\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">b) \(\frac{50}{18}\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(\frac{5}{20}\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(\frac{3}{5}\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(\frac{5}{6} \cdot \frac{3}{10} = \frac{15}{60} = \frac{1}{4}\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">5. Simplifica: \(\frac{48}{72}\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \(\frac{4}{6}\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \(\frac{2}{3}\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(\frac{6}{9}\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(\frac{8}{12}\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">\(48 \div 24 = 2\), \(72 \div 24 = 3\) → \(\frac{2}{3}\)</div>
+      </div>
+      <div class="rule-box">
+        <div class="title">6. Ordena de menor a mayor: \(\frac{3}{4}, \frac{2}{3}, \frac{5}{6}\)</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">a) \(\frac{2}{3}, \frac{3}{4}, \frac{5}{6}\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;font-weight:700;color:var(--green);">b) \(\frac{2}{3}, \frac{5}{6}, \frac{3}{4}\) ✓</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">c) \(\frac{3}{4}, \frac{2}{3}, \frac{5}{6}\)</span>
+          <span style="background:#eef1f5;padding:4px 12px;border-radius:6px;">d) \(\frac{5}{6}, \frac{3}{4}, \frac{2}{3}\)</span>
+        </div>
+        <div class="ex" style="margin-top:4px;font-size:.8rem;">MCM = 12 → \(\frac{8}{12}, \frac{9}{12}, \frac{10}{12}\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 14 – PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Preguntas estilo examen</h2>
+    <span class="s-num">14 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 1 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es el valor de \(\frac{2}{3} + \frac{3}{4} - \frac{1}{2}\)?<br><br>
+        a) \(\frac{4}{5}\) &nbsp; b) \(\frac{11}{12}\) &nbsp; c) \(\frac{5}{6}\) &nbsp; d) \(\frac{7}{12}\)<br>
+        <span class="key">Solución:</span> MCM(3,4,2) = 12 → \(\frac{8}{12} + \frac{9}{12} - \frac{6}{12} = \frac{11}{12}\)<br>
+        <strong>Respuesta:</strong> b) \(\frac{11}{12}\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 2 — PAES M1</div>
+      <div class="ex">
+        Si \(\frac{2}{5}\) de un número es 16, ¿cuál es el número?<br><br>
+        a) 32 &nbsp; b) 40 &nbsp; c) 48 &nbsp; d) 64<br>
+        <span class="key">Solución:</span> \(\frac{2}{5}x = 16\) → \(x = 16 \cdot \frac{5}{2} = 40\)<br>
+        <strong>Respuesta:</strong> b) 40
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 3 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál de las siguientes fracciones es <strong>mayor</strong> que \(\frac{3}{4}\)?<br>
+        a) \(\frac{2}{3}\) &nbsp; b) \(\frac{5}{8}\) &nbsp; c) \(\frac{4}{5}\) &nbsp; d) \(\frac{7}{10}\)<br>
+        <span class="key">Solución:</span> \(\frac{4}{5} = 0.8 > 0.75 = \frac{3}{4}\)<br>
+        <strong>Respuesta:</strong> c) \(\frac{4}{5}\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 15 – MÁS PREGUNTAS TIPO PAES ══════════════════════════════════ -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">EJERCICIOS TIPO PAES</span>
+    <h2>Más preguntas estilo examen</h2>
+    <span class="s-num">15 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:12px;">
+      <div class="title">Pregunta 4 — PAES M1</div>
+      <div class="ex">
+        ¿Cuánto es \(0.8\overline{3}\) en fracción?<br><br>
+        a) \(\frac{5}{6}\) &nbsp; b) \(\frac{4}{5}\) &nbsp; c) \(\frac{5}{4}\) &nbsp; d) \(\frac{6}{5}\)<br>
+        <span class="key">Solución:</span> \(0.8\overline{3} = \frac{83-8}{90} = \frac{75}{90} = \frac{5}{6}\)<br>
+        <strong>Respuesta:</strong> a) \(\frac{5}{6}\)
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:12px;">
+      <div class="title">Pregunta 5 — PAES M1</div>
+      <div class="ex">
+        Un recipiente contiene \(\frac{3}{8}\) de litro de agua. Si se agregan \(\frac{1}{4}\) de litro, ¿cuánto hay en total?<br><br>
+        a) \(\frac{1}{2}\) L &nbsp; b) \(\frac{5}{8}\) L &nbsp; c) \(\frac{3}{4}\) L &nbsp; d) \(\frac{7}{8}\) L<br>
+        <span class="key">Solución:</span> \(\frac{3}{8} + \frac{1}{4} = \frac{3}{8} + \frac{2}{8} = \frac{5}{8}\)<br>
+        <strong>Respuesta:</strong> b) \(\frac{5}{8}\) L
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Pregunta 6 — PAES M1</div>
+      <div class="ex">
+        ¿Cuál es el resultado de \(\frac{3}{5} \div \frac{9}{10}\)?<br><br>
+        a) \(\frac{2}{3}\) &nbsp; b) \(\frac{3}{4}\) &nbsp; c) \(\frac{4}{5}\) &nbsp; d) \(\frac{5}{6}\)<br>
+        <span class="key">Solución:</span> \(\frac{3}{5} \cdot \frac{10}{9} = \frac{30}{45} = \frac{2}{3}\)<br>
+        <strong>Respuesta:</strong> a) \(\frac{2}{3}\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 16 – APLICACIONES NAVALES ══════════════════════════════════ -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Racionales en Contextos Navales</h2>
+    <span class="s-num">16 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los números racionales son <strong>esenciales</strong> en la navegación, cálculos de combustible, tiempos y proporciones.</p>
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">⚓ Combustible y autonomía</div>
+      <div class="ex">
+        Un buque tiene \(\frac{3}{4}\) de su capacidad de combustible. Si consume \(\frac{1}{8}\) del total por día, ¿para cuántos días tiene combustible?<br><br>
+        <span class="key">Solución:</span> \(\frac{3}{4} \div \frac{1}{8} = \frac{3}{4} \cdot \frac{8}{1} = 6\) días<br>
+        <strong>Respuesta:</strong> 6 días de autonomía.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">🧭 Proporciones en navegación</div>
+      <div class="ex">
+        En una carta náutica, \(1\) cm representa \(\frac{2}{5}\) km. ¿Qué distancia real representan \(15\) cm?<br><br>
+        <span class="key">Solución:</span> \(15 \cdot \frac{2}{5} = \frac{30}{5} = 6\) km<br>
+        <strong>Respuesta:</strong> 6 km de distancia real.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📊 Distribución de tripulación</div>
+      <div class="ex">
+        En un buque, \(\frac{3}{10}\) de la tripulación son oficiales. Si hay 120 tripulantes, ¿cuántos son oficiales?<br><br>
+        <span class="key">Solución:</span> \(120 \cdot \frac{3}{10} = 36\) oficiales<br>
+        <strong>Respuesta:</strong> 36 oficiales.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 17 – APLICACIONES ADICIONALES ══════════════════════════════════ -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Más Aplicaciones Prácticas</h2>
+    <span class="s-num">17 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">⚖️ Proporciones en la cocina</div>
+      <div class="ex">
+        Una receta para 12 personas usa \(\frac{3}{4}\) kg de harina. ¿Cuánta harina se necesita para 8 personas?<br><br>
+        <span class="key">Solución:</span> \(\frac{3}{4} \cdot \frac{8}{12} = \frac{3}{4} \cdot \frac{2}{3} = \frac{1}{2}\) kg<br>
+        <strong>Respuesta:</strong> Se necesitan \(\frac{1}{2}\) kg de harina.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">🧮 Cálculo de velocidad</div>
+      <div class="ex">
+        Un barco recorre \(\frac{5}{6}\) de una ruta en 4 horas. ¿Qué fracción recorre en 1 hora?<br><br>
+        <span class="key">Solución:</span> \(\frac{5}{6} \div 4 = \frac{5}{6} \cdot \frac{1}{4} = \frac{5}{24}\)<br>
+        <strong>Respuesta:</strong> Recorre \(\frac{5}{24}\) de la ruta por hora.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">📐 Ángulos y navegación</div>
+      <div class="ex">
+        Un barco gira \(\frac{3}{8}\) de vuelta completa. ¿Cuántos grados giró?<br><br>
+        <span class="key">Solución:</span> \(360 \cdot \frac{3}{8} = \frac{1080}{8} = 135^\circ\)<br>
+        <strong>Respuesta:</strong> Giró 135°.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 18 – CONVERSIÓN DE UNIDADES ══════════════════════════════════ -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">APLICACIONES</span>
+    <h2>Conversión de Unidades con Racionales</h2>
+    <span class="s-num">18 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los números racionales son clave para convertir entre <strong>unidades</strong> de medida.</p>
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📏 Longitud</div>
+        <div class="rule-box green">
+          <div class="ex">
+            \(1\) pulgada = \(2.54\) cm = \(\frac{127}{50}\) cm<br>
+            \(1\) milla náutica = \(1.852\) km = \(\frac{463}{250}\) km
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">⚖️ Masa</div>
+        <div class="rule-box orange">
+          <div class="ex">
+            \(1\) libra = \(0.4536\) kg = \(\frac{567}{1250}\) kg<br>
+            \(1\) tonelada = \(1000\) kg
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rule-box gold" style="margin-top:8px;">
+      <div class="title">🌊 Velocidad naval</div>
+      <div class="ex">
+        \(1\) nudo = \(1.852\) km/h = \(\frac{463}{250}\) km/h<br>
+        Un barco a 15 nudos: \(15 \cdot \frac{463}{250} = \frac{6945}{250} = 27.78\) km/h
+      </div>
+    </div>
+    <div class="tip"><span class="icon">🌐</span><div class="content"><strong>Importante:</strong> En navegación, la <strong>milla náutica</strong> y el <strong>nudo</strong> son unidades basadas en fracciones y decimales precisos.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 19 – PRÁCTICA ADICIONAL ══════════════════════════════════ -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>Ejercicios Adicionales</h2>
+    <span class="s-num">19 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 1 — Fracciones en contexto</div>
+      <div class="ex">
+        Un buque tiene \(\frac{2}{5}\) de su capacidad de agua. Si necesita \(\frac{3}{4}\) del total para completar la misión, ¿qué fracción le falta?<br><br>
+        <span class="key">Solución:</span> \(\frac{3}{4} - \frac{2}{5} = \frac{15}{20} - \frac{8}{20} = \frac{7}{20}\)<br>
+        <strong>Respuesta:</strong> Le falta \(\frac{7}{20}\) del total.
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px;">
+      <div class="title">Ejercicio 2 — División de racionales</div>
+      <div class="ex">
+        ¿Cuántas botellas de \(\frac{3}{4}\) L se pueden llenar con \(6\) L de agua?<br><br>
+        <span class="key">Solución:</span> \(6 \div \frac{3}{4} = 6 \cdot \frac{4}{3} = 8\) botellas<br>
+        <strong>Respuesta:</strong> Se pueden llenar 8 botellas.
+      </div>
+    </div>
+    <div class="rule-box orange">
+      <div class="title">Ejercicio 3 — Comparación de racionales</div>
+      <div class="ex">
+        Ordena de mayor a menor: \(\frac{7}{8}, \frac{5}{6}, \frac{3}{4}\)<br><br>
+        <span class="key">Solución:</span> MCM = 24 → \(\frac{21}{24}, \frac{20}{24}, \frac{18}{24}\)<br>
+        <strong>Respuesta:</strong> \(\frac{7}{8} > \frac{5}{6} > \frac{3}{4}\)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 20 – RESUMEN Y ESTRATEGIAS ══════════════════════════════════ -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">RESUMEN — CLASE 02</span>
+    <h2>Resumen: Números Racionales</h2>
+    <span class="s-num">20 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">📌 Contenidos clave</div>
+        <div class="rule-box green">
+          <ul style="padding-left:18px;font-size:.9rem;line-height:2;">
+            <li><strong>ℚ</strong> = \(\{\frac{a}{b} \mid a,b \in \mathbb{Z}, b \neq 0\}\)</li>
+            <li><strong>Fracción propia</strong>: \(|a| < |b|\)</li>
+            <li><strong>Fracción impropia</strong>: \(|a| > |b|\)</li>
+            <li><strong>Número mixto</strong>: \(c\frac{a}{b} = \frac{cb+a}{b}\)</li>
+            <li><strong>Suma/resta</strong>: MCM de denominadores</li>
+            <li><strong>Multiplicación</strong>: lineal (numerador×numerador, denominador×denominador)</li>
+            <li><strong>División</strong>: invertir el divisor y multiplicar</li>
+            <li><strong>Conversión</strong>: fracción ↔ decimal (finito, periódico, semi-periódico)</li>
+            <li><strong>Aproximación</strong>: exceso, defecto, truncar, redondear</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">🎯 Estrategias para el examen</div>
+        <div class="rule-box gold">
+          <ul style="padding-left:18px;font-size:.88rem;line-height:1.9;">
+            <li><strong>Simplifica</strong> antes de multiplicar o dividir.</li>
+            <li>Para sumar/restar: <strong>encuentra el MCM</strong> de denominadores.</li>
+            <li>Para comparar fracciones: <strong>lleva a común denominador</strong>.</li>
+            <li>Para decimales: <strong>identifica si es finito, periódico o semi-periódico</strong>.</li>
+            <li>Recuerda: \(\frac{0}{a} = 0\) pero \(\frac{a}{0}\) <strong>no existe</strong>.</li>
+            <li>La <strong>fracción irreducible</strong> es la base para resolver problemas.</li>
+          </ul>
+        </div>
+        <div class="rule-box" style="margin-top:10px;">
+          <div class="title">📊 Próxima clase</div>
+          <p><strong>Clase 03:</strong> Porcentajes — Cálculo de porcentajes, aumentos y descuentos.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><div class="content"><strong>"No te preocupes por tus dificultades en matemáticas. Te aseguro que las mías son aún mayores.”. Albert Einstein</strong> — Genial!. Has completado la clase 2. Ahora puedes continuar con ejercicios.</div></div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:5%"></div></div>
+    <div id="slide-label">Slide 1 / 20</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Curso</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E2.html'">✏️ Ejercicios</button>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// NAVEGACIÓN
+// ════════════════════════════════════════════════════════════════
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: NÚMERO MIXTO (Slide 3)
+// ════════════════════════════════════════════════════════════════
+function drawMixto() {
+  const canvas = document.getElementById('mixtoCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const cy = h/2 - 10;
+  const barHeight = 50;
+  const barWidth = 70;
+  const spacing = 20;
+  const startX = 60;
+
+  // ── Función para dibujar una barra dividida ──
+  function drawBar(x, y, width, height, filled, totalParts, label) {
+    // Rectángulo completo (borde)
+    ctx.strokeStyle = '#1a2a4a';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x, y, width, height);
+
+    if (totalParts > 1) {
+      // Dividir en partes
+      const partWidth = width / totalParts;
+      for (let i = 1; i < totalParts; i++) {
+        ctx.beginPath();
+        ctx.moveTo(x + i * partWidth, y);
+        ctx.lineTo(x + i * partWidth, y + height);
+        ctx.strokeStyle = '#1a2a4a';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      // Rellenar las partes correspondientes
+      for (let i = 0; i < filled; i++) {
+        ctx.fillStyle = '#1a6fa8';
+        ctx.fillRect(x + i * partWidth + 1, y + 1, partWidth - 2, height - 2);
+      }
+    } else {
+      // Barra completa (entera)
+      ctx.fillStyle = '#1a6fa8';
+      ctx.fillRect(x + 1, y + 1, width - 2, height - 2);
+    }
+
+    // Etiqueta
+    if (label) {
+      ctx.fillStyle = '#1a2a4a';
+      ctx.font = '14px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText(label, x + width/2, y + height + 6);
+    }
+  }
+
+  // ── Dibujar 2 barras completas ──
+  drawBar(startX, cy - barHeight/2, barWidth, barHeight, 1, 1, '1');
+  drawBar(startX + barWidth + spacing, cy - barHeight/2, barWidth, barHeight, 1, 1, '1');
+
+  // ── Dibujar la tercera barra dividida en 5 partes (1/5 sombreada) ──
+  const x3 = startX + 2 * (barWidth + spacing);
+  drawBar(x3, cy - barHeight/2, barWidth, barHeight, 1, 5, '1/5');
+
+  // ── Signos "+" entre barras ──
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = 'bold 28px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('+', startX + barWidth + spacing/2, cy);
+  ctx.fillText('+', startX + barWidth + spacing + barWidth + spacing/2, cy);
+
+  // ── Flecha y resultado ──
+  const arrowX = x3 + barWidth + 50;
+  ctx.fillStyle = '#c8a84b';
+  ctx.font = '32px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('→', arrowX, cy);
+
+  // Resultado: 2⅕
+  const resultX = arrowX + 50;
+  ctx.fillStyle = '#1a7a4a';
+  ctx.font = 'bold 38px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('2⅕', resultX, cy);
+
+  // ── Etiqueta de conversión ──
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '15px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('2 + 1/5 = 2⅕ = 11/5', w/2, h - 10);
+
+  // ── Marco decorativo ──
+  ctx.strokeStyle = 'rgba(200, 168, 75, 0.12)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([6, 6]);
+  ctx.strokeRect(15, 15, w - 30, h - 30);
+  ctx.setLineDash([]);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: SIMPLIFICACIÓN (Slide 7)
+// ════════════════════════════════════════════════════════════════
+function drawSimplif() {
+  const canvas = document.getElementById('simplifCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const cx = w/2, cy = h/2;
+
+  // Fracción original
+  ctx.fillStyle = '#1a2a4a';
+  ctx.font = '28px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  // Numerador
+  ctx.fillText('12', cx - 80, cy - 14);
+  ctx.beginPath();
+  ctx.moveTo(cx - 110, cy - 2);
+  ctx.lineTo(cx - 50, cy - 2);
+  ctx.strokeStyle = '#1a2a4a';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.fillText('18', cx - 80, cy + 14);
+
+  // Flecha
+  ctx.fillStyle = '#c8a84b';
+  ctx.font = '32px sans-serif';
+  ctx.fillText('→', cx - 20, cy);
+
+  // Fracción simplificada
+  ctx.fillStyle = '#1a7a4a';
+  ctx.font = '28px "JetBrains Mono", monospace';
+  ctx.fillText('2', cx + 50, cy - 14);
+  ctx.beginPath();
+  ctx.moveTo(cx + 20, cy - 2);
+  ctx.lineTo(cx + 80, cy - 2);
+  ctx.strokeStyle = '#1a7a4a';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.fillText('3', cx + 50, cy + 14);
+
+  // Título
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '13px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('Simplificación: dividir por MCD (12)', w/2, h-8);
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS: DECIMALES (Slide 8)
+// ════════════════════════════════════════════════════════════════
+function drawDecimal() {
+  const canvas = document.getElementById('decimalCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const cy = h/2;
+  
+  // ── 4 tipos de conversión ──
+  const types = [
+    { label: 'Fracción → Decimal', example: '¼ = 0.25', color: '#1a7a4a', icon: '÷' },
+    { label: 'Decimal finito → Fracción', example: '0.25 = ¼', color: '#c8a84b', icon: '×10' },
+    { label: 'Decimal periódico → Fracción', example: '0.333... = ⅓', color: '#7a3a9a', icon: '…' },
+    { label: 'Decimal semi-periódico → Fracción', example: '0.1666... = ⅙', color: '#c06020', icon: '∞' }
+  ];
+
+  const cw = w / types.length;
+  const cardW = cw - 10;
+  const cardH = 100;
+
+  types.forEach((t, i) => {
+    const x = i * cw + 5;
+    const y = (h - cardH) / 2;
+
+    // Fondo
+    ctx.fillStyle = '#fff';
+    ctx.shadowColor = 'rgba(0,0,0,0.03)';
+    ctx.shadowBlur = 4;
+    ctx.fillRect(x, y, cardW, cardH);
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = '#dde4ee';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x, y, cardW, cardH);
+
+    // Borde superior (color)
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + cardW, y);
+    ctx.strokeStyle = t.color;
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+    // Icono
+    ctx.fillStyle = t.color;
+    ctx.font = '18px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(t.icon, x + cardW/2, y + 22);
+
+    // Título
+    ctx.fillStyle = '#1a2a4a';
+    ctx.font = 'bold 12px "Source Sans 3", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(t.label, x + cardW/2, y + 48);
+
+    // Ejemplo
+    ctx.fillStyle = t.color;
+    ctx.font = '14px "JetBrains Mono", monospace';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(t.example, x + cardW/2, y + 74);
+  });
+
+  // ── Título ──
+  ctx.fillStyle = '#6b7a90';
+  ctx.font = '12px "Source Sans 3", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('Los 4 tipos de conversión entre fracciones y decimales', w/2, h - 4);
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER KATEX Y CANVAS
+// ════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement === 'function') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });
+  }
+
+  setTimeout(() => {
+    drawMixto();
+    drawSimplif();
+    drawDecimal();
+  }, 100);
+});
+
+// Redibujar al cambiar de slide
+const observer = new MutationObserver(() => {
+  setTimeout(() => {
+    drawMixto();
+    drawSimplif();
+    drawDecimal();
+  }, 50);
+});
+
+slides.forEach(s => {
+  observer.observe(s, { attributes: true, attributeFilter: ['class'] });
+});
+</script>
+</body>
+</html>

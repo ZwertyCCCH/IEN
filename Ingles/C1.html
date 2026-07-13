@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inglés A1 – Concurso Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --accent:#e63946;--teal:#0d7377;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+
+/* ─── LAYOUT ─── */
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+/* ─── SLIDES ─── */
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+
+/* extra bottom padding so content clears the nav bar */
+.s-body{padding-bottom:16px !important;}
+
+/* slide header bar */
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--sky) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+/* slide body */
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+/* ─── CONTENT COMPONENTS ─── */
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--sky);}
+
+/* section label */
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+
+/* rule box */
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+/* conjugation table */
+.conj-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.conj-cell{
+  background:var(--white);border-radius:10px;padding:10px 14px;
+  border:1px solid #dde4ee;display:flex;flex-direction:column;gap:2px;
+}
+.conj-cell .pronoun{font-size:.75rem;color:var(--gray);font-family:'JetBrains Mono',monospace;}
+.conj-cell .form{font-size:1rem;font-weight:700;color:var(--navy);}
+.conj-cell .contraction{font-size:.8rem;color:var(--sky);font-family:'JetBrains Mono',monospace;}
+.conj-cell.neg .form{color:var(--red);}
+.conj-cell.q .form{color:var(--green);}
+
+/* example strip */
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--sky);font-weight:700;}
+
+/* vocab grid */
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;}
+.vocab-card{
+  background:var(--white);border-radius:10px;padding:10px 12px;
+  border:1px solid #dde4ee;display:flex;align-items:center;gap:10px;
+}
+.vocab-card .emoji{font-size:1.3rem;width:28px;text-align:center;}
+.vocab-card .word{font-weight:700;font-size:.9rem;color:var(--navy);}
+.vocab-card .trans{font-size:.75rem;color:var(--gray);}
+
+/* dialogue box */
+.dialogue{background:var(--white);border-radius:12px;overflow:hidden;border:1px solid #dde4ee;}
+.dialogue-line{padding:8px 16px;display:flex;gap:10px;align-items:flex-start;border-bottom:1px solid #eef1f5;}
+.dialogue-line:last-child{border-bottom:none;}
+.dialogue-line.a{background:#f0f7ff;}
+.dialogue-line .speaker{font-weight:700;font-size:.75rem;color:var(--sky);min-width:48px;margin-top:2px;}
+.dialogue-line.b .speaker{color:var(--teal);}
+.dialogue-line .text{font-size:.9rem;color:#1a2a3a;line-height:1.5;}
+
+/* formula bar */
+.formula{
+  background:var(--navy);color:var(--gold2);font-family:'JetBrains Mono',monospace;
+  border-radius:10px;padding:12px 18px;font-size:.9rem;line-height:1.8;
+}
+.formula .comment{color:#6b8ab0;font-size:.8rem;}
+
+/* two-col layout */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+
+/* tip box */
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+/* highlight inline */
+mark{background:#fef3c7;color:#92400e;border-radius:4px;padding:1px 5px;font-weight:600;}
+
+/* wh table */
+.wh-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;}
+.wh-table th{background:var(--navy);color:var(--gold);padding:8px 14px;text-align:left;font-size:.85rem;}
+.wh-table td{background:var(--white);padding:8px 14px;font-size:.88rem;border-bottom:1px solid #eef1f5;}
+.wh-table tr:nth-child(even) td{background:#f8fafc;}
+.wh-table td:first-child{font-weight:700;color:var(--sky);font-family:'JetBrains Mono',monospace;font-size:.95rem;}
+
+/* numbers block */
+.num-block{display:flex;flex-wrap:wrap;gap:6px;}
+.num-tag{
+  background:var(--white);border:1px solid #dde4ee;border-radius:8px;
+  padding:5px 10px;font-size:.82rem;color:var(--navy);
+}
+.num-tag .n{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--sky);margin-right:5px;}
+
+/* cover slide */
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,#0d3060 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+/* ─── NAV ─── */
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+/* ─── TRANSITIONS ─── */
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-30px)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col,.conj-grid{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══════════════════════════════════ SLIDE 1 – COVER ══════════════════════════════════ -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">⚓</div>
+    <div class="cover-level">CEFR Level A1</div>
+    <div class="cover-title">Inglés A1 –<br><span>Escuela Naval</span></div>
+    <div class="cover-sub">Preparación integral para el Concurso de Admisión 2027 · Armada de Chile.<br>Gramática, vocabulario y lenguaje funcional nivel A1.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">📖 Verb To Be</span>
+      <span class="cover-tag">🔤 Artículos</span>
+      <span class="cover-tag">👤 Pronombres</span>
+      <span class="cover-tag">⏰ Present Simple</span>
+      <span class="cover-tag">❓ Question Words</span>
+      <span class="cover-tag">💬 Lenguaje Funcional</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 2 – VERB TO BE: AFFIRMATIVE ══════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A1</span>
+    <h2>Verb To Be — Forma Afirmativa</h2>
+    <span class="s-num">02 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El verbo <strong>"to be"</strong> (ser/estar) es el verbo más importante del inglés. Se usa para describir identidad, profesión, características, estados y ubicaciones.</p>
+    <div class="conj-grid">
+      <div class="conj-cell"><span class="pronoun">1st singular</span><span class="form">I am</span><span class="contraction">I'm</span></div>
+      <div class="conj-cell"><span class="pronoun">2nd singular</span><span class="form">You are</span><span class="contraction">You're</span></div>
+      <div class="conj-cell"><span class="pronoun">3rd singular ♂</span><span class="form">He is</span><span class="contraction">He's</span></div>
+      <div class="conj-cell"><span class="pronoun">3rd singular ♀</span><span class="form">She is</span><span class="contraction">She's</span></div>
+      <div class="conj-cell"><span class="pronoun">3rd singular (thing)</span><span class="form">It is</span><span class="contraction">It's</span></div>
+      <div class="conj-cell"><span class="pronoun">1st plural</span><span class="form">We are</span><span class="contraction">We're</span></div>
+      <div class="conj-cell"><span class="pronoun">3rd plural</span><span class="form">They are</span><span class="contraction">They're</span></div>
+    </div>
+    <div class="ex">
+      ✅ <span class="correct">I'm</span> a student at the Naval School.<br>
+      ✅ <span class="correct">She's</span> a doctor. He's tall.<br>
+      ✅ <span class="correct">We're</span> from Chile. They're officers.<br>
+      ✅ <span class="correct">It's</span> cold today. The ship <span class="correct">is</span> big.
+    </div>
+    <div class="tip"><span class="icon">💡</span><div class="content"><strong>Regla de uso:</strong> Se usa TO BE para: nombre (I'm Carlos), edad (He's 20), profesión (She's a nurse), descripción (It's fast), origen (We're Chilean), estado (I'm tired), ubicación (They're in Valparaíso).</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 3 – VERB TO BE: NEGATIVE & QUESTION ══════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A1</span>
+    <h2>Verb To Be — Negativo e Interrogativo</h2>
+    <span class="s-num">03 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">Forma Negativa</div>
+        <div class="formula">I am <mark>not</mark> → I'm not<br>He/She/It is <mark>not</mark> → isn't<br>You/We/They are <mark>not</mark> → aren't</div>
+        <div class="ex" style="margin-top:10px">
+          ✅ I'<span class="key">m not</span> tired.<br>
+          ✅ She <span class="key">isn't</span> at home.<br>
+          ✅ They <span class="key">aren't</span> students.
+        </div>
+        <div class="ex" style="margin-top:8px">
+          ❌ <span class="wrong">I amn't</span> (incorrecto)<br>
+          ❌ <span class="wrong">He's not a doctor?</span>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">Forma Interrogativa — sujeto al final</div>
+        <div class="formula"><mark>Am</mark> I ...?<br><mark>Is</mark> he / she / it ...?<br><mark>Are</mark> you / we / they ...?</div>
+        <div class="ex" style="margin-top:10px">
+          ❓ <span class="key">Are</span> you Chilean? — Yes, I am. / No, I'm not.<br>
+          ❓ <span class="key">Is</span> she a pilot? — Yes, she is.<br>
+          ❓ <span class="key">Is</span> it cold? — No, it isn't.
+        </div>
+      </div>
+    </div>
+    <div class="rule-box" style="margin-top:4px">
+      <div class="title">Respuestas cortas — Short Answers</div>
+      <div class="ex">Are you a student? → <span class="correct">Yes, I am.</span> / <span class="correct">No, I'm not.</span><br>Is he tall? → <span class="correct">Yes, he is.</span> / <span class="correct">No, he isn't.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 4 – PERSONAL PRONOUNS ══════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A1</span>
+    <h2>Personal Pronouns & Possessive Adjectives</h2>
+    <span class="s-num">04 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los <strong>pronombres personales</strong> reemplazan al sujeto. Los <strong>adjetivos posesivos</strong> indican pertenencia y van siempre antes de un sustantivo.</p>
+    <table class="wh-table" style="margin-top:4px">
+      <thead><tr><th>Pronombre sujeto</th><th>Significado</th><th>Adj. Posesivo</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td>I</td><td>Yo</td><td>my</td><td>my name / my book</td></tr>
+        <tr><td>You</td><td>Tú / Usted</td><td>your</td><td>your phone / your class</td></tr>
+        <tr><td>He</td><td>Él</td><td>his</td><td>his car / his teacher</td></tr>
+        <tr><td>She</td><td>Ella</td><td>her</td><td>her bag / her family</td></tr>
+        <tr><td>It</td><td>Ello (cosa/animal)</td><td>its</td><td>its color / its name</td></tr>
+        <tr><td>We</td><td>Nosotros/as</td><td>our</td><td>our school / our team</td></tr>
+        <tr><td>They</td><td>Ellos/as</td><td>their</td><td>their house / their dog</td></tr>
+      </tbody>
+    </table>
+    <div class="ex">
+      ✅ <span class="key">I</span> am a cadet. <span class="key">My</span> uniform is blue.<br>
+      ✅ <span class="key">She</span> is Maria. <span class="key">Her</span> father is a captain.<br>
+      ✅ <span class="key">They</span> are officers. <span class="key">Their</span> ship is fast.
+    </div>
+    <div class="tip"><span class="icon">⚠️</span><div class="content"><strong>It's vs Its:</strong> "It's" = it is / it has. "Its" = de él/ella (cosa). <em>It's a ship. Its name is Esmeralda.</em></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 5 – ARTICLES A/AN/THE ══════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A1</span>
+    <h2>Articles: A / AN / THE</h2>
+    <span class="s-num">05 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="three-col">
+      <div class="rule-box">
+        <div class="title">A — artículo indefinido</div>
+        <p>Antes de consonante.<br>Referencia no específica.</p>
+        <div class="ex" style="margin-top:8px">a <span class="key">b</span>ook<br>a <span class="key">c</span>at<br>a <span class="key">s</span>hip<br>a <span class="key">h</span>ouse*</div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">AN — artículo indefinido</div>
+        <p>Antes de sonido <strong>vocálico</strong>.<br>(a, e, i, o, u)</p>
+        <div class="ex" style="margin-top:8px">an <span class="key">a</span>pple<br>an <span class="key">e</span>gg<br>an <span class="key">i</span>ce cream<br>an <span class="key">h</span>our*</div>
+      </div>
+      <div class="rule-box green">
+        <div class="title">THE — artículo definido</div>
+        <p>Cosa específica/ya mencionada.<br>Única en el mundo.</p>
+        <div class="ex" style="margin-top:8px"><span class="key">the</span> sun / the moon<br><span class="key">the</span> Pacific Ocean<br><span class="key">the</span> Esmeralda<br><span class="key">the</span> president</div>
+      </div>
+    </div>
+    <div class="ex">
+      ✅ I have <span class="key">a</span> dog. <span class="key">The</span> dog is black.<br>
+      ✅ She is <span class="key">an</span> officer in <span class="key">the</span> Chilean Navy.<br>
+      ✅ I eat <span class="key">an</span> orange. <span class="key">The</span> orange is sweet.
+    </div>
+    <div class="tip"><span class="icon">💡</span><div class="content"><strong>*Excepción sonido H:</strong> "a hotel" (h suena) / "an hour" (h muda, suena /aʊər/). La regla es por <em>sonido</em>, no por letra.</div></div>
+    <div class="rule-box red" style="margin-top:4px">
+      <div class="title">Sin artículo (Zero Article)</div>
+      <p>Con nombres propios, países, idiomas, materias: <em>I speak English. She is from Chile. I love music.</em></p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 6 – DEMONSTRATIVE ADJECTIVES ══════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A1</span>
+    <h2>Demonstrative Adjectives: This / That / These / Those</h2>
+    <span class="s-num">06 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Los demostrativos indican <strong>distancia</strong> (cerca / lejos) y <strong>número</strong> (singular / plural).</p>
+    <table class="wh-table">
+      <thead><tr><th></th><th>Singular (uno)</th><th>Plural (varios)</th></tr></thead>
+      <tbody>
+        <tr><td>Cerca (here)</td><td><strong>this</strong> — este/esta</td><td><strong>these</strong> — estos/estas</td></tr>
+        <tr><td>Lejos (there)</td><td><strong>that</strong> — ese/aquel</td><td><strong>those</strong> — esos/aquellos</td></tr>
+      </tbody>
+    </table>
+    <div class="two-col" style="margin-top:10px">
+      <div>
+        <div class="sec-label">Como adjetivo (+ sustantivo)</div>
+        <div class="ex">
+          <span class="key">This</span> book is interesting.<br>
+          <span class="key">That</span> ship is very big.<br>
+          <span class="key">These</span> shoes are new.<br>
+          <span class="key">Those</span> buildings are old.
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">Como pronombre (solo)</div>
+        <div class="ex">
+          <span class="key">This</span> is my uniform.<br>
+          <span class="key">That</span> is the captain.<br>
+          <span class="key">These</span> are my friends.<br>
+          <span class="key">Those</span> are Chilean flags.
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content"><strong>Al teléfono:</strong> "Hello, this is Carlos." — Al señalar algo lejano: "What's that?"</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 7 – PRESENT SIMPLE ══════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A1</span>
+    <h2>Present Simple Tense</h2>
+    <span class="s-num">07 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Se usa para <strong>rutinas</strong>, <strong>hechos</strong> y <strong>verdades generales</strong>. Con he/she/it se añade <strong>-s / -es / -ies</strong>.</p>
+    <div class="formula">
+      AFIRMATIVO: Subject + <mark>verb (base)</mark><br>
+      He/She/It + <mark>verb + s/es</mark><br><br>
+      NEGATIVO: Subject + <mark>do/does not</mark> + verb<br>
+      PREGUNTA: <mark>Do/Does</mark> + Subject + verb?
+    </div>
+    <div class="rule-box" style="margin-top:10px">
+      <div class="title">Reglas de la -S para He/She/It</div>
+      <div class="three-col" style="margin-top:6px;font-size:.88rem;">
+        <div class="ex">Mayoría → <span class="key">+s</span><br>work→ works<br>read→ reads<br>eat→ eats</div>
+        <div class="ex">-sh/-ch/-o/-x/-s → <span class="key">+es</span><br>watch→ watches<br>go→ goes<br>wash→ washes</div>
+        <div class="ex">consonante+y → <span class="key">-y+ies</span><br>study→ studies<br>fly→ flies<br>carry→ carries</div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:6px">
+      ✅ I <span class="key">study</span> English every day.<br>
+      ✅ She <span class="key">watches</span> the news at night.<br>
+      ✅ He <span class="key">doesn't</span> like coffee.<br>
+      ❓ <span class="key">Does</span> she <span class="key">work</span> in the Navy? — Yes, she <span class="key">does</span>.
+    </div>
+    <div class="tip"><span class="icon">⏰</span><div class="content"><strong>Marcadores temporales:</strong> always, usually, often, sometimes, rarely, never, every day/week/year, on Mondays, at 8 am.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 8 – QUESTION WORDS ══════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A1</span>
+    <h2>Question Words (Wh- Questions)</h2>
+    <span class="s-num">08 / 20</span>
+  </div>
+  <div class="s-body">
+    <table class="wh-table">
+      <thead><tr><th>Palabra</th><th>Significado</th><th>Pregunta de ejemplo</th><th>Respuesta modelo</th></tr></thead>
+      <tbody>
+        <tr><td>What</td><td>¿Qué? / ¿Cuál?</td><td>What is your name?</td><td>My name is Carlos.</td></tr>
+        <tr><td>Where</td><td>¿Dónde?</td><td>Where do you live?</td><td>I live in Valparaíso.</td></tr>
+        <tr><td>When</td><td>¿Cuándo?</td><td>When is the exam?</td><td>It's on Monday.</td></tr>
+        <tr><td>Who</td><td>¿Quién?</td><td>Who is your teacher?</td><td>His name is Mr. López.</td></tr>
+        <tr><td>Why</td><td>¿Por qué?</td><td>Why are you happy?</td><td>Because it's Friday!</td></tr>
+        <tr><td>How</td><td>¿Cómo?</td><td>How are you?</td><td>I'm fine, thank you.</td></tr>
+        <tr><td>How old</td><td>¿Cuántos años?</td><td>How old are you?</td><td>I'm 18 years old.</td></tr>
+        <tr><td>How many</td><td>¿Cuántos? (contable)</td><td>How many brothers do you have?</td><td>I have two brothers.</td></tr>
+        <tr><td>How much</td><td>¿Cuánto? (incontable/precio)</td><td>How much is this?</td><td>It's $5,000.</td></tr>
+        <tr><td>Which</td><td>¿Cuál? (de varios)</td><td>Which subject do you prefer?</td><td>I prefer English.</td></tr>
+      </tbody>
+    </table>
+    <div class="formula" style="margin-top:10px">
+      Estructura: <mark>Wh-word</mark> + auxiliary (do/does/is/are) + subject + verb?<br>
+      <span class="comment">What does she study? / Where are they from? / How old is he?</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 9 – GREETINGS & INTRODUCTIONS ══════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A1</span>
+    <h2>Greetings & Introducing Yourself</h2>
+    <span class="s-num">09 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">Saludos formales / informales</div>
+        <div class="vocab-grid">
+          <div class="vocab-card"><span class="emoji">👋</span><div><div class="word">Hello / Hi</div><div class="trans">Hola (informal)</div></div></div>
+          <div class="vocab-card"><span class="emoji">🌅</span><div><div class="word">Good morning</div><div class="trans">Buenos días</div></div></div>
+          <div class="vocab-card"><span class="emoji">☀️</span><div><div class="word">Good afternoon</div><div class="trans">Buenas tardes</div></div></div>
+          <div class="vocab-card"><span class="emoji">🌙</span><div><div class="word">Good evening</div><div class="trans">Buenas noches (al llegar)</div></div></div>
+          <div class="vocab-card"><span class="emoji">😴</span><div><div class="word">Good night</div><div class="trans">Buenas noches (al partir)</div></div></div>
+          <div class="vocab-card"><span class="emoji">👍</span><div><div class="word">Nice to meet you</div><div class="trans">Mucho gusto</div></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">Preguntar / responder sobre estado</div>
+        <div class="dialogue">
+          <div class="dialogue-line a"><span class="speaker">A:</span><span class="text">How are you?</span></div>
+          <div class="dialogue-line b"><span class="speaker">B:</span><span class="text">I'm fine / great / very well, thank you! And you?</span></div>
+          <div class="dialogue-line a"><span class="speaker">A:</span><span class="text">Not bad, thanks. / Pretty good.</span></div>
+        </div>
+        <div class="sec-label" style="margin-top:12px">Despedidas</div>
+        <div class="vocab-grid">
+          <div class="vocab-card"><span class="emoji">👋</span><div><div class="word">Goodbye / Bye</div><div class="trans">Adiós</div></div></div>
+          <div class="vocab-card"><span class="emoji">🔜</span><div><div class="word">See you later</div><div class="trans">Hasta luego</div></div></div>
+          <div class="vocab-card"><span class="emoji">📅</span><div><div class="word">See you tomorrow</div><div class="trans">Hasta mañana</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="sec-label" style="margin-top:10px">Diálogo completo de presentación</div>
+    <div class="dialogue">
+      <div class="dialogue-line a"><span class="speaker">A:</span><span class="text">Hello! My name is Ana. What's your name?</span></div>
+      <div class="dialogue-line b"><span class="speaker">B:</span><span class="text">Hi Ana! I'm Carlos. Nice to meet you.</span></div>
+      <div class="dialogue-line a"><span class="speaker">A:</span><span class="text">Nice to meet you too! Where are you from?</span></div>
+      <div class="dialogue-line b"><span class="speaker">B:</span><span class="text">I'm from Concepción, Chile. And you?</span></div>
+      <div class="dialogue-line a"><span class="speaker">A:</span><span class="text">I'm from Valparaíso. How old are you?</span></div>
+      <div class="dialogue-line b"><span class="speaker">B:</span><span class="text">I'm 18 years old. I'm a student at the Naval School.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 10 – PERSONAL INFORMATION ══════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A1</span>
+    <h2>Personal Information</h2>
+    <span class="s-num">10 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">Datos personales clave</div>
+        <table class="wh-table">
+          <thead><tr><th>English</th><th>Español</th></tr></thead>
+          <tbody>
+            <tr><td>name</td><td>nombre</td></tr>
+            <tr><td>surname / last name</td><td>apellido</td></tr>
+            <tr><td>age</td><td>edad</td></tr>
+            <tr><td>date of birth</td><td>fecha de nacimiento</td></tr>
+            <tr><td>nationality</td><td>nacionalidad</td></tr>
+            <tr><td>address</td><td>dirección</td></tr>
+            <tr><td>phone number</td><td>número de teléfono</td></tr>
+            <tr><td>email address</td><td>correo electrónico</td></tr>
+            <tr><td>occupation / job</td><td>ocupación / trabajo</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="sec-label">Preguntas frecuentes</div>
+        <div class="ex">
+          ❓ What's your <span class="key">name</span>? → My name is…<br>
+          ❓ How <span class="key">old</span> are you? → I'm … years old.<br>
+          ❓ Where are you <span class="key">from</span>? → I'm from…<br>
+          ❓ What's your <span class="key">nationality</span>? → I'm Chilean.<br>
+          ❓ What do you <span class="key">do</span>? → I'm a student.<br>
+          ❓ What's your <span class="key">phone number</span>? → It's 9876-5432.
+        </div>
+        <div class="sec-label" style="margin-top:12px">Spelling — ¿Cómo se deletrea?</div>
+        <div class="dialogue">
+          <div class="dialogue-line a"><span class="speaker">A:</span><span class="text">How do you spell your name?</span></div>
+          <div class="dialogue-line b"><span class="speaker">B:</span><span class="text">C-A-R-L-O-S. Carlos.</span></div>
+          <div class="dialogue-line a"><span class="speaker">A:</span><span class="text">Can you spell your surname, please?</span></div>
+          <div class="dialogue-line b"><span class="speaker">B:</span><span class="text">Sure. R-O-J-A-S. Rojas.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">⭐</span><div class="content">El examen puede pedir identificar información personal en un texto o completar formularios. Practica leer estos datos en inglés.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 11 – NUMBERS ══════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A1</span>
+    <h2>Numbers — up to 10,000</h2>
+    <span class="s-num">11 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">Cardinal numbers (0–20)</div>
+        <div class="num-block">
+          <span class="num-tag"><span class="n">0</span>zero</span><span class="num-tag"><span class="n">1</span>one</span><span class="num-tag"><span class="n">2</span>two</span><span class="num-tag"><span class="n">3</span>three</span><span class="num-tag"><span class="n">4</span>four</span><span class="num-tag"><span class="n">5</span>five</span><span class="num-tag"><span class="n">6</span>six</span><span class="num-tag"><span class="n">7</span>seven</span><span class="num-tag"><span class="n">8</span>eight</span><span class="num-tag"><span class="n">9</span>nine</span><span class="num-tag"><span class="n">10</span>ten</span><span class="num-tag"><span class="n">11</span>eleven</span><span class="num-tag"><span class="n">12</span>twelve</span><span class="num-tag"><span class="n">13</span>thirteen</span><span class="num-tag"><span class="n">14</span>fourteen</span><span class="num-tag"><span class="n">15</span>fifteen</span><span class="num-tag"><span class="n">16</span>sixteen</span><span class="num-tag"><span class="n">17</span>seventeen</span><span class="num-tag"><span class="n">18</span>eighteen</span><span class="num-tag"><span class="n">19</span>nineteen</span><span class="num-tag"><span class="n">20</span>twenty</span>
+        </div>
+        <div class="sec-label" style="margin-top:10px">Decenas y cientos</div>
+        <div class="num-block">
+          <span class="num-tag"><span class="n">30</span>thirty</span><span class="num-tag"><span class="n">40</span>forty</span><span class="num-tag"><span class="n">50</span>fifty</span><span class="num-tag"><span class="n">60</span>sixty</span><span class="num-tag"><span class="n">70</span>seventy</span><span class="num-tag"><span class="n">80</span>eighty</span><span class="num-tag"><span class="n">90</span>ninety</span><span class="num-tag"><span class="n">100</span>one hundred</span><span class="num-tag"><span class="n">200</span>two hundred</span><span class="num-tag"><span class="n">1,000</span>one thousand</span><span class="num-tag"><span class="n">10,000</span>ten thousand</span>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">Números compuestos</div>
+        <div class="ex">
+          21 → twenty-<span class="key">one</span><br>
+          35 → thirty-<span class="key">five</span><br>
+          78 → seventy-<span class="key">eight</span><br>
+          154 → one hundred and <span class="key">fifty-four</span><br>
+          2,500 → two thousand, five hundred<br>
+          9,873 → nine thousand, eight hundred and seventy-three
+        </div>
+        <div class="sec-label" style="margin-top:12px">Números ordinales (fechas)</div>
+        <div class="num-block">
+          <span class="num-tag"><span class="n">1st</span>first</span><span class="num-tag"><span class="n">2nd</span>second</span><span class="num-tag"><span class="n">3rd</span>third</span><span class="num-tag"><span class="n">4th</span>fourth</span><span class="num-tag"><span class="n">5th</span>fifth</span><span class="num-tag"><span class="n">20th</span>twentieth</span><span class="num-tag"><span class="n">21st</span>twenty-first</span>
+        </div>
+        <div class="ex" style="margin-top:8px">My birthday is on the <span class="key">fifteenth</span> of June.<br>The exam is on <span class="key">March 3rd</span>.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 12 – FAMILY ══════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A1</span>
+    <h2>Family & Friends</h2>
+    <span class="s-num">12 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">👩</span><div><div class="word">mother / mom</div><div class="trans">madre / mamá</div></div></div>
+      <div class="vocab-card"><span class="emoji">👨</span><div><div class="word">father / dad</div><div class="trans">padre / papá</div></div></div>
+      <div class="vocab-card"><span class="emoji">👦</span><div><div class="word">brother</div><div class="trans">hermano</div></div></div>
+      <div class="vocab-card"><span class="emoji">👧</span><div><div class="word">sister</div><div class="trans">hermana</div></div></div>
+      <div class="vocab-card"><span class="emoji">👴</span><div><div class="word">grandfather / grandpa</div><div class="trans">abuelo</div></div></div>
+      <div class="vocab-card"><span class="emoji">👵</span><div><div class="word">grandmother / grandma</div><div class="trans">abuela</div></div></div>
+      <div class="vocab-card"><span class="emoji">👶</span><div><div class="word">son / daughter</div><div class="trans">hijo / hija</div></div></div>
+      <div class="vocab-card"><span class="emoji">🧔</span><div><div class="word">uncle</div><div class="trans">tío</div></div></div>
+      <div class="vocab-card"><span class="emoji">👩‍🦰</span><div><div class="word">aunt</div><div class="trans">tía</div></div></div>
+      <div class="vocab-card"><span class="emoji">🧑</span><div><div class="word">cousin</div><div class="trans">primo/a</div></div></div>
+      <div class="vocab-card"><span class="emoji">👫</span><div><div class="word">husband / wife</div><div class="trans">esposo / esposa</div></div></div>
+      <div class="vocab-card"><span class="emoji">👫</span><div><div class="word">boyfriend / girlfriend</div><div class="trans">novio / novia</div></div></div>
+      <div class="vocab-card"><span class="emoji">👯</span><div><div class="word">friend</div><div class="trans">amigo/a</div></div></div>
+      <div class="vocab-card"><span class="emoji">🏠</span><div><div class="word">parents</div><div class="trans">padres</div></div></div>
+      <div class="vocab-card"><span class="emoji">👨‍👩‍👦</span><div><div class="word">family</div><div class="trans">familia</div></div></div>
+    </div>
+    <div class="ex" style="margin-top:10px">
+      ✅ This is <span class="key">my</span> family. <span class="key">My mother</span> is a nurse and <span class="key">my father</span> is an engineer.<br>
+      ✅ I have one <span class="key">brother</span> and two <span class="key">sisters</span>. <span class="key">My brother</span> is 15 years old.<br>
+      ✅ <span class="key">My grandparents</span> live in Santiago. <span class="key">My grandfather</span> is 72.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 13 – COLOURS, CLOTHES, OBJECTS ══════════════════════════════════ -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A1</span>
+    <h2>Colours, Clothes & Common Objects</h2>
+    <span class="s-num">13 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="three-col">
+      <div>
+        <div class="sec-label">Colours</div>
+        <div class="vocab-grid" style="grid-template-columns:1fr;">
+          <div class="vocab-card"><span class="emoji" style="color:red">■</span><div><div class="word">red</div><div class="trans">rojo</div></div></div>
+          <div class="vocab-card"><span class="emoji" style="color:#1a6fa8">■</span><div><div class="word">blue</div><div class="trans">azul</div></div></div>
+          <div class="vocab-card"><span class="emoji" style="color:green">■</span><div><div class="word">green</div><div class="trans">verde</div></div></div>
+          <div class="vocab-card"><span class="emoji" style="color:#c8a84b">■</span><div><div class="word">yellow</div><div class="trans">amarillo</div></div></div>
+          <div class="vocab-card"><span class="emoji" style="color:black">■</span><div><div class="word">black</div><div class="trans">negro</div></div></div>
+          <div class="vocab-card"><span class="emoji" style="color:#aaa">■</span><div><div class="word">white</div><div class="trans">blanco</div></div></div>
+          <div class="vocab-card"><span class="emoji" style="color:orange">■</span><div><div class="word">orange</div><div class="trans">naranja</div></div></div>
+          <div class="vocab-card"><span class="emoji" style="color:purple">■</span><div><div class="word">purple</div><div class="trans">morado</div></div></div>
+          <div class="vocab-card"><span class="emoji" style="color:pink">■</span><div><div class="word">pink</div><div class="trans">rosado</div></div></div>
+          <div class="vocab-card"><span class="emoji" style="color:#8B4513">■</span><div><div class="word">brown</div><div class="trans">café/marrón</div></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">Clothes</div>
+        <div class="vocab-grid" style="grid-template-columns:1fr;">
+          <div class="vocab-card"><span class="emoji">👕</span><div><div class="word">T-shirt / shirt</div><div class="trans">camiseta / camisa</div></div></div>
+          <div class="vocab-card"><span class="emoji">👖</span><div><div class="word">trousers / pants</div><div class="trans">pantalón</div></div></div>
+          <div class="vocab-card"><span class="emoji">👗</span><div><div class="word">dress / skirt</div><div class="trans">vestido / falda</div></div></div>
+          <div class="vocab-card"><span class="emoji">🧥</span><div><div class="word">jacket / coat</div><div class="trans">chaqueta / abrigo</div></div></div>
+          <div class="vocab-card"><span class="emoji">👟</span><div><div class="word">shoes / boots</div><div class="trans">zapatos / botas</div></div></div>
+          <div class="vocab-card"><span class="emoji">🧢</span><div><div class="word">hat / cap</div><div class="trans">sombrero / gorra</div></div></div>
+          <div class="vocab-card"><span class="emoji">🧦</span><div><div class="word">socks</div><div class="trans">calcetines</div></div></div>
+          <div class="vocab-card"><span class="emoji">🎽</span><div><div class="word">uniform</div><div class="trans">uniforme</div></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">Common Objects</div>
+        <div class="vocab-grid" style="grid-template-columns:1fr;">
+          <div class="vocab-card"><span class="emoji">📚</span><div><div class="word">book / notebook</div><div class="trans">libro / cuaderno</div></div></div>
+          <div class="vocab-card"><span class="emoji">✏️</span><div><div class="word">pen / pencil</div><div class="trans">lapicero / lápiz</div></div></div>
+          <div class="vocab-card"><span class="emoji">💻</span><div><div class="word">computer</div><div class="trans">computadora</div></div></div>
+          <div class="vocab-card"><span class="emoji">📱</span><div><div class="word">phone</div><div class="trans">teléfono</div></div></div>
+          <div class="vocab-card"><span class="emoji">🎒</span><div><div class="word">bag / backpack</div><div class="trans">bolso / mochila</div></div></div>
+          <div class="vocab-card"><span class="emoji">⌚</span><div><div class="word">watch / clock</div><div class="trans">reloj (pulsera/pared)</div></div></div>
+          <div class="vocab-card"><span class="emoji">🪑</span><div><div class="word">chair / table</div><div class="trans">silla / mesa</div></div></div>
+          <div class="vocab-card"><span class="emoji">🚪</span><div><div class="word">door / window</div><div class="trans">puerta / ventana</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      ✅ The Chilean Navy uniform is <span class="key">white and blue</span>. The hat is <span class="key">white</span>.<br>
+      ✅ She is wearing a <span class="key">red dress</span> and <span class="key">black shoes</span>.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 14 – EVERYDAY ACTIONS ══════════════════════════════════ -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A1</span>
+    <h2>Everyday Actions — Common Verbs</h2>
+    <span class="s-num">14 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">🍽️</span><div><div class="word">eat</div><div class="trans">comer</div></div></div>
+      <div class="vocab-card"><span class="emoji">☕</span><div><div class="word">drink</div><div class="trans">beber</div></div></div>
+      <div class="vocab-card"><span class="emoji">😴</span><div><div class="word">sleep</div><div class="trans">dormir</div></div></div>
+      <div class="vocab-card"><span class="emoji">🚶</span><div><div class="word">walk</div><div class="trans">caminar</div></div></div>
+      <div class="vocab-card"><span class="emoji">🏃</span><div><div class="word">run</div><div class="trans">correr</div></div></div>
+      <div class="vocab-card"><span class="emoji">📖</span><div><div class="word">read</div><div class="trans">leer</div></div></div>
+      <div class="vocab-card"><span class="emoji">✍️</span><div><div class="word">write</div><div class="trans">escribir</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎧</span><div><div class="word">listen</div><div class="trans">escuchar</div></div></div>
+      <div class="vocab-card"><span class="emoji">🗣️</span><div><div class="word">speak / talk</div><div class="trans">hablar</div></div></div>
+      <div class="vocab-card"><span class="emoji">👀</span><div><div class="word">watch / look</div><div class="trans">ver / mirar</div></div></div>
+      <div class="vocab-card"><span class="emoji">📚</span><div><div class="word">study</div><div class="trans">estudiar</div></div></div>
+      <div class="vocab-card"><span class="emoji">💼</span><div><div class="word">work</div><div class="trans">trabajar</div></div></div>
+      <div class="vocab-card"><span class="emoji">🏠</span><div><div class="word">live</div><div class="trans">vivir</div></div></div>
+      <div class="vocab-card"><span class="emoji">❤️</span><div><div class="word">like / love</div><div class="trans">gustar / amar</div></div></div>
+      <div class="vocab-card"><span class="emoji">🚗</span><div><div class="word">drive</div><div class="trans">manejar</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍳</span><div><div class="word">cook</div><div class="trans">cocinar</div></div></div>
+      <div class="vocab-card"><span class="emoji">🏊</span><div><div class="word">swim</div><div class="trans">nadar</div></div></div>
+      <div class="vocab-card"><span class="emoji">⚽</span><div><div class="word">play</div><div class="trans">jugar / tocar</div></div></div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      ✅ I <span class="key">wake up</span> at 6 am. I <span class="key">eat</span> breakfast and <span class="key">study</span> English.<br>
+      ✅ She <span class="key">works</span> in the morning and <span class="key">reads</span> books at night.<br>
+      ✅ We <span class="key">swim</span> every Tuesday. He <span class="key">plays</span> football on weekends.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 15 – DAYS & MONTHS ══════════════════════════════════ -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A1</span>
+    <h2>Days of the Week & Months of the Year</h2>
+    <span class="s-num">15 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">Days — siempre con mayúscula en inglés</div>
+        <table class="wh-table">
+          <thead><tr><th>English</th><th>Español</th><th>Abrev.</th></tr></thead>
+          <tbody>
+            <tr><td>Monday</td><td>lunes</td><td>Mon</td></tr>
+            <tr><td>Tuesday</td><td>martes</td><td>Tue</td></tr>
+            <tr><td>Wednesday</td><td>miércoles</td><td>Wed</td></tr>
+            <tr><td>Thursday</td><td>jueves</td><td>Thu</td></tr>
+            <tr><td>Friday</td><td>viernes</td><td>Fri</td></tr>
+            <tr><td>Saturday</td><td>sábado</td><td>Sat</td></tr>
+            <tr><td>Sunday</td><td>domingo</td><td>Sun</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="sec-label">Months — siempre con mayúscula en inglés</div>
+        <div class="num-block">
+          <span class="num-tag"><span class="n">Jan</span>January</span>
+          <span class="num-tag"><span class="n">Feb</span>February</span>
+          <span class="num-tag"><span class="n">Mar</span>March</span>
+          <span class="num-tag"><span class="n">Apr</span>April</span>
+          <span class="num-tag"><span class="n">May</span>May</span>
+          <span class="num-tag"><span class="n">Jun</span>June</span>
+          <span class="num-tag"><span class="n">Jul</span>July</span>
+          <span class="num-tag"><span class="n">Aug</span>August</span>
+          <span class="num-tag"><span class="n">Sep</span>September</span>
+          <span class="num-tag"><span class="n">Oct</span>October</span>
+          <span class="num-tag"><span class="n">Nov</span>November</span>
+          <span class="num-tag"><span class="n">Dec</span>December</span>
+        </div>
+        <div class="sec-label" style="margin-top:12px">Preposiciones con fechas</div>
+        <div class="ex">
+          <span class="key">on</span> + día: on Monday / on Friday<br>
+          <span class="key">in</span> + mes o año: in March / in 2027<br>
+          <span class="key">at</span> + hora: at 8 am / at night<br><br>
+          ✅ The exam is <span class="key">on</span> Tuesday, <span class="key">in</span> March.<br>
+          ✅ I was born <span class="key">in</span> August.
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📅</span><div class="content">Escritura de fechas: <strong>March 15th, 2027</strong> (EE.UU.) o <strong>15th March 2027</strong> (Reino Unido). Se dice: "the fifteenth of March, twenty twenty-seven".</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 16 – ASKING & GIVING INSTRUCTIONS ══════════════════════════════════ -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A1</span>
+    <h2>Ask & Give Instructions — Imperatives</h2>
+    <span class="s-num">16 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Las instrucciones usan el <strong>imperativo</strong>: verbo en forma base, sin sujeto. Para hacerlo negativo: <strong>Don't + verb</strong>.</p>
+    <div class="formula">
+      Afirmativo: <mark>Verb</mark> + complement → Open the door.<br>
+      Negativo: <mark>Don't</mark> + verb → Don't run inside.<br>
+      Cortés: <mark>Please</mark> + verb / Verb + please → Please sit down. / Sit down, please.
+    </div>
+    <div class="two-col" style="margin-top:10px">
+      <div>
+        <div class="sec-label">Instrucciones en clase / examen</div>
+        <div class="vocab-grid" style="grid-template-columns:1fr;">
+          <div class="vocab-card"><span class="emoji">✍️</span><div><div class="word">Write your name.</div><div class="trans">Escribe tu nombre.</div></div></div>
+          <div class="vocab-card"><span class="emoji">📖</span><div><div class="word">Read the text.</div><div class="trans">Lee el texto.</div></div></div>
+          <div class="vocab-card"><span class="emoji">🤫</span><div><div class="word">Be quiet, please.</div><div class="trans">Silencio, por favor.</div></div></div>
+          <div class="vocab-card"><span class="emoji">💺</span><div><div class="word">Sit down / Stand up.</div><div class="trans">Siéntate / Levántate.</div></div></div>
+          <div class="vocab-card"><span class="emoji">📝</span><div><div class="word">Answer the questions.</div><div class="trans">Contesta las preguntas.</div></div></div>
+          <div class="vocab-card"><span class="emoji">🔄</span><div><div class="word">Repeat after me.</div><div class="trans">Repite después de mí.</div></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">Direcciones / instrucciones de lugar</div>
+        <div class="vocab-grid" style="grid-template-columns:1fr;">
+          <div class="vocab-card"><span class="emoji">⬆️</span><div><div class="word">Go straight ahead.</div><div class="trans">Sigue recto.</div></div></div>
+          <div class="vocab-card"><span class="emoji">↩️</span><div><div class="word">Turn left / right.</div><div class="trans">Gira a la izq./der.</div></div></div>
+          <div class="vocab-card"><span class="emoji">⏹️</span><div><div class="word">Stop here.</div><div class="trans">Para aquí.</div></div></div>
+          <div class="vocab-card"><span class="emoji">🚪</span><div><div class="word">Open / Close the door.</div><div class="trans">Abre / Cierra la puerta.</div></div></div>
+          <div class="vocab-card"><span class="emoji">📋</span><div><div class="word">Fill in the form.</div><div class="trans">Llena el formulario.</div></div></div>
+          <div class="vocab-card"><span class="emoji">✅</span><div><div class="word">Choose the best answer.</div><div class="trans">Elige la mejor respuesta.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 17 – EXPRESSING PREFERENCES ══════════════════════════════════ -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A1</span>
+    <h2>Expressing Personal Preferences</h2>
+    <span class="s-num">17 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para expresar gustos y preferencias se usan estructuras con <strong>like, love, hate, prefer</strong> + sustantivo o verbo en <strong>-ing</strong>.</p>
+    <div class="formula">
+      I <mark>like / love / enjoy / prefer</mark> + noun or verb-ing<br>
+      I <mark>don't like / hate / can't stand</mark> + noun or verb-ing<br>
+      <span class="comment">like swimming / love music / hate waking up early</span>
+    </div>
+    <div class="two-col" style="margin-top:10px">
+      <div>
+        <div class="sec-label">Escala de preferencia</div>
+        <div class="rule-box">
+          <div class="ex">
+            ❤️ I <span class="key">love</span> football.<br>
+            😊 I <span class="key">like</span> swimming.<br>
+            😐 I <span class="key">don't mind</span> cooking.<br>
+            😕 I <span class="key">don't like</span> fish.<br>
+            😡 I <span class="key">hate</span> getting up early.
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">Preguntas y respuestas</div>
+        <div class="dialogue">
+          <div class="dialogue-line a"><span class="speaker">A:</span><span class="text">Do you like English?</span></div>
+          <div class="dialogue-line b"><span class="speaker">B:</span><span class="text">Yes, I love it! It's very interesting.</span></div>
+          <div class="dialogue-line a"><span class="speaker">A:</span><span class="text">What do you like doing in your free time?</span></div>
+          <div class="dialogue-line b"><span class="speaker">B:</span><span class="text">I like reading and playing football.</span></div>
+          <div class="dialogue-line a"><span class="speaker">A:</span><span class="text">Do you prefer tea or coffee?</span></div>
+          <div class="dialogue-line b"><span class="speaker">B:</span><span class="text">I prefer coffee. I don't like tea very much.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">📌</span><div class="content">Recuerda: después de <strong>like/love/hate/enjoy</strong> se usa el verbo en <strong>-ing</strong>: "I like <mark>swimming</mark>" ✅ — "I like <mark>swim</mark>" ❌</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 18 – SPELLING NAMES & NUMBERS ══════════════════════════════════ -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A1</span>
+    <h2>Spelling Names, Numbers & Addresses</h2>
+    <span class="s-num">18 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">El alfabeto inglés — pronunciación clave</div>
+        <div class="formula" style="font-size:.82rem;line-height:2">
+          A /eɪ/ &nbsp; B /biː/ &nbsp; C /siː/ &nbsp; D /diː/ &nbsp; E /iː/<br>
+          F /ɛf/ &nbsp;&nbsp; G /dʒiː/ &nbsp;H /eɪtʃ/ &nbsp;I /aɪ/ &nbsp;&nbsp; J /dʒeɪ/<br>
+          K /keɪ/ &nbsp;L /ɛl/ &nbsp;&nbsp; M /ɛm/ &nbsp;&nbsp; N /ɛn/ &nbsp;&nbsp; O /oʊ/<br>
+          P /piː/ &nbsp;&nbsp;Q /kjuː/ &nbsp;R /ɑːr/ &nbsp;&nbsp; S /ɛs/ &nbsp;&nbsp; T /tiː/<br>
+          U /juː/ &nbsp;&nbsp;V /viː/ &nbsp;&nbsp; W /ˈdʌb.l̩.juː/ X /ɛks/<br>
+          Y /waɪ/ &nbsp;Z /zɛd/ (UK) / /ziː/ (US)
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">Frases clave para deletrear</div>
+        <div class="dialogue">
+          <div class="dialogue-line a"><span class="speaker">A:</span><span class="text">How do you spell your name?</span></div>
+          <div class="dialogue-line b"><span class="speaker">B:</span><span class="text">It's R-O-J-A-S. Rojas.</span></div>
+          <div class="dialogue-line a"><span class="speaker">A:</span><span class="text">Can you repeat that, please?</span></div>
+          <div class="dialogue-line b"><span class="speaker">B:</span><span class="text">Of course. R as in Romeo, O, J, A, S.</span></div>
+        </div>
+        <div class="sec-label" style="margin-top:12px">Teléfonos y direcciones</div>
+        <div class="ex">
+          Phone: 9876-5432 → nine, eight, seven, six — five, four, three, two<br>
+          Address: 25 Main Street → twenty-five Main Street<br>
+          Floor: 3rd floor → third floor<br>
+          Postal code: 2340000 → two, three, four — double zero, zero
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">💡</span><div class="content">En el examen puede aparecer un texto donde debes identificar un número de teléfono, una dirección o un nombre con su ortografía correcta. Practica leer números en inglés.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 19 – VOCABULARY PRACTICE (USE OF ENGLISH) ══════════════════════════════════ -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">USE OF ENGLISH — PRÁCTICA A1</span>
+    <h2>Vocabulary in Context — Ejemplos tipo examen</h2>
+    <span class="s-num">19 / 20</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El examen evalúa vocabulario <strong>en contexto</strong>: debes elegir la palabra correcta según el significado de la oración. Aquí hay ejemplos del tipo de preguntas A1.</p>
+    <div class="rule-box" style="margin-bottom:10px">
+      <div class="title">Tipo 1 — Completar la oración</div>
+      <div class="ex">
+        My ______ is a doctor. She works at the hospital.<br>
+        a) father &nbsp; b) <span class="correct">mother</span> &nbsp; c) brother &nbsp; d) son<br><br>
+        The Chilean flag is red, white and ______.<br>
+        a) orange &nbsp; b) yellow &nbsp; c) <span class="correct">blue</span> &nbsp; d) purple
+      </div>
+    </div>
+    <div class="rule-box green" style="margin-bottom:10px">
+      <div class="title">Tipo 2 — Verbo correcto (presente simple)</div>
+      <div class="ex">
+        Carlos ______ English every day after school.<br>
+        a) study &nbsp; b) <span class="correct">studies</span> &nbsp; c) studys &nbsp; d) is study<br><br>
+        They ______ from Chile. They are Peruvian.<br>
+        a) are &nbsp; b) <span class="correct">aren't</span> &nbsp; c) isn't &nbsp; d) is not
+      </div>
+    </div>
+    <div class="rule-box gold">
+      <div class="title">Tipo 3 — Artículo correcto</div>
+      <div class="ex">
+        She is ______ officer in the Navy.<br>
+        a) a &nbsp; b) <span class="correct">an</span> &nbsp; c) the &nbsp; d) — (no article)<br><br>
+        ______ Pacific Ocean is very large.<br>
+        a) A &nbsp; b) An &nbsp; c) <span class="correct">The</span> &nbsp; d) — (no article)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ SLIDE 20 – RESUMEN Y TIPS EXAMEN ══════════════════════════════════ -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">RESUMEN — CONCURSO 2027</span>
+    <h2>Resumen A1 & Estrategias para el Examen</h2>
+    <span class="s-num">20 / 20</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">Contenidos A1 cubiertos ✅</div>
+        <div class="rule-box green">
+          <ul style="padding-left:18px;font-size:.9rem;line-height:2">
+            <li>Verb To Be (afirmativo, negativo, interrogativo)</li>
+            <li>Artículos A / AN / THE</li>
+            <li>Pronombres personales y posesivos</li>
+            <li>Present Simple Tense</li>
+            <li>Adjetivos demostrativos</li>
+            <li>Question Words (Wh-)</li>
+            <li>Saludos e introducirse</li>
+            <li>Información personal y deletreo</li>
+            <li>Números hasta 10,000</li>
+            <li>Familia y amigos</li>
+            <li>Colores, ropa y objetos comunes</li>
+            <li>Acciones cotidianas</li>
+            <li>Días y meses</li>
+            <li>Instrucciones (imperativo)</li>
+            <li>Expresar preferencias</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">Estrategias para el examen 🎯</div>
+        <div class="rule-box gold">
+          <ul style="padding-left:18px;font-size:.88rem;line-height:1.9">
+            <li><strong>Lee todo el texto</strong> antes de contestar preguntas de comprensión.</li>
+            <li><strong>Identifica el contexto</strong> para preguntas de vocabulario — la oración da pistas.</li>
+            <li>Para gramática: <strong>identifica el sujeto</strong> y elige la forma verbal correcta.</li>
+            <li>Para artículos: <strong>escucha el sonido</strong>, no solo la letra.</li>
+            <li>En lenguaje funcional: <strong>identifica la función</strong> del intercambio (sugerir, pedir, agradecer, etc.).</li>
+            <li>Usa el método de <strong>eliminación</strong>: descarta respuestas claramente incorrectas.</li>
+            <li><strong>No dejes preguntas en blanco</strong> — no hay penalización.</li>
+          </ul>
+        </div>
+        <div class="rule-box" style="margin-top:10px">
+          <div class="title">Formato del examen</div>
+          <p>50 preguntas · Selección múltiple (a,b,c,d) · 60 minutos · Hoja de respuestas separada.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span class="icon">⚓</span><div class="content"><strong>Recuerda:</strong> El examen cubre A1, A2, B1 y B2. ¡Dominar A1 al 100% te da una base sólida para todos los niveles superiores! — <em>"The sea is the same for all who sail it."</em></div></div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:5%"></div></div>
+    <div id="slide-label">Slide 1 / 20</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Course</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E1.html'">✏️ Exercises</button>
+  </div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+</script>
+</body>
+</html>

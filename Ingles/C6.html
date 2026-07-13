@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inglés A2 – Present Perfect & Functional Language | Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --accent:#e63946;--teal:#0d7377;--orange:#e67e22;--purple:#7a3a9a;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+.s-body{padding-bottom:16px !important;}
+
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--purple) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--sky);}
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box.teal{border-left-color:var(--teal);}
+.rule-box.orange{border-left-color:var(--orange);}
+.rule-box.purple{border-left-color:var(--purple);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--sky);font-weight:700;}
+.ex span.purple{color:var(--purple);font-weight:700;}
+.ex span.orange{color:var(--orange);font-weight:700;}
+.ex .trans{color:var(--gray);font-size:.75rem;font-family:'Source Sans 3',sans-serif;}
+
+.vocab-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;
+}
+.vocab-card{
+  background:var(--white);border-radius:10px;padding:10px 12px;
+  border:1px solid #dde4ee;display:flex;align-items:center;gap:10px;
+}
+.vocab-card .emoji{font-size:1.2rem;width:30px;text-align:center;}
+.vocab-card .word{font-weight:700;font-size:.88rem;color:var(--navy);}
+.vocab-card .trans{font-size:.72rem;color:var(--gray);}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+mark{background:#fef3c7;color:#92400e;border-radius:4px;padding:1px 5px;font-weight:600;}
+
+.wh-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;}
+.wh-table th{background:var(--navy);color:var(--gold);padding:8px 14px;text-align:left;font-size:.85rem;}
+.wh-table td{background:var(--white);padding:8px 14px;font-size:.88rem;border-bottom:1px solid #eef1f5;}
+.wh-table tr:nth-child(even) td{background:#f8fafc;}
+.wh-table td:first-child{font-weight:700;color:var(--sky);font-family:'JetBrains Mono',monospace;font-size:.95rem;}
+
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,#0d3060 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+.dialogue{background:var(--white);border-radius:12px;overflow:hidden;border:1px solid #dde4ee;}
+.dialogue-line{padding:10px 16px;display:flex;gap:10px;align-items:flex-start;border-bottom:1px solid #eef1f5;}
+.dialogue-line:last-child{border-bottom:none;}
+.dialogue-line.a{background:#f0f7ff;}
+.dialogue-line .speaker{font-weight:700;font-size:.75rem;color:var(--sky);min-width:70px;margin-top:2px;}
+.dialogue-line.b .speaker{color:var(--teal);}
+.dialogue-line .text{font-size:.9rem;color:#1a2a3a;line-height:1.5;}
+.dialogue-line .text .key{color:var(--sky);font-weight:700;}
+
+.irregular-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:6px;
+}
+.irreg-cell{
+  background:var(--white);border-radius:6px;padding:6px 10px;
+  border:1px solid #dde4ee;text-align:center;font-size:.8rem;
+}
+.irreg-cell .base{font-weight:700;color:var(--navy);}
+.irreg-cell .past{color:var(--orange);}
+.irreg-cell .pp{color:var(--purple);font-weight:700;}
+
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col,.irregular-grid{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- SLIDE 1 – COVER -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">⭐</div>
+    <div class="cover-level">CEFR Level A2</div>
+    <div class="cover-title">Present Perfect &<br><span>Functional Language</span></div>
+    <div class="cover-sub">Aprende a hablar de experiencias de vida con el Present Perfect. Domina el vocabulario de comida y celebraciones. Practica cómo pedir comida en un restaurante y describir experiencias pasadas.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">⭐ Present Perfect</span>
+      <span class="cover-tag">📝 EVER / NEVER</span>
+      <span class="cover-tag">✅ ALREADY / YET</span>
+      <span class="cover-tag">🍕 Food Vocabulary</span>
+      <span class="cover-tag">🍽️ Ordering Food</span>
+      <span class="cover-tag">📖 Describing Experiences</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 1: PRESENT PERFECT ========== -->
+
+<!-- SLIDE 2 – Present Perfect: Introducción -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>Present Perfect – Introducción</h2>
+    <span class="s-num">02 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El <strong>Present Perfect</strong> conecta el <strong>pasado con el presente</strong>. Se usa para hablar de <strong>experiencias de vida</strong> y <strong>acciones que tienen relevancia ahora</strong>.</p>
+    <div class="formula">
+      <mark>Sujeto + HAVE/HAS + past participle (participio pasado)</mark><br>
+      <span class="trans">Sujeto + HAVE/HAS + participio pasado</span>
+    </div>
+    <div class="two-col" style="margin-top:10px">
+      <div class="rule-box green">
+        <div class="title">⭐ ¿Para qué sirve?</div>
+        <ul>
+          <li><strong>Experiencias de vida</strong>: <em>I have been to Paris.</em></li>
+          <li><strong>Acciones pasadas con relevancia ahora</strong>: <em>She has lost her keys. (no las tiene ahora)</em></li>
+          <li><strong>Logros</strong>: <em>He has won many awards.</em></li>
+        </ul>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🎯 Diferencia con Past Simple</div>
+        <ul>
+          <li><strong>Past Simple</strong>: acción terminada en el pasado (cuándo importa)</li>
+          <li><strong>Present Perfect</strong>: experiencia o resultado presente (cuándo NO importa)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3 – Present Perfect: Formación -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>Present Perfect – Formación</h2>
+    <span class="s-num">03 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">✅ Afirmativo</div>
+        <div class="ex">
+          I <span class="key">have</span> studied.<br>
+          You <span class="key">have</span> arrived.<br>
+          He/She/It <span class="key">has</span> eaten.<br>
+          We <span class="key">have</span> finished.<br>
+          They <span class="key">have</span> gone.
+        </div>
+        <div class="ex" style="margin-top:8px">
+          <strong>Contracciones:</strong><br>
+          I've, you've, he's, she's, it's, we've, they've
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">❌ Negativo</div>
+        <div class="ex">
+          I <span class="key">have not</span> (haven't) studied.<br>
+          He <span class="key">has not</span> (hasn't) arrived.<br>
+          They <span class="key">haven't</span> finished.
+        </div>
+        <div class="sec-label" style="margin-top:12px">❓ Pregunta</div>
+        <div class="ex">
+          <span class="key">Have</span> you ever been to Paris?<br>
+          <span class="key">Has</span> she finished her homework?
+        </div>
+        <div class="ex" style="margin-top:8px">
+          <strong>Respuestas cortas:</strong><br>
+          Yes, I have. / No, I haven't.<br>
+          Yes, she has. / No, she hasn't.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4 – Irregular Verbs: Past Participles (Lista 1) -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Irregular Verbs – Past Participles (1)</h2>
+    <span class="s-num">04 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">El <strong>participio pasado</strong> es la tercera forma del verbo. Los verbos regulares usan <strong>-ed</strong>, pero los irregulares <strong>cambian</strong>.</p>
+    <div class="irregular-grid">
+      <div class="irreg-cell"><span class="base">be</span> → <span class="past">was/were</span> → <span class="pp">been</span></div>
+      <div class="irreg-cell"><span class="base">become</span> → <span class="past">became</span> → <span class="pp">become</span></div>
+      <div class="irreg-cell"><span class="base">begin</span> → <span class="past">began</span> → <span class="pp">begun</span></div>
+      <div class="irreg-cell"><span class="base">break</span> → <span class="past">broke</span> → <span class="pp">broken</span></div>
+      <div class="irreg-cell"><span class="base">bring</span> → <span class="past">brought</span> → <span class="pp">brought</span></div>
+      <div class="irreg-cell"><span class="base">build</span> → <span class="past">built</span> → <span class="pp">built</span></div>
+      <div class="irreg-cell"><span class="base">buy</span> → <span class="past">bought</span> → <span class="pp">bought</span></div>
+      <div class="irreg-cell"><span class="base">catch</span> → <span class="past">caught</span> → <span class="pp">caught</span></div>
+      <div class="irreg-cell"><span class="base">choose</span> → <span class="past">chose</span> → <span class="pp">chosen</span></div>
+      <div class="irreg-cell"><span class="base">come</span> → <span class="past">came</span> → <span class="pp">come</span></div>
+      <div class="irreg-cell"><span class="base">cost</span> → <span class="past">cost</span> → <span class="pp">cost</span></div>
+      <div class="irreg-cell"><span class="base">cut</span> → <span class="past">cut</span> → <span class="pp">cut</span></div>
+      <div class="irreg-cell"><span class="base">do</span> → <span class="past">did</span> → <span class="pp">done</span></div>
+      <div class="irreg-cell"><span class="base">drink</span> → <span class="past">drank</span> → <span class="pp">drunk</span></div>
+      <div class="irreg-cell"><span class="base">drive</span> → <span class="past">drove</span> → <span class="pp">driven</span></div>
+      <div class="irreg-cell"><span class="base">eat</span> → <span class="past">ate</span> → <span class="pp">eaten</span></div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>Recuerda:</strong> El participio pasado es la forma que se usa con <strong>HAVE/HAS</strong>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5 – Irregular Verbs: Past Participles (Lista 2) -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Irregular Verbs – Past Participles (2)</h2>
+    <span class="s-num">05 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="irregular-grid">
+      <div class="irreg-cell"><span class="base">fall</span> → <span class="past">fell</span> → <span class="pp">fallen</span></div>
+      <div class="irreg-cell"><span class="base">feel</span> → <span class="past">felt</span> → <span class="pp">felt</span></div>
+      <div class="irreg-cell"><span class="base">find</span> → <span class="past">found</span> → <span class="pp">found</span></div>
+      <div class="irreg-cell"><span class="base">fly</span> → <span class="past">flew</span> → <span class="pp">flown</span></div>
+      <div class="irreg-cell"><span class="base">forget</span> → <span class="past">forgot</span> → <span class="pp">forgotten</span></div>
+      <div class="irreg-cell"><span class="base">get</span> → <span class="past">got</span> → <span class="pp">got/gotten</span></div>
+      <div class="irreg-cell"><span class="base">give</span> → <span class="past">gave</span> → <span class="pp">given</span></div>
+      <div class="irreg-cell"><span class="base">go</span> → <span class="past">went</span> → <span class="pp">gone/been</span></div>
+      <div class="irreg-cell"><span class="base">grow</span> → <span class="past">grew</span> → <span class="pp">grown</span></div>
+      <div class="irreg-cell"><span class="base">have</span> → <span class="past">had</span> → <span class="pp">had</span></div>
+      <div class="irreg-cell"><span class="base">hear</span> → <span class="past">heard</span> → <span class="pp">heard</span></div>
+      <div class="irreg-cell"><span class="base">hide</span> → <span class="past">hid</span> → <span class="pp">hidden</span></div>
+      <div class="irreg-cell"><span class="base">keep</span> → <span class="past">kept</span> → <span class="pp">kept</span></div>
+      <div class="irreg-cell"><span class="base">know</span> → <span class="past">knew</span> → <span class="pp">known</span></div>
+      <div class="irreg-cell"><span class="base">lead</span> → <span class="past">led</span> → <span class="pp">led</span></div>
+      <div class="irreg-cell"><span class="base">learn</span> → <span class="past">learnt/learned</span> → <span class="pp">learnt/learned</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6 – Irregular Verbs: Past Participles (Lista 3) -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Irregular Verbs – Past Participles (3)</h2>
+    <span class="s-num">06 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="irregular-grid">
+      <div class="irreg-cell"><span class="base">leave</span> → <span class="past">left</span> → <span class="pp">left</span></div>
+      <div class="irreg-cell"><span class="base">lend</span> → <span class="past">lent</span> → <span class="pp">lent</span></div>
+      <div class="irreg-cell"><span class="base">lose</span> → <span class="past">lost</span> → <span class="pp">lost</span></div>
+      <div class="irreg-cell"><span class="base">make</span> → <span class="past">made</span> → <span class="pp">made</span></div>
+      <div class="irreg-cell"><span class="base">mean</span> → <span class="past">meant</span> → <span class="pp">meant</span></div>
+      <div class="irreg-cell"><span class="base">meet</span> → <span class="past">met</span> → <span class="pp">met</span></div>
+      <div class="irreg-cell"><span class="base">pay</span> → <span class="past">paid</span> → <span class="pp">paid</span></div>
+      <div class="irreg-cell"><span class="base">put</span> → <span class="past">put</span> → <span class="pp">put</span></div>
+      <div class="irreg-cell"><span class="base">read</span> → <span class="past">read</span> → <span class="pp">read</span></div>
+      <div class="irreg-cell"><span class="base">ride</span> → <span class="past">rode</span> → <span class="pp">ridden</span></div>
+      <div class="irreg-cell"><span class="base">ring</span> → <span class="past">rang</span> → <span class="pp">rung</span></div>
+      <div class="irreg-cell"><span class="base">run</span> → <span class="past">ran</span> → <span class="pp">run</span></div>
+      <div class="irreg-cell"><span class="base">say</span> → <span class="past">said</span> → <span class="pp">said</span></div>
+      <div class="irreg-cell"><span class="base">see</span> → <span class="past">saw</span> → <span class="pp">seen</span></div>
+      <div class="irreg-cell"><span class="base">sell</span> → <span class="past">sold</span> → <span class="pp">sold</span></div>
+      <div class="irreg-cell"><span class="base">send</span> → <span class="past">sent</span> → <span class="pp">sent</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7 – Irregular Verbs: Past Participles (Lista 4) -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Irregular Verbs – Past Participles (4)</h2>
+    <span class="s-num">07 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="irregular-grid">
+      <div class="irreg-cell"><span class="base">set</span> → <span class="past">set</span> → <span class="pp">set</span></div>
+      <div class="irreg-cell"><span class="base">show</span> → <span class="past">showed</span> → <span class="pp">shown</span></div>
+      <div class="irreg-cell"><span class="base">sing</span> → <span class="past">sang</span> → <span class="pp">sung</span></div>
+      <div class="irreg-cell"><span class="base">sit</span> → <span class="past">sat</span> → <span class="pp">sat</span></div>
+      <div class="irreg-cell"><span class="base">sleep</span> → <span class="past">slept</span> → <span class="pp">slept</span></div>
+      <div class="irreg-cell"><span class="base">speak</span> → <span class="past">spoke</span> → <span class="pp">spoken</span></div>
+      <div class="irreg-cell"><span class="base">spend</span> → <span class="past">spent</span> → <span class="pp">spent</span></div>
+      <div class="irreg-cell"><span class="base">stand</span> → <span class="past">stood</span> → <span class="pp">stood</span></div>
+      <div class="irreg-cell"><span class="base">steal</span> → <span class="past">stole</span> → <span class="pp">stolen</span></div>
+      <div class="irreg-cell"><span class="base">swim</span> → <span class="past">swam</span> → <span class="pp">swum</span></div>
+      <div class="irreg-cell"><span class="base">take</span> → <span class="past">took</span> → <span class="pp">taken</span></div>
+      <div class="irreg-cell"><span class="base">teach</span> → <span class="past">taught</span> → <span class="pp">taught</span></div>
+      <div class="irreg-cell"><span class="base">tell</span> → <span class="past">told</span> → <span class="pp">told</span></div>
+      <div class="irreg-cell"><span class="base">think</span> → <span class="past">thought</span> → <span class="pp">thought</span></div>
+      <div class="irreg-cell"><span class="base">understand</span> → <span class="past">understood</span> → <span class="pp">understood</span></div>
+      <div class="irreg-cell"><span class="base">write</span> → <span class="past">wrote</span> → <span class="pp">written</span></div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📖</span>
+      <div class="content"><strong>Consejo:</strong> Practica estos verbos regularmente. Son esenciales para el Present Perfect y aparecerán frecuentemente en el examen.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 2: EVER & NEVER ========== -->
+
+<!-- SLIDE 8 – EVER y NEVER: Introducción -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>EVER / NEVER – Experiencias de vida</h2>
+    <span class="s-num">08 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text"><strong>EVER</strong> y <strong>NEVER</strong> se usan con el Present Perfect para hablar de <strong>experiencias de vida</strong>.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">❓ EVER (alguna vez)</div>
+        <p>Se usa en <strong>preguntas</strong> para preguntar sobre experiencias de vida.</p>
+        <div class="ex">
+          <span class="key">Have you ever</span> been to Paris?<br>
+          <span class="trans">¿Alguna vez has estado en París?</span><br><br>
+          <span class="key">Has she ever</span> tried sushi?<br>
+          <span class="trans">¿Alguna vez ha probado sushi?</span>
+        </div>
+      </div>
+      <div class="rule-box red">
+        <div class="title">🚫 NEVER (nunca)</div>
+        <p>Se usa en <strong>oraciones negativas</strong> para decir que nunca has hecho algo.</p>
+        <div class="ex">
+          I have <span class="key">never</span> been to Paris.<br>
+          <span class="trans">Nunca he estado en París.</span><br><br>
+          She has <span class="key">never</span> tried sushi.<br>
+          <span class="trans">Ella nunca ha probado sushi.</span>
+        </div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>Posición:</strong> EVER y NEVER van <strong>entre HAVE/HAS y el participio pasado</strong>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9 – EVER / NEVER: Ejemplos -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>EVER / NEVER – Ejemplos</h2>
+    <span class="s-num">09 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">❓ Preguntas con EVER</div>
+        <div class="ex">
+          <span class="key">Have you ever</span> seen a whale?<br>
+          <span class="trans">¿Alguna vez has visto una ballena?</span><br><br>
+          <span class="key">Has she ever</span> traveled abroad?<br>
+          <span class="trans">¿Alguna vez ha viajado al extranjero?</span><br><br>
+          <span class="key">Have they ever</span> eaten Indian food?<br>
+          <span class="trans">¿Alguna vez han comido comida india?</span>
+        </div>
+      </div>
+      <div class="rule-box red">
+        <div class="title">🚫 Oraciones con NEVER</div>
+        <div class="ex">
+          I have <span class="key">never</span> been to Asia.<br>
+          <span class="trans">Nunca he estado en Asia.</span><br><br>
+          She has <span class="key">never</span> eaten seafood.<br>
+          <span class="trans">Ella nunca ha comido mariscos.</span><br><br>
+          We have <span class="key">never</span> seen that movie.<br>
+          <span class="trans">Nunca hemos visto esa película.</span>
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Respuesta con EVER:</strong><br>
+      ❓ Have you ever been to London?<br>
+      ✅ Yes, I <span class="key">have</span>. / No, I <span class="key">haven't</span>. (No se repite "ever" en la respuesta)
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10 – EVER / NEVER: Diálogo -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>EVER / NEVER – Diálogo</h2>
+    <span class="s-num">10 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="dialogue">
+      <div class="dialogue-line a"><span class="speaker">Ana:</span><span class="text"><span class="key">Have you ever</span> traveled outside Chile? <span class="trans">¿Alguna vez has viajado fuera de Chile?</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Tomás:</span><span class="text">Yes, I <span class="key">have</span>. I went to Argentina last year. <span class="trans">Sí, he viajado. Fui a Argentina el año pasado.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Ana:</span><span class="text">That's great! <span class="key">Have you ever</span> been to Europe? <span class="trans">¡Genial! ¿Alguna vez has estado en Europa?</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Tomás:</span><span class="text">No, I <span class="key">have never</span> been to Europe. But I really want to go! <span class="trans">No, nunca he estado en Europa. ¡Pero realmente quiero ir!</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Ana:</span><span class="text">Me too! <span class="key">Have you ever</span> eaten Italian pizza? <span class="trans">¡Yo también! ¿Alguna vez has comido pizza italiana?</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Tomás:</span><span class="text">Yes, I <span class="key">have</span>! It's delicious. <span class="trans">¡Sí! Es deliciosa.</span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 3: ALREADY & YET ========== -->
+
+<!-- SLIDE 11 – ALREADY y YET: Introducción -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>ALREADY / YET – Acciones completadas</h2>
+    <span class="s-num">11 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text"><strong>ALREADY</strong> y <strong>YET</strong> se usan para hablar de <strong>acciones completadas o pendientes</strong>.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">✅ ALREADY (ya)</div>
+        <p>Indica que una acción <strong>ya ha ocurrido</strong>. Se usa en oraciones <strong>afirmativas</strong>.</p>
+        <div class="ex">
+          I have <span class="key">already</span> finished my homework.<br>
+          <span class="trans">Ya he terminado mi tarea.</span><br><br>
+          She has <span class="key">already</span> eaten breakfast.<br>
+          <span class="trans">Ella ya ha desayunado.</span>
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">⏳ YET (todavía / ya en preguntas)</div>
+        <p>Indica que una acción <strong>no ha ocurrido</strong> o pregunta si <strong>ya ocurrió</strong>. Se usa en <strong>negativas y preguntas</strong>.</p>
+        <div class="ex">
+          I haven't finished <span class="key">yet</span>.<br>
+          <span class="trans">Todavía no he terminado.</span><br><br>
+          <span class="key">Have</span> you eaten <span class="key">yet</span>?<br>
+          <span class="trans">¿Ya comiste?</span>
+        </div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>Posición:</strong> ALREADY va <strong>entre HAVE/HAS y el participio</strong>; YET va <strong>al final</strong> de la oración.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12 – ALREADY / YET: Ejemplos -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>ALREADY / YET – Ejemplos</h2>
+    <span class="s-num">12 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">✅ ALREADY</div>
+        <div class="ex">
+          I have <span class="key">already</span> seen that movie.<br>
+          <span class="trans">Ya he visto esa película.</span><br><br>
+          She has <span class="key">already</span> bought the tickets.<br>
+          <span class="trans">Ella ya ha comprado los boletos.</span><br><br>
+          We have <span class="key">already</span> visited the museum.<br>
+          <span class="trans">Ya hemos visitado el museo.</span>
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">⏳ YET</div>
+        <div class="ex">
+          I haven't read that book <span class="key">yet</span>.<br>
+          <span class="trans">Todavía no he leído ese libro.</span><br><br>
+          <span class="key">Has</span> she arrived <span class="key">yet</span>?<br>
+          <span class="trans">¿Ya llegó ella?</span><br><br>
+          They haven't eaten dinner <span class="key">yet</span>.<br>
+          <span class="trans">Todavía no han cenado.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 13 – ALREADY / YET: Diálogo -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA A2</span>
+    <h2>ALREADY / YET – Diálogo</h2>
+    <span class="s-num">13 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="dialogue">
+      <div class="dialogue-line a"><span class="speaker">Mamá:</span><span class="text"><span class="key">Have</span> you done your homework <span class="key">yet</span>? <span class="trans">¿Ya hiciste tu tarea?</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Hijo:</span><span class="text">Yes, I <span class="key">have already</span> finished it. <span class="trans">Sí, ya la terminé.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Mamá:</span><span class="text">Great! <span class="key">Have</span> you eaten breakfast <span class="key">yet</span>? <span class="trans">¡Genial! ¿Ya desayunaste?</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Hijo:</span><span class="text">No, I haven't eaten <span class="key">yet</span>. I'm not hungry. <span class="trans">No, todavía no he desayunado. No tengo hambre.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Mamá:</span><span class="text">Well, I have <span class="key">already</span> made some eggs. You can eat later. <span class="trans">Bueno, ya hice unos huevos. Puedes comer más tarde.</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Hijo:</span><span class="text">Thank you, Mom! <span class="trans">¡Gracias, mamá!</span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 4: FOOD & CELEBRATIONS VOCABULARY ========== -->
+
+<!-- SLIDE 14 – Food Vocabulary: Meals -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Food – Meals & Dishes</h2>
+    <span class="s-num">14 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">🥞</span><div><div class="word">breakfast</div><div class="trans">desayuno</div></div></div>
+      <div class="vocab-card"><span class="emoji">🥗</span><div><div class="word">lunch</div><div class="trans">almuerzo</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍽️</span><div><div class="word">dinner</div><div class="trans">cena</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍲</span><div><div class="word">soup</div><div class="trans">sopa</div></div></div>
+      <div class="vocab-card"><span class="emoji">🥗</span><div><div class="word">salad</div><div class="trans">ensalada</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍛</span><div><div class="word">rice</div><div class="trans">arroz</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍝</span><div><div class="word">pasta</div><div class="trans">pasta</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍕</span><div><div class="word">pizza</div><div class="trans">pizza</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍔</span><div><div class="word">burger / hamburger</div><div class="trans">hamburguesa</div></div></div>
+      <div class="vocab-card"><span class="emoji">🌮</span><div><div class="word">taco</div><div class="trans">taco</div></div></div>
+      <div class="vocab-card"><span class="emoji">🥪</span><div><div class="word">sandwich</div><div class="trans">sándwich</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍳</span><div><div class="word">eggs</div><div class="trans">huevos</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 15 – Food Vocabulary: Drinks & Desserts -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Food – Drinks & Desserts</h2>
+    <span class="s-num">15 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">☕</span><div><div class="word">coffee</div><div class="trans">café</div></div></div>
+      <div class="vocab-card"><span class="emoji">🫖</span><div><div class="word">tea</div><div class="trans">té</div></div></div>
+      <div class="vocab-card"><span class="emoji">🧃</span><div><div class="word">juice</div><div class="trans">jugo</div></div></div>
+      <div class="vocab-card"><span class="emoji">🥤</span><div><div class="word">soda / soft drink</div><div class="trans">refresco / bebida</div></div></div>
+      <div class="vocab-card"><span class="emoji">💧</span><div><div class="word">water</div><div class="trans">agua</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍷</span><div><div class="word">wine</div><div class="trans">vino</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍺</span><div><div class="word">beer</div><div class="trans">cerveza</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍰</span><div><div class="word">cake</div><div class="trans">pastel / torta</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍦</span><div><div class="word">ice cream</div><div class="trans">helado</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍫</span><div><div class="word">chocolate</div><div class="trans">chocolate</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍪</span><div><div class="word">cookie</div><div class="trans">galleta</div></div></div>
+      <div class="vocab-card"><span class="emoji">🧁</span><div><div class="word">muffin</div><div class="trans">muffin / magdalena</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 16 – Food Vocabulary: Fruits & Vegetables -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Food – Fruits & Vegetables</h2>
+    <span class="s-num">16 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div>
+        <div class="sec-label">🍎 Fruits</div>
+        <div class="vocab-grid">
+          <div class="vocab-card"><span class="emoji">🍎</span><div><div class="word">apple</div><div class="trans">manzana</div></div></div>
+          <div class="vocab-card"><span class="emoji">🍌</span><div><div class="word">banana</div><div class="trans">plátano</div></div></div>
+          <div class="vocab-card"><span class="emoji">🍊</span><div><div class="word">orange</div><div class="trans">naranja</div></div></div>
+          <div class="vocab-card"><span class="emoji">🍇</span><div><div class="word">grapes</div><div class="trans">uvas</div></div></div>
+          <div class="vocab-card"><span class="emoji">🍓</span><div><div class="word">strawberries</div><div class="trans">fresas</div></div></div>
+          <div class="vocab-card"><span class="emoji">🍉</span><div><div class="word">watermelon</div><div class="trans">sandía</div></div></div>
+          <div class="vocab-card"><span class="emoji">🥝</span><div><div class="word">kiwi</div><div class="trans">kiwi</div></div></div>
+          <div class="vocab-card"><span class="emoji">🍑</span><div><div class="word">peach</div><div class="trans">durazno</div></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">🥬 Vegetables</div>
+        <div class="vocab-grid">
+          <div class="vocab-card"><span class="emoji">🥕</span><div><div class="word">carrot</div><div class="trans">zanahoria</div></div></div>
+          <div class="vocab-card"><span class="emoji">🥦</span><div><div class="word">broccoli</div><div class="trans">brócoli</div></div></div>
+          <div class="vocab-card"><span class="emoji">🥬</span><div><div class="word">lettuce</div><div class="trans">lechuga</div></div></div>
+          <div class="vocab-card"><span class="emoji">🍅</span><div><div class="word">tomato</div><div class="trans">tomate</div></div></div>
+          <div class="vocab-card"><span class="emoji">🧅</span><div><div class="word">onion</div><div class="trans">cebolla</div></div></div>
+          <div class="vocab-card"><span class="emoji">🌽</span><div><div class="word">corn</div><div class="trans">maíz</div></div></div>
+          <div class="vocab-card"><span class="emoji">🥔</span><div><div class="word">potato</div><div class="trans">papa</div></div></div>
+          <div class="vocab-card"><span class="emoji">🍄</span><div><div class="word">mushroom</div><div class="trans">champiñón</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 17 – Celebrations Vocabulary -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Celebrations & Special Days</h2>
+    <span class="s-num">17 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">🎂</span><div><div class="word">birthday</div><div class="trans">cumpleaños</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎄</span><div><div class="word">Christmas</div><div class="trans">Navidad</div></div></div>
+      <div class="vocab-card"><span class="emoji">🥂</span><div><div class="word">New Year's Eve</div><div class="trans">Nochevieja / Año Nuevo</div></div></div>
+      <div class="vocab-card"><span class="emoji">🇨🇱</span><div><div class="word">Fiestas Patrias</div><div class="trans">Fiestas Patrias</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎓</span><div><div class="word">graduation</div><div class="trans">graduación</div></div></div>
+      <div class="vocab-card"><span class="emoji">💒</span><div><div class="word">wedding</div><div class="trans">boda</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎃</span><div><div class="word">Halloween</div><div class="trans">Halloween</div></div></div>
+      <div class="vocab-card"><span class="emoji">🐰</span><div><div class="word">Easter</div><div class="trans">Pascua</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎆</span><div><div class="word">fireworks</div><div class="trans">fuegos artificiales</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎁</span><div><div class="word">gift / present</div><div class="trans">regalo</div></div></div>
+      <div class="vocab-card"><span class="emoji">🕯️</span><div><div class="word">candle</div><div class="trans">vela</div></div></div>
+      <div class="vocab-card"><span class="emoji">🎈</span><div><div class="word">balloon</div><div class="trans">globo</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 5: ORDERING FOOD ========== -->
+
+<!-- SLIDE 18 – Ordering Food: Introducción -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A2</span>
+    <h2>Ordering Food – Introducción</h2>
+    <span class="s-num">18 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Cuando vas a un restaurante o cafetería, necesitas saber cómo <strong>pedir comida</strong> en inglés. Estas son las expresiones más útiles:</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🗣️ Expresiones para pedir</div>
+        <div class="ex">
+          <span class="key">I'd like</span> a pizza, please.<br>
+          <span class="trans">Me gustaría una pizza, por favor.</span><br><br>
+          <span class="key">Can I have</span> a coffee?<br>
+          <span class="trans">¿Puedo tomar un café?</span><br><br>
+          <span class="key">Could I have</span> the menu, please?<br>
+          <span class="trans">¿Podría tener el menú, por favor?</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🤔 Preguntar por recomendaciones</div>
+        <div class="ex">
+          <span class="key">What do you recommend?</span><br>
+          <span class="trans">¿Qué recomiendas?</span><br><br>
+          <span class="key">What's the special today?</span><br>
+          <span class="trans">¿Cuál es el especial de hoy?</span><br><br>
+          <span class="key">What would you suggest?</span><br>
+          <span class="trans">¿Qué sugerirías?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 19 – Ordering Food: En el restaurante -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A2</span>
+    <h2>Ordering Food – En el restaurante</h2>
+    <span class="s-num">19 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="dialogue">
+      <div class="dialogue-line a"><span class="speaker">Mozo:</span><span class="text">Good evening! Welcome to our restaurant. <span class="trans">¡Buenas noches! Bienvenido a nuestro restaurante.</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Cliente:</span><span class="text">Thank you. <span class="key">Can I have</span> a table for two, please? <span class="trans">Gracias. ¿Puedo tener una mesa para dos, por favor?</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Mozo:</span><span class="text">Of course. Follow me, please. Here is the menu. <span class="trans">Por supuesto. Sígueme, por favor. Aquí está el menú.</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Cliente:</span><span class="text">Thank you. <span class="key">What do you recommend</span>? <span class="trans">Gracias. ¿Qué recomiendas?</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Mozo:</span><span class="text">The pasta is very good. And the pizza is also popular. <span class="trans">La pasta es muy buena. Y la pizza también es popular.</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Cliente:</span><span class="text">Great! <span class="key">I'd like</span> the pasta, please. <span class="trans">¡Genial! Me gustaría la pasta, por favor.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Mozo:</span><span class="text">Excellent choice. <span class="key">Would you like</span> something to drink? <span class="trans">Excelente elección. ¿Te gustaría algo para beber?</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Cliente:</span><span class="text">Yes, <span class="key">I'll have</span> a glass of water and a coffee, please. <span class="trans">Sí, tomaré un vaso de agua y un café, por favor.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Mozo:</span><span class="text">Coming right up! <span class="trans">¡Enseguida!</span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 20 – Ordering Food: Expresiones adicionales -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A2</span>
+    <h2>Ordering Food – Expresiones adicionales</h2>
+    <span class="s-num">20 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🍽️ En el restaurante</div>
+        <div class="ex">
+          <span class="key">I'd like to order</span> the chicken, please.<br>
+          <span class="trans">Me gustaría pedir el pollo, por favor.</span><br><br>
+          <span class="key">Can I have</span> the bill, please?<br>
+          <span class="trans">¿Puedo tener la cuenta, por favor?</span><br><br>
+          <span class="key">I'll have</span> the same.<br>
+          <span class="trans">Tomaré lo mismo.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">☕ En la cafetería</div>
+        <div class="ex">
+          <span class="key">I'd like</span> a cappuccino, please.<br>
+          <span class="trans">Me gustaría un capuchino, por favor.</span><br><br>
+          <span class="key">Could I have</span> a croissant?<br>
+          <span class="trans">¿Podría tener un croissant?</span><br><br>
+          <span class="key">Can I get</span> a latte to go?<br>
+          <span class="trans">¿Puedo llevar un latte para llevar?</span>
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Consejo:</strong> <span class="key">I'd like</span> = I would like (más formal y educado que "I want")
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 21 – Ordering Food: Diálogo en cafetería -->
+<div class="slide" id="s21">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A2</span>
+    <h2>Ordering Food – En la cafetería</h2>
+    <span class="s-num">21 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="dialogue">
+      <div class="dialogue-line a"><span class="speaker">Camarero:</span><span class="text">Hello! <span class="key">What can I get</span> for you? <span class="trans">¡Hola! ¿Qué te puedo ofrecer?</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Cliente:</span><span class="text">Hi! <span class="key">I'd like</span> a cappuccino and a chocolate muffin, please. <span class="trans">¡Hola! Me gustaría un capuchino y un muffin de chocolate, por favor.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Camarero:</span><span class="text">Sure. <span class="key">Would you like</span> anything else? <span class="trans">Claro. ¿Te gustaría algo más?</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Cliente:</span><span class="text">No, that's all, thank you. <span class="trans">No, eso es todo, gracias.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Camarero:</span><span class="text">That will be $7.50. <span class="key">How would you like</span> to pay? <span class="trans">Serán $7.50. ¿Cómo te gustaría pagar?</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Cliente:</span><span class="text">By card, please. <span class="trans">Con tarjeta, por favor.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Camarero:</span><span class="text">Perfect. Here's your order. Enjoy! <span class="trans">Perfecto. Aquí está tu pedido. ¡Disfruta!</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Cliente:</span><span class="text">Thank you very much! <span class="trans">¡Muchas gracias!</span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PART 6: DESCRIBING PAST EXPERIENCES ========== -->
+
+<!-- SLIDE 22 – Describing Experiences: Introducción -->
+<div class="slide" id="s22">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A2</span>
+    <h2>Describing Past Experiences</h2>
+    <span class="s-num">22 / 44</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Para <strong>describir experiencias pasadas</strong>, usamos el Present Perfect para introducir la experiencia y el Past Simple para dar detalles.</p>
+    <div class="formula">
+      <mark>Present Perfect (introducción) + Past Simple (detalles)</mark>
+    </div>
+    <div class="ex">
+      <span class="key">I have been</span> to Paris. <span class="key">I went</span> there two years ago. <span class="trans">He estado en París. Fui allí hace dos años.</span><br><br>
+      <span class="key">She has never tried</span> sushi. <span class="trans">Ella nunca ha probado sushi.</span><br><br>
+      <span class="key">Have you ever seen</span> a whale? – Yes, <span class="key">I saw</span> one when I was 10. <span class="trans">¿Alguna vez has visto una ballena? – Sí, vi una cuando tenía 10 años.</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 23 – Describing Experiences: Expresiones útiles -->
+<div class="slide" id="s23">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A2</span>
+    <h2>Describing Experiences – Expresiones</h2>
+    <span class="s-num">23 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📝 Expresiones para empezar</div>
+        <div class="ex">
+          <span class="key">I have been to...</span> (He estado en...)<br>
+          <span class="key">I have never...</span> (Nunca he...)<br>
+          <span class="key">Have you ever...?</span> (¿Alguna vez has...?)<br>
+          <span class="key">Once I...</span> (Una vez yo...)<br>
+          <span class="key">Last year I...</span> (El año pasado yo...)<br>
+          <span class="key">When I was...</span> (Cuando era...)
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Expresiones para detalles</div>
+        <div class="ex">
+          <span class="key">It was amazing!</span> (Fue increíble.)<br>
+          <span class="key">I really enjoyed it.</span> (Realmente lo disfruté.)<br>
+          <span class="key">It was the best day ever.</span> (Fue el mejor día de mi vida.)<br>
+          <span class="key">I will never forget it.</span> (Nunca lo olvidaré.)<br>
+          <span class="key">Unfortunately, it was...</span> (Desafortunadamente, fue...)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 24 – Describing Experiences: Ejemplos -->
+<div class="slide" id="s24">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A2</span>
+    <h2>Describing Experiences – Ejemplos</h2>
+    <span class="s-num">24 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">✈️ Viajes</div>
+        <div class="ex">
+          <span class="key">I have been</span> to Brazil. <span class="key">I went</span> there last summer. <span class="trans">He estado en Brasil. Fui allí el verano pasado.</span><br><br>
+          <span class="key">Have you ever visited</span> Japan? <span class="trans">¿Alguna vez has visitado Japón?</span><br><br>
+          <span class="key">I have never been</span> to Africa, <span class="key">but I would love to go</span>. <span class="trans">Nunca he estado en África, pero me encantaría ir.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🍕 Comida</div>
+        <div class="ex">
+          <span class="key">I have tried</span> Italian pizza. <span class="key">It was delicious!</span> <span class="trans">He probado pizza italiana. ¡Estaba deliciosa!</span><br><br>
+          <span class="key">Have you ever eaten</span> sushi? <span class="trans">¿Alguna vez has comido sushi?</span><br><br>
+          <span class="key">I have never tried</span> Indian food, <span class="key">but I want to</span>. <span class="trans">Nunca he probado comida india, pero quiero hacerlo.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 25 – Describing Experiences: Más ejemplos -->
+<div class="slide" id="s25">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A2</span>
+    <h2>Describing Experiences – Más ejemplos</h2>
+    <span class="s-num">25 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🎵 Eventos especiales</div>
+        <div class="ex">
+          <span class="key">I have seen</span> my favorite band live. <span class="key">The concert was amazing!</span> <span class="trans">He visto a mi banda favorita en vivo. ¡El concierto fue increíble!</span><br><br>
+          <span class="key">Have you ever been</span> to a music festival? <span class="trans">¿Alguna vez has estado en un festival de música?</span><br><br>
+          <span class="key">I have never attended</span> a wedding before. <span class="trans">Nunca he asistido a una boda antes.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🏆 Logros</div>
+        <div class="ex">
+          <span class="key">I have won</span> a competition once. <span class="key">It was the best day ever!</span> <span class="trans">He ganado una competencia una vez. ¡Fue el mejor día de mi vida!</span><br><br>
+          <span class="key">She has learned</span> to play the piano. <span class="trans">Ella ha aprendido a tocar el piano.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 26 – Describing Experiences: Diálogo -->
+<div class="slide" id="s26">
+  <div class="s-header">
+    <span class="badge">LENGUAJE FUNCIONAL A2</span>
+    <h2>Describing Experiences – Diálogo</h2>
+    <span class="s-num">26 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="dialogue">
+      <div class="dialogue-line a"><span class="speaker">Ana:</span><span class="text"><span class="key">Have you ever been</span> to a concert? <span class="trans">¿Alguna vez has estado en un concierto?</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Tomás:</span><span class="text">Yes, I <span class="key">have</span>! <span class="key">I went</span> to a Coldplay concert last year. <span class="trans">¡Sí! Fui a un concierto de Coldplay el año pasado.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Ana:</span><span class="text">Wow! <span class="key">Was</span> it good? <span class="trans">¡Guau! ¿Fue bueno?</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Tomás:</span><span class="text"><span class="key">It was amazing!</span> The music was incredible. <span class="key">I will never forget</span> it. <span class="trans">¡Fue increíble! La música era increíble. Nunca lo olvidaré.</span></span></div>
+      <div class="dialogue-line a"><span class="speaker">Ana:</span><span class="text">That sounds wonderful! <span class="key">I have never been</span> to a concert like that. <span class="trans">¡Suena maravilloso! Nunca he estado en un concierto así.</span></span></div>
+      <div class="dialogue-line b"><span class="speaker">Tomás:</span><span class="text">You should go! <span class="key">I have never</span> regretted it. <span class="trans">¡Deberías ir! Nunca me he arrepentido.</span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SLIDES DE REPASO ========== -->
+
+<!-- SLIDE 27 – Present Perfect: Resumen -->
+<div class="slide" id="s27">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Present Perfect – Resumen</h2>
+    <span class="s-num">27 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box purple">
+      <div class="title">⭐ Present Perfect</div>
+      <ul>
+        <li><strong>Estructura:</strong> have/has + past participle</li>
+        <li><strong>Uso 1:</strong> Experiencias de vida (<em>Have you ever been to Paris?</em>)</li>
+        <li><strong>Uso 2:</strong> Acciones pasadas con relevancia ahora (<em>She has lost her keys.</em>)</li>
+        <li><strong>Uso 3:</strong> Logros (<em>He has won many awards.</em>)</li>
+        <li><strong>Negativo:</strong> haven't / hasn't + past participle</li>
+        <li><strong>Pregunta:</strong> Have/Has + sujeto + past participle?</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 28 – EVER / NEVER: Resumen -->
+<div class="slide" id="s28">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>EVER / NEVER – Resumen</h2>
+    <span class="s-num">28 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">❓ EVER</div>
+        <ul>
+          <li>Significa <strong>"alguna vez"</strong></li>
+          <li>Se usa en <strong>preguntas</strong></li>
+          <li>Posición: <strong>entre have/has y el participio</strong></li>
+        </ul>
+        <div class="ex" style="margin-top:6px">
+          <span class="key">Have you ever</span> been to London?<br>
+          <span class="trans">¿Alguna vez has estado en Londres?</span>
+        </div>
+      </div>
+      <div class="rule-box red">
+        <div class="title">🚫 NEVER</div>
+        <ul>
+          <li>Significa <strong>"nunca"</strong></li>
+          <li>Se usa en <strong>oraciones negativas</strong></li>
+          <li>Posición: <strong>entre have/has y el participio</strong></li>
+        </ul>
+        <div class="ex" style="margin-top:6px">
+          I have <span class="key">never</span> been to London.<br>
+          <span class="trans">Nunca he estado en Londres.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 29 – ALREADY / YET: Resumen -->
+<div class="slide" id="s29">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>ALREADY / YET – Resumen</h2>
+    <span class="s-num">29 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">✅ ALREADY</div>
+        <ul>
+          <li>Significa <strong>"ya"</strong></li>
+          <li>Indica que una acción <strong>ya ocurrió</strong></li>
+          <li>Se usa en oraciones <strong>afirmativas</strong></li>
+          <li>Posición: <strong>entre have/has y el participio</strong></li>
+        </ul>
+        <div class="ex" style="margin-top:6px">
+          I have <span class="key">already</span> finished.<br>
+          <span class="trans">Ya terminé.</span>
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">⏳ YET</div>
+        <ul>
+          <li>Significa <strong>"todavía"</strong> (en negativas) o <strong>"ya"</strong> (en preguntas)</li>
+          <li>Se usa en <strong>negativas y preguntas</strong></li>
+          <li>Posición: <strong>al final</strong> de la oración</li>
+        </ul>
+        <div class="ex" style="margin-top:6px">
+          I haven't finished <span class="key">yet</span>.<br>
+          <span class="trans">Todavía no he terminado.</span><br><br>
+          <span class="key">Have</span> you finished <span class="key">yet</span>?<br>
+          <span class="trans">¿Ya terminaste?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 30 – Ordering Food: Frases útiles (resumen) -->
+<div class="slide" id="s30">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Ordering Food – Frases útiles</h2>
+    <span class="s-num">30 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="three-col">
+      <div class="rule-box green">
+        <div class="title">🍽️ Para el cliente</div>
+        <div class="ex">
+          <span class="key">I'd like...</span> (Me gustaría...)<br>
+          <span class="key">Can I have...?</span> (¿Puedo tener...?)<br>
+          <span class="key">Could I have...?</span> (¿Podría tener...?)<br>
+          <span class="key">I'll have...</span> (Tomaré...)<br>
+          <span class="key">What do you recommend?</span> (¿Qué recomiendas?)
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🍽️ Para el mozo</div>
+        <div class="ex">
+          <span class="key">What can I get you?</span> (¿Qué te puedo ofrecer?)<br>
+          <span class="key">Would you like...?</span> (¿Te gustaría...?)<br>
+          <span class="key">What would you like to order?</span> (¿Qué te gustaría pedir?)<br>
+          <span class="key">Here is the menu.</span> (Aquí está el menú.)
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">🧾 Frases finales</div>
+        <div class="ex">
+          <span class="key">Can I have the bill, please?</span><br>
+          <span class="trans">¿La cuenta, por favor?</span><br><br>
+          <span class="key">That was delicious!</span><br>
+          <span class="trans">¡Estaba delicioso!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 31 – Describing Experiences: Frases útiles (resumen) -->
+<div class="slide" id="s31">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Describing Experiences – Frases útiles</h2>
+    <span class="s-num">31 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📝 Introducir la experiencia</div>
+        <div class="ex">
+          <span class="key">I have been to...</span><br>
+          <span class="key">I have never...</span><br>
+          <span class="key">Have you ever...?</span><br>
+          <span class="key">Once I...</span><br>
+          <span class="key">Last year I...</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Dar detalles y opiniones</div>
+        <div class="ex">
+          <span class="key">It was amazing!</span><br>
+          <span class="key">I really enjoyed it.</span><br>
+          <span class="key">It was the best day ever.</span><br>
+          <span class="key">I will never forget it.</span><br>
+          <span class="key">Unfortunately, it was...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 32 – Common Mistakes with Present Perfect -->
+<div class="slide" id="s32">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Common Mistakes – Present Perfect</h2>
+    <span class="s-num">32 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box red">
+        <div class="title">❌ Errores comunes</div>
+        <div class="ex">
+          ❌ I <span class="wrong">have went</span> to Paris.<br>
+          ✅ I <span class="correct">have been</span> to Paris.<br><br>
+          ❌ She <span class="wrong">has did</span> her homework.<br>
+          ✅ She <span class="correct">has done</span> her homework.<br><br>
+          ❌ We <span class="wrong">have saw</span> that movie.<br>
+          ✅ We <span class="correct">have seen</span> that movie.<br><br>
+          ❌ I <span class="wrong">have never went</span> to London.<br>
+          ✅ I have <span class="correct">never been</span> to London.
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">✅ Recordatorio</div>
+        <div class="ex">
+          <strong>Past participle (participio pasado)</strong><br>
+          go → <span class="correct">gone</span> / been<br>
+          do → <span class="correct">done</span><br>
+          see → <span class="correct">seen</span><br>
+          eat → <span class="correct">eaten</span><br>
+          write → <span class="correct">written</span><br>
+          speak → <span class="correct">spoken</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 33 – Common Mistakes with EVER/NEVER & ALREADY/YET -->
+<div class="slide" id="s33">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Common Mistakes – EVER/NEVER & ALREADY/YET</h2>
+    <span class="s-num">33 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box red">
+        <div class="title">❌ Errores comunes</div>
+        <div class="ex">
+          ❌ <span class="wrong">Have you never</span> been to Paris?<br>
+          ✅ <span class="correct">Have you ever</span> been to Paris?<br><br>
+          ❌ I have eaten <span class="wrong">yet</span>.<br>
+          ✅ I have <span class="correct">already</span> eaten.<br><br>
+          ❌ I <span class="wrong">yet</span> haven't finished.<br>
+          ✅ I haven't finished <span class="correct">yet</span>.
+        </div>
+      </div>
+      <div class="rule-box green">
+        <div class="title">✅ Recordatorio</div>
+        <div class="ex">
+          <strong>EVER</strong> → solo en <span class="correct">preguntas</span><br>
+          <strong>NEVER</strong> → oraciones <span class="correct">negativas</span><br>
+          <strong>ALREADY</strong> → oraciones <span class="correct">afirmativas</span><br>
+          <strong>YET</strong> → <span class="correct">negativas y preguntas</span> (al final)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 34 – Present Perfect vs Past Simple: Diferencia clave -->
+<div class="slide" id="s34">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Present Perfect vs Past Simple</h2>
+    <span class="s-num">34 / 44</span>
+  </div>
+  <div class="s-body">
+    <table class="wh-table">
+      <thead><tr><th>Past Simple</th><th>Present Perfect</th></tr></thead>
+      <tbody>
+        <tr><td>Acción <strong>terminada</strong> en el pasado</td><td>Experiencia o resultado <strong>con relevancia ahora</strong></td></tr>
+        <tr><td>El <strong>momento</strong> importa (yesterday, last year)</td><td>El <strong>momento</strong> no importa</td></tr>
+        <tr><td><strong>I went</strong> to Paris <strong>in 2019</strong>.</td><td><strong>I have been</strong> to Paris.</td></tr>
+        <tr><td><strong>She ate</strong> sushi <strong>yesterday</strong>.</td><td><strong>She has eaten</strong> sushi.</td></tr>
+        <tr><td><strong>They finished</strong> the project <strong>last week</strong>.</td><td><strong>They have already finished</strong> the project.</td></tr>
+      </tbody>
+    </table>
+    <div class="tip" style="margin-top:8px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>Pregunta clave:</strong> ¿Importa <span class="key">cuándo</span> ocurrió? → Past Simple. ¿Solo importa <span class="key">si ocurrió</span>? → Present Perfect.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 35 – Irregular Verbs: Resumen de los más usados -->
+<div class="slide" id="s35">
+  <div class="s-header">
+    <span class="badge">REPASO</span>
+    <h2>Irregular Verbs – Los más usados</h2>
+    <span class="s-num">35 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="irregular-grid">
+      <div class="irreg-cell"><span class="base">be</span> → <span class="past">was/were</span> → <span class="pp">been</span></div>
+      <div class="irreg-cell"><span class="base">buy</span> → <span class="past">bought</span> → <span class="pp">bought</span></div>
+      <div class="irreg-cell"><span class="base">do</span> → <span class="past">did</span> → <span class="pp">done</span></div>
+      <div class="irreg-cell"><span class="base">eat</span> → <span class="past">ate</span> → <span class="pp">eaten</span></div>
+      <div class="irreg-cell"><span class="base">go</span> → <span class="past">went</span> → <span class="pp">gone/been</span></div>
+      <div class="irreg-cell"><span class="base">have</span> → <span class="past">had</span> → <span class="pp">had</span></div>
+      <div class="irreg-cell"><span class="base">make</span> → <span class="past">made</span> → <span class="pp">made</span></div>
+      <div class="irreg-cell"><span class="base">see</span> → <span class="past">saw</span> → <span class="pp">seen</span></div>
+      <div class="irreg-cell"><span class="base">speak</span> → <span class="past">spoke</span> → <span class="pp">spoken</span></div>
+      <div class="irreg-cell"><span class="base">take</span> → <span class="past">took</span> → <span class="pp">taken</span></div>
+      <div class="irreg-cell"><span class="base">tell</span> → <span class="past">told</span> → <span class="pp">told</span></div>
+      <div class="irreg-cell"><span class="base">write</span> → <span class="past">wrote</span> → <span class="pp">written</span></div>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📖</span>
+      <div class="content"><strong>Consejo:</strong> Estos son los verbos irregulares más frecuentes en el Present Perfect. ¡Memorízalos!</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 36 – Food Vocabulary: Verbs for cooking and eating -->
+<div class="slide" id="s36">
+  <div class="s-header">
+    <span class="badge">VOCABULARIO A2</span>
+    <h2>Food – Cooking & Eating Verbs</h2>
+    <span class="s-num">36 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="vocab-grid">
+      <div class="vocab-card"><span class="emoji">🍳</span><div><div class="word">cook</div><div class="trans">cocinar</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍰</span><div><div class="word">bake</div><div class="trans">hornear</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍳</span><div><div class="word">fry</div><div class="trans">freír</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍲</span><div><div class="word">boil</div><div class="trans">hervir</div></div></div>
+      <div class="vocab-card"><span class="emoji">🥗</span><div><div class="word">mix</div><div class="trans">mezclar</div></div></div>
+      <div class="vocab-card"><span class="emoji">🔪</span><div><div class="word">cut</div><div class="trans">cortar</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍽️</span><div><div class="word">eat</div><div class="trans">comer</div></div></div>
+      <div class="vocab-card"><span class="emoji">☕</span><div><div class="word">drink</div><div class="trans">beber</div></div></div>
+      <div class="vocab-card"><span class="emoji">👅</span><div><div class="word">taste</div><div class="trans">probar / saborear</div></div></div>
+      <div class="vocab-card"><span class="emoji">🍴</span><div><div class="word">try</div><div class="trans">probar (comida nueva)</div></div></div>
+      <div class="vocab-card"><span class="emoji">🔄</span><div><div class="word">serve</div><div class="trans">servir</div></div></div>
+      <div class="vocab-card"><span class="emoji">🧂</span><div><div class="word">season</div><div class="trans">sazonar</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 37 – Resumen: Present Perfect + EVER/NEVER -->
+<div class="slide" id="s37">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>Present Perfect – Resumen visual</h2>
+    <span class="s-num">37 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box purple">
+      <div class="title">⭐ Present Perfect con EVER / NEVER</div>
+      <div class="ex">
+        <strong>Estructura:</strong> have/has + (ever/never) + past participle<br><br>
+        <strong>Pregunta con EVER:</strong><br>
+        <span class="key">Have</span> you <span class="key">ever</span> been to Paris?<br>
+        <span class="trans">¿Alguna vez has estado en París?</span><br><br>
+        <strong>Respuesta positiva:</strong> Yes, I <span class="key">have</span>.<br>
+        <strong>Respuesta negativa:</strong> No, I <span class="key">haven't</span>.<br>
+        <span class="trans">(No se repite "ever" en la respuesta)</span><br><br>
+        <strong>Respuesta con NEVER:</strong><br>
+        I have <span class="key">never</span> been to Paris.<br>
+        <span class="trans">Nunca he estado en París.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 38 – Resumen: Present Perfect + ALREADY/YET -->
+<div class="slide" id="s38">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>Present Perfect – Resumen visual</h2>
+    <span class="s-num">38 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box orange">
+      <div class="title">✅ Present Perfect con ALREADY / YET</div>
+      <div class="ex">
+        <strong>ALREADY (ya):</strong><br>
+        I have <span class="key">already</span> finished my homework.<br>
+        <span class="trans">Ya terminé mi tarea.</span><br>
+        (oración afirmativa, el verbo va entre have/has y el participio)<br><br>
+        <strong>YET (todavía / ya):</strong><br>
+        ❌ Negativa: I haven't finished <span class="key">yet</span>.<br>
+        <span class="trans">Todavía no he terminado.</span><br>
+        ❓ Pregunta: <span class="key">Have</span> you finished <span class="key">yet</span>?<br>
+        <span class="trans">¿Ya terminaste?</span><br>
+        (va al final de la oración)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 39 – Resumen: Ordering Food -->
+<div class="slide" id="s39">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>Ordering Food – Frases clave</h2>
+    <span class="s-num">39 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box green">
+      <div class="title">🍽️ Frases clave para pedir comida</div>
+      <div class="ex">
+        <strong>Para pedir:</strong><br>
+        <span class="key">I'd like</span> a pizza, please. (Me gustaría una pizza)<br>
+        <span class="key">Can I have</span> a coffee? (¿Puedo tomar un café?)<br>
+        <span class="key">Could I have</span> the menu? (¿Podría tener el menú?)<br>
+        <span class="key">I'll have</span> the pasta. (Tomaré la pasta)<br><br>
+        <strong>Para preguntar recomendaciones:</strong><br>
+        <span class="key">What do you recommend?</span> (¿Qué recomiendas?)<br>
+        <span class="key">What's the special today?</span> (¿Cuál es el especial de hoy?)<br><br>
+        <strong>Para pedir la cuenta:</strong><br>
+        <span class="key">Can I have the bill, please?</span> (¿La cuenta, por favor?)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 40 – Resumen: Describing Experiences -->
+<div class="slide" id="s40">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>Describing Experiences – Frases clave</h2>
+    <span class="s-num">40 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold">
+      <div class="title">📝 Frases clave para describir experiencias</div>
+      <div class="ex">
+        <strong>Introducir la experiencia:</strong><br>
+        <span class="key">I have been to...</span> (He estado en...)<br>
+        <span class="key">I have never...</span> (Nunca he...)<br>
+        <span class="key">Have you ever...?</span> (¿Alguna vez has...?)<br>
+        <span class="key">Last year I...</span> (El año pasado yo...)<br>
+        <span class="key">When I was...</span> (Cuando era...)<br><br>
+        <strong>Dar detalles y opiniones:</strong><br>
+        <span class="key">It was amazing!</span> (Fue increíble.)<br>
+        <span class="key">I really enjoyed it.</span> (Realmente lo disfruté.)<br>
+        <span class="key">I will never forget it.</span> (Nunca lo olvidaré.)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 41 – Irregular Verbs: Los más usados en Present Perfect -->
+<div class="slide" id="s41">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>Irregular Verbs – Los más usados</h2>
+    <span class="s-num">41 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="irregular-grid">
+      <div class="irreg-cell"><span class="base">be</span> → <span class="past">was/were</span> → <span class="pp">been</span></div>
+      <div class="irreg-cell"><span class="base">do</span> → <span class="past">did</span> → <span class="pp">done</span></div>
+      <div class="irreg-cell"><span class="base">eat</span> → <span class="past">ate</span> → <span class="pp">eaten</span></div>
+      <div class="irreg-cell"><span class="base">go</span> → <span class="past">went</span> → <span class="pp">gone/been</span></div>
+      <div class="irreg-cell"><span class="base">have</span> → <span class="past">had</span> → <span class="pp">had</span></div>
+      <div class="irreg-cell"><span class="base">make</span> → <span class="past">made</span> → <span class="pp">made</span></div>
+      <div class="irreg-cell"><span class="base">see</span> → <span class="past">saw</span> → <span class="pp">seen</span></div>
+      <div class="irreg-cell"><span class="base">take</span> → <span class="past">took</span> → <span class="pp">taken</span></div>
+      <div class="irreg-cell"><span class="base">tell</span> → <span class="past">told</span> → <span class="pp">told</span></div>
+      <div class="irreg-cell"><span class="base">write</span> → <span class="past">wrote</span> → <span class="pp">written</span></div>
+      <div class="irreg-cell"><span class="base">buy</span> → <span class="past">bought</span> → <span class="pp">bought</span></div>
+      <div class="irreg-cell"><span class="base">speak</span> → <span class="past">spoke</span> → <span class="pp">spoken</span></div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Diferencia entre GONE y BEEN:</strong><br>
+      <span class="key">gone to</span> = está allí ahora / ha ido y no ha vuelto<br>
+      <span class="key">been to</span> = ha ido y ha vuelto<br>
+      Ej: <em>He has <span class="key">gone</span> to London.</em> (Está en Londres ahora)<br>
+      Ej: <em>He has <span class="key">been</span> to London.</em> (Ha estado, ya volvió)
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 42 – Resumen: Food Vocabulary -->
+<div class="slide" id="s42">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>Food & Celebrations – Vocabulario clave</h2>
+    <span class="s-num">42 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🍕 Comida</div>
+        <div class="ex">
+          breakfast, lunch, dinner<br>
+          soup, salad, rice, pasta, pizza<br>
+          burger, sandwich, eggs<br>
+          coffee, tea, juice, water<br>
+          cake, ice cream, chocolate, cookie<br>
+          apple, banana, orange, grapes<br>
+          carrot, broccoli, tomato, potato
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🎉 Celebraciones</div>
+        <div class="ex">
+          birthday, Christmas, New Year's Eve<br>
+          Fiestas Patrias, graduation, wedding<br>
+          Halloween, Easter<br>
+          gift/present, candle, balloon, fireworks
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 43 – Resumen: Present Perfect vs Past Simple -->
+<div class="slide" id="s43">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>Present Perfect vs Past Simple – Resumen</h2>
+    <span class="s-num">43 / 44</span>
+  </div>
+  <div class="s-body">
+    <table class="wh-table">
+      <thead><tr><th>Past Simple</th><th>Present Perfect</th></tr></thead>
+      <tbody>
+        <tr><td>Acción <strong>terminada</strong> en el pasado</td><td>Experiencia o resultado <strong>con relevancia ahora</strong></td></tr>
+        <tr><td>El <strong>momento</strong> importa</td><td>El <strong>momento</strong> no importa</td></tr>
+        <tr><td><strong>Palabras clave:</strong> yesterday, last week, in 2019, 2 days ago</td><td><strong>Palabras clave:</strong> ever, never, already, yet</td></tr>
+        <tr><td><strong>I went</strong> to Paris in 2019.</td><td><strong>I have been</strong> to Paris.</td></tr>
+        <tr><td><strong>She ate</strong> sushi yesterday.</td><td><strong>She has eaten</strong> sushi.</td></tr>
+        <tr><td><strong>They finished</strong> last week.</td><td><strong>They have already finished</strong>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SLIDE 44 – Resumen Final -->
+<div class="slide" id="s44">
+  <div class="s-header">
+    <span class="badge">RESUMEN A2</span>
+    <h2>¡Has completado la clase</h2>
+    <span class="s-num">44 / 44</span>
+  </div>
+  <div class="s-body">
+    <div class="summary-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+      <div class="summary-card"><h4>⭐ Present Perfect</h4><p>have/has + past participle</p></div>
+      <div class="summary-card"><h4>❓ EVER</h4><p>preguntas: Have you ever...?</p></div>
+      <div class="summary-card"><h4>🚫 NEVER</h4><p>negativas: I have never...</p></div>
+      <div class="summary-card"><h4>✅ ALREADY</h4><p>afirmativas: I have already...</p></div>
+      <div class="summary-card"><h4>⏳ YET</h4><p>negativas y preguntas: ... yet</p></div>
+      <div class="summary-card"><h4>🍕 Food Vocabulary</h4><p>meals, drinks, fruits, vegetables</p></div>
+      <div class="summary-card"><h4>🍽️ Ordering Food</h4><p>I'd like..., Can I have...?, What do you recommend?</p></div>
+      <div class="summary-card"><h4>📖 Describing Experiences</h4><p>I have been to..., It was amazing!</p></div>
+    </div>
+    <div class="tip" style="margin-top:12px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>¡Listo para practicar!</strong> Ahora dirígete a los <strong>Ejercicios</strong> para poner a prueba todo lo que has aprendido en esta clase.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:2.3%"></div></div>
+    <div id="slide-label">Slide 1 / 44</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Course</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E6.html'">✏️ Exercises</button>
+  </div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+</script>
+</body>
+</html>

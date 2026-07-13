@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Ejercicios: Función Cuadrática | PAES M1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<!-- KaTeX CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<style>
+:root{
+  --primary:#1a2a4a;
+  --primary2:#1e3a6a;
+  --primary3:#1a4a7a;
+  --math-blue:#1a5a8a;
+  --math-blue2:#2a7aaa;
+  --gold:#d4a84a;
+  --gold2:#e8c86a;
+  --white:#ffffff;
+  --light:#f0f4f8;
+  --lighter:#f7f9fc;
+  --green:#1a7a4a;
+  --green2:#e8f7ef;
+  --green3:#0f5c37;
+  --red:#b02a2a;
+  --red2:#fde8e8;
+  --gray:#5a6a7a;
+  --border:#d0dce8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Source Sans 3',sans-serif;
+  background:linear-gradient(160deg,var(--primary) 0%,var(--primary2) 40%,var(--primary3) 100%);
+  min-height:100vh;color:#1a2a3a;
+}
+
+/* ── TOP BAR ── */
+#topbar{
+  position:sticky;top:0;z-index:200;
+  background:var(--primary);border-bottom:3px solid var(--gold);
+  padding:12px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+#topbar .logo{font-size:1.6rem;}
+#topbar h1{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.25rem;font-weight:700;flex:1;
+}
+#topbar h1 span{color:var(--gold);}
+#score-pill{
+  background:rgba(212,168,74,.15);border:1px solid var(--gold);
+  color:var(--gold2);font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;padding:5px 14px;border-radius:20px;white-space:nowrap;
+}
+
+/* ── PROGRESS BAR ── */
+#prog-wrap{background:rgba(255,255,255,.08);height:6px;}
+#prog-fill{height:100%;background:var(--gold);transition:width .4s;width:0%;}
+
+/* ── MAIN ── */
+#main{max-width:820px;margin:0 auto;padding:28px 20px 120px;}
+
+/* ── INTRO CARD ── */
+#intro-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.25);
+  animation:fadeUp .5s ease forwards;
+}
+#intro-card .anchor{font-size:3rem;margin-bottom:12px;}
+#intro-card h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--primary);margin-bottom:10px;}
+#intro-card p{color:var(--gray);font-size:1rem;line-height:1.7;margin-bottom:24px;}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;}
+.tag{
+  background:var(--light);border:1px solid var(--border);border-radius:20px;
+  padding:4px 14px;font-size:.82rem;color:var(--primary);font-weight:600;
+}
+.info-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;
+  background:var(--light);border-radius:16px;padding:16px;margin-top:16px;
+}
+.info-item{text-align:center;}
+.info-item .num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--primary);}
+.info-item .label{font-size:.75rem;color:var(--gray);}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  border:none;cursor:pointer;border-radius:10px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.95rem;padding:11px 24px;transition:all .2s;
+}
+.btn-gold{background:var(--gold);color:var(--primary);}
+.btn-gold:hover{background:var(--gold2);transform:scale(1.03);}
+.btn-sky{background:var(--math-blue);color:var(--white);}
+.btn-sky:hover{background:var(--math-blue2);transform:scale(1.03);}
+.btn-green{background:var(--green);color:var(--white);}
+.btn-green:hover{background:var(--green3);transform:scale(1.03);}
+.btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold);}
+.btn-outline:hover{background:rgba(212,168,74,.12);}
+.btn-red{background:var(--red);color:var(--white);}
+.btn-red:hover{background:#8a1a1a;transform:scale(1.03);}
+
+/* ── QUESTION CARDS ── */
+#questions-wrap{display:none;flex-direction:column;gap:20px;}
+.q-card{
+  background:var(--white);border-radius:16px;padding:22px 26px;
+  box-shadow:0 4px 16px rgba(0,0,0,.12);
+  border-left:5px solid var(--border);
+  transition:border-color .2s;
+  animation:fadeUp .4s ease both;
+}
+.q-card.answered-correct{border-left-color:var(--green);}
+.q-card.answered-wrong{border-left-color:var(--red);}
+
+.q-num{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  color:var(--gray);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase;
+}
+.q-text{
+  font-size:1rem;font-weight:600;color:var(--primary);line-height:1.8;margin-bottom:14px;
+}
+.q-text .katex{font-size:1.05rem;}
+.q-text .math{background:var(--light);padding:2px 6px;border-radius:6px;font-family:'JetBrains Mono',monospace;}
+.q-text img{max-width:220px;height:auto;display:block;margin:10px 0;border-radius:8px;}
+
+/* options */
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt{
+  display:flex;align-items:center;gap:12px;
+  border:2px solid var(--border);border-radius:10px;
+  padding:10px 14px;cursor:pointer;transition:all .18s;
+  background:var(--light);user-select:none;
+}
+.opt:hover:not(.locked){border-color:var(--math-blue);background:#e8f0fc;}
+.opt.selected{border-color:var(--math-blue);background:#dbe8ff;}
+.opt.correct{border-color:var(--green);background:var(--green2);}
+.opt.wrong{border-color:var(--red);background:var(--red2);}
+.opt.locked{cursor:default;}
+.opt-letter{
+  width:26px;height:26px;border-radius:50%;border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;
+  color:var(--gray);flex-shrink:0;transition:all .18s;background:var(--white);
+}
+.opt.selected .opt-letter{border-color:var(--math-blue);color:var(--math-blue);background:#dbe8ff;}
+.opt.correct .opt-letter{border-color:var(--green);color:var(--green);background:var(--green2);}
+.opt.wrong .opt-letter{border-color:var(--red);color:var(--red);background:var(--red2);}
+.opt-text{font-size:.93rem;color:#1a2a3a;line-height:1.4;}
+.opt-text img{max-width:160px;height:auto;border-radius:6px;vertical-align:middle;}
+
+/* feedback */
+.q-feedback{display:none;margin-top:10px;font-size:.88rem;font-weight:600;padding:7px 12px;border-radius:8px;}
+.q-feedback.correct{display:flex;align-items:center;gap:6px;color:var(--green);background:var(--green2);}
+.q-feedback.wrong{display:flex;align-items:center;gap:6px;color:var(--red);background:var(--red2);}
+
+/* ── SUBMIT BAR ── */
+#submit-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:var(--primary);border-top:2px solid var(--gold);
+  padding:10px 24px;display:flex;align-items:center;gap:14px;
+  justify-content:space-between;flex-wrap:wrap;
+}
+#answered-count{color:#a0b8d0;font-family:'JetBrains Mono',monospace;font-size:.8rem;}
+
+/* ── RESULTS ── */
+#results-wrap{display:none;animation:fadeUp .5s ease forwards;}
+#results-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  box-shadow:0 12px 40px rgba(0,0,0,.25);margin-bottom:28px;text-align:center;
+}
+.score-ring{
+  width:140px;height:140px;border-radius:50%;margin:0 auto 20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;
+  border:8px solid var(--gold);background:var(--light);
+  transition:border-color .4s;
+}
+.score-ring .score-num{font-size:2.8rem;font-weight:900;color:var(--primary);line-height:1;}
+.score-ring .score-of{font-size:.9rem;color:var(--gray);}
+#result-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--primary);margin-bottom:8px;}
+#result-msg{color:var(--gray);font-size:1rem;line-height:1.6;margin-bottom:24px;}
+.result-stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+.stat-box{background:var(--light);border-radius:12px;padding:12px 22px;text-align:center;border:1px solid var(--border);}
+.stat-box .sv{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;}
+.stat-box .sl{font-size:.78rem;color:var(--gray);margin-top:2px;}
+.stat-box.ok .sv{color:var(--green);}
+.stat-box.err .sv{color:var(--red);}
+.stat-box.skip .sv{color:var(--gold);}
+.stat-box.grade .sv{color:var(--math-blue);}
+
+.grade-box{
+  font-size:1.2rem;text-align:center;padding:12px;
+  border-radius:40px;margin-top:16px;font-weight:700;
+}
+.approved{background:var(--green2);color:var(--green3);border:2px solid var(--green);}
+.failed{background:var(--red2);color:var(--red);border:2px solid var(--red);}
+
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px;}
+
+#review-wrap{display:flex;flex-direction:column;gap:16px;}
+.review-title{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.3rem;font-weight:700;margin-bottom:6px;
+}
+.review-card{
+  background:var(--white);border-radius:16px;padding:16px 20px;
+  border-left:4px solid var(--border);
+}
+.review-card.correct{border-left-color:var(--green);background:var(--green2);}
+.review-card.wrong{border-left-color:var(--red);background:var(--red2);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:600px){
+  #main{padding:16px 12px 100px;}
+  #intro-card,#results-card{padding:24px 18px;}
+  .result-actions{flex-direction:column;}
+  .btn{justify-content:center;}
+  .q-card{padding:16px;}
+  .q-text img{max-width:160px;}
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <span class="logo">📐</span>
+  <h1>Ejercicios M1 — <span>Función Cuadrática</span></h1>
+  <div id="score-pill">25 preguntas · 1 punto cada pregunta</div>
+</div>
+<div id="prog-wrap"><div id="prog-fill"></div></div>
+
+<div id="main">
+
+  <!-- INTRO -->
+  <div id="intro-card">
+    <div class="anchor">📝</div>
+    <h2>Función Cuadrática — Práctica PAES M1</h2>
+    <p>Este test selecciona <strong>25 preguntas aleatorias</strong> de un banco de 54, con alternativas en orden aleatorio. Al finalizar verás tu puntaje, tu nota y una revisión completa.</p>
+    <div class="tag-row">
+      <span class="tag">📈 Concavidad</span>
+      <span class="tag">🎯 Vértice</span>
+      <span class="tag">📐 Eje de simetría</span>
+      <span class="tag">🔢 Raíces</span>
+      <span class="tag">📊 Discriminante</span>
+      <span class="tag">🔄 Transformaciones</span>
+    </div>
+    <div class="info-grid">
+      <div class="info-item"><div class="num">54</div><div class="label">Preguntas en banco</div></div>
+      <div class="info-item"><div class="num">25</div><div class="label">Preguntas por test</div></div>
+      <div class="info-item"><div class="num">1 punto</div><div class="label">Por respuesta correcta</div></div>
+    </div>
+    <button class="btn btn-gold" onclick="startTest()">🚀 Iniciar Test</button>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="questions-wrap"></div>
+
+  <!-- RESULTS -->
+  <div id="results-wrap">
+    <div id="results-card">
+      <div class="score-ring">
+        <div class="score-num" id="r-score">0</div>
+        <div class="score-of" id="r-of">/ 25</div>
+      </div>
+      <div id="result-title"></div>
+      <div id="result-msg"></div>
+      <div class="result-stats">
+        <div class="stat-box ok"><div class="sv" id="r-correct">0</div><div class="sl">✅ Correctas</div></div>
+        <div class="stat-box err"><div class="sv" id="r-wrong">0</div><div class="sl">❌ Incorrectas</div></div>
+        <div class="stat-box skip"><div class="sv" id="r-skip">0</div><div class="sl">⚪ Sin responder</div></div>
+      </div>
+      <div class="grade-box" id="grade-box"></div>
+      <div class="result-actions">
+        <button class="btn btn-gold" onclick="restartTest()">🔄 Nuevo Test</button>
+        <button class="btn btn-sky" onclick="window.location.href='index.html'">📘 Volver al curso</button>
+        <button class="btn btn-green" onclick="window.location.href='C8.html'">📖 Volver a la clase</button>
+      </div>
+    </div>
+    <div class="review-title">📋 Revisión de Respuestas</div>
+    <div id="review-wrap"></div>
+  </div>
+
+</div>
+
+<!-- SUBMIT BAR -->
+<div id="submit-bar" style="display:none">
+  <div id="answered-count">Respondidas: 0 / 25</div>
+  <div style="display:flex;gap:10px">
+    <button class="btn btn-outline" onclick="cancelTest()">← Cancelar</button>
+    <button class="btn btn-gold" onclick="submitTest()">Finalizar Test ✓</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  POOL — 50 preguntas del Capítulo 9 (Desigualdades e Inecuaciones)
+//  Fuente: Matemática Para Nacional, Capítulo 9
+// ═══════════════════════════════════════════════════════════════
+
+const POOL = [
+  {
+    q: 'La solución de la inecuación $6x - 3 < 4x + 7$ es:',
+    opts: ['$[5, +\\infty[$', '$]5, +\\infty[$', '$]-\\infty, 5]$', '$]-\\infty, 5[$'],
+    ans: 3
+  },
+  {
+    q: 'Las edades de 2 hermanos difieren en 7 años. ¿Cuál es la máxima edad que puede tener el hermano menor, si su suma es menor que 20?',
+    opts: ['5', '6', '7', '8'],
+    ans: 1
+  },
+  {
+    q: 'El índice de masa corporal (IMC) se define como $\\text{IMC} = \\frac{\\text{masa (kg)}}{\\text{altura}^2 (m)}$. Una persona con peso normal debe tener IMC entre 18,5 y 24,9. Si Xavier mide 166 cm, ¿cuál de las siguientes alternativas podría ser su peso en kg?',
+    opts: ['$]48, 65]$', '$]42, 61[$', '$]45, 58]$', '$]50, 63]$'],
+    ans: 3
+  },
+  {
+    q: 'Al resolver la inecuación $\\frac{3x+27}{-5} < 0$, se obtiene como solución:',
+    opts: ['$]91, +\\infty[$', '$]-\\infty, 91[$', '$]-91, +\\infty[$', '$]-\\infty, -91[$'],
+    ans: 2
+  },
+  {
+    q: '¿A lo más, cuántos duraznos a $\\$400$ cada uno, más dos sandías de $\\$4.400$ cada una, se pueden comprar con un billete de $\\$20.000$?',
+    opts: ['26', '27', '28', '29'],
+    ans: 2
+  },
+  {
+    q: 'Luciana pesa 10 kg más que su hija Pía, pero pesa el doble que su nieta Martina. Si entre las tres suman por lo menos 180 kg, ¿cuál podría ser el peso de Martina?',
+    opts: ['32', '34', '37', '39'],
+    ans: 3
+  },
+  {
+    q: 'En una autopista, todo auto debe estar en movimiento, pero la máxima velocidad $v$ permitida es de 120 km/h. Al expresar matemáticamente esta proposición, se tiene:',
+    opts: ['$0 < v \\leq 120$', '$0 < v < 120$', '$v > 120$', '$v \\geq 120$'],
+    ans: 0
+  },
+  {
+    q: 'Al resolver la inecuación $-\\frac{x}{2} + \\frac{x}{8} \\leq 5 - \\frac{x}{4}$, se obtiene como conjunto solución:',
+    opts: ['$\\{x \\in \\mathbb{R} \\mid x \\geq 40\\}$', '$\\{x \\in \\mathbb{R} \\mid x \\leq 40\\}$', '$\\{x \\in \\mathbb{R} \\mid x \\geq -40\\}$', '$\\{x \\in \\mathbb{R} \\mid x \\leq -40\\}$', '$\\emptyset$'],
+    ans: 2
+  },
+  {
+    q: 'Si $p$ es un número perteneciente al intervalo real $[-4, 8]$ y $q$ es un número entero no negativo y menor que 6, ¿cuál es el mínimo valor que puede tomar la expresión $p \\cdot q$?',
+    opts: ['-32', '-20', '-18', '-4'],
+    ans: 1
+  },
+  {
+    q: '¿A cuál intervalo pertenecen los números reales que son mayores que su cuadrado?',
+    opts: ['$]-\\infty, 1[$', '$]0, 1[$', '$]0, +\\infty[$', '$]-1, 0[$'],
+    ans: 1
+  },
+  {
+    q: 'Don Carlos vende sopaipillas. Las compra en $\\$110$ cada una y las vende en $\\$400$. Si en aceite gasta diariamente 2 botellas de $\\$1.800$ cada una, ¿cuántas sopaipillas como mínimo debería vender para que sus ganancias sean mayores a $\\$23.000$?',
+    opts: ['89', '90', '91', '92', '93'],
+    ans: 3
+  },
+  {
+    q: '¿Cuántos números naturales cumplen que su triple, disminuido en 15, es mayor que su cuádruple aumentado en 4?',
+    opts: ['0', '1', '2', '3'],
+    ans: 0
+  },
+  {
+    q: 'Si el quíntuple de un número no es mayor que el triple del mismo número más 18, ¿cuántos números naturales cumplen dicha condición?',
+    opts: ['12', '9', '10', 'Infinitos'],
+    ans: 1
+  },
+  {
+    q: 'Si $x > y > z$, entonces ¿cuál de las siguientes expresiones es siempre negativa?',
+    opts: ['$y - z$', '$z - x$', '$y - x$', '$z - y - x$'],
+    ans: 1
+  },
+  {
+    q: 'Si $0 < a < 1$, entonces ¿cuál de las siguientes desigualdades es verdadera?',
+    opts: ['$a^3 > a^2$', '$a^2 < 1$', '$\\frac{1}{a} < 1$', '$a^5 > a^4$'],
+    ans: 1
+  },
+  {
+    q: 'La inecuación $3x - 8 < 5x + 6$ tiene por solución el intervalo:',
+    opts: ['$]-\\infty, 7[$', '$]-\\infty, -7]$', '$[-7, +\\infty[$', '$]-7, +\\infty[$'],
+    ans: 3
+  },
+  {
+    q: 'El conjunto solución de la inecuación $-5 - 4(x + 3) > 4(3x - 7) - 5x$ es:',
+    opts: ['$\\{x \\in \\mathbb{R} \\mid x > 1\\}$', '$\\{x \\in \\mathbb{R} \\mid x \\geq 1\\}$', '$\\{x \\in \\mathbb{R} \\mid x < 1\\}$', '$\\{x \\in \\mathbb{R} \\mid x > -1\\}$'],
+    ans: 2
+  },
+  {
+    q: 'El intervalo que es conjunto solución de la inecuación $\\frac{4-x}{5} - x \\geq 1 + \\frac{1-2x}{3}$ es:',
+    opts: ['$[1, +\\infty[$', '$[-1, +\\infty[$', '$]-\\infty, -1]$', '$]-\\infty, -1[$'],
+    ans: 2
+  },
+  {
+    q: 'El conjunto solución de la inecuación $\\frac{x}{3} < \\frac{2x+5}{6} - 4$ es:',
+    opts: ['$\\mathbb{R}$', '$\\emptyset$', '$\\{23\\}$', '$]23, +\\infty[$'],
+    ans: 1
+  },
+  {
+    q: 'Si $x \\in \\mathbb{R}^+$ y $\\frac{3}{4} - \\frac{5}{x} > \\frac{7}{x}$, entonces todos los números no negativos que NO son solución de la inecuación se encuentran en el intervalo:',
+    opts: ['$]16, +\\infty]$', '$[0, 16]$', '$]0, 16]$', '$]-\\infty, 16]$'],
+    ans: 1
+  },
+  {
+    q: 'Si $-3 < 2x - 1 < 3$, entonces ¿entre qué valores está $3x + 1$?',
+    opts: ['$-1 < 3x + 1 < 3$', '$-2 < 3x + 1 < 2$', '$-4 < 3x + 1 < 2$', '$-2 < 3x + 1 < 7$'],
+    ans: 3
+  },
+  {
+    q: 'La representación gráfica del conjunto solución de la inecuación $\\frac{3-x}{4} \\leq \\frac{x+7}{2} + 1$ corresponde a:',
+    opts: ['Intervalo $[-5, +\\infty[$', 'Intervalo $]-\\infty, -5]$', 'Intervalo $[5, +\\infty[$', 'Intervalo $]-\\infty, 5]$'],
+    ans: 0
+  },
+  {
+    q: 'Respecto de los valores enteros de $x$ que satisfacen la inecuación $-6 \\leq 2x \\leq 4$, es verdad que:',
+    opts: ['Son seis: tres negativos, el cero y dos positivos', 'Son siete: tres negativos, el cero y tres positivos', 'Son ocho: cuatro negativos, el cero y tres positivos', 'Son infinitos negativos, el cero e infinitos positivos'],
+    ans: 0
+  },
+  {
+    q: 'En una tienda de mascotas se dispone de un monto máximo de $\\$50.000$ para pagar la electricidad. La empresa eléctrica cobra mediante $c(x) = 100x + 5000$, donde $x$ son los kWh consumidos. ¿Cuál de los siguientes conjuntos contiene todos los posibles valores de consumo?',
+    opts: ['$[0, 450]$', '$[0, 450[$', '$[0, 550[$', '$[0, 5500]$'],
+    ans: 0
+  },
+  {
+    q: '¿Cuántos números primos cumplen: "el exceso del quíntuplo del número sobre 34 es menor que 31"?',
+    opts: ['4', '5', '6', '7'],
+    ans: 1
+  },
+  {
+    q: '"CARman" cobra $\\$35.000$ diarios sin importar km. "CARmen" cobra $\\$5.000$ diarios más $\\$200$ por km. ¿Cuántos km debe recorrer en una semana para que "CARman" sea más conveniente?',
+    opts: ['Menos de 150', 'Más de 150', 'Menos de 1.050', 'Más de 1.050'],
+    ans: 3
+  },
+  {
+    q: '$\\alpha$ y $\\beta$ son ángulos que suman $180^\\circ$. Si $\\beta$ varía entre $139^\\circ$ y $162^\\circ$, ¿cuál es la variación que experimentará el complemento de $\\alpha$?',
+    opts: ['$18^\\circ$ y $41^\\circ$', '$31^\\circ$ y $58^\\circ$', '$49^\\circ$ y $72^\\circ$', '$52^\\circ$ y $81^\\circ$'],
+    ans: 2
+  },
+  {
+    q: 'El costo de fabricación de chocolates es $C = 25000 + 250x$. Si cada chocolate se vende a $\\$500$, ¿cuál es la cantidad mínima de chocolates para tener utilidades?',
+    opts: ['56', '77', '101', '150'],
+    ans: 2
+  },
+  {
+    q: 'La ingesta diaria recomendada de calcio es 1.000 mg. Una taza de leche tiene 280 mg y un vaso de jugo 50 mg. Si Miguel toma una taza de leche y $N$ vasos de jugo, ¿qué inecuación permite determinar los valores de $N$ para cumplir la ingesta?',
+    opts: ['$280 + 50N \\leq 1.000$', '$(280 + 50)N \\leq 1.000$', '$280N + 50 \\geq 1.000$', '$280 + 50N \\geq 1.000$'],
+    ans: 3
+  },
+  {
+    q: 'Para el cálculo de la tarifa eléctrica se usa $T = Px + C$. Para una tarifa entre $\\$15.000$ y $\\$70.000$, ¿cuál desigualdad representa los posibles valores del consumo?',
+    opts: ['$\\frac{15.000 - C}{P} < x < \\frac{70.000 - C}{P}$', '$\\frac{15.000}{P} < x < \\frac{70.000}{P}$', '$15.000 - P < x < 70.000 - P$', '$15.000 + C < x < 70.000 + C$'],
+    ans: 0
+  },
+  {
+    q: 'Paula, hace cinco años tenía menos de 40 años y en dos años más, el doble de su edad será superior a 90 años. ¿Cuál es la edad actual de Paula?',
+    opts: ['40 años', '41 años', '43 años', '44 años'],
+    ans: 3
+  },
+  {
+    q: 'Un artesano tiene $x$ collares, vende 60 y le quedan más de la mitad. Luego fabrica 5 más, vende 27 y le quedan menos de 40. ¿Cuántos collares fabricó en total?',
+    opts: ['121', '122', '125', '126'],
+    ans: 0
+  },
+  {
+    q: '¿Cuál es el mayor número entero que es solución de la inecuación $\\frac{3x - 2}{4} - \\frac{x + 1}{2} \\geq \\frac{x - 3}{3}$?',
+    opts: ['5', '3', '1', '0'],
+    ans: 3
+  },
+  {
+    q: 'El conjunto solución de la inecuación $2(x - 3) + 5 \\geq 3(x + 1) - 2x$ es:',
+    opts: ['$]-\\infty, 4]$', '$[4, +\\infty[$', '$]-\\infty, -4]$', '$[-4, +\\infty[$'],
+    ans: 1
+  },
+  {
+    q: 'Si $3x - 7 \\leq 5x + 1 \\leq 2x + 9$, entonces el conjunto solución es:',
+    opts: ['$[-4, \\frac{8}{3}]$', '$[-4, 4]$', '$[-2, \\frac{8}{3}]$', '$[2, 4]$'],
+    ans: 0
+  },
+  {
+    q: 'La inecuación $\\frac{x - 2}{3} - \\frac{x + 1}{4} < \\frac{x - 3}{2} + 1$ tiene como solución:',
+    opts: ['$x < -1$', '$x > -1$', '$x < 1$', '$x > 1$'],
+    ans: 3
+  },
+  {
+    q: '¿Cuál es el mayor número entero que satisface la inecuación $5 - 3x > 2x - 10$?',
+    opts: ['2', '3', '4', '5'],
+    ans: 0
+  },
+  {
+    q: 'El conjunto solución de la inecuación $-4 \\leq 3x + 2 \\leq 5$ es:',
+    opts: ['$[-2, 1]$', '$[-2, \\frac{7}{3}]$', '$[-\\frac{6}{3}, \\frac{7}{3}]$', '$[-2, 1[$'],
+    ans: 0
+  },
+  {
+    q: 'Si la base de un rectángulo mide $(x + 3)$ cm y su altura $(x - 1)$ cm, ¿para qué valores de $x$ el perímetro es mayor que 20 cm?',
+    opts: ['$x > 4$', '$x > 5$', '$x > 6$', '$x > 7$'],
+    ans: 0
+  },
+  {
+    q: 'Un número aumentado en 5 es menor o igual que el triple del mismo número disminuido en 7. ¿Cuál es el menor valor entero que puede tomar dicho número?',
+    opts: ['5', '6', '7', '8'],
+    ans: 1
+  },
+  {
+    q: 'Si $a$ y $b$ son números reales tales que $a < 0 < b$, ¿cuál de las siguientes desigualdades es siempre verdadera?',
+    opts: ['$a^2 < b^2$', '$ab > 0$', '$a + b < 0$', '$a - b < 0$'],
+    ans: 3
+  },
+  {
+    q: 'La edad de un padre es el triple de la edad de su hijo. ¿Dentro de cuántos años la edad del padre será menor que el doble de la edad del hijo?',
+    opts: ['Nunca', 'Siempre', 'Cuando el hijo tenga más de la edad actual del padre', 'Depende de las edades actuales'],
+    ans: 3
+  },
+  {
+    q: 'Un vendedor recibe un sueldo fijo de $\\$300.000$ más $\\$5.000$ por cada producto vendido. Si desea ganar al menos $\\$650.000$ en el mes, ¿cuántos productos debe vender como mínimo?',
+    opts: ['60', '65', '70', '75'],
+    ans: 2
+  },
+  {
+    q: 'Si $-2 < x < 3$, entonces ¿entre qué valores está $2x - 1$?',
+    opts: ['$-5 < 2x - 1 < 5$', '$-3 < 2x - 1 < 4$', '$-4 < 2x - 1 < 3$', '$-5 < 2x - 1 < 4$'],
+    ans: 0
+  },
+  {
+    q: '¿Para qué valores de $x$ se cumple que $3x + 2 > 5x - 4$ y $2x - 3 < x + 1$ simultáneamente?',
+    opts: ['$x < 3$', '$x > 3$', '$x < 4$', '$3 < x < 4$'],
+    ans: 0
+  },
+  {
+    q: 'Un estanque de 1.000 litros contiene 350 litros. Si se abre una llave que vierte 25 L/min, ¿durante cuántos minutos puede permanecer abierta sin desbordarse?',
+    opts: ['Menos de 26 min', 'Menos de 30 min', 'A lo más 26 min', 'A lo más 30 min'],
+    ans: 2
+  },
+  {
+    q: 'El conjunto solución de la inecuación $4(x - 2) - 3(2x + 1) \\geq 5(3x - 4) - 2(x + 1)$ es:',
+    opts: ['$x \\leq 1$', '$x \\geq 1$', '$x \\leq -1$', '$x \\geq -1$'],
+    ans: 0
+  },
+  {
+    q: 'Si $0 < x < 1$, entonces ¿cuál de las siguientes expresiones es la mayor?',
+    opts: ['$x$', '$x^2$', '$\\frac{1}{x}$', '$\\frac{1}{x^2}$'],
+    ans: 3
+  },
+  {
+    q: 'Un rectángulo tiene largo $(3x - 2)$ cm y ancho $(x + 1)$ cm. Si su área es menor que 50 cm², ¿cuál de los siguientes intervalos representa los posibles valores de $x$?',
+    opts: ['$-\\infty, 4$', '$-1, 4$', '$-\\infty, 3$', '$-1, 3$'],
+    ans: 1
+  },
+  {
+    q: '¿Cuántos números enteros satisfacen la inecuación $2x - 5 < 3x + 2 \\leq 4x - 1$?',
+    opts: ['0', '1', '2', 'Infinitos'],
+    ans: 3
+  },
+  {
+    q: 'En un triángulo, un lado mide 8 cm y otro 5 cm. ¿Cuál es el intervalo posible para la medida del tercer lado?',
+    opts: ['$3 < x < 13$', '$3 \\leq x \\leq 13$', '$2 < x < 14$', '$2 \\leq x \\leq 14$'],
+    ans: 0
+  },
+  {
+    q: 'Si el perímetro de un cuadrado es mayor que 20 cm y menor que 36 cm, ¿entre qué valores puede estar su lado?',
+    opts: ['$5 < \\text{lado} < 9$', '$4 < \\text{lado} < 8$', '$5 \\leq \\text{lado} \\leq 9$', '$4 \\leq \\text{lado} \\leq 8$'],
+    ans: 0
+  },
+  {
+    q: '¿Para qué valores de $a$ la ecuación $(a - 2)x = 4$ tiene solución positiva?',
+    opts: ['$a > 2$', '$a < 2$', '$a > 4$', '$a < 4$'],
+    ans: 0
+  },
+  {
+    q: 'Un número entero positivo es tal que su triple aumentado en 5 es mayor que 23 y su doble disminuido en 3 es menor que 21. ¿Cuántos números cumplen esta condición?',
+    opts: ['4', '5', '6', '7'],
+    ans: 1
+  },
+  {
+    q: 'Si $-5 \\leq 2x - 3 \\leq 7$, entonces ¿entre qué valores está $x$?',
+    opts: ['$-1 \\leq x \\leq 5$', '$-4 \\leq x \\leq 2$', '$-2 \\leq x \\leq 4$', '$-1 \\leq x \\leq 2$'],
+    ans: 0
+  }
+];
+
+// ============================================================
+// CONFIGURACIÓN DEL TEST
+// ============================================================
+const TOTAL_QUESTIONS = 25;
+let selectedQuestions = [];
+let shuffledOptions = [];
+let userAnswers = [];
+let submitted = false;
+
+// ============================================================
+// UTILIDADES
+// ============================================================
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getRandomQuestions() {
+  const shuffledPool = shuffleArray([...POOL]);
+  return shuffledPool.slice(0, TOTAL_QUESTIONS);
+}
+
+function shuffleOptionsForQuestion(q) {
+  const indices = [0, 1, 2, 3];
+  const shuffledIndices = shuffleArray(indices);
+  const newOpts = shuffledIndices.map(i => q.opts[i]);
+  const newAns = shuffledIndices.indexOf(q.ans);
+  return { opts: newOpts, ansIdx: newAns };
+}
+
+function buildTest() {
+  selectedQuestions = getRandomQuestions();
+  shuffledOptions = selectedQuestions.map(q => shuffleOptionsForQuestion(q));
+  userAnswers = Array(TOTAL_QUESTIONS).fill(null);
+}
+
+// ============================================================
+// RENDERIZADO
+// ============================================================
+function renderQuestions() {
+  const wrap = document.getElementById('questions-wrap');
+  wrap.innerHTML = '';
+  
+  selectedQuestions.forEach((q, idx) => {
+    const optData = shuffledOptions[idx];
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `qcard-${idx}`;
+    card.style.animationDelay = `${idx * 0.02}s`;
+    
+    let optsHtml = '';
+    const letters = ['a', 'b', 'c', 'd'];
+    optData.opts.forEach((opt, optIdx) => {
+      optsHtml += `
+        <div class="opt" id="opt-${idx}-${optIdx}" onclick="selectOption(${idx}, ${optIdx})">
+          <div class="opt-letter">${letters[optIdx]}</div>
+          <div class="opt-text">${opt}</div>
+        </div>
+      `;
+    });
+    
+    card.innerHTML = `
+      <div class="q-num">Pregunta ${idx + 1} de ${TOTAL_QUESTIONS}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">${optsHtml}</div>
+      <div class="q-feedback" id="qfb-${idx}"></div>
+    `;
+    wrap.appendChild(card);
+  });
+  
+  // Re-renderizar KaTeX en las nuevas preguntas
+  setTimeout(function() {
+    renderKaTeX(wrap);
+  }, 300);
+}
+
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  if (userAnswers[qIdx] !== null) {
+    const prevOpt = document.getElementById(`opt-${qIdx}-${userAnswers[qIdx]}`);
+    if (prevOpt) prevOpt.classList.remove('selected');
+  }
+  userAnswers[qIdx] = optIdx;
+  const selectedOpt = document.getElementById(`opt-${qIdx}-${optIdx}`);
+  if (selectedOpt) selectedOpt.classList.add('selected');
+  updateProgress();
+}
+
+function updateProgress() {
+  const answered = userAnswers.filter(a => a !== null).length;
+  document.getElementById('answered-count').textContent = `Respondidas: ${answered} / ${TOTAL_QUESTIONS}`;
+  document.getElementById('prog-fill').style.width = `${(answered / TOTAL_QUESTIONS) * 100}%`;
+}
+
+function calculateGrade(correct, total) {
+  // Nota = cantidad de respuestas correctas (1 punto cada una)
+  const grade = correct;
+  const percentage = Math.round((correct / total) * 100);
+  return { grade, percentage };
+}
+
+function submitTest() {
+  if (submitted) return;
+  
+  const answered = userAnswers.filter(a => a !== null).length;
+  if (answered < TOTAL_QUESTIONS) {
+    if (!confirm(`Tienes ${TOTAL_QUESTIONS - answered} pregunta(s) sin responder. ¿Deseas finalizar igual?`)) {
+      return;
+    }
+  }
+  
+  submitted = true;
+  
+  let correctCount = 0;
+  selectedQuestions.forEach((_, idx) => {
+    const chosen = userAnswers[idx];
+    const correctAns = shuffledOptions[idx].ansIdx;
+    const card = document.getElementById(`qcard-${idx}`);
+    const fb = document.getElementById(`qfb-${idx}`);
+    const letters = ['a', 'b', 'c', 'd'];
+    
+    // Bloquear todas las opciones
+    for (let i = 0; i < 4; i++) {
+      const opt = document.getElementById(`opt-${idx}-${i}`);
+      if (opt) opt.classList.add('locked');
+    }
+    
+    if (chosen === null) {
+      // Sin responder: marcar la correcta
+      const correctOpt = document.getElementById(`opt-${idx}-${correctAns}`);
+      if (correctOpt) correctOpt.classList.add('correct');
+      card.classList.add('answered-wrong');
+      fb.className = 'q-feedback wrong';
+      fb.innerHTML = `⚪ Sin responder — La respuesta correcta era: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    } else if (chosen === correctAns) {
+      correctCount++;
+      const chosenOpt = document.getElementById(`opt-${idx}-${chosen}`);
+      if (chosenOpt) {
+        chosenOpt.classList.remove('selected');
+        chosenOpt.classList.add('correct');
+      }
+      card.classList.add('answered-correct');
+      fb.className = 'q-feedback correct';
+      fb.innerHTML = '✅ ¡Correcto!';
+    } else {
+      const chosenOpt = document.getElementById(`opt-${idx}-${chosen}`);
+      const correctOpt = document.getElementById(`opt-${idx}-${correctAns}`);
+      if (chosenOpt) {
+        chosenOpt.classList.remove('selected');
+        chosenOpt.classList.add('wrong');
+      }
+      if (correctOpt) correctOpt.classList.add('correct');
+      card.classList.add('answered-wrong');
+      fb.className = 'q-feedback wrong';
+      fb.innerHTML = `❌ Incorrecto — La respuesta correcta era: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    }
+  });
+  
+  const wrongCount = userAnswers.filter((v, i) => v !== null && v !== shuffledOptions[i].ansIdx).length;
+  const skippedCount = userAnswers.filter(v => v === null).length;
+  const { grade, percentage } = calculateGrade(correctCount, TOTAL_QUESTIONS);
+  const isApproved = grade >= 4.0;
+  
+  // Mostrar resultados
+// Mostrar resultados
+document.getElementById('r-score').textContent = correctCount;
+document.getElementById('r-of').textContent = `/ ${TOTAL_QUESTIONS}`;
+document.getElementById('r-correct').textContent = correctCount;
+document.getElementById('r-wrong').textContent = wrongCount;
+document.getElementById('r-skip').textContent = skippedCount;
+
+const gradeBox = document.getElementById('grade-box');
+// La nota ahora es simplemente la cantidad de correctas
+gradeBox.className = `grade-box ${correctCount >= 13 ? 'approved' : 'failed'}`;
+gradeBox.innerHTML = `<strong>${correctCount >= 13 ? '🎉 APROBADO 🎉' : '📖 REPROBADO 📖'}</strong><br>Puntaje: ${correctCount} / ${TOTAL_QUESTIONS} correctas (${percentage}% de logro)`;
+
+let title, msg;
+if (percentage >= 90) {
+  title = '🏆 ¡Excelente!';
+  msg = 'Dominas la función cuadrática con solidez. ¡Sigue así!';
+} else if (percentage >= 70) {
+  title = '👍 ¡Muy bien!';
+  msg = 'Tienes un buen dominio. Repasa los temas donde fallaste para mejorar.';
+} else if (percentage >= 50) {
+  title = '📚 Sigue practicando';
+  msg = 'Vas por buen camino, pero necesitas repasar más la materia.';
+} else {
+  title = '💪 No te rindas';
+  msg = 'Revisa la clase y vuelve a intentarlo. ¡Puedes mejorar!';
+}
+document.getElementById('result-title').textContent = title;
+document.getElementById('result-msg').textContent = msg;
+  
+  // Cambiar color del anillo
+  const ring = document.querySelector('.score-ring');
+  if (ring) ring.style.borderColor = percentage >= 70 ? 'var(--green)' : percentage >= 50 ? 'var(--gold)' : 'var(--red)';
+  
+  // Ocultar preguntas y mostrar resultados
+  document.getElementById('questions-wrap').style.display = 'none';
+  document.getElementById('submit-bar').style.display = 'none';
+  document.getElementById('results-wrap').style.display = 'block';
+  document.getElementById('prog-fill').style.width = '100%';
+  
+  // Generar revisión de respuestas
+  renderReview();
+  
+  // Re-renderizar KaTeX en los resultados
+  setTimeout(function() {
+    renderKaTeX(document.getElementById('results-wrap'));
+  }, 300);
+  
+  // Scroll a resultados
+  document.getElementById('results-wrap').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderReview() {
+  const reviewWrap = document.getElementById('review-wrap');
+  reviewWrap.innerHTML = '';
+  
+  selectedQuestions.forEach((q, idx) => {
+    const chosen = userAnswers[idx];
+    const correctAns = shuffledOptions[idx].ansIdx;
+    const isCorrect = chosen === correctAns;
+    const letters = ['a', 'b', 'c', 'd'];
+    
+    const reviewCard = document.createElement('div');
+    reviewCard.className = `review-card ${isCorrect ? 'correct' : 'wrong'}`;
+    
+    let answerStatus = '';
+    if (chosen === null) {
+      answerStatus = `<span style="color:var(--gold);">⚪ Sin responder</span> — Respuesta correcta: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    } else if (isCorrect) {
+      answerStatus = `<span style="color:var(--green);">✅ Correcta</span> — Elegiste: <strong>${letters[chosen]}) ${shuffledOptions[idx].opts[chosen]}</strong>`;
+    } else {
+      answerStatus = `<span style="color:var(--red);">❌ Incorrecta</span> — Elegiste: <strong>${letters[chosen]}) ${shuffledOptions[idx].opts[chosen]}</strong> — Respuesta correcta: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    }
+    
+    reviewCard.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+        <strong style="color:var(--primary);">Pregunta ${idx + 1}</strong>
+        <span style="font-size:.7rem;color:var(--gray);">${isCorrect ? '✓ Correcta' : (chosen === null ? '○ Sin responder' : '✗ Incorrecta')}</span>
+      </div>
+      <div style="font-size:.85rem;margin-bottom:8px;">${q.q.substring(0, 120)}${q.q.length > 120 ? '...' : ''}</div>
+      <div style="font-size:.8rem;">${answerStatus}</div>
+    `;
+    reviewWrap.appendChild(reviewCard);
+  });
+}
+
+// ============================================================
+// FUNCIONES DE CONTROL
+// ============================================================
+function startTest() {
+  buildTest();
+  submitted = false;
+  document.getElementById('intro-card').style.display = 'none';
+  document.getElementById('results-wrap').style.display = 'none';
+  renderQuestions();
+  document.getElementById('questions-wrap').style.display = 'flex';
+  document.getElementById('submit-bar').style.display = 'flex';
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartTest() {
+  buildTest();
+  submitted = false;
+  document.getElementById('results-wrap').style.display = 'none';
+  renderQuestions();
+  document.getElementById('questions-wrap').style.display = 'flex';
+  document.getElementById('submit-bar').style.display = 'flex';
+  updateProgress();
+  document.getElementById('intro-card').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelTest() {
+  if (confirm('¿Estás seguro de que quieres cancelar el test? Perderás tu progreso.')) {
+    document.getElementById('questions-wrap').style.display = 'none';
+    document.getElementById('submit-bar').style.display = 'none';
+    document.getElementById('intro-card').style.display = 'block';
+    document.getElementById('prog-fill').style.width = '0%';
+    submitted = false;
+  }
+}
+// ─── FUNCIÓN PARA RENDERIZAR KATEX ───
+function renderKaTeX(element) {
+  if (typeof renderMathInElement === 'function') {
+    try {
+      renderMathInElement(element || document.body, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '\\[', right: '\\]', display: true},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+      });
+    } catch(e) {
+      console.warn('KaTeX render error:', e);
+    }
+  }
+}
+// ─── INICIALIZACIÓN ───
+document.addEventListener("DOMContentLoaded", function() {
+  // Esperar a que KaTeX esté completamente cargado
+  setTimeout(function() {
+    renderKaTeX(document.body);
+  }, 500);
+  
+  // Configurar eventos de los botones
+  document.getElementById('submitTestBtn')?.addEventListener('click', submitTest);
+  document.getElementById('cancelTestBtn')?.addEventListener('click', cancelTest);
+  document.getElementById('restartTestBtn')?.addEventListener('click', restartTest);
+  document.getElementById('goToCourseBtn')?.addEventListener('click', () => window.location.href = 'index.html');
+  document.getElementById('goToClassBtn')?.addEventListener('click', () => window.location.href = 'C8.html');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Ejercicios: Función Cuadrática | PAES M1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<!-- KaTeX CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<style>
+:root{
+  --primary:#1a2a4a;
+  --primary2:#1e3a6a;
+  --primary3:#1a4a7a;
+  --math-blue:#1a5a8a;
+  --math-blue2:#2a7aaa;
+  --gold:#d4a84a;
+  --gold2:#e8c86a;
+  --white:#ffffff;
+  --light:#f0f4f8;
+  --lighter:#f7f9fc;
+  --green:#1a7a4a;
+  --green2:#e8f7ef;
+  --green3:#0f5c37;
+  --red:#b02a2a;
+  --red2:#fde8e8;
+  --gray:#5a6a7a;
+  --border:#d0dce8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Source Sans 3',sans-serif;
+  background:linear-gradient(160deg,var(--primary) 0%,var(--primary2) 40%,var(--primary3) 100%);
+  min-height:100vh;color:#1a2a3a;
+}
+
+/* ── TOP BAR ── */
+#topbar{
+  position:sticky;top:0;z-index:200;
+  background:var(--primary);border-bottom:3px solid var(--gold);
+  padding:12px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+#topbar .logo{font-size:1.6rem;}
+#topbar h1{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.25rem;font-weight:700;flex:1;
+}
+#topbar h1 span{color:var(--gold);}
+#score-pill{
+  background:rgba(212,168,74,.15);border:1px solid var(--gold);
+  color:var(--gold2);font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;padding:5px 14px;border-radius:20px;white-space:nowrap;
+}
+
+/* ── PROGRESS BAR ── */
+#prog-wrap{background:rgba(255,255,255,.08);height:6px;}
+#prog-fill{height:100%;background:var(--gold);transition:width .4s;width:0%;}
+
+/* ── MAIN ── */
+#main{max-width:820px;margin:0 auto;padding:28px 20px 120px;}
+
+/* ── INTRO CARD ── */
+#intro-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.25);
+  animation:fadeUp .5s ease forwards;
+}
+#intro-card .anchor{font-size:3rem;margin-bottom:12px;}
+#intro-card h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--primary);margin-bottom:10px;}
+#intro-card p{color:var(--gray);font-size:1rem;line-height:1.7;margin-bottom:24px;}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;}
+.tag{
+  background:var(--light);border:1px solid var(--border);border-radius:20px;
+  padding:4px 14px;font-size:.82rem;color:var(--primary);font-weight:600;
+}
+.info-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;
+  background:var(--light);border-radius:16px;padding:16px;margin-top:16px;
+}
+.info-item{text-align:center;}
+.info-item .num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--primary);}
+.info-item .label{font-size:.75rem;color:var(--gray);}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  border:none;cursor:pointer;border-radius:10px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.95rem;padding:11px 24px;transition:all .2s;
+}
+.btn-gold{background:var(--gold);color:var(--primary);}
+.btn-gold:hover{background:var(--gold2);transform:scale(1.03);}
+.btn-sky{background:var(--math-blue);color:var(--white);}
+.btn-sky:hover{background:var(--math-blue2);transform:scale(1.03);}
+.btn-green{background:var(--green);color:var(--white);}
+.btn-green:hover{background:var(--green3);transform:scale(1.03);}
+.btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold);}
+.btn-outline:hover{background:rgba(212,168,74,.12);}
+.btn-red{background:var(--red);color:var(--white);}
+.btn-red:hover{background:#8a1a1a;transform:scale(1.03);}
+
+/* ── QUESTION CARDS ── */
+#questions-wrap{display:none;flex-direction:column;gap:20px;}
+.q-card{
+  background:var(--white);border-radius:16px;padding:22px 26px;
+  box-shadow:0 4px 16px rgba(0,0,0,.12);
+  border-left:5px solid var(--border);
+  transition:border-color .2s;
+  animation:fadeUp .4s ease both;
+}
+.q-card.answered-correct{border-left-color:var(--green);}
+.q-card.answered-wrong{border-left-color:var(--red);}
+
+.q-num{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  color:var(--gray);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase;
+}
+.q-text{
+  font-size:1rem;font-weight:600;color:var(--primary);line-height:1.8;margin-bottom:14px;
+}
+.q-text .katex{font-size:1.05rem;}
+.q-text .math{background:var(--light);padding:2px 6px;border-radius:6px;font-family:'JetBrains Mono',monospace;}
+.q-text img{max-width:220px;height:auto;display:block;margin:10px 0;border-radius:8px;}
+
+/* options */
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt{
+  display:flex;align-items:center;gap:12px;
+  border:2px solid var(--border);border-radius:10px;
+  padding:10px 14px;cursor:pointer;transition:all .18s;
+  background:var(--light);user-select:none;
+}
+.opt:hover:not(.locked){border-color:var(--math-blue);background:#e8f0fc;}
+.opt.selected{border-color:var(--math-blue);background:#dbe8ff;}
+.opt.correct{border-color:var(--green);background:var(--green2);}
+.opt.wrong{border-color:var(--red);background:var(--red2);}
+.opt.locked{cursor:default;}
+.opt-letter{
+  width:26px;height:26px;border-radius:50%;border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;
+  color:var(--gray);flex-shrink:0;transition:all .18s;background:var(--white);
+}
+.opt.selected .opt-letter{border-color:var(--math-blue);color:var(--math-blue);background:#dbe8ff;}
+.opt.correct .opt-letter{border-color:var(--green);color:var(--green);background:var(--green2);}
+.opt.wrong .opt-letter{border-color:var(--red);color:var(--red);background:var(--red2);}
+.opt-text{font-size:.93rem;color:#1a2a3a;line-height:1.4;}
+.opt-text img{max-width:160px;height:auto;border-radius:6px;vertical-align:middle;}
+
+/* feedback */
+.q-feedback{display:none;margin-top:10px;font-size:.88rem;font-weight:600;padding:7px 12px;border-radius:8px;}
+.q-feedback.correct{display:flex;align-items:center;gap:6px;color:var(--green);background:var(--green2);}
+.q-feedback.wrong{display:flex;align-items:center;gap:6px;color:var(--red);background:var(--red2);}
+
+/* ── SUBMIT BAR ── */
+#submit-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:var(--primary);border-top:2px solid var(--gold);
+  padding:10px 24px;display:flex;align-items:center;gap:14px;
+  justify-content:space-between;flex-wrap:wrap;
+}
+#answered-count{color:#a0b8d0;font-family:'JetBrains Mono',monospace;font-size:.8rem;}
+
+/* ── RESULTS ── */
+#results-wrap{display:none;animation:fadeUp .5s ease forwards;}
+#results-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  box-shadow:0 12px 40px rgba(0,0,0,.25);margin-bottom:28px;text-align:center;
+}
+.score-ring{
+  width:140px;height:140px;border-radius:50%;margin:0 auto 20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;
+  border:8px solid var(--gold);background:var(--light);
+  transition:border-color .4s;
+}
+.score-ring .score-num{font-size:2.8rem;font-weight:900;color:var(--primary);line-height:1;}
+.score-ring .score-of{font-size:.9rem;color:var(--gray);}
+#result-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--primary);margin-bottom:8px;}
+#result-msg{color:var(--gray);font-size:1rem;line-height:1.6;margin-bottom:24px;}
+.result-stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+.stat-box{background:var(--light);border-radius:12px;padding:12px 22px;text-align:center;border:1px solid var(--border);}
+.stat-box .sv{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;}
+.stat-box .sl{font-size:.78rem;color:var(--gray);margin-top:2px;}
+.stat-box.ok .sv{color:var(--green);}
+.stat-box.err .sv{color:var(--red);}
+.stat-box.skip .sv{color:var(--gold);}
+.stat-box.grade .sv{color:var(--math-blue);}
+
+.grade-box{
+  font-size:1.2rem;text-align:center;padding:12px;
+  border-radius:40px;margin-top:16px;font-weight:700;
+}
+.approved{background:var(--green2);color:var(--green3);border:2px solid var(--green);}
+.failed{background:var(--red2);color:var(--red);border:2px solid var(--red);}
+
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px;}
+
+#review-wrap{display:flex;flex-direction:column;gap:16px;}
+.review-title{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.3rem;font-weight:700;margin-bottom:6px;
+}
+.review-card{
+  background:var(--white);border-radius:16px;padding:16px 20px;
+  border-left:4px solid var(--border);
+}
+.review-card.correct{border-left-color:var(--green);background:var(--green2);}
+.review-card.wrong{border-left-color:var(--red);background:var(--red2);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:600px){
+  #main{padding:16px 12px 100px;}
+  #intro-card,#results-card{padding:24px 18px;}
+  .result-actions{flex-direction:column;}
+  .btn{justify-content:center;}
+  .q-card{padding:16px;}
+  .q-text img{max-width:160px;}
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <span class="logo">📐</span>
+  <h1>Ejercicios M1 — <span>Función Cuadrática</span></h1>
+  <div id="score-pill">25 preguntas · 1 punto cada pregunta</div>
+</div>
+<div id="prog-wrap"><div id="prog-fill"></div></div>
+
+<div id="main">
+
+  <!-- INTRO -->
+  <div id="intro-card">
+    <div class="anchor">📝</div>
+    <h2>Función Cuadrática — Práctica PAES M1</h2>
+    <p>Este test selecciona <strong>25 preguntas aleatorias</strong> de un banco de 54, con alternativas en orden aleatorio. Al finalizar verás tu puntaje, tu nota y una revisión completa.</p>
+    <div class="tag-row">
+      <span class="tag">📈 Concavidad</span>
+      <span class="tag">🎯 Vértice</span>
+      <span class="tag">📐 Eje de simetría</span>
+      <span class="tag">🔢 Raíces</span>
+      <span class="tag">📊 Discriminante</span>
+      <span class="tag">🔄 Transformaciones</span>
+    </div>
+    <div class="info-grid">
+      <div class="info-item"><div class="num">54</div><div class="label">Preguntas en banco</div></div>
+      <div class="info-item"><div class="num">25</div><div class="label">Preguntas por test</div></div>
+      <div class="info-item"><div class="num">1 punto</div><div class="label">Por respuesta correcta</div></div>
+    </div>
+    <button class="btn btn-gold" onclick="startTest()">🚀 Iniciar Test</button>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="questions-wrap"></div>
+
+  <!-- RESULTS -->
+  <div id="results-wrap">
+    <div id="results-card">
+      <div class="score-ring">
+        <div class="score-num" id="r-score">0</div>
+        <div class="score-of" id="r-of">/ 25</div>
+      </div>
+      <div id="result-title"></div>
+      <div id="result-msg"></div>
+      <div class="result-stats">
+        <div class="stat-box ok"><div class="sv" id="r-correct">0</div><div class="sl">✅ Correctas</div></div>
+        <div class="stat-box err"><div class="sv" id="r-wrong">0</div><div class="sl">❌ Incorrectas</div></div>
+        <div class="stat-box skip"><div class="sv" id="r-skip">0</div><div class="sl">⚪ Sin responder</div></div>
+      </div>
+      <div class="grade-box" id="grade-box"></div>
+      <div class="result-actions">
+        <button class="btn btn-gold" onclick="restartTest()">🔄 Nuevo Test</button>
+        <button class="btn btn-sky" onclick="window.location.href='index.html'">📘 Volver al curso</button>
+        <button class="btn btn-green" onclick="window.location.href='C18.html'">📖 Volver a la clase</button>
+      </div>
+    </div>
+    <div class="review-title">📋 Revisión de Respuestas</div>
+    <div id="review-wrap"></div>
+  </div>
+
+</div>
+
+<!-- SUBMIT BAR -->
+<div id="submit-bar" style="display:none">
+  <div id="answered-count">Respondidas: 0 / 25</div>
+  <div style="display:flex;gap:10px">
+    <button class="btn btn-outline" onclick="cancelTest()">← Cancelar</button>
+    <button class="btn btn-gold" onclick="submitTest()">Finalizar Test ✓</button>
+  </div>
+</div>
+
+<script>
+
+// ============================================================
+// POOL DE PREGUNTAS - Estadística y Probabilidades (M1)
+// Fuente: Matemática Para Nacional, Capítulos 20, 21 y 22
+// 70 preguntas con respuestas del solucionario
+// Adaptado con KaTeX y formato consistente
+// ============================================================
+
+const POOL = [
+  // Pregunta 1
+  {
+    q: 'El valor central de siete múltiplos consecutivos de $3$ ordenados en forma decreciente, coincide con:',
+    opts: [
+      'Solo la moda',
+      'Solo la mediana',
+      'Solo la media',
+      'La media y la mediana'
+    ],
+    ans: 3
+  },
+  // Pregunta 2
+  {
+    q: 'Las áreas de tres cuadrados son $16$, $49$ y $169$. Si se considera un solo lado de cada cuadrado, ¿cuál es el promedio (media aritmética) de estas tres longitudes?',
+    opts: ['$8$', '$12$', '$24$', '$32$'],
+    ans: 0
+  },
+  // Pregunta 3
+  {
+    q: 'Si el número de preguntas contestadas por $10$ alumnos fue: $56$, $57$, $55$, $58$, $62$, $55$, $57$, $56$, $57$, $57$, ¿cuál(es) de las afirmaciones siguientes es (son) verdadera(s)?<br><br>I) La mediana es $57$.<br>II) El promedio (media) es $57$.<br>III) La moda coincide con el promedio.',
+    opts: [
+      'Solo I',
+      'Solo I y II',
+      'Solo I y III',
+      'I, II y III'
+    ],
+    ans: 3
+  },
+  // Pregunta 4
+  {
+    q: 'Con respecto a los datos: $a + 4$, $a + 6$, $a + 2$, $a + 8$, $a + 10$, $a + 2$; la mediana es:',
+    opts: ['$a + 2$', '$a + 4$', '$a + 5$', '$a + 6$'],
+    ans: 2
+  },
+  // Pregunta 5
+  {
+    q: 'Camila ha obtenido las siguientes notas en matemática $5,6$; $7,0$; $6,1$ y $6,3$. Si debe rendir su última prueba la cual es coeficiente dos, es decir la nota que obtenga será repetida dos veces, ¿cuánto debe ser la nota para que Camila obtenga exactamente un promedio final de $6,2$?',
+    opts: ['$6,0$', '$6,1$', '$6,2$', '$6,3$'],
+    ans: 1
+  },
+  // Pregunta 6
+  {
+    q: 'De dos cursos en los que se aplicó una evaluación, uno de ellos con $30$ alumnos tuvo un promedio de $600$ puntos; en el otro con $20$ alumnos el promedio fue de $500$ puntos. Entonces, ¿cuál es el promedio correspondiente a la totalidad de los alumnos de ambos cursos?',
+    opts: ['$560$ puntos', '$570$ puntos', '$580$ puntos', '$590$ puntos'],
+    ans: 0
+  },
+  // Pregunta 7
+  {
+    q: 'La semana pasada, Ximena rindió una prueba diariamente de lunes a viernes. Si en la prueba del lunes obtuvo nota $n$, y en los días siguientes obtuvo nota inferior en $0,3$ a la nota obtenida el día inmediatamente anterior, entonces el promedio de las cinco notas es igual a:',
+    opts: [
+      '$n - 0,6$',
+      '$n - 6$',
+      '$\\frac{n - 0,6}{5}$',
+      '$\\frac{5n - 6}{5}$'
+    ],
+    ans: 0
+  },
+  // Pregunta 8
+  {
+    q: 'Si todos los datos de la muestra tienen el mismo valor, distinto de cero, ¿cuál de las siguientes proposiciones es verdadera?',
+    opts: [
+      'La moda es el triple del valor de los datos',
+      'Como los datos son distintos de cero, el rango es distinto de cero',
+      'La media aritmética es igual al segundo cuartil',
+      'La mediana es igual al rango intercuartil'
+    ],
+    ans: 2
+  },
+  // Pregunta 9
+  {
+    q: 'Si $A$ es un dato que se encuentra entre el percentil $40$ y $50$ de una población, con todos los datos distintos entre sí, entonces ¿cuál(es) de las siguientes afirmaciones es (son) verdadera(s)?<br><br>I) Su valor es superior al $40\\%$ de los datos.<br>II) La mediana del conjunto es mayor que el valor de $A$.<br>III) El valor de $A$ es menor que el tercer cuartil.',
+    opts: [
+      'Solo I',
+      'Solo I y II',
+      'Solo II y III',
+      'I, II y III'
+    ],
+    ans: 3
+  },
+  // Pregunta 10
+  {
+    q: 'Se tienen los siguientes datos: $12$, $15$, $18$, $20$, $22$, $25$, $27$, $30$. ¿Cuál es el valor del primer cuartil?',
+    opts: ['$15$', '$16,5$', '$18$', '$20$'],
+    ans: 1
+  },
+  // Pregunta 11
+  {
+    q: 'Las notas de un estudiante en cinco pruebas son: $6,0$; $5,5$; $6,5$; $4,5$ y $5,0$. ¿Cuál es la mediana de estas notas?',
+    opts: ['$5,0$', '$5,5$', '$6,0$', '$6,5$'],
+    ans: 1
+  },
+  // Pregunta 12
+  {
+    q: 'En una empresa trabajan $20$ personas con los siguientes sueldos en miles de pesos: $350$, $350$, $400$, $400$, $400$, $450$, $450$, $500$, $500$, $550$, $550$, $600$, $600$, $650$, $700$, $700$, $750$, $800$, $850$, $900$. ¿Cuál es la moda de los sueldos?',
+    opts: ['$400$', '$450$', '$500$', '$550$'],
+    ans: 0
+  },
+  // Pregunta 13
+  {
+    q: 'La tabla muestra la frecuencia de las edades de un grupo de personas. Edad: $15$ años (frecuencia $5$), $16$ años (frecuencia $8$), $17$ años (frecuencia $12$), $18$ años (frecuencia $7$), $19$ años (frecuencia $3$). ¿Cuál es la edad promedio del grupo?',
+    opts: ['$16,5$ años', '$16,8$ años', '$17,0$ años', '$17,2$ años'],
+    ans: 1
+  },
+  // Pregunta 14
+  {
+    q: 'Un estudiante obtuvo las siguientes calificaciones: $5,2$; $6,1$; $4,8$; $5,9$ y $6,3$. Si necesita un promedio de $5,8$ para aprobar, ¿cuánto debe obtener en una sexta prueba (de igual ponderación) para lograr su objetivo?',
+    opts: ['$5,9$', '$6,1$', '$6,3$', '$6,5$'],
+    ans: 3
+  },
+  // Pregunta 15
+  {
+    q: 'En una muestra de $9$ números ordenados: $3$, $5$, $7$, $8$, $10$, $12$, $15$, $18$, $20$. ¿Cuál es el valor del percentil $75$?',
+    opts: ['$15$', '$16,5$', '$18$', '$19$'],
+    ans: 1
+  },
+  // Pregunta 16
+  {
+    q: 'Las edades de los participantes en un taller son: $18$, $20$, $22$, $24$, $26$, $28$, $30$. Si se incorpora una persona de $40$ años, ¿qué medida de tendencia central experimentará el mayor cambio?',
+    opts: ['La media', 'La mediana', 'La moda', 'El primer cuartil'],
+    ans: 0
+  },
+  // Pregunta 17
+  {
+    q: 'En un conjunto de datos simétricos, ¿qué relación existe entre la media, la mediana y la moda?',
+    opts: [
+      'Son aproximadamente iguales',
+      'La media es mayor que la mediana',
+      'La mediana es mayor que la moda',
+      'No hay relación definida'
+    ],
+    ans: 0
+  },
+  // Pregunta 18
+  {
+    q: 'Los puntajes de $10$ estudiantes en una prueba fueron: $45$, $50$, $55$, $60$, $65$, $70$, $75$, $80$, $85$, $90$. ¿Cuál es el rango intercuartil?',
+    opts: ['$20$', '$25$', '$30$', '$35$'],
+    ans: 2
+  },
+  // Pregunta 19
+  {
+    q: 'En una encuesta sobre el número de horas diarias que ven televisión, se obtuvieron los siguientes datos: $1$, $2$, $2$, $3$, $3$, $3$, $4$, $4$, $5$. ¿Cuál es la moda?',
+    opts: ['$2$', '$3$', '$4$', '$5$'],
+    ans: 1
+  },
+  // Pregunta 20
+  {
+    q: 'El sueldo promedio de $5$ empleados es $\\$450.000$. Si se incorpora un nuevo empleado con sueldo $\\$550.000$, ¿cuál es el nuevo sueldo promedio?',
+    opts: ['$\\$466.667$', '$\\$475.000$', '$\\$483.333$', '$\\$500.000$'],
+    ans: 0
+  },
+  // Pregunta 21
+  {
+    q: 'Las temperaturas máximas registradas durante una semana fueron: $28°$, $30°$, $29°$, $31°$, $27°$, $28°$, $26°$. ¿Cuál es la temperatura mediana?',
+    opts: ['$27°$', '$28°$', '$29°$', '$30°$'],
+    ans: 1
+  },
+  // Pregunta 22
+  {
+    q: 'En un curso, las notas de una prueba fueron: $4,0$; $4,5$; $5,0$; $5,0$; $5,5$; $6,0$; $6,0$; $6,0$; $6,5$; $7,0$. ¿Cuál es el tercer cuartil?',
+    opts: ['$6,0$', '$6,25$', '$6,5$', '$7,0$'],
+    ans: 1
+  },
+  // Pregunta 23
+  {
+    q: 'Un conjunto de datos tiene media $25$ y desviación estándar $4$. Si se suma $5$ a cada dato, ¿cuál es la nueva media?',
+    opts: ['$25$', '$29$', '$30$', '$33$'],
+    ans: 2
+  },
+  // Pregunta 24
+  {
+    q: 'Las edades de los miembros de un club son: $15$, $16$, $17$, $18$, $19$, $20$, $21$, $22$, $23$, $24$. ¿Cuál es el percentil $40$?',
+    opts: ['$17,6$', '$18,0$', '$18,4$', '$18,8$'],
+    ans: 2
+  },
+  // Pregunta 25
+  {
+    q: 'En una muestra de $100$ personas, el ingreso promedio es $\\$500.000$. Si el $20\\%$ de las personas con mayores ingresos tiene un promedio de $\\$800.000$, ¿cuál es el ingreso promedio del $80\\%$ restante?',
+    opts: ['$\\$425.000$', '$\\$450.000$', '$\\$475.000$', '$\\$500.000$'],
+    ans: 0
+  },
+  // Pregunta 26
+  {
+    q: 'Los siguientes datos corresponden a las edades de $8$ personas: $22$, $25$, $27$, $30$, $32$, $35$, $38$, $40$. ¿Cuál es la mediana?',
+    opts: ['$30$', '$31$', '$32$', '$33$'],
+    ans: 1
+  },
+  // Pregunta 27
+  {
+    q: 'En una distribución de frecuencias, si el primer cuartil es $25$ y el tercer cuartil es $45$, ¿cuál es el rango intercuartil?',
+    opts: ['$10$', '$15$', '$20$', '$25$'],
+    ans: 2
+  },
+  // Pregunta 28
+  {
+    q: 'Un alumno tiene las siguientes notas: $5,5$; $6,0$; $4,5$; $7,0$; $5,0$. ¿Cuánto debe obtener en una sexta prueba para que su mediana sea $5,75$?',
+    opts: ['$5,5$', '$6,0$', '$6,5$', '$7,0$'],
+    ans: 1
+  },
+  // Pregunta 29
+  {
+    q: 'La tabla muestra la distribución de frecuencias de las edades: $10$ años ($5$ personas), $11$ años ($8$ personas), $12$ años ($12$ personas), $13$ años ($7$ personas). ¿Cuál es la edad mediana?',
+    opts: ['$11$ años', '$11,5$ años', '$12$ años', '$12,5$ años'],
+    ans: 2
+  },
+  // Pregunta 30
+  {
+    q: 'En un conjunto de datos, la media es $50$ y la mediana es $45$. ¿Qué podemos inferir sobre la distribución?',
+    opts: [
+      'Es simétrica',
+      'Está sesgada a la izquierda',
+      'Está sesgada a la derecha',
+      'No se puede inferir nada'
+    ],
+    ans: 2
+  },
+  // Pregunta 31
+  {
+    q: 'Las calificaciones de $7$ estudiantes son: $4,2$; $5,1$; $6,3$; $4,8$; $5,5$; $6,0$; $5,7$. ¿Cuál es el rango?',
+    opts: ['$1,8$', '$2,1$', '$2,3$', '$2,5$'],
+    ans: 1
+  },
+  // Pregunta 32
+  {
+    q: 'En una empresa, el sueldo promedio de los hombres es $\\$600.000$ y el de las mujeres es $\\$500.000$. Si hay igual número de hombres que de mujeres, ¿cuál es el sueldo promedio total?',
+    opts: ['$\\$525.000$', '$\\$550.000$', '$\\$575.000$', '$\\$600.000$'],
+    ans: 1
+  },
+  // Pregunta 33
+  {
+    q: 'Los siguientes datos corresponden a las edades de $5$ personas: $18$, $20$, $22$, $24$, $26$. Si se agrega un dato de $31$, ¿en cuánto aumenta la media?',
+    opts: ['$1$', '$1,5$', '$2$', '$2,5$'],
+    ans: 1
+  },
+  // Pregunta 34
+  {
+    q: 'En una muestra de $50$ personas, el percentil $80$ es $85$. Esto significa que:',
+    opts: [
+      '$80$ personas tienen un valor inferior a $85$',
+      'El $80\\%$ de las personas tiene un valor inferior o igual a $85$',
+      'El $20\\%$ de las personas tiene un valor superior a $85$',
+      'El $80\\%$ de las personas tiene un valor superior a $85$'
+    ],
+    ans: 1
+  },
+  // Pregunta 35
+  {
+    q: 'Las notas de un curso en una prueba fueron: $3,0$; $4,0$; $4,5$; $5,0$; $5,0$; $5,5$; $6,0$; $6,0$; $6,5$; $7,0$. ¿Cuál es el segundo cuartil?',
+    opts: ['$5,0$', '$5,25$', '$5,5$', '$6,0$'],
+    ans: 1
+  },
+  // Pregunta 36
+  {
+    q: 'Un conjunto de datos tiene media $40$ y varianza $25$. Si se multiplica cada dato por $2$, ¿cuál es la nueva media?',
+    opts: ['$40$', '$65$', '$80$', '$100$'],
+    ans: 2
+  },
+  // Pregunta 37
+  {
+    q: 'En una encuesta, las edades de los encuestados son: $20$, $22$, $25$, $25$, $25$, $28$, $30$, $32$, $35$. ¿Cuál es la moda?',
+    opts: ['$22$', '$25$', '$28$', '$30$'],
+    ans: 1
+  },
+  // Pregunta 38
+  {
+    q: 'El peso promedio de $10$ personas es $70$ kg. Si se retira a la persona más pesada de $90$ kg, ¿cuál es el nuevo peso promedio?',
+    opts: ['$66,7$ kg', '$67,8$ kg', '$68,9$ kg', '$70$ kg'],
+    ans: 1
+  },
+  // Pregunta 39
+  {
+    q: 'Los puntajes de $11$ estudiantes en una prueba fueron: $55$, $60$, $65$, $70$, $75$, $80$, $85$, $90$, $95$, $100$, $105$. ¿Cuál es la mediana?',
+    opts: ['$75$', '$80$', '$85$', '$90$'],
+    ans: 1
+  },
+  // Pregunta 40
+  {
+    q: 'En una distribución de frecuencias, el intervalo $[30-40)$ tiene frecuencia $15$, $[40-50)$ tiene frecuencia $25$, $[50-60)$ tiene frecuencia $20$. ¿En qué intervalo se encuentra la mediana?',
+    opts: ['$[30-40)$', '$[40-50)$', '$[50-60)$', 'No se puede determinar'],
+    ans: 1
+  },
+  // Pregunta 41
+  {
+    q: 'Las edades de $6$ personas son: $18$, $22$, $25$, $28$, $30$, $35$. ¿Cuál es el primer cuartil?',
+    opts: ['$21$', '$22$', '$23$', '$24$'],
+    ans: 0
+  },
+  // Pregunta 42
+  {
+    q: 'En una muestra, el percentil $25$ es $30$ y el percentil $75$ es $70$. ¿Cuál es el rango intercuartil?',
+    opts: ['$30$', '$40$', '$50$', '$60$'],
+    ans: 1
+  },
+  // Pregunta 43
+  {
+    q: 'Un estudiante obtuvo las siguientes notas: $4,8$; $5,2$; $5,6$; $6,0$; $6,4$. ¿Cuál es la media?',
+    opts: ['$5,4$', '$5,6$', '$5,8$', '$6,0$'],
+    ans: 1
+  },
+  // Pregunta 44
+  {
+    q: 'Las alturas de $5$ personas son: $1,65$ m; $1,70$ m; $1,72$ m; $1,75$ m; $1,80$ m. Si se agrega una persona de $1,68$ m, ¿cuál es la nueva mediana?',
+    opts: ['$1,69$ m', '$1,70$ m', '$1,71$ m', '$1,72$ m'],
+    ans: 2
+  },
+  // Pregunta 45
+  {
+    q: 'En una fábrica, los salarios (en miles de pesos) son: $250$, $250$, $300$, $300$, $350$, $350$, $400$, $400$, $450$, $500$. ¿Cuál es el salario mediano?',
+    opts: ['$325$', '$350$', '$375$', '$400$'],
+    ans: 1
+  },
+  // Pregunta 46
+  {
+    q: 'Un conjunto de $8$ números tiene media $15$. Si se elimina el número $10$, ¿cuál es la nueva media?',
+    opts: ['$15,7$', '$16$', '$16,3$', '$16,7$'],
+    ans: 0
+  },
+  // Pregunta 47
+  {
+    q: 'Las edades de los asistentes a una reunión son: $25$, $27$, $29$, $31$, $33$, $35$, $37$, $39$. ¿Cuál es el tercer cuartil?',
+    opts: ['$35$', '$36$', '$37$', '$38$'],
+    ans: 1
+  },
+  // Pregunta 48
+  {
+    q: 'En una distribución de frecuencias, la moda es $25$ y la media es $30$. Esto sugiere que la distribución es:',
+    opts: [
+      'Simétrica',
+      'Sesgada a la izquierda',
+      'Sesgada a la derecha',
+      'Bimodal'
+    ],
+    ans: 2
+  },
+  // Pregunta 49
+  {
+    q: 'Las notas de $7$ estudiantes son: $4,0$; $4,5$; $5,0$; $5,5$; $6,0$; $6,5$; $7,0$. ¿Cuál es el rango?',
+    opts: ['$2,5$', '$3,0$', '$3,5$', '$4,0$'],
+    ans: 1
+  },
+  // Pregunta 50
+  {
+    q: 'Las áreas de tres cuadrados son $9$, $64$ y $256$. Si se considera un solo lado de cada cuadrado, ¿cuál es el promedio (media aritmética) de estas tres longitudes?',
+    opts: ['$7$', '$8$', '$9$', '$10$'],
+    ans: 2
+  },
+  // Pregunta 51
+  {
+    q: 'De un grupo de $200$ personas consultadas por su nivel educacional se obtuvo la siguiente tabla:<br><br>Educación Básica: $40$<br>Educación Media: $80$<br>Técnico Profesional: $60$<br>Universitaria: $20$<br><br>El gráfico circular que representa la información dada en la tabla es:',
+    opts: [
+      '<img src="https://i.ibb.co/G3308SzX/ME11-M1-P2-1.jpg" alt="Opción A" style="max-width:150px;height:auto;border-radius:8px;">',
+      '<img src="https://i.ibb.co/TBkL2Yx8/ME11-M1-P2-2.jpg" alt="Opción B" style="max-width:150px;height:auto;border-radius:8px;">',
+      '<img src="https://i.ibb.co/zgW4BWv/ME11-M1-P2-3.jpg" alt="Opción C" style="max-width:150px;height:auto;border-radius:8px;">',
+      '<img src="https://i.ibb.co/ns9tBXHJ/ME11-M1-P2-4.jpg" alt="Opción D" style="max-width:150px;height:auto;border-radius:8px;">'
+    ],
+    ans: 2
+  },
+  // Pregunta 52
+  {
+    q: 'Carlos y José deciden escalar un monte por separado, pero por el mismo sendero, llegando ambos a la cima que está a $1.300$ m. El gráfico de la figura adjunta muestra la distancia recorrida, en función del tiempo, por cada uno hasta la cima.<br><br><img src="https://i.ibb.co/Cp992C0q/ME11-M1-P3.jpg" alt="Pregunta 3" style="max-width:350px;height:auto;border-radius:8px;margin-top:8px;"><br><br>¿Cuál(es) de las siguientes afirmaciones es (son) siempre verdadera(s)?<br><br>I) José demoró en llegar a la cima $210$ minutos.<br>II) Carlos se detuvo $1$ hora.<br>III) José y Carlos demoraron el mismo tiempo en llegar a la cima.',
+    opts: [
+      'Solo I',
+      'Solo I y II',
+      'Solo II y III',
+      'I, II y III'
+    ],
+    ans: 1
+  },
+  // Pregunta 53
+  {
+    q: 'En la tabla adjunta se muestra la distribución de kilometraje de los vehículos seminuevos que están a la venta en una automotora.<br><br>]0, 5]: $2$<br>]5, 10]: $7$<br>]10, 15]: $6$<br>]15, 20]: $9$<br>]20, 25]: $11$<br><br>Con respecto a la tabla, ¿cuál de las siguientes afirmaciones es verdadera?',
+    opts: [
+      'Los intervalos se ordenan de menor a mayor frecuencia.',
+      'El $20\\%$ de los vehículos a la venta pertenecen al segundo intervalo.',
+      'Hay $11$ vehículos que marcan como mínimo $20$ km y como máximo $25$ km.',
+      'Ocho vehículos muestran menos de $10$ kilómetros recorridos.'
+    ],
+    ans: 1
+  },
+  // Pregunta 54
+  {
+    q: 'El histograma adjunto presenta los sueldos mensuales de los empleados de una agencia publicitaria, en intervalos de la forma $[a, b[$.<br><br><img src="https://i.ibb.co/7dvjcnrN/ME11-M1-P5.jpg" alt="Pregunta 5" style="max-width:350px;height:auto;border-radius:8px;margin-top:8px;"><br><br>Con los datos disponibles se puede concluir que:',
+    opts: [
+      'Hay $26$ empleados en la agencia publicitaria.',
+      'El $60\\%$ de los empleados gana a lo más $\\$500.000$ mensualmente.',
+      'El $25\\%$ de los empleados gana a lo menos $\\$1.000.000$ mensualmente.',
+      'Dos empleados ganan más de $\\$2.000.000$ mensuales.'
+    ],
+    ans: 2
+  },
+  // Pregunta 55
+  {
+    q: 'En una escuela con $400$ alumnos fue hecha una encuesta para verificar cuál era el deporte favorito de los alumnos, pudiendo dar solo una respuesta. Los resultados aparecen representados en la tabla adjunta.<br><br>Fútbol: $155$ ($38,75\\%$)<br>Basquetbol: $74$<br>Atletismo: $91$ ($22,75\\%$)<br>Tenis: $56$<br>Natación: ?<br><br>¿Cuál de las afirmaciones es <strong>FALSA</strong>?',
+    opts: [
+      'Atletismo es preferido por $91$ alumnos.',
+      'Seis de cada $100$ alumnos prefieren natación.',
+      'Los alumnos que prefieren tenis son el $14\\%$ de los encuestados.',
+      'Fútbol es el deporte preferido por más de $160$ alumnos.'
+    ],
+    ans: 3
+  },
+  // Pregunta 56
+  {
+    q: '¿Cuál de los siguientes gráficos representa el histograma que se puede formar con los datos de la tabla adjunta?<br><br>$[0, 10[$: $4$<br>$[10, 20[$: $8$<br>$[20, 30[$: $10$<br>$[30, 40[$: $18$<br>$[40, 50[$: $24$',
+    opts: [
+      '<img src="https://i.ibb.co/8LTXBBJ1/ME11-M1-P7-1.jpg" alt="Opción A" style="max-width:150px;height:auto;border-radius:8px;">',
+      '<img src="https://i.ibb.co/Kc1vCXKv/ME11-M1-P7-2.jpg" alt="Opción B" style="max-width:150px;height:auto;border-radius:8px;">',
+      '<img src="https://i.ibb.co/BH1PzjVL/ME11-M1-P7-3.jpg" alt="Opción C" style="max-width:150px;height:auto;border-radius:8px;">',
+      '<img src="https://i.ibb.co/JwDGvW67/ME11-M1-P7-4.jpg" alt="Opción D" style="max-width:150px;height:auto;border-radius:8px;">'
+    ],
+    ans: 1
+  },
+  // Pregunta 57
+  {
+    q: 'En la tabla adjunta se muestra la distribución de la frecuencia de las edades de los alumnos del $4°A$ del colegio Mountain.<br><br>Edad $16$: frecuencia ?, acumulada $8$<br>Edad $17$: frecuencia ?, acumulada $12$<br>Edad $18$: frecuencia $3$<br>Edad $19$: frecuencia $5$<br><br>¿Cuál de las siguientes afirmaciones es verdadera?',
+    opts: [
+      'El $25\\%$ de los alumnos tiene $17$ años',
+      'Los alumnos de $19$ años son mayoría.',
+      'Los datos que faltan en la segunda columna suman $18$',
+      'El $40\\%$ de los alumnos tiene $16$ años.'
+    ],
+    ans: 3
+  },
+  // Pregunta 58
+  {
+    q: 'A un grupo de mujeres se le preguntó acerca de su masa corporal. Sus respuestas se resumen en el histograma de la figura adjunta.<br><br><img src="https://i.ibb.co/fV8gPFyg/ME11-M1-P10.jpg" alt="Pregunta 10" style="max-width:350px;height:auto;border-radius:8px;margin-top:8px;"><br><br>Según la información del gráfico es verdadero que,',
+    opts: [
+      '$7$ mujeres fueron entrevistadas en total.',
+      'Exactamente, un $50\\%$ de las mujeres entrevistadas tiene una masa corporal que está en el intervalo $[64, 70[$.',
+      'La mediana de las masas corporales está en el intervalo $[66, 68[$.',
+      'Las modas de las masas corporales son $65$ kg y $71$ kg.'
+    ],
+    ans: 2
+  },
+  // Pregunta 59
+  {
+    q: 'Se tiene una urna con $4$ bolitas numeradas del $1$ al $4$. Se saca una bolita al azar, se repone y se repite el experimento cierta cantidad de veces obteniéndose los resultados que se muestran en la tabla adjunta. Si la media de los resultados es $2,45$, ¿cuántas veces se realizó el experimento?<br><br>Número $1$: frecuencia $5$<br>Número $2$: frecuencia $n$<br>Número $3$: frecuencia $4$<br>Número $4$: frecuencia $5$',
+    opts: ['$6$', '$12$', '$20$', '$22$'],
+    ans: 2
+  },
+  // Pregunta 60
+  {
+    q: 'Para calcular la nota final de una asignatura, las tres pruebas del semestre se ponderan con un $30\\%$, $30\\%$ y $40\\%$, respectivamente. Isabel tiene un $5$ y un $4$ en las dos primeras. Si su nota final fue $5,1$ entonces en la tercera prueba obtuvo un:',
+    opts: ['$5,1$', '$5,2$', '$6,0$', '$6,3$'],
+    ans: 2
+  },
+  // Pregunta 61
+  {
+    q: 'En la tabla adjunta se muestra la distribución de todos los datos de ausentismo laboral que se registra durante un año en una empresa.<br><br>$[0, 3[$: $15$ (Q)<br>$[3, 6[$: $5$ ($0,2$)<br>$[6, 9[$: $P$ ($0,12$)<br>$[9, 12]$: $2$ (R)<br><br>Según los datos de la tabla, ¿cuál(es) de las siguientes afirmaciones es (son) verdadera(s)?<br><br>I) Hubo un total de $25$ ausencias durante ese año.<br>II) Un $60\\%$ de los trabajadores se ausentó menos de $3$ días ese año.<br>III) $20$ trabajadores faltaron menos de $6$ días a su trabajo ese año.',
+    opts: [
+      'Solo I',
+      'Solo II',
+      'Solo III',
+      'Solo I y II',
+      'Solo II y III'
+    ],
+    ans: 4
+  },
+  // Pregunta 62
+  {
+    q: 'En una muestra de trabajadores de una empresa, se tiene la siguiente distribución de cargas familiares:<br><br>$0$ cargas: $6$<br>$1$ carga: $9$<br>$2$ cargas: $12$<br>$3$ cargas: $7$<br>$4$ cargas: $4$<br>$5$ cargas: $2$<br><br>La media, la mediana y la moda son, respectivamente:',
+    opts: ['$2$, $2$ y $2$', '$3$, $2$ y $2$', '$3$, $3$ y $2$', '$2$, $3$ y $3$'],
+    ans: 0
+  },
+  // Pregunta 63
+  {
+    q: 'La mediana de las edades de un número impar de personas es igual a $25$. ¿Cuál de las siguientes afirmaciones es siempre verdadera?',
+    opts: [
+      'La cantidad de datos mayores a $25$ es igual a la cantidad de datos menores a $25$.',
+      'La media es igual a $25$.',
+      'La moda es igual a $25$.',
+      'En el grupo por lo menos hay una persona que tiene $25$ años.'
+    ],
+    ans: 3
+  },
+  // Pregunta 64
+  {
+    q: 'La media aritmética entre $(x^2 + 2)$, $(x^2 - 4)$, $x^2$ y $(x^2 - 2)$, con $x > 0$, es $0$. El valor de $x$ es:',
+    opts: ['$0$', '$1$', '$2$', '$3$'],
+    ans: 1
+  },
+  // Pregunta 65
+  {
+    q: 'La tabla adjunta, muestra el resultado obtenido al lanzar un dado.<br><br>Número $1$: $4$, $2$: $6$, $3$: $2$, $4$: $5$, $5$: $1$, $6$: $3$<br><br>¿Cuál de las siguientes afirmaciones es verdadera?',
+    opts: [
+      'El total de lanzamientos del dado fue $21$.',
+      'La frecuencia de la moda es $2$.',
+      'La mediana es $3,5$.',
+      'En el $10\\%$ de los lanzamientos se obtuvo $1$ o $2$.'
+    ],
+    ans: 2
+  },
+  // Pregunta 66
+  {
+    q: 'Que se conozca el valor de la mediana de una distribución significa que se conoce:',
+    opts: [
+      'El promedio de la muestra',
+      'El valor que más se repite de la muestra',
+      'El valor que divide a la muestra justo en $50\\%$ superior e inferior',
+      'La medida más alta de una variable'
+    ],
+    ans: 2
+  },
+  // Pregunta 67
+  {
+    q: 'Si el promedio de $5$ notas de Juan es $5,6$, entonces la suma de las cinco notas es:',
+    opts: ['$25$', '$26$', '$28$', '$30$'],
+    ans: 2
+  },
+  // Pregunta 68
+  {
+    q: 'Si se suman las temperaturas de $30$ días registradas en Santiago y se dividen por $30$, se obtiene:',
+    opts: [
+      'La temperatura máxima de los $30$ días',
+      'La moda',
+      'La media aritmética (promedio)',
+      'La mediana'
+    ],
+    ans: 2
+  },
+  // Pregunta 69
+  {
+    q: 'Si la media aritmética de los valores de la variable de distribución de frecuencias siguiente es $3$, entonces el valor de $k$ es:<br><br>$X: 0, 1, 2, 3, 4, 5$<br>$f: 1, 6, k, 7, 7, 4$',
+    opts: ['$0$', '$1$', '$2$', '$3$'],
+    ans: 2
+  },
+  // Pregunta 70
+  {
+    q: 'La tabla adjunta, muestra el sueldo recibido por los trabajadores de un banco.<br><br>$250.000$: $3$<br>$260.000$: $4$<br>$370.000$: $8$<br>$380.000$: $2$<br>$390.000$: $6$<br>$400.000$: $7$<br><br>¿Cuál de las siguientes afirmaciones es verdadera?',
+    opts: [
+      'Hay exactamente $7$ personas que ganan a lo menos $\\$260.000$.',
+      'La mediana es $\\$380.000$.',
+      'El $50\\%$ de los trabajadores tiene un salario superior a $\\$370.000$.',
+      'La moda es $8$.'
+    ],
+    ans: 0
+  }
+];
+
+
+// ============================================================
+// CONFIGURACIÓN DEL TEST
+// ============================================================
+const TOTAL_QUESTIONS = 25;
+let selectedQuestions = [];
+let shuffledOptions = [];
+let userAnswers = [];
+let submitted = false;
+
+// ============================================================
+// UTILIDADES
+// ============================================================
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getRandomQuestions() {
+  const shuffledPool = shuffleArray([...POOL]);
+  return shuffledPool.slice(0, TOTAL_QUESTIONS);
+}
+
+function shuffleOptionsForQuestion(q) {
+  const indices = [0, 1, 2, 3];
+  const shuffledIndices = shuffleArray(indices);
+  const newOpts = shuffledIndices.map(i => q.opts[i]);
+  const newAns = shuffledIndices.indexOf(q.ans);
+  return { opts: newOpts, ansIdx: newAns };
+}
+
+function buildTest() {
+  selectedQuestions = getRandomQuestions();
+  shuffledOptions = selectedQuestions.map(q => shuffleOptionsForQuestion(q));
+  userAnswers = Array(TOTAL_QUESTIONS).fill(null);
+}
+
+// ============================================================
+// RENDERIZADO
+// ============================================================
+function renderQuestions() {
+  const wrap = document.getElementById('questions-wrap');
+  wrap.innerHTML = '';
+  
+  selectedQuestions.forEach((q, idx) => {
+    const optData = shuffledOptions[idx];
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `qcard-${idx}`;
+    card.style.animationDelay = `${idx * 0.02}s`;
+    
+    let optsHtml = '';
+    const letters = ['a', 'b', 'c', 'd'];
+    optData.opts.forEach((opt, optIdx) => {
+      optsHtml += `
+        <div class="opt" id="opt-${idx}-${optIdx}" onclick="selectOption(${idx}, ${optIdx})">
+          <div class="opt-letter">${letters[optIdx]}</div>
+          <div class="opt-text">${opt}</div>
+        </div>
+      `;
+    });
+    
+    card.innerHTML = `
+      <div class="q-num">Pregunta ${idx + 1} de ${TOTAL_QUESTIONS}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">${optsHtml}</div>
+      <div class="q-feedback" id="qfb-${idx}"></div>
+    `;
+    wrap.appendChild(card);
+  });
+  
+  // Re-renderizar KaTeX en las nuevas preguntas
+  setTimeout(function() {
+    renderKaTeX(wrap);
+  }, 300);
+}
+
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  if (userAnswers[qIdx] !== null) {
+    const prevOpt = document.getElementById(`opt-${qIdx}-${userAnswers[qIdx]}`);
+    if (prevOpt) prevOpt.classList.remove('selected');
+  }
+  userAnswers[qIdx] = optIdx;
+  const selectedOpt = document.getElementById(`opt-${qIdx}-${optIdx}`);
+  if (selectedOpt) selectedOpt.classList.add('selected');
+  updateProgress();
+}
+
+function updateProgress() {
+  const answered = userAnswers.filter(a => a !== null).length;
+  document.getElementById('answered-count').textContent = `Respondidas: ${answered} / ${TOTAL_QUESTIONS}`;
+  document.getElementById('prog-fill').style.width = `${(answered / TOTAL_QUESTIONS) * 100}%`;
+}
+
+function calculateGrade(correct, total) {
+  // Nota = cantidad de respuestas correctas (1 punto cada una)
+  const grade = correct;
+  const percentage = Math.round((correct / total) * 100);
+  return { grade, percentage };
+}
+
+function submitTest() {
+  if (submitted) return;
+  
+  const answered = userAnswers.filter(a => a !== null).length;
+  if (answered < TOTAL_QUESTIONS) {
+    if (!confirm(`Tienes ${TOTAL_QUESTIONS - answered} pregunta(s) sin responder. ¿Deseas finalizar igual?`)) {
+      return;
+    }
+  }
+  
+  submitted = true;
+  
+  let correctCount = 0;
+  selectedQuestions.forEach((_, idx) => {
+    const chosen = userAnswers[idx];
+    const correctAns = shuffledOptions[idx].ansIdx;
+    const card = document.getElementById(`qcard-${idx}`);
+    const fb = document.getElementById(`qfb-${idx}`);
+    const letters = ['a', 'b', 'c', 'd'];
+    
+    // Bloquear todas las opciones
+    for (let i = 0; i < 4; i++) {
+      const opt = document.getElementById(`opt-${idx}-${i}`);
+      if (opt) opt.classList.add('locked');
+    }
+    
+    if (chosen === null) {
+      // Sin responder: marcar la correcta
+      const correctOpt = document.getElementById(`opt-${idx}-${correctAns}`);
+      if (correctOpt) correctOpt.classList.add('correct');
+      card.classList.add('answered-wrong');
+      fb.className = 'q-feedback wrong';
+      fb.innerHTML = `⚪ Sin responder — La respuesta correcta era: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    } else if (chosen === correctAns) {
+      correctCount++;
+      const chosenOpt = document.getElementById(`opt-${idx}-${chosen}`);
+      if (chosenOpt) {
+        chosenOpt.classList.remove('selected');
+        chosenOpt.classList.add('correct');
+      }
+      card.classList.add('answered-correct');
+      fb.className = 'q-feedback correct';
+      fb.innerHTML = '✅ ¡Correcto!';
+    } else {
+      const chosenOpt = document.getElementById(`opt-${idx}-${chosen}`);
+      const correctOpt = document.getElementById(`opt-${idx}-${correctAns}`);
+      if (chosenOpt) {
+        chosenOpt.classList.remove('selected');
+        chosenOpt.classList.add('wrong');
+      }
+      if (correctOpt) correctOpt.classList.add('correct');
+      card.classList.add('answered-wrong');
+      fb.className = 'q-feedback wrong';
+      fb.innerHTML = `❌ Incorrecto — La respuesta correcta era: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    }
+  });
+  
+  const wrongCount = userAnswers.filter((v, i) => v !== null && v !== shuffledOptions[i].ansIdx).length;
+  const skippedCount = userAnswers.filter(v => v === null).length;
+  const { grade, percentage } = calculateGrade(correctCount, TOTAL_QUESTIONS);
+  const isApproved = grade >= 4.0;
+  
+  // Mostrar resultados
+// Mostrar resultados
+document.getElementById('r-score').textContent = correctCount;
+document.getElementById('r-of').textContent = `/ ${TOTAL_QUESTIONS}`;
+document.getElementById('r-correct').textContent = correctCount;
+document.getElementById('r-wrong').textContent = wrongCount;
+document.getElementById('r-skip').textContent = skippedCount;
+
+const gradeBox = document.getElementById('grade-box');
+// La nota ahora es simplemente la cantidad de correctas
+gradeBox.className = `grade-box ${correctCount >= 13 ? 'approved' : 'failed'}`;
+gradeBox.innerHTML = `<strong>${correctCount >= 13 ? '🎉 APROBADO 🎉' : '📖 REPROBADO 📖'}</strong><br>Puntaje: ${correctCount} / ${TOTAL_QUESTIONS} correctas (${percentage}% de logro)`;
+
+let title, msg;
+if (percentage >= 90) {
+  title = '🏆 ¡Excelente!';
+  msg = 'Dominas la función cuadrática con solidez. ¡Sigue así!';
+} else if (percentage >= 70) {
+  title = '👍 ¡Muy bien!';
+  msg = 'Tienes un buen dominio. Repasa los temas donde fallaste para mejorar.';
+} else if (percentage >= 50) {
+  title = '📚 Sigue practicando';
+  msg = 'Vas por buen camino, pero necesitas repasar más la materia.';
+} else {
+  title = '💪 No te rindas';
+  msg = 'Revisa la clase y vuelve a intentarlo. ¡Puedes mejorar!';
+}
+document.getElementById('result-title').textContent = title;
+document.getElementById('result-msg').textContent = msg;
+  
+  // Cambiar color del anillo
+  const ring = document.querySelector('.score-ring');
+  if (ring) ring.style.borderColor = percentage >= 70 ? 'var(--green)' : percentage >= 50 ? 'var(--gold)' : 'var(--red)';
+  
+  // Ocultar preguntas y mostrar resultados
+  document.getElementById('questions-wrap').style.display = 'none';
+  document.getElementById('submit-bar').style.display = 'none';
+  document.getElementById('results-wrap').style.display = 'block';
+  document.getElementById('prog-fill').style.width = '100%';
+  
+  // Generar revisión de respuestas
+  renderReview();
+  
+  // Re-renderizar KaTeX en los resultados
+  setTimeout(function() {
+    renderKaTeX(document.getElementById('results-wrap'));
+  }, 300);
+  
+  // Scroll a resultados
+  document.getElementById('results-wrap').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderReview() {
+  const reviewWrap = document.getElementById('review-wrap');
+  reviewWrap.innerHTML = '';
+  
+  selectedQuestions.forEach((q, idx) => {
+    const chosen = userAnswers[idx];
+    const correctAns = shuffledOptions[idx].ansIdx;
+    const isCorrect = chosen === correctAns;
+    const letters = ['a', 'b', 'c', 'd'];
+    
+    const reviewCard = document.createElement('div');
+    reviewCard.className = `review-card ${isCorrect ? 'correct' : 'wrong'}`;
+    
+    let answerStatus = '';
+    if (chosen === null) {
+      answerStatus = `<span style="color:var(--gold);">⚪ Sin responder</span> — Respuesta correcta: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    } else if (isCorrect) {
+      answerStatus = `<span style="color:var(--green);">✅ Correcta</span> — Elegiste: <strong>${letters[chosen]}) ${shuffledOptions[idx].opts[chosen]}</strong>`;
+    } else {
+      answerStatus = `<span style="color:var(--red);">❌ Incorrecta</span> — Elegiste: <strong>${letters[chosen]}) ${shuffledOptions[idx].opts[chosen]}</strong> — Respuesta correcta: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    }
+    
+    reviewCard.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+        <strong style="color:var(--primary);">Pregunta ${idx + 1}</strong>
+        <span style="font-size:.7rem;color:var(--gray);">${isCorrect ? '✓ Correcta' : (chosen === null ? '○ Sin responder' : '✗ Incorrecta')}</span>
+      </div>
+      <div style="font-size:.85rem;margin-bottom:8px;">${q.q.substring(0, 120)}${q.q.length > 120 ? '...' : ''}</div>
+      <div style="font-size:.8rem;">${answerStatus}</div>
+    `;
+    reviewWrap.appendChild(reviewCard);
+  });
+}
+
+// ============================================================
+// FUNCIONES DE CONTROL
+// ============================================================
+function startTest() {
+  buildTest();
+  submitted = false;
+  document.getElementById('intro-card').style.display = 'none';
+  document.getElementById('results-wrap').style.display = 'none';
+  renderQuestions();
+  document.getElementById('questions-wrap').style.display = 'flex';
+  document.getElementById('submit-bar').style.display = 'flex';
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartTest() {
+  buildTest();
+  submitted = false;
+  document.getElementById('results-wrap').style.display = 'none';
+  renderQuestions();
+  document.getElementById('questions-wrap').style.display = 'flex';
+  document.getElementById('submit-bar').style.display = 'flex';
+  updateProgress();
+  document.getElementById('intro-card').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelTest() {
+  if (confirm('¿Estás seguro de que quieres cancelar el test? Perderás tu progreso.')) {
+    document.getElementById('questions-wrap').style.display = 'none';
+    document.getElementById('submit-bar').style.display = 'none';
+    document.getElementById('intro-card').style.display = 'block';
+    document.getElementById('prog-fill').style.width = '0%';
+    submitted = false;
+  }
+}
+// ─── FUNCIÓN PARA RENDERIZAR KATEX ───
+function renderKaTeX(element) {
+  if (typeof renderMathInElement === 'function') {
+    try {
+      renderMathInElement(element || document.body, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '\\[', right: '\\]', display: true},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+      });
+    } catch(e) {
+      console.warn('KaTeX render error:', e);
+    }
+  }
+}
+// ─── INICIALIZACIÓN ───
+document.addEventListener("DOMContentLoaded", function() {
+  // Esperar a que KaTeX esté completamente cargado
+  setTimeout(function() {
+    renderKaTeX(document.body);
+  }, 500);
+  
+  // Configurar eventos de los botones
+  document.getElementById('submitTestBtn')?.addEventListener('click', submitTest);
+  document.getElementById('cancelTestBtn')?.addEventListener('click', cancelTest);
+  document.getElementById('restartTestBtn')?.addEventListener('click', restartTest);
+  document.getElementById('goToCourseBtn')?.addEventListener('click', () => window.location.href = 'index.html');
+  document.getElementById('goToClassBtn')?.addEventListener('click', () => window.location.href = 'C18.html');
+});
+</script>
+</body>
+</html>
