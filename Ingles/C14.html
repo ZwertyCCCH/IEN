@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inglés – Phrasal Verbs & As...as (Profundización) | Escuela Naval 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d2149;--gold:#c8a84b;--gold2:#f0d080;
+  --sky:#1a6fa8;--sky2:#2a9fd6;--ice:#e8f4fb;--white:#ffffff;
+  --green:#1a7a4a;--red:#a02020;--gray:#6b7a90;--light:#f4f7fb;
+  --accent:#e63946;--teal:#0d7377;--orange:#e67e22;--purple:#7a3a9a;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Source Sans 3',sans-serif;background:var(--navy);}
+body{display:flex;flex-direction:column;}
+#app{position:relative;width:100%;height:calc(100vh - 62px);overflow:hidden;}
+
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  background:var(--light);overflow:hidden;
+}
+.slide.active{display:flex;}
+.s-body{padding-bottom:16px !important;}
+
+.s-header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--teal) 100%);
+  padding:18px 40px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;
+  border-bottom:3px solid var(--gold);
+}
+.s-header .badge{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  letter-spacing:.08em;white-space:nowrap;
+}
+.s-header h2{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;
+  font-weight:700;letter-spacing:-.01em;flex:1;
+}
+.s-num{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.85rem;margin-left:auto;white-space:nowrap;}
+
+.s-body{flex:1;overflow-y:auto;padding:24px 40px 20px;display:flex;flex-direction:column;gap:16px;}
+.s-body::-webkit-scrollbar{width:5px;}
+.s-body::-webkit-scrollbar-thumb{background:var(--sky2);border-radius:4px;}
+
+.intro-text{font-size:1.05rem;color:#2d3a4a;line-height:1.7;}
+.intro-text strong{color:var(--sky);}
+.sec-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:4px;
+}
+.rule-box{
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  border-left:4px solid var(--sky);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rule-box.gold{border-left-color:var(--gold);}
+.rule-box.green{border-left-color:var(--green);}
+.rule-box.red{border-left-color:var(--red);}
+.rule-box.teal{border-left-color:var(--teal);}
+.rule-box.orange{border-left-color:var(--orange);}
+.rule-box.purple{border-left-color:var(--purple);}
+.rule-box .title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:1rem;}
+.rule-box p,.rule-box li{font-size:.95rem;color:#2d3a4a;line-height:1.6;}
+.rule-box ul{padding-left:18px;}
+
+.ex{
+  background:linear-gradient(135deg,#e8f4fb,#dff0fa);
+  border-radius:10px;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#0a2040;
+  border-left:3px solid var(--sky2);
+}
+.ex span.correct{color:var(--green);font-weight:700;}
+.ex span.wrong{color:var(--red);text-decoration:line-through;}
+.ex span.key{color:var(--sky);font-weight:700;}
+.ex span.orange{color:var(--orange);font-weight:700;}
+.ex span.purple{color:var(--purple);font-weight:700;}
+.ex span.teal{color:var(--teal);font-weight:700;}
+.ex .trans{color:var(--gray);font-size:.75rem;font-family:'Source Sans 3',sans-serif;}
+
+.phrasal-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;
+}
+.phrasal-card{
+  background:var(--white);border-radius:10px;padding:12px 14px;
+  border:1px solid #dde4ee;display:flex;flex-direction:column;
+}
+.phrasal-card .verb{font-weight:700;font-size:.95rem;color:var(--purple);}
+.phrasal-card .meaning{font-size:.78rem;color:var(--gray);}
+.phrasal-card .example{font-size:.82rem;color:var(--navy);margin-top:4px;}
+.phrasal-card .trans{font-size:.72rem;color:var(--gray);}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+.tip{
+  background:#fffbec;border:1px solid #f0d080;border-radius:10px;
+  padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+}
+.tip .icon{font-size:1.2rem;margin-top:1px;}
+.tip .content{font-size:.88rem;color:#4a3800;line-height:1.5;}
+.tip .content strong{color:#7a5500;}
+
+mark{background:#fef3c7;color:#92400e;border-radius:4px;padding:1px 5px;font-weight:600;}
+
+.wh-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;}
+.wh-table th{background:var(--navy);color:var(--gold);padding:8px 14px;text-align:left;font-size:.85rem;}
+.wh-table td{background:var(--white);padding:8px 14px;font-size:.88rem;border-bottom:1px solid #eef1f5;}
+.wh-table tr:nth-child(even) td{background:#f8fafc;}
+.wh-table td:first-child{font-weight:700;color:var(--sky);font-family:'JetBrains Mono',monospace;font-size:.95rem;}
+
+.cover-slide{
+  background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 50%,#0d3060 100%) !important;
+  justify-content:center;align-items:center;text-align:center;gap:0 !important;padding:0 !important;
+}
+.cover-slide .cover-inner{display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px;}
+.cover-logo{
+  width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:2.2rem;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;color:var(--white);font-size:2.8rem;
+  font-weight:900;line-height:1.1;max-width:700px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{color:#a0b8d0;font-size:1.05rem;max-width:550px;line-height:1.6;}
+.cover-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.cover-tag{
+  background:rgba(200,168,75,.15);border:1px solid var(--gold);
+  color:var(--gold2);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
+}
+.cover-level{
+  background:var(--gold);color:var(--navy);font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;padding:8px 24px;border-radius:30px;letter-spacing:.05em;
+}
+
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--navy);border-top:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;z-index:100;gap:8px;height:62px;
+}
+.nav-btn{
+  background:var(--sky);color:var(--white);border:none;cursor:pointer;
+  border-radius:8px;padding:7px 14px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.82rem;transition:background .2s,transform .1s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--sky2);transform:scale(1.03);}
+.nav-btn:disabled{background:#2a3a50;color:#4a5a70;cursor:not-allowed;transform:none;}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold2);}
+.nav-btn.green-btn{background:#1a7a4a;color:var(--white);}
+.nav-btn.green-btn:hover{background:#15653d;}
+#progress-wrap{flex:1;max-width:300px;}
+#progress-bar{height:5px;background:#1a2e4a;border-radius:4px;overflow:hidden;}
+#progress-fill{height:100%;background:var(--gold);transition:width .4s;}
+#slide-label{color:#a0b8d0;font-size:.72rem;text-align:center;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.nav-links{display:flex;gap:6px;}
+
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.slide.active{animation:slideIn .3s ease forwards;}
+
+@media(max-width:700px){
+  .s-header{padding:12px 16px;}.s-header h2{font-size:1.1rem;}
+  .s-body{padding:14px 16px;}
+  .two-col,.three-col,.phrasal-grid{grid-template-columns:1fr;}
+  .cover-title{font-size:2rem;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- SLIDE 1 – COVER -->
+<div class="slide cover-slide active" id="s1">
+  <div class="cover-inner">
+    <div class="cover-logo">🔤</div>
+    <div class="cover-level">Profundización</div>
+    <div class="cover-title">Phrasal Verbs &<br><span>As...as</span></div>
+    <div class="cover-sub">Domina los phrasal verbs más comunes del inglés con ejemplos y traducciones. Aprende a hacer comparaciones de igualdad y desigualdad con AS...AS.</div>
+    <div class="cover-tags">
+      <span class="cover-tag">🔤 GET</span>
+      <span class="cover-tag">🔤 TAKE</span>
+      <span class="cover-tag">🔤 LOOK</span>
+      <span class="cover-tag">🔤 PUT</span>
+      <span class="cover-tag">🔤 COME</span>
+      <span class="cover-tag">🔤 GO</span>
+      <span class="cover-tag">🔤 TURN</span>
+      <span class="cover-tag">🔤 GIVE</span>
+      <span class="cover-tag">🔤 RUN</span>
+      <span class="cover-tag">⚖️ AS...AS</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ========== PART 1: PHRASAL VERBS – INTRODUCCIÓN ========== -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 2 – Phrasal Verbs: Introducción -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>¿Qué son los Phrasal Verbs?</h2>
+    <span class="s-num">02 / 46</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text">Un <strong>phrasal verb</strong> es una combinación de un <strong>verbo</strong> + una <strong>partícula</strong> (preposición o adverbio) que crea un <strong>nuevo significado</strong>, diferente al verbo original.</p>
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📝 Ejemplo básico</div>
+        <div class="ex">
+          <strong>look</strong> = mirar<br>
+          <strong>look for</strong> = buscar<br>
+          <span class="trans">"I'm looking for my keys."<br>(Estoy buscando mis llaves.)</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Otro ejemplo</div>
+        <div class="ex">
+          <strong>give</strong> = dar<br>
+          <strong>give up</strong> = rendirse<br>
+          <span class="trans">"Don't give up on your dreams!"<br>(¡No te rindas en tus sueños!)</span>
+        </div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:8px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>Importante:</strong> El significado del phrasal verb a veces es <strong>imposible de adivinar</strong> por las palabras individuales. ¡Es mejor memorizarlos!</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3 – Phrasal Verbs: Tipos -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Tipos de Phrasal Verbs</h2>
+    <span class="s-num">03 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📝 Separables</div>
+        <p>El objeto puede ir <strong>entre</strong> el verbo y la partícula.</p>
+        <div class="ex" style="margin-top:6px">
+          Turn <span class="key">the lights</span> off.<br>
+          Turn off <span class="key">the lights</span>.<br>
+          <span class="trans">Apaga las luces.</span><br><br>
+          <span class="key">Con pronombres (me, you, him, her, it, us, them):</span><br>
+          Turn <span class="key">them</span> off. ✅<br>
+          Turn off <span class="key">them</span>. ❌
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 Inseparables</div>
+        <p>El objeto <strong>siempre</strong> va después de la partícula.</p>
+        <div class="ex" style="margin-top:6px">
+          Look <span class="key">for your keys</span>.<br>
+          Look for <span class="key">them</span>.<br>
+          <span class="trans">Busca tus llaves.</span><br><br>
+          ❌ Look your keys <span class="wrong">for</span>.<br>
+          ❌ Look them <span class="wrong">for</span>.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ========== PHRASAL VERBS CON GET ========== -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 4 – GET: Introducción -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Phrasal Verbs con GET (1)</h2>
+    <span class="s-num">04 / 46</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text"><strong>GET</strong> es uno de los verbos más versátiles del inglés. Aquí tienes los phrasal verbs más comunes con GET.</p>
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">get up</span>
+        <span class="meaning">levantarse</span>
+        <span class="example">I get up at 7 am every day.</span>
+        <span class="trans">Me levanto a las 7 am todos los días.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">get along with</span>
+        <span class="meaning">llevarse bien con</span>
+        <span class="example">I get along with my sister.</span>
+        <span class="trans">Me llevo bien con mi hermana.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">get over</span>
+        <span class="meaning">superar (una enfermedad o problema)</span>
+        <span class="example">She got over the flu quickly.</span>
+        <span class="trans">Ella superó la gripe rápidamente.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">get through</span>
+        <span class="meaning">lograr pasar / superar</span>
+        <span class="example">We got through the difficult times.</span>
+        <span class="trans">Superamos los momentos difíciles.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5 – GET: Continuación -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Phrasal Verbs con GET (2)</h2>
+    <span class="s-num">05 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">get in / get into</span>
+        <span class="meaning">entrar (en un lugar/vehículo)</span>
+        <span class="example">Get in the car!</span>
+        <span class="trans">¡Sube al auto!</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">get out of</span>
+        <span class="meaning">salir de / evadir</span>
+        <span class="example">Get out of the car.</span>
+        <span class="trans">Bájate del auto.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">get back</span>
+        <span class="meaning">volver / regresar</span>
+        <span class="example">When will you get back?</span>
+        <span class="trans">¿Cuándo vas a volver?</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">get away</span>
+        <span class="meaning">escaparse / irse de vacaciones</span>
+        <span class="example">We need to get away for a while.</span>
+        <span class="trans">Necesitamos escaparnos un rato.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6 – GET: Ejemplos en contexto -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>GET – Ejemplos en contexto</h2>
+    <span class="s-num">06 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box purple">
+      <div class="title">📝 GET en acción</div>
+      <div class="ex">
+        1. I <span class="key">get up</span> at 6:30 am every morning.<br>
+        <span class="trans">Me levanto a las 6:30 am todas las mañanas.</span><br><br>
+        2. Do you <span class="key">get along with</span> your classmates?<br>
+        <span class="trans">¿Te llevas bien con tus compañeros de clase?</span><br><br>
+        3. It took me a while to <span class="key">get over</span> the breakup.<br>
+        <span class="trans">Me tomó un tiempo superar la ruptura.</span><br><br>
+        4. We <span class="key">got through</span> the hardest part.<br>
+        <span class="trans">Superamos la parte más difícil.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7 – GET: Más ejemplos -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>GET – Más ejemplos</h2>
+    <span class="s-num">07 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box purple">
+      <div class="title">📝 GET en acción</div>
+      <div class="ex">
+        5. Please <span class="key">get in</span> the car. We're late.<br>
+        <span class="trans">Por favor, sube al auto. Vamos tarde.</span><br><br>
+        6. <span class="key">Get out of</span> here!<br>
+        <span class="trans">¡Sal de aquí!</span><br><br>
+        7. What time did you <span class="key">get back</span> last night?<br>
+        <span class="trans">¿A qué hora volviste anoche?</span><br><br>
+        8. I need to <span class="key">get away</span> from this city for a while.<br>
+        <span class="trans">Necesito escaparme de esta ciudad por un tiempo.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ========== PHRASAL VERBS CON TAKE ========== -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 8 – TAKE: Lista -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Phrasal Verbs con TAKE</h2>
+    <span class="s-num">08 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">take off</span>
+        <span class="meaning">quitarse (ropa) / despegar (avión)</span>
+        <span class="example">Take off your shoes, please.</span>
+        <span class="trans">Quítate los zapatos, por favor.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">take on</span>
+        <span class="meaning">asumir / enfrentar</span>
+        <span class="example">She took on a new project.</span>
+        <span class="trans">Ella asumió un nuevo proyecto.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">take after</span>
+        <span class="meaning">parecerse a (físicamente o en personalidad)</span>
+        <span class="example">I take after my father.</span>
+        <span class="trans">Me parezco a mi padre.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">take care of</span>
+        <span class="meaning">cuidar de</span>
+        <span class="example">Take care of yourself!</span>
+        <span class="trans">¡Cuídate!</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9 – TAKE: Continuación -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Phrasal Verbs con TAKE (2)</h2>
+    <span class="s-num">09 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">take up</span>
+        <span class="meaning">empezar (un hobby/actividad)</span>
+        <span class="example">I took up painting last year.</span>
+        <span class="trans">Empecé a pintar el año pasado.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">take back</span>
+        <span class="meaning">devolver / retirar (lo que se dijo)</span>
+        <span class="example">I take back what I said.</span>
+        <span class="trans">Retiro lo que dije.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">take over</span>
+        <span class="meaning">tomar el control</span>
+        <span class="example">Who will take over the company?</span>
+        <span class="trans">¿Quién tomará el control de la empresa?</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">take part in</span>
+        <span class="meaning">participar en</span>
+        <span class="example">I want to take part in the competition.</span>
+        <span class="trans">Quiero participar en la competencia.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10 – TAKE: Ejemplos -->
+<div class="slide" id="s10">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>TAKE – Ejemplos</h2>
+    <span class="s-num">10 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box teal">
+      <div class="title">📝 TAKE en acción</div>
+      <div class="ex">
+        1. Please <span class="key">take off</span> your jacket.<br>
+        <span class="trans">Por favor, quítate la chaqueta.</span><br><br>
+        2. The plane is <span class="key">taking off</span> now.<br>
+        <span class="trans">El avión está despegando ahora.</span><br><br>
+        3. She <span class="key">takes after</span> her mother.<br>
+        <span class="trans">Ella se parece a su madre.</span><br><br>
+        4. I <span class="key">took up</span> photography as a hobby.<br>
+        <span class="trans">Empecé la fotografía como hobby.</span><br><br>
+        5. Can you <span class="key">take care of</span> my dog this weekend?<br>
+        <span class="trans">¿Puedes cuidar a mi perro este fin de semana?</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ========== PHRASAL VERBS CON LOOK ========== -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 11 – LOOK: Lista -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Phrasal Verbs con LOOK</h2>
+    <span class="s-num">11 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">look for</span>
+        <span class="meaning">buscar</span>
+        <span class="example">I'm looking for my keys.</span>
+        <span class="trans">Estoy buscando mis llaves.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">look after</span>
+        <span class="meaning">cuidar de</span>
+        <span class="example">Can you look after my kids?</span>
+        <span class="trans">¿Puedes cuidar a mis hijos?</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">look forward to</span>
+        <span class="meaning">esperar con ansias</span>
+        <span class="example">I look forward to seeing you.</span>
+        <span class="trans">Espero verte con ansias.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">look into</span>
+        <span class="meaning">investigar</span>
+        <span class="example">The police are looking into the case.</span>
+        <span class="trans">La policía está investigando el caso.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12 – LOOK: Continuación -->
+<div class="slide" id="s12">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Phrasal Verbs con LOOK (2)</h2>
+    <span class="s-num">12 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">look out (for)</span>
+        <span class="meaning">tener cuidado / estar atento</span>
+        <span class="example">Look out! There's a car coming!</span>
+        <span class="trans">¡Cuidado! ¡Viene un auto!</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">look up</span>
+        <span class="meaning">buscar (información)</span>
+        <span class="example">I looked up the word in the dictionary.</span>
+        <span class="trans">Busqué la palabra en el diccionario.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">look down on</span>
+        <span class="meaning">mirar con desprecio</span>
+        <span class="example">Don't look down on others.</span>
+        <span class="trans">No menosprecies a los demás.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">look up to</span>
+        <span class="meaning">admirar</span>
+        <span class="example">I look up to my older brother.</span>
+        <span class="trans">Admiro a mi hermano mayor.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 13 – LOOK: Ejemplos -->
+<div class="slide" id="s13">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>LOOK – Ejemplos</h2>
+    <span class="s-num">13 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box green">
+      <div class="title">📝 LOOK en acción</div>
+      <div class="ex">
+        1. I'm <span class="key">looking for</span> my glasses.<br>
+        <span class="trans">Estoy buscando mis gafas.</span><br><br>
+        2. Can you <span class="key">look after</span> my plants?<br>
+        <span class="trans">¿Puedes cuidar mis plantas?</span><br><br>
+        3. I <span class="key">look forward to</span> our meeting.<br>
+        <span class="trans">Espero nuestra reunión con ansias.</span><br><br>
+        4. The detectives are <span class="key">looking into</span> the crime.<br>
+        <span class="trans">Los detectives están investigando el crimen.</span><br><br>
+        5. <span class="key">Look out!</span> There's a hole in the ground.<br>
+        <span class="trans">¡Cuidado! Hay un agujero en el suelo.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ========== PHRASAL VERBS CON PUT ========== -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 14 – PUT: Lista -->
+<div class="slide" id="s14">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Phrasal Verbs con PUT</h2>
+    <span class="s-num">14 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">put on</span>
+        <span class="meaning">ponerse (ropa)</span>
+        <span class="example">Put on your jacket.</span>
+        <span class="trans">Ponte la chaqueta.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">put off</span>
+        <span class="meaning">posponer / aplazar</span>
+        <span class="example">They put off the meeting.</span>
+        <span class="trans">Aplazaron la reunión.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">put away</span>
+        <span class="meaning">guardar / archivar</span>
+        <span class="example">Put away your toys.</span>
+        <span class="trans">Guarda tus juguetes.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">put up with</span>
+        <span class="meaning">soportar / tolerar</span>
+        <span class="example">I can't put up with this noise.</span>
+        <span class="trans">No puedo soportar este ruido.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 15 – PUT: Continuación -->
+<div class="slide" id="s15">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Phrasal Verbs con PUT (2)</h2>
+    <span class="s-num">15 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">put down</span>
+        <span class="meaning">poner en el suelo / humillar</span>
+        <span class="example">Put down your phone.</span>
+        <span class="trans">Deja tu teléfono.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">put together</span>
+        <span class="meaning">armar / juntar</span>
+        <span class="example">We put together a plan.</span>
+        <span class="trans">Armamos un plan.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">put out</span>
+        <span class="meaning">apagar (fuego/luz)</span>
+        <span class="example">Put out the fire!</span>
+        <span class="trans">¡Apaga el fuego!</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">put through</span>
+        <span class="meaning">conectar por teléfono</span>
+        <span class="example">I'll put you through to the manager.</span>
+        <span class="trans">Te voy a conectar con el gerente.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 16 – PUT: Ejemplos -->
+<div class="slide" id="s16">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>PUT – Ejemplos</h2>
+    <span class="s-num">16 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box orange">
+      <div class="title">📝 PUT en acción</div>
+      <div class="ex">
+        1. <span class="key">Put on</span> your hat. It's very sunny.<br>
+        <span class="trans">Ponte el sombrero. Hace mucho sol.</span><br><br>
+        2. They decided to <span class="key">put off</span> the trip.<br>
+        <span class="trans">Decidieron posponer el viaje.</span><br><br>
+        3. I can't <span class="key">put up with</span> this situation anymore.<br>
+        <span class="trans">Ya no puedo soportar esta situación.</span><br><br>
+        4. <span class="key">Put away</span> your clothes, please.<br>
+        <span class="trans">Guarda tu ropa, por favor.</span><br><br>
+        5. The firefighter <span class="key">put out</span> the fire quickly.<br>
+        <span class="trans">El bombero apagó el fuego rápidamente.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ========== PHRASAL VERBS CON COME ========== -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 17 – COME: Lista -->
+<div class="slide" id="s17">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Phrasal Verbs con COME</h2>
+    <span class="s-num">17 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">come up with</span>
+        <span class="meaning">idear / proponer</span>
+        <span class="example">She came up with a great idea.</span>
+        <span class="trans">Ella ideó una gran idea.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">come across</span>
+        <span class="meaning">encontrarse con / dar la impresión</span>
+        <span class="example">I came across an old friend.</span>
+        <span class="trans">Me encontré con un viejo amigo.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">come back</span>
+        <span class="meaning">volver / regresar</span>
+        <span class="example">Please come back soon.</span>
+        <span class="trans">Por favor, vuelve pronto.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">come from</span>
+        <span class="meaning">venir de / ser de</span>
+        <span class="example">I come from Chile.</span>
+        <span class="trans">Soy de Chile.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 18 – COME: Continuación -->
+<div class="slide" id="s18">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Phrasal Verbs con COME (2)</h2>
+    <span class="s-num">18 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">come in</span>
+        <span class="meaning">entrar</span>
+        <span class="example">Please come in!</span>
+        <span class="trans">¡Por favor, entra!</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">come on</span>
+        <span class="meaning">vamos / ¡date prisa!</span>
+        <span class="example">Come on! Let's go!</span>
+        <span class="trans">¡Vamos! ¡Vámonos!</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">come out</span>
+        <span class="meaning">salir / publicarse</span>
+        <span class="example">The new book came out last week.</span>
+        <span class="trans">El nuevo libro salió la semana pasada.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">come up</span>
+        <span class="meaning">surgir / aparecer</span>
+        <span class="example">Something came up, so I can't come.</span>
+        <span class="trans">Surgió algo, así que no puedo ir.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 19 – COME: Ejemplos -->
+<div class="slide" id="s19">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>COME – Ejemplos</h2>
+    <span class="s-num">19 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box purple">
+      <div class="title">📝 COME en acción</div>
+      <div class="ex">
+        1. I <span class="key">came up with</span> a plan to save money.<br>
+        <span class="trans">Idea un plan para ahorrar dinero.</span><br><br>
+        2. I <span class="key">came across</span> your photo in a magazine.<br>
+        <span class="trans">Me encontré con tu foto en una revista.</span><br><br>
+        3. I need to <span class="key">come back</span> next week.<br>
+        <span class="trans">Necesito volver la próxima semana.</span><br><br>
+        4. Where do you <span class="key">come from</span>?<br>
+        <span class="trans">¿De dónde eres?</span><br><br>
+        5. <span class="key">Come on</span>! We're going to be late!<br>
+        <span class="trans">¡Vamos! ¡Vamos a llegar tarde!</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ========== PHRASAL VERBS CON GO ========== -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 20 – GO: Lista -->
+<div class="slide" id="s20">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Phrasal Verbs con GO</h2>
+    <span class="s-num">20 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">go on</span>
+        <span class="meaning">continuar / pasar</span>
+        <span class="example">What's going on?</span>
+        <span class="trans">¿Qué está pasando?</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">go out</span>
+        <span class="meaning">salir (de fiesta / con alguien)</span>
+        <span class="example">We went out for dinner.</span>
+        <span class="trans">Salimos a cenar.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">go through</span>
+        <span class="meaning">pasar por / revisar</span>
+        <span class="example">She's going through a difficult time.</span>
+        <span class="trans">Ella está pasando por un momento difícil.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">go ahead</span>
+        <span class="meaning">adelante / proceder</span>
+        <span class="example">Go ahead! I'm listening.</span>
+        <span class="trans">¡Adelante! Estoy escuchando.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 21 – GO: Continuación -->
+<div class="slide" id="s21">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Phrasal Verbs con GO (2)</h2>
+    <span class="s-num">21 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">go back</span>
+        <span class="meaning">volver / regresar</span>
+        <span class="example">I want to go back to Paris.</span>
+        <span class="trans">Quiero volver a París.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">go off</span>
+        <span class="meaning">sonar (alarma) / estropearse (comida)</span>
+        <span class="example">My alarm went off at 6 am.</span>
+        <span class="trans">Mi alarma sonó a las 6 am.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">go with</span>
+        <span class="meaning">combinar con / acompañar</span>
+        <span class="example">This shirt goes with these pants.</span>
+        <span class="trans">Esta camisa combina con estos pantalones.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">go without</span>
+        <span class="meaning">prescindir de</span>
+        <span class="example">I can go without coffee for a day.</span>
+        <span class="trans">Puedo prescindir del café por un día.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 22 – GO: Ejemplos -->
+<div class="slide" id="s22">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>GO – Ejemplos</h2>
+    <span class="s-num">22 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box teal">
+      <div class="title">📝 GO en acción</div>
+      <div class="ex">
+        1. What's <span class="key">going on</span> here?<br>
+        <span class="trans">¿Qué está pasando aquí?</span><br><br>
+        2. Let's <span class="key">go out</span> for a walk.<br>
+        <span class="trans">Vamos a salir a caminar.</span><br><br>
+        3. She's <span class="key">going through</span> a tough time.<br>
+        <span class="trans">Ella está pasando por un mal momento.</span><br><br>
+        4. <span class="key">Go ahead</span>, I'm listening.<br>
+        <span class="trans">Adelante, estoy escuchando.</span><br><br>
+        5. My alarm <span class="key">went off</span> too early.<br>
+        <span class="trans">Mi alarma sonó demasiado temprano.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ========== PHRASAL VERBS CON TURN ========== -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 23 – TURN: Lista -->
+<div class="slide" id="s23">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Phrasal Verbs con TURN</h2>
+    <span class="s-num">23 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">turn on</span>
+        <span class="meaning">encender</span>
+        <span class="example">Turn on the TV, please.</span>
+        <span class="trans">Enciende la TV, por favor.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">turn off</span>
+        <span class="meaning">apagar</span>
+        <span class="example">Turn off the lights!</span>
+        <span class="trans">¡Apaga las luces!</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">turn up</span>
+        <span class="meaning">subir (el volumen) / aparecer</span>
+        <span class="example">Turn up the music!</span>
+        <span class="trans">¡Sube la música!</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">turn down</span>
+        <span class="meaning">bajar (el volumen) / rechazar</span>
+        <span class="example">I turned down the job offer.</span>
+        <span class="trans">Rechacé la oferta de trabajo.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 24 – TURN: Ejemplos -->
+<div class="slide" id="s24">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>TURN – Ejemplos</h2>
+    <span class="s-num">24 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box green">
+      <div class="title">📝 TURN en acción</div>
+      <div class="ex">
+        1. Can you <span class="key">turn on</span> the air conditioner?<br>
+        <span class="trans">¿Puedes encender el aire acondicionado?</span><br><br>
+        2. Please <span class="key">turn off</span> your phone.<br>
+        <span class="trans">Por favor, apaga tu teléfono.</span><br><br>
+        3. <span class="key">Turn up</span> the volume. I can't hear it.<br>
+        <span class="trans">Sube el volumen. No puedo oírlo.</span><br><br>
+        4. She <span class="key">turned down</span> the job because of the salary.<br>
+        <span class="trans">Ella rechazó el trabajo por el salario.</span><br><br>
+        5. Guess who <span class="key">turned up</span> at the party!<br>
+        <span class="trans">¡Adivina quién apareció en la fiesta!</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ========== PHRASAL VERBS CON GIVE ========== -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 25 – GIVE: Lista -->
+<div class="slide" id="s25">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Phrasal Verbs con GIVE</h2>
+    <span class="s-num">25 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">give up</span>
+        <span class="meaning">rendirse / dejar de hacer</span>
+        <span class="example">Don't give up on your dreams!</span>
+        <span class="trans">¡No te rindas en tus sueños!</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">give in</span>
+        <span class="meaning">ceder / rendirse (ante alguien)</span>
+        <span class="example">After hours of arguing, she gave in.</span>
+        <span class="trans">Después de horas discutiendo, ella cedió.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">give away</span>
+        <span class="meaning">regalar / delatar</span>
+        <span class="example">He gave away all his books.</span>
+        <span class="trans">Regaló todos sus libros.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">give back</span>
+        <span class="meaning">devolver</span>
+        <span class="example">Please give back my pen.</span>
+        <span class="trans">Por favor, devuelve mi lapicero.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 26 – GIVE: Ejemplos -->
+<div class="slide" id="s26">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>GIVE – Ejemplos</h2>
+    <span class="s-num">26 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold">
+      <div class="title">📝 GIVE en acción</div>
+      <div class="ex">
+        1. Never <span class="key">give up</span>!<br>
+        <span class="trans">¡Nunca te rindas!</span><br><br>
+        2. I <span class="key">gave up</span> smoking last year.<br>
+        <span class="trans">Dejé de fumar el año pasado.</span><br><br>
+        3. The parents finally <span class="key">gave in</span> to their children.<br>
+        <span class="trans">Los padres finalmente cedieron ante sus hijos.</span><br><br>
+        4. He <span class="key">gave away</span> his old clothes.<br>
+        <span class="trans">Él regaló su ropa vieja.</span><br><br>
+        5. When will you <span class="key">give me back</span> my book?<br>
+        <span class="trans">¿Cuándo me devolverás mi libro?</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ========== PHRASAL VERBS CON RUN ========== -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 27 – RUN: Lista -->
+<div class="slide" id="s27">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Phrasal Verbs con RUN</h2>
+    <span class="s-num">27 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">run out of</span>
+        <span class="meaning">quedarse sin</span>
+        <span class="example">We've run out of milk.</span>
+        <span class="trans">Nos hemos quedado sin leche.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">run into</span>
+        <span class="meaning">encontrarse con (por casualidad)</span>
+        <span class="example">I ran into an old friend.</span>
+        <span class="trans">Me encontré con un viejo amigo.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">run after</span>
+        <span class="meaning">perseguir / correr detrás de</span>
+        <span class="example">The dog ran after the cat.</span>
+        <span class="trans">El perro persiguió al gato.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">run away</span>
+        <span class="meaning">escaparse / huir</span>
+        <span class="example">The children ran away from home.</span>
+        <span class="trans">Los niños se escaparon de casa.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 28 – RUN: Ejemplos -->
+<div class="slide" id="s28">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>RUN – Ejemplos</h2>
+    <span class="s-num">28 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box red">
+      <div class="title">📝 RUN en acción</div>
+      <div class="ex">
+        1. We've <span class="key">run out of</span> time. We need to stop.<br>
+        <span class="trans">Nos hemos quedado sin tiempo. Necesitamos parar.</span><br><br>
+        2. Guess who I <span class="key">ran into</span> at the mall!<br>
+        <span class="trans">¡Adivina a quién me encontré en el centro comercial!</span><br><br>
+        3. The police <span class="key">ran after</span> the thief.<br>
+        <span class="trans">La policía persiguió al ladrón.</span><br><br>
+        4. He <span class="key">ran away</span> from his problems.<br>
+        <span class="trans">Él huyó de sus problemas.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ========== PHRASAL VERBS - OTROS COMUNES ========== -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 29 – Otros Phrasal Verbs (1) -->
+<div class="slide" id="s29">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Otros Phrasal Verbs comunes (1)</h2>
+    <span class="s-num">29 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">break down</span>
+        <span class="meaning">averiarse / derrumbarse</span>
+        <span class="example">My car broke down yesterday.</span>
+        <span class="trans">Mi auto se averió ayer.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">break up</span>
+        <span class="meaning">romper (una relación)</span>
+        <span class="example">They broke up last week.</span>
+        <span class="trans">Ellos rompieron la semana pasada.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">carry out</span>
+        <span class="meaning">realizar / llevar a cabo</span>
+        <span class="example">We need to carry out the plan.</span>
+        <span class="trans">Necesitamos llevar a cabo el plan.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">carry on</span>
+        <span class="meaning">continuar</span>
+        <span class="example">Carry on with your work.</span>
+        <span class="trans">Continúa con tu trabajo.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 30 – Otros Phrasal Verbs (2) -->
+<div class="slide" id="s30">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Otros Phrasal Verbs comunes (2)</h2>
+    <span class="s-num">30 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">deal with</span>
+        <span class="meaning">manejar / tratar con</span>
+        <span class="example">She is good at dealing with problems.</span>
+        <span class="trans">Ella es buena manejando problemas.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">find out</span>
+        <span class="meaning">descubrir / averiguar</span>
+        <span class="example">We need to find out the truth.</span>
+        <span class="trans">Necesitamos descubrir la verdad.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">figure out</span>
+        <span class="meaning">averiguar / resolver</span>
+        <span class="example">I need to figure out how to do this.</span>
+        <span class="trans">Necesito averiguar cómo hacer esto.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">point out</span>
+        <span class="meaning">señalar</span>
+        <span class="example">He pointed out the mistake.</span>
+        <span class="trans">Él señaló el error.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 31 – Otros Phrasal Verbs (3) -->
+<div class="slide" id="s31">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Otros Phrasal Verbs comunes (3)</h2>
+    <span class="s-num">31 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">set up</span>
+        <span class="meaning">montar / establecer</span>
+        <span class="example">They set up a new business.</span>
+        <span class="trans">Montaron un nuevo negocio.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">set off</span>
+        <span class="meaning">provocar / salir (viaje)</span>
+        <span class="example">We set off early in the morning.</span>
+        <span class="trans">Salimos temprano en la mañana.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">show up</span>
+        <span class="meaning">aparecer / llegar</span>
+        <span class="example">He showed up late to the party.</span>
+        <span class="trans">Él llegó tarde a la fiesta.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">wake up</span>
+        <span class="meaning">despertarse</span>
+        <span class="example">I wake up at 7 am.</span>
+        <span class="trans">Me despierto a las 7 am.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 32 – Otros Phrasal Verbs (4) -->
+<div class="slide" id="s32">
+  <div class="s-header">
+    <span class="badge">PHRASAL VERBS</span>
+    <h2>Otros Phrasal Verbs comunes (4)</h2>
+    <span class="s-num">32 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="phrasal-grid">
+      <div class="phrasal-card">
+        <span class="verb">call off</span>
+        <span class="meaning">cancelar</span>
+        <span class="example">They called off the concert.</span>
+        <span class="trans">Cancelaron el concierto.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">call back</span>
+        <span class="meaning">devolver una llamada</span>
+        <span class="example">I'll call you back later.</span>
+        <span class="trans">Te devolveré la llamada más tarde.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">clean up</span>
+        <span class="meaning">limpiar / ordenar</span>
+        <span class="example">We need to clean up the room.</span>
+        <span class="trans">Necesitamos limpiar la habitación.</span>
+      </div>
+      <div class="phrasal-card">
+        <span class="verb">hang out</span>
+        <span class="meaning">pasar el tiempo con alguien</span>
+        <span class="example">I like hanging out with my friends.</span>
+        <span class="trans">Me gusta pasar el tiempo con mis amigos.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ========== PART 2: AS...AS ========== -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 33 – As...as: Introducción -->
+<div class="slide" id="s33">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA</span>
+    <h2>AS...AS – Comparaciones de igualdad</h2>
+    <span class="s-num">33 / 46</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text"><strong>AS...AS</strong> se usa para comparar dos cosas que son <strong>iguales</strong> en algún aspecto.</p>
+    <div class="formula">
+      <mark>As + adjetivo/adverbio + as</mark>
+    </div>
+    <div class="ex">
+      ✅ She is <span class="key">as tall as</span> her sister.<br>
+      <span class="trans">Ella es tan alta como su hermana.</span><br><br>
+      ✅ He runs <span class="key">as fast as</span> me.<br>
+      <span class="trans">Él corre tan rápido como yo.</span><br><br>
+      ✅ This book is <span class="key">as interesting as</span> that one.<br>
+      <span class="trans">Este libro es tan interesante como ese.</span>
+    </div>
+    <div class="tip" style="margin-top:6px">
+      <span class="icon">📌</span>
+      <div class="content">El segundo <strong>AS</strong> es <strong>obligatorio</strong>. ¡No lo olvides!</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 34 – As...as: Negativo (NOT AS...AS) -->
+<div class="slide" id="s34">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA</span>
+    <h2>NOT AS...AS – Desigualdad</h2>
+    <span class="s-num">34 / 46</span>
+  </div>
+  <div class="s-body">
+    <p class="intro-text"><strong>NOT AS...AS</strong> se usa para comparar dos cosas que <strong>NO son iguales</strong> en algún aspecto.</p>
+    <div class="formula">
+      <mark>Not + as + adjetivo/adverbio + as</mark>
+    </div>
+    <div class="ex">
+      ✅ She is <span class="key">not as tall as</span> her sister.<br>
+      <span class="trans">Ella no es tan alta como su hermana.</span><br><br>
+      ✅ He <span class="key">doesn't run as fast as</span> me.<br>
+      <span class="trans">Él no corre tan rápido como yo.</span><br><br>
+      ✅ This book is <span class="key">not as interesting as</span> that one.<br>
+      <span class="trans">Este libro no es tan interesante como ese.</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 35 – As...as: Ejemplos extensos -->
+<div class="slide" id="s35">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA</span>
+    <h2>AS...AS – Ejemplos</h2>
+    <span class="s-num">35 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">✅ Igualdad</div>
+        <div class="ex">
+          My brother is <span class="key">as old as</span> me.<br>
+          <span class="trans">Mi hermano es tan viejo como yo.</span><br><br>
+          This movie is <span class="key">as good as</span> the book.<br>
+          <span class="trans">Esta película es tan buena como el libro.</span><br><br>
+          She sings <span class="key">as beautifully as</span> a professional.<br>
+          <span class="trans">Ella canta tan hermosamente como una profesional.</span><br><br>
+          My car is <span class="key">as fast as</span> yours.<br>
+          <span class="trans">Mi auto es tan rápido como el tuyo.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">❌ Desigualdad</div>
+        <div class="ex">
+          I am <span class="key">not as tall as</span> my father.<br>
+          <span class="trans">No soy tan alto como mi padre.</span><br><br>
+          This phone is <span class="key">not as expensive as</span> that one.<br>
+          <span class="trans">Este teléfono no es tan caro como ese.</span><br><br>
+          He <span class="key">doesn't run as fast as</span> his brother.<br>
+          <span class="trans">Él no corre tan rápido como su hermano.</span><br><br>
+          She is <span class="key">not as happy as</span> she was before.<br>
+          <span class="trans">Ella no es tan feliz como antes.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 36 – As...as: Variaciones -->
+<div class="slide" id="s36">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA</span>
+    <h2>AS...AS – Variaciones</h2>
+    <span class="s-num">36 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">📝 AS MUCH AS</div>
+        <p>Con <strong>sustantivos incontables</strong> (cantidad).</p>
+        <div class="ex" style="margin-top:6px">
+          I don't have <span class="key">as much money as</span> you.<br>
+          <span class="trans">No tengo tanto dinero como tú.</span><br><br>
+          She doesn't drink <span class="key">as much coffee as</span> me.<br>
+          <span class="trans">Ella no toma tanto café como yo.</span>
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">📝 AS MANY AS</div>
+        <p>Con <strong>sustantivos contables</strong> (número).</p>
+        <div class="ex" style="margin-top:6px">
+          I have <span class="key">as many books as</span> you.<br>
+          <span class="trans">Tengo tantos libros como tú.</span><br><br>
+          She has <span class="key">as many friends as</span> her sister.<br>
+          <span class="trans">Ella tiene tantos amigos como su hermana.</span>
+        </div>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:8px">
+      💡 <strong>Ejemplo combinado:</strong><br>
+      I have <span class="key">as many</span> shoes <span class="key">as</span> she does, but not <span class="key">as much</span> money <span class="key">as</span> she does.
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 37 – As...as: Errores comunes -->
+<div class="slide" id="s37">
+  <div class="s-header">
+    <span class="badge">GRAMÁTICA</span>
+    <h2>AS...AS – Errores comunes</h2>
+    <span class="s-num">37 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box red">
+        <div class="title">❌ Errores comunes</div>
+        <div class="ex">
+          ❌ She is <span class="wrong">as taller as</span> me.<br>
+          ✅ She is <span class="correct">as tall as</span> me.<br>
+          <span class="trans">(No uses comparativos con AS...AS.)</span><br><br>
+          ❌ He runs <span class="wrong">so fast as</span> me.<br>
+          ✅ He runs <span class="correct">as fast as</span> me.<br>
+          <span class="trans">(Usa AS, no SO.)</span><br><br>
+          ❌ This book is <span class="wrong">not as interesting</span> that one.<br>
+          ✅ This book is <span class="correct">not as interesting as</span> that one.<br>
+          <span class="trans">(No olvides el segundo AS.)</span>
+        </div>
+      </div>
+      <div class="rule-box green">
+        <div class="title">✅ Recordatorio</div>
+        <div class="ex">
+          <strong>AS</strong> + adjetivo <span class="correct">BASE</span> + <strong>AS</strong><br>
+          ¡No uses comparativos (taller, faster)!<br>
+          ¡No olvides el segundo "as"!<br>
+          Usa <span class="correct">AS MUCH AS</span> (incontable) y <span class="correct">AS MANY AS</span> (contable).
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 38 – As...as: Ejercicio de práctica -->
+<div class="slide" id="s38">
+  <div class="s-header">
+    <span class="badge">PRÁCTICA</span>
+    <h2>AS...AS – Práctica</h2>
+    <span class="s-num">38 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box gold">
+      <div class="title">📝 Completa las oraciones</div>
+      <div class="ex">
+        1. She is _______ tall _______ her mother.<br>
+        <span class="trans">Ella es tan alta como su madre.</span><br>
+        <span class="correct">→ as / as</span><br><br>
+        2. I am _______ tall _______ my father.<br>
+        <span class="trans">No soy tan alto como mi padre.</span><br>
+        <span class="correct">→ not as / as</span><br><br>
+        3. She sings _______ beautifully _______ a professional.<br>
+        <span class="trans">Ella canta tan hermosamente como una profesional.</span><br>
+        <span class="correct">→ as / as</span><br><br>
+        4. I don't have _______ money _______ you.<br>
+        <span class="trans">No tengo tanto dinero como tú.</span><br>
+        <span class="correct">→ as much / as</span><br><br>
+        5. She has _______ friends _______ her sister.<br>
+        <span class="trans">Ella tiene tantos amigos como su hermana.</span><br>
+        <span class="correct">→ as many / as</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ========== SLIDES DE REPASO ========== -->
+<!-- ============================================================ -->
+
+<!-- SLIDE 39 – Resumen: Phrasal Verbs con GET y TAKE -->
+<div class="slide" id="s39">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>Phrasal Verbs – GET y TAKE</h2>
+    <span class="s-num">39 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🔤 GET</div>
+        <div class="ex">
+          get up (levantarse)<br>
+          get along with (llevarse bien)<br>
+          get over (superar)<br>
+          get through (lograr pasar)<br>
+          get in (entrar)<br>
+          get out of (salir)<br>
+          get back (volver)<br>
+          get away (escaparse)
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🔤 TAKE</div>
+        <div class="ex">
+          take off (quitarse / despegar)<br>
+          take on (asumir)<br>
+          take after (parecerse)<br>
+          take care of (cuidar)<br>
+          take up (empezar)<br>
+          take back (devolver)<br>
+          take over (tomar el control)<br>
+          take part in (participar)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 40 – Resumen: Phrasal Verbs con LOOK y PUT -->
+<div class="slide" id="s40">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>Phrasal Verbs – LOOK y PUT</h2>
+    <span class="s-num">40 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🔤 LOOK</div>
+        <div class="ex">
+          look for (buscar)<br>
+          look after (cuidar)<br>
+          look forward to (esperar con ansias)<br>
+          look into (investigar)<br>
+          look out! (¡cuidado!)<br>
+          look up (buscar información)<br>
+          look up to (admirar)
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🔤 PUT</div>
+        <div class="ex">
+          put on (ponerse)<br>
+          put off (posponer)<br>
+          put away (guardar)<br>
+          put up with (soportar)<br>
+          put down (dejar / humillar)<br>
+          put together (armar)<br>
+          put out (apagar)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 41 – Resumen: Phrasal Verbs con COME, GO, TURN, GIVE, RUN -->
+<div class="slide" id="s41">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>Phrasal Verbs – COME, GO, TURN, GIVE, RUN</h2>
+    <span class="s-num">41 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="three-col">
+      <div class="rule-box green">
+        <div class="title">COME</div>
+        <div class="ex">
+          come up with (idear)<br>
+          come across (encontrar)<br>
+          come back (volver)<br>
+          come from (ser de)<br>
+          come on (vamos)<br>
+          come out (salir)
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">GO</div>
+        <div class="ex">
+          go on (continuar)<br>
+          go out (salir)<br>
+          go through (pasar)<br>
+          go ahead (adelante)<br>
+          go back (volver)<br>
+          go off (sonar)
+        </div>
+      </div>
+      <div class="rule-box orange">
+        <div class="title">TURN / GIVE / RUN</div>
+        <div class="ex">
+          turn on/off (encender/apagar)<br>
+          turn up/down (subir/bajar)<br>
+          give up (rendirse)<br>
+          give in (ceder)<br>
+          run out of (quedarse sin)<br>
+          run into (encontrarse)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 42 – Resumen: Otros Phrasal Verbs -->
+<div class="slide" id="s42">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>Otros Phrasal Verbs</h2>
+    <span class="s-num">42 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="two-col">
+      <div class="rule-box green">
+        <div class="title">🔤 Otros comunes</div>
+        <div class="ex">
+          break down (averiarse)<br>
+          break up (romper)<br>
+          carry out (realizar)<br>
+          carry on (continuar)<br>
+          deal with (manejar)<br>
+          find out (descubrir)<br>
+          figure out (resolver)<br>
+          point out (señalar)
+        </div>
+      </div>
+      <div class="rule-box gold">
+        <div class="title">🔤 Más comunes</div>
+        <div class="ex">
+          set up (montar)<br>
+          set off (provocar / salir)<br>
+          show up (aparecer)<br>
+          wake up (despertarse)<br>
+          call off (cancelar)<br>
+          call back (devolver llamada)<br>
+          clean up (limpiar)<br>
+          hang out (pasar el tiempo)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 43 – Resumen: AS...AS -->
+<div class="slide" id="s43">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>AS...AS – Resumen</h2>
+    <span class="s-num">43 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="rule-box purple">
+      <div class="title">⚖️ AS...AS</div>
+      <ul>
+        <li><strong>Función:</strong> Comparar dos cosas <strong>iguales</strong></li>
+        <li><strong>Estructura:</strong> as + adjetivo/adverbio + as</li>
+        <li><strong>Negativo:</strong> not as...as (no tan...como)</li>
+        <li><strong>AS MUCH AS:</strong> con sustantivos <strong>incontables</strong></li>
+        <li><strong>AS MANY AS:</strong> con sustantivos <strong>contables</strong></li>
+      </ul>
+      <div class="ex" style="margin-top:8px">
+        She is <span class="key">as tall as</span> her sister.<br>
+        I am <span class="key">not as tall as</span> my father.<br>
+        I have <span class="key">as many</span> books <span class="key">as</span> you.<br>
+        I don't have <span class="key">as much</span> money <span class="key">as</span> you.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 44 – Resumen Final -->
+<div class="slide" id="s44">
+  <div class="s-header">
+    <span class="badge">RESUMEN</span>
+    <h2>¡Has completado la clase C14!</h2>
+    <span class="s-num">44 / 46</span>
+  </div>
+  <div class="s-body">
+    <div class="summary-grid">
+      <div class="summary-card"><h4>🔤 GET</h4><p>get up, get along, get over, get through, etc.</p></div>
+      <div class="summary-card"><h4>🔤 TAKE</h4><p>take off, take after, take care of, take up, etc.</p></div>
+      <div class="summary-card"><h4>🔤 LOOK</h4><p>look for, look after, look forward to, look into, etc.</p></div>
+      <div class="summary-card"><h4>🔤 PUT</h4><p>put on, put off, put away, put up with, etc.</p></div>
+      <div class="summary-card"><h4>🔤 COME</h4><p>come up with, come across, come back, come from, etc.</p></div>
+      <div class="summary-card"><h4>🔤 GO</h4><p>go on, go out, go through, go ahead, etc.</p></div>
+      <div class="summary-card"><h4>🔤 TURN / GIVE / RUN</h4><p>turn on/off, give up, run out of, etc.</p></div>
+      <div class="summary-card"><h4>🔤 Otros</h4><p>break down, carry out, deal with, find out, etc.</p></div>
+      <div class="summary-card"><h4>⚖️ AS...AS</h4><p>comparaciones de igualdad y desigualdad</p></div>
+      <div class="summary-card"><h4>📝 AS MUCH/MANY AS</h4><p>cantidades (contable e incontable)</p></div>
+    </div>
+    <div class="tip" style="margin-top:12px">
+      <span class="icon">📌</span>
+      <div class="content"><strong>¡Listo para practicar!</strong> Ahora dirígete a los <strong>Ejercicios de Repaso (E14.html)</strong> para poner a prueba todo lo que has aprendido en esta clase.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" disabled onclick="navigate(-1)">← Anterior</button>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill" style="width:2.3%"></div></div>
+    <div id="slide-label">Slide 1 / 44</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Siguiente →</button>
+  <div class="nav-links">
+    <button class="nav-btn gold" onclick="window.location.href='index.html'">📖 Course</button>
+    <button class="nav-btn green-btn" onclick="window.location.href='E14.html'">✏️ Exercises</button>
+  </div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function navigate(dir){
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total-1;
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slide-label').textContent = `Slide ${current+1} / ${total}`;
+  slides[current].scrollTop = 0;
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+
+let tx=0;
+document.getElementById('app').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('app').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) navigate(dx<0?1:-1);
+},{passive:true});
+</script>
+</body>
+</html>
