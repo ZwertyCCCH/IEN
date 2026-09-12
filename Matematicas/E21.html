@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Test de Simulación Prueba de ingreso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<style>
+:root{
+  --primary:#1a2a4a;
+  --primary2:#1e3a6a;
+  --primary3:#1a4a7a;
+  --math-blue:#1a5a8a;
+  --math-blue2:#2a7aaa;
+  --gold:#d4a84a;
+  --gold2:#e8c86a;
+  --white:#ffffff;
+  --light:#f0f4f8;
+  --lighter:#f7f9fc;
+  --green:#1a7a4a;
+  --green2:#e8f7ef;
+  --green3:#0f5c37;
+  --red:#b02a2a;
+  --red2:#fde8e8;
+  --gray:#5a6a7a;
+  --border:#d0dce8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Source Sans 3',sans-serif;
+  background:linear-gradient(160deg,var(--primary) 0%,var(--primary2) 40%,var(--primary3) 100%);
+  min-height:100vh;color:#1a2a3a;
+}
+
+#topbar{
+  position:sticky;top:0;z-index:200;
+  background:var(--primary);border-bottom:3px solid var(--gold);
+  padding:12px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+#topbar h1{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.25rem;font-weight:700;flex:1;
+}
+#topbar h1 span{color:var(--gold);}
+#score-pill{
+  background:rgba(212,168,74,.15);border:1px solid var(--gold);
+  color:var(--gold2);font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;padding:5px 14px;border-radius:20px;white-space:nowrap;
+}
+
+#prog-wrap{background:rgba(255,255,255,.08);height:6px;}
+#prog-fill{height:100%;background:var(--gold);transition:width .4s;width:0%;}
+
+#main{max-width:820px;margin:0 auto;padding:28px 20px 120px;}
+
+#intro-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.25);
+  animation:fadeUp .5s ease forwards;
+}
+#intro-card h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--primary);margin-bottom:10px;}
+#intro-card p{color:var(--gray);font-size:1rem;line-height:1.7;margin-bottom:24px;}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;}
+.tag{
+  background:var(--light);border:1px solid var(--border);border-radius:20px;
+  padding:4px 14px;font-size:.82rem;color:var(--primary);font-weight:600;
+}
+.info-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;
+  background:var(--light);border-radius:16px;padding:16px;margin-top:16px;
+}
+.info-item{text-align:center;}
+.info-item .num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--primary);}
+.info-item .label{font-size:.75rem;color:var(--gray);}
+
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  border:none;cursor:pointer;border-radius:10px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.95rem;padding:11px 24px;transition:all .2s;
+}
+.btn-gold{background:var(--gold);color:var(--primary);}
+.btn-gold:hover{background:var(--gold2);transform:scale(1.03);}
+.btn-sky{background:var(--math-blue);color:var(--white);}
+.btn-sky:hover{background:var(--math-blue2);transform:scale(1.03);}
+.btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold);}
+.btn-outline:hover{background:rgba(212,168,74,.12);}
+
+#questions-wrap{display:none;flex-direction:column;gap:20px;}
+.q-card{
+  background:var(--white);border-radius:16px;padding:22px 26px;
+  box-shadow:0 4px 16px rgba(0,0,0,.12);
+  border-left:5px solid var(--border);
+  transition:border-color .2s;
+  animation:fadeUp .4s ease both;
+}
+.q-card.answered-correct{border-left-color:var(--green);}
+.q-card.answered-wrong{border-left-color:var(--red);}
+
+.q-num{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  color:var(--gray);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase;
+}
+.q-text{
+  font-size:1rem;font-weight:600;color:var(--primary);line-height:1.8;margin-bottom:14px;
+}
+.q-text .katex{font-size:1.05rem;}
+
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt{
+  display:flex;align-items:center;gap:12px;
+  border:2px solid var(--border);border-radius:10px;
+  padding:10px 14px;cursor:pointer;transition:all .18s;
+  background:var(--light);user-select:none;
+}
+.opt:hover:not(.locked){border-color:var(--math-blue);background:#e8f0fc;}
+.opt.selected{border-color:var(--math-blue);background:#dbe8ff;}
+.opt.correct{border-color:var(--green);background:var(--green2);}
+.opt.wrong{border-color:var(--red);background:var(--red2);}
+.opt.locked{cursor:default;}
+.opt-letter{
+  width:26px;height:26px;border-radius:50%;border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;
+  color:var(--gray);flex-shrink:0;transition:all .18s;background:var(--white);
+}
+.opt.selected .opt-letter{border-color:var(--math-blue);color:var(--math-blue);background:#dbe8ff;}
+.opt.correct .opt-letter{border-color:var(--green);color:var(--green);background:var(--green2);}
+.opt.wrong .opt-letter{border-color:var(--red);color:var(--red);background:var(--red2);}
+.opt-text{font-size:.93rem;color:#1a2a3a;line-height:1.4;}
+
+.tabla-datos{
+  width:100%;border-collapse:collapse;margin:12px 0;
+  font-size:.85rem;background:var(--lighter);
+  border-radius:8px;overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.tabla-datos th, .tabla-datos td{
+  border:1px solid var(--border);padding:8px 12px;text-align:left;
+}
+.tabla-datos th{
+  background:var(--primary);color:var(--white);font-weight:700;
+  font-size:.8rem;letter-spacing:.03em;
+}
+.tabla-datos tr:nth-child(even){background:var(--light);}
+.tabla-datos td.num{text-align:center;font-family:'JetBrains Mono',monospace;}
+
+#submit-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:var(--primary);border-top:2px solid var(--gold);
+  padding:10px 24px;display:flex;align-items:center;gap:14px;
+  justify-content:space-between;flex-wrap:wrap;
+}
+#answered-count{color:#a0b8d0;font-family:'JetBrains Mono',monospace;font-size:.8rem;}
+
+#results-wrap{display:none;animation:fadeUp .5s ease forwards;}
+#results-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  box-shadow:0 12px 40px rgba(0,0,0,.25);margin-bottom:28px;text-align:center;
+}
+.score-ring{
+  width:140px;height:140px;border-radius:50%;margin:0 auto 20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;
+  border:8px solid var(--gold);background:var(--light);
+  transition:border-color .4s;
+}
+.score-ring .score-num{font-size:2.8rem;font-weight:900;color:var(--primary);line-height:1;}
+.score-ring .score-of{font-size:.9rem;color:var(--gray);}
+#result-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--primary);margin-bottom:8px;}
+#result-msg{color:var(--gray);font-size:1rem;line-height:1.6;margin-bottom:24px;}
+.result-stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+.stat-box{background:var(--light);border-radius:12px;padding:12px 22px;text-align:center;border:1px solid var(--border);}
+.stat-box .sv{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;}
+.stat-box .sl{font-size:.78rem;color:var(--gray);margin-top:2px;}
+.stat-box.ok .sv{color:var(--green);}
+.stat-box.err .sv{color:var(--red);}
+.stat-box.skip .sv{color:var(--gold);}
+
+.grade-box{
+  font-size:1.2rem;text-align:center;padding:12px;
+  border-radius:40px;margin-top:16px;font-weight:700;
+}
+.approved{background:var(--green2);color:var(--green3);border:2px solid var(--green);}
+.failed{background:var(--red2);color:var(--red);border:2px solid var(--red);}
+
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px;}
+
+#review-wrap{display:flex;flex-direction:column;gap:16px;}
+.review-title{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.3rem;font-weight:700;margin-bottom:6px;
+}
+.review-card{
+  background:var(--white);border-radius:16px;padding:16px 20px;
+  border-left:4px solid var(--border);
+}
+.review-card.correct{border-left-color:var(--green);}
+.review-card.wrong{border-left-color:var(--red);}
+.review-explanation{
+  margin-top:10px;padding:12px;background:var(--lighter);
+  border-radius:10px;font-size:.85rem;line-height:1.7;
+  color:#2a3a4a;border:1px solid var(--border);
+}
+.review-explanation strong{color:var(--primary);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:600px){
+  #main{padding:16px 12px 100px;}
+  #intro-card,#results-card{padding:24px 18px;}
+  .result-actions{flex-direction:column;}
+  .btn{justify-content:center;}
+  .q-card{padding:16px;}
+  .tabla-datos{font-size:.75rem;}
+  .tabla-datos th, .tabla-datos td{padding:6px 8px;}
+}
+/* ── TIMER ── */
+#timer-pill{
+  background:rgba(212,168,74,.15);
+  border:1px solid var(--gold);
+  color:var(--gold2);
+  font-family:'JetBrains Mono',monospace;
+  font-size:.85rem;
+  font-weight:700;
+  padding:5px 14px;
+  border-radius:20px;
+  white-space:nowrap;
+  transition:all .3s;
+}
+#timer-pill.warning{
+  background:rgba(212,168,74,.35);
+  border-color:#e8c86a;
+  color:#ffffff;
+}
+#timer-pill.danger{
+  background:rgba(176,42,42,.35);
+  border-color:#ff6b6b;
+  color:#ffffff;
+  animation:pulse 1s infinite;
+}
+@keyframes pulse{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.06);}
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <h1>Test de Simulación <span>Prueba de ingreso</span></h1>
+  <div id="timer-pill" style="display:none;">⏱ 02:00:00</div>
+  <div id="score-pill">60 preguntas · 1 punto cada pregunta</div>
+</div>
+<div id="prog-wrap"><div id="prog-fill"></div></div>
+
+<div id="main">
+
+  <div id="intro-card">
+    <h2>Test de Simulación Prueba de ingreso</h2>
+    <p>Este test selecciona <strong>15 preguntas aleatorias de cada eje temático</strong> (60 en total) de un banco de 160 preguntas. Al finalizar verás tu puntaje y una revisión completa con explicaciones paso a paso.</p>
+    <div class="tag-row">
+      <span class="tag">🔢 Números</span>
+      <span class="tag">📐 Álgebra y Funciones</span>
+      <span class="tag">📊 Geometría</span>
+      <span class="tag">🎲 Probabilidad y Estadística</span>
+    </div>
+    <div class="info-grid">
+      <div class="info-item"><div class="num">160</div><div class="label">Preguntas en banco</div></div>
+      <div class="info-item"><div class="num">60</div><div class="label">Preguntas por test</div></div>
+      <div class="info-item"><div class="num">15</div><div class="label">Por cada eje</div></div>
+    </div>
+    <button class="btn btn-gold" onclick="startTest()">🚀 Iniciar Test</button>
+    <button class="btn btn-outline" style="margin-left:10px; display:none" onclick="toggleDebug()">🔍 Ver todas las preguntas</button>
+  </div>
+
+  <div id="questions-wrap"></div>
+
+  <div id="results-wrap">
+    <div id="results-card">
+      <div class="score-ring">
+        <div class="score-num" id="r-score">0</div>
+        <div class="score-of" id="r-of">/ 60</div>
+      </div>
+      <div id="result-title"></div>
+      <div id="result-msg"></div>
+      <div class="result-stats">
+        <div class="stat-box ok"><div class="sv" id="r-correct">0</div><div class="sl">✅ Correctas</div></div>
+        <div class="stat-box err"><div class="sv" id="r-wrong">0</div><div class="sl">❌ Incorrectas</div></div>
+        <div class="stat-box skip"><div class="sv" id="r-skip">0</div><div class="sl">⚪ Sin responder</div></div>
+      </div>
+      <div class="grade-box" id="grade-box"></div>
+      <div class="result-actions">
+        <button class="btn btn-gold" onclick="restartTest()">🔄 Nuevo Test</button>
+        <button class="btn btn-sky" onclick="window.location.href='index.html'">📘 Volver al curso</button>
+      </div>
+    </div>
+    <div class="review-title">📋 Revisión de Respuestas</div>
+    <div id="review-wrap"></div>
+  </div>
+
+</div>
+
+<div id="submit-bar" style="display:none">
+  <div id="answered-count">Respondidas: 0 / 60</div>
+  <div style="display:flex;gap:10px">
+    <button class="btn btn-outline" onclick="cancelTest()">← Cancelar</button>
+    <button class="btn btn-gold" onclick="submitTest()">Finalizar Test ✓</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- PANEL DE INSPECCIÓN: VER TODAS LAS PREGUNTAS              -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="debug-panel" style="
+  display:none;position:fixed;top:0;left:0;right:0;bottom:0;
+  z-index:600;background:#f0f4f8;overflow-y:auto;
+  padding:20px;
+">
+  <div style="
+    position:sticky;top:0;background:#1a2a4a;color:#fff;
+    padding:14px 20px;margin:-20px -20px 20px -20px;
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+    border-bottom:3px solid #d4a84a;z-index:10;
+  ">
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;flex:1;color:#fff;">
+      🔍 Inspector de Preguntas — Banco Completo
+    </h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button onclick="filterDebug('all')" class="dbg-filter" data-f="all" style="background:#d4a84a;color:#1a2a4a;border:none;padding:6px 12px;border-radius:6px;font-weight:700;cursor:pointer;font-size:.8rem;">Todas</button>
+      <button onclick="filterDebug('numeros')" class="dbg-filter" data-f="numeros" style="background:#fff;color:#1a2a4a;border:none;padding:6px 12px;border-radius:6px;font-weight:700;cursor:pointer;font-size:.8rem;">Números</button>
+      <button onclick="filterDebug('algebra')" class="dbg-filter" data-f="algebra" style="background:#fff;color:#1a2a4a;border:none;padding:6px 12px;border-radius:6px;font-weight:700;cursor:pointer;font-size:.8rem;">Álgebra</button>
+      <button onclick="filterDebug('geometria')" class="dbg-filter" data-f="geometria" style="background:#fff;color:#1a2a4a;border:none;padding:6px 12px;border-radius:6px;font-weight:700;cursor:pointer;font-size:.8rem;">Geometría</button>
+      <button onclick="filterDebug('probabilidad')" class="dbg-filter" data-f="probabilidad" style="background:#fff;color:#1a2a4a;border:none;padding:6px 12px;border-radius:6px;font-weight:700;cursor:pointer;font-size:.8rem;">Probabilidad</button>
+      <button onclick="filterDebug('problema')" class="dbg-filter" data-f="problema" style="background:#b02a2a;color:#fff;border:none;padding:6px 12px;border-radius:6px;font-weight:700;cursor:pointer;font-size:.8rem;">⚠ Solo problemas $</button>
+      <button onclick="toggleDebug()" style="background:#b02a2a;color:#fff;border:none;padding:6px 14px;border-radius:6px;font-weight:700;cursor:pointer;">✕ Cerrar</button>
+    </div>
+  </div>
+  <div id="debug-stats" style="
+    background:#fff;padding:14px 18px;border-radius:10px;
+    margin-bottom:16px;font-family:'JetBrains Mono',monospace;
+    font-size:.85rem;line-height:1.8;
+  "></div>
+  <div id="debug-content"></div>
+</div>
+
+<script>
+
+// ============================================================
+// UTILIDAD: generador de tablas HTML
+// ============================================================
+function tabla(headers, rows) {
+  let h = '<table class="tabla-datos"><thead><tr>';
+  headers.forEach(x => h += `<th>${x}</th>`);
+  h += '</tr></thead><tbody>';
+  rows.forEach(r => {
+    h += '<tr>';
+    r.forEach((c, i) => h += `<td class="${i>0?'num':''}">${c}</td>`);
+    h += '</tr>';
+  });
+  h += '</tbody></table>';
+  return h;
+}
+
+// ============================================================
+// POOL DE PREGUNTAS - EJE NÚMEROS (40 preguntas)
+// ============================================================
+const POOL_NUMEROS = [
+  {
+    q: 'En la tabla adjunta se presenta la cantidad de metros cuadrados recomendados para la crianza de cerdo de acuerdo con su masa.\n\nSi se quiere hacer un chiquero para 12 cerdos del tipo Göttingen, que llegan a tener una masa de entre 35 kg y 45 kg en edad adulta, ¿cuál es la cantidad mínima de metros cuadrados que debe tener el chiquero para cumplir con la recomendación?',
+    tabla: tabla(
+      ['Masa del cerdo','Cantidad mínima de m² por cerdo'],
+      [['Menos de 10 kg','0,15'],['Entre 10 kg y 20 kg','0,2'],['Entre 20 kg y 30 kg','0,3'],['Entre 30 kg y 50 kg','0,4'],['Entre 50 kg y 85 kg','0,55'],['Entre 85 kg y 110 kg','0,65'],['110 kg o más','1']]
+    ),
+    opts: ['2,4', '3,6', '4,8', '6,6'],
+    ans: 2,
+    exp: 'Paso 1: Los cerdos pesan entre 35 kg y 45 kg, lo que corresponde al rango "Entre 30 kg y 50 kg" de la tabla.\nPaso 2: Para ese rango, la cantidad mínima es 0,4 m² por cerdo.\nPaso 3: Para 12 cerdos: $12 \\times 0,4 = 4,8$ m².\nPor lo tanto, la cantidad mínima es 4,8 m².'
+  },
+  {
+    q: 'En la tabla adjunta se presentan algunas unidades de distancia utilizadas en el Sistema Internacional y su equivalencia en metros.\n\n¿Cuál es el resultado de la operación $\\frac{1 \\text{ Ym} \\cdot 1 \\text{ Em}}{1 \\text{ Zm} \\cdot 1 \\text{ Pm}}$?',
+    tabla: tabla(
+      ['Unidad','Símbolo','Equivalencia en metros'],
+      [['Yottametro','Ym','$10^{24}$'],['Zettametro','Zm','$10^{21}$'],['Exámetro','Em','$10^{18}$'],['Petámetro','Pm','$10^{15}$'],['Terámetro','Tm','$10^{12}$'],['Gigámetro','Gm','$10^{9}$'],['Megámetro','Mm','$10^{6}$'],['Kilómetro','Km','$10^{3}$']]
+    ),
+    opts: ['$1 \\cdot 10^6$', '$2 \\cdot 10^3$', '$1 \\cdot 10^9$', '$1 \\cdot 10^{35}$'],
+    ans: 2,
+    exp: 'Paso 1: Ym = $10^{24}$ m, Em = $10^{18}$ m, Zm = $10^{21}$ m, Pm = $10^{15}$ m.\nPaso 2: Reemplazar: $\\frac{10^{24} \\cdot 10^{18}}{10^{21} \\cdot 10^{15}} = \\frac{10^{42}}{10^{36}}$.\nPaso 3: Restar exponentes: $10^{42-36} = 10^6$.\nEl resultado es $1 \\cdot 10^6$.'
+  },
+  {
+    q: 'Una radio que transmite 24 horas al día clasifica su tiempo al aire de la siguiente manera:\n\nPor falta de presupuesto, se aumenta el tiempo de comerciales de los auspiciadores en 2 horas.\n\n¿Cuál es el nuevo porcentaje de las 24 horas al día destinado a comerciales de los auspiciadores?',
+    tabla: tabla(
+      ['Tiempo al aire','Porcentaje'],
+      [['Programas de conversación en vivo','35 %'],['Comerciales de los auspiciadores','15 %'],['Música envasada','50 %']]
+    ),
+    opts: ['15,83 %', '17 %', '23,3 %', '70 %'],
+    ans: 2,
+    exp: 'Paso 1: El 15% de 24 horas es $0,15 \\times 24 = 3,6$ horas.\nPaso 2: Se aumentan 2 horas: $3,6 + 2 = 5,6$ horas.\nPaso 3: El nuevo porcentaje es $\\frac{5,6}{24} \\times 100 = 23,3\\%$.\nEl nuevo porcentaje es 23,3%.'
+  },
+  {
+    q: 'En la figura se presenta un cartel con los precios de las impresiones en blanco y negro de un centro de impresión.\n\nUn curso de Química Orgánica requiere de un libro de tres capítulos de 150, 130 y 85 hojas, en ese orden. Una persona imprimió primero solo el primer capítulo, luego solo el segundo y por último solo el tercero, a medida que avanzaba en el curso.\n\n¿Cuánto dinero gastó la persona en imprimir el libro?',
+    // IMAGEN: Extraer de "2025-24-12-04-paes-regular-matematica1-p2025.pdf" página 9, el cartel de precios "IMPRESIONES B y N"
+    img: 'https://i.ibb.co/8nbhqx1t/image.png', // <-- Pega aquí la URL de la imagen del cartel
+    opts: ['&#36;7300', '&#36;8150', '&#36;8800', '&#36;9450'],
+    ans: 2,
+    exp: 'Paso 1: Capítulo 1: 150 hojas → &#36;20 por hoja → $150 \\times 20 = 3000$.\nPaso 2: Capítulo 2: 130 hojas → &#36;25 por hoja → $130 \\times 25 = 3250$.\nPaso 3: Capítulo 3: 85 hojas → &#36;30 por hoja → $85 \\times 30 = 2550$.\nPaso 4: Sumar: $3000 + 3250 + 2550 = 8800$.\nGastó &#36;8800.'
+  },
+  {
+    q: 'Una huincha utilizada en construcción tiene dos unidades de medida distintas. A continuación se representa un trozo de esta huincha.\n\nSi la longitud de un objeto es $x$ pulgadas, ¿cuál de las siguientes expresiones representa aproximadamente su longitud en centímetros?',
+    // IMAGEN: Extraer de "2027-26-06-17-paes-invierno-oficial-matematica1-p2027 (1).pdf" página 20, la huincha con cm y pulgadas
+    img: 'https://i.ibb.co/DfZhrtTx/image.png', // <-- Pega aquí la URL de la imagen de la huincha
+    opts: ['$\\frac{5,1}{2}x$', '$\\frac{2}{5,1}x$', '$x + 3,1$', '$x - 3,1$'],
+    ans: 0,
+    exp: 'Paso 1: De la imagen, 2 pulgadas ≈ 5,1 cm.\nPaso 2: 1 pulgada ≈ $\\frac{5,1}{2}$ cm.\nPaso 3: Para $x$ pulgadas: $\\frac{5,1}{2}x$ cm.'
+  },
+  { q: '$[-5 + (-3) \\cdot 7] : (-2) =$', opts: ['$24$', '$13$', '$-24$', '$-13$'], ans: 1, exp: 'Paso 1: $(-3) \\cdot 7 = -21$.\nPaso 2: $-5 + (-21) = -26$.\nPaso 3: $-26 : (-2) = 13$.' },
+  { q: '$-3 \\cdot |6 - 8| - |-2| =$', opts: ['$-8$', '$-4$', '$0$', '$4$'], ans: 0, exp: 'Paso 1: $|6-8| = 2$.\nPaso 2: $-3 \\cdot 2 = -6$.\nPaso 3: $-6 - 2 = -8$.' },
+  { q: 'Si $a = 3$ y $b = -1$, entonces $-\\{a - (-b - a)\\}$ es:', opts: ['$-5$', '$-1$', '$0$', '$1$'], ans: 0, exp: 'Paso 1: $-b = 1$.\nPaso 2: $-b - a = -2$.\nPaso 3: $a - (-2) = 5$.\nPaso 4: $-5$.' },
+  { q: '$(1 + 5) - 3^2 + 8 : 2 \\cdot 2 =$', opts: ['$-1$', '$1$', '$5$', '$15$'], ans: 2, exp: 'Paso 1: $1 + 5 = 6$.\nPaso 2: $3^2 = 9$.\nPaso 3: $8 : 2 = 4$, $4 \\cdot 2 = 8$.\nPaso 4: $6 - 9 + 8 = 5$.' },
+  { q: '$76.606 - 29.878 =$', opts: ['$45.728$', '$46.728$', '$45.738$', '$46.736$'], ans: 1, exp: 'Paso 1: $76.606 - 29.878 = 46.728$.' },
+  { q: 'Si al entero $-1$ le restamos el entero $-4$, resulta:', opts: ['$0$', '$-3$', '$2$', '$3$'], ans: 3, exp: 'Paso 1: $-1 - (-4) = -1 + 4 = 3$.' },
+  { q: '$- (4 - 2 \\cdot (2 - 4)) =$', opts: ['$-15$', '$-10$', '$-8$', '$8$'], ans: 2, exp: 'Paso 1: $2 - 4 = -2$.\nPaso 2: $2 \\cdot (-2) = -4$.\nPaso 3: $4 - (-4) = 8$.\nPaso 4: $-8$.' },
+  { q: 'Si $M = -2$, entonces $-M \\cdot M - M =$', opts: ['$-12$', '$-4$', '$-2$', '$2$'], ans: 2, exp: 'Paso 1: $-(-2) \\cdot (-2) - (-2)$.\nPaso 2: $2 \\cdot (-2) = -4$.\nPaso 3: $-4 + 2 = -2$.' },
+  { q: 'La expresión $(9 \\cdot 4)$ es múltiplo de:', opts: ['$4$', '$9$', '$18$', '$36$'], ans: 3, exp: 'Paso 1: $9 \\cdot 4 = 36$.' },
+  { q: 'Si $P + 3$ es el sucesor del número $10$, entonces el sucesor de $P$ es:', opts: ['$7$', '$8$', '$9$', '$11$'], ans: 2, exp: 'Paso 1: $P + 3 = 11 \\Rightarrow P = 8$.\nPaso 2: Sucesor de $P$ = 9.' },
+  { q: 'Si al número $-8$ se le resta el doble de $-6$ y al resultado se le agrega el cubo de $-3$, resulta:', opts: ['$7$', '$-7$', '$-23$', '$-31$'], ans: 2, exp: 'Paso 1: doble de $-6$ = $-12$.\nPaso 2: $-8 - (-12) = 4$.\nPaso 3: $(-3)^3 = -27$.\nPaso 4: $4 + (-27) = -23$.' },
+  { q: 'Si $|P|$ representa el valor absoluto de $P$, ¿cuál de las siguientes alternativas es verdadera?', opts: ['$|-7| > |-8|$', '$-21 > 8$', '$-10 > |10|$', '$-5 < 3$'], ans: 3, exp: 'Paso 1: A) falso, B) falso.\nPaso 2: C) falso y D) verdadero.' },
+  { q: 'Si $m = -1$ y $n = 2$, entonces ¿cuál es el valor de la expresión $m \\cdot (n - m) \\cdot (m - n)$?', opts: ['$9$', '$3$', '$0$', '$-3$'], ans: 0, exp: 'Paso 1: $n - m = 3$.\nPaso 2: $m - n = -3$.\nPaso 3: $(-1) \\cdot 3 \\cdot (-3) = 9$.' },
+  { q: '¿Cuál de las siguientes afirmaciones es verdadera?', opts: ['El número $2$ es un número compuesto','El número $1$ es un número primo','El m.c.m entre $2$, $3$ y $11$ es la suma entre $2$, $3$ y $11$','El M.C.D entre $2$, $11$ y $19$ es $1$'], ans: 3, exp: 'Paso 1: A) falso, B) falso, C) falso.\nPaso 2: D) verdadero.' },
+  { q: 'La temperatura mínima de un día fue de $-1$°C y la máxima de $9$°C. ¿Cuál fue la variación de la temperatura en el día?', opts: ['$-10$°C', '$6$°C', '$10$°C', '$11$°C'], ans: 2, exp: 'Paso 1: $9 - (-1) = 10$.' },
+  { q: '¿Cuál es el valor de $|-3| - |-3|^2 - |-3|^3$?', opts: ['$-39$', '$-33$', '$-21$', '$33$'], ans: 1, exp: 'Paso 1: $|-3|=3$, $|-3|^2=9$, $|-3|^3=27$.\nPaso 2: $3-9-27=-33$.' },
+  { q: '¿Qué resultado se obtiene si se disminuye en $2$ unidades la suma entre el triple de $2$ y el doble de $3$?', opts: ['$15$', '$12$', '$10$', '$8$'], ans: 2, exp: 'Paso 1: $3 \\cdot 2 + 2 \\cdot 3 = 12$.\nPaso 2: $12 - 2 = 10$.' },
+  { q: 'Si $N$ es divisor de $8$ y $N$ no es divisor de $4$, entonces $N$ es:', opts: ['$1$', '$2$', '$4$', '$8$'], ans: 3, exp: 'Paso 1: Divisores de 8: 1,2,4,8.\nPaso 2: Divisores de 4: 1,2,4.\nPaso 3: Solo 8 cumple.' },
+  { q: '$-3 - 3 \\cdot 9 : 9 + 3 =$', opts: ['$-6$', '$-3$', '$0$', '$2$'], ans: 1, exp: 'Paso 1: $3 \\cdot 9 : 9 = 3$.\nPaso 2: $-3 - 3 + 3 = -3$.' },
+  { q: '¿Cuál de las siguientes afirmaciones es verdadera?', opts: ['La suma de números naturales resulta siempre un natural','La sustracción es conmutativa en los números naturales','En los naturales, el inverso aditivo de $2$ es $-2$','En los enteros, el inverso multiplicativo de $1$ es $-1$'], ans: 0, exp: 'Paso 1: A) verdadera.' },
+  { q: 'El valor de la expresión $18 - (-30) : (-2) + (-2) : (-1)$ es:', opts: ['$9$', '$-5$', '$-9$', '$5$'], ans: 3, exp: 'Paso 1: $(-30):(-2)=15$.\nPaso 2: $(-2):(-1)=2$.\nPaso 3: $18 - 15 + 2 = 5$.' },
+  { q: 'El doble de $2 \\cdot (4 + 3) - 2 \\cdot (1 - 2)$ es:', opts: ['$8$', '$16$', '$32$', '$48$'], ans: 2, exp: 'Paso 1: $2 \\cdot 7 = 14$.\nPaso 2: $2 \\cdot (-1) = -2$.\nPaso 3: $14 - (-2) = 16$.\nPaso 4: $2 \\cdot 16 = 32$.' },
+  { q: 'Si $n$ es un número natural par, entonces el sucesor par del sucesor de $n + 1$ está representado por:', opts: ['$n + 4$', '$n + 2$', '$2n + 2$', '$2n + 4$'], ans: 0, exp: 'Paso 1: Sucesor de $n+1$ = $n+2$.\nPaso 2: Siguiente par = $n+4$.' },
+  { q: 'Si el sucesor de un número es $a + 4$, entonces el doble del número es:', opts: ['$a + 3$', '$2a + 2$', '$2a + 3$', '$2a + 6$'], ans: 3, exp: 'Paso 1: número = $a+3$.\nPaso 2: doble = $2a+6$.' },
+  { q: 'La suma de tres números pares consecutivos es siempre divisible por:', opts: ['$4$', '$6$', '$9$', '$12$'], ans: 1, exp: 'Paso 1: $2n + (2n+2) + (2n+4) = 6(n+1)$.\nPaso 2: divisible por 6.' },
+  { q: 'Sean $a > b$ y $b > c$, siendo $a$, $b$ y $c$ números enteros. Si $b = 0$, ¿cuál de las siguientes relaciones es verdadera?', opts: ['$a \\cdot c > 0$', '$a \\cdot b > b$', '$c^2 < 0$', '$a - c > 0$'], ans: 3, exp: 'Paso 1: $a>0$, $c<0$.\nPaso 2: $a - c = a + |c| > 0$.' },
+  { q: 'La edad de Lucas equivale al doble de la quinta parte de la semisuma entre $4$ y $6$. ¿Qué edad tiene Lucas?', opts: ['$1$', '$2$', '$3$', '$5$'], ans: 1, exp: 'Paso 1: $(4+6)/2 = 5$.\nPaso 2: $5/5 = 1$.\nPaso 3: $2 \\cdot 1 = 2$.' },
+  { q: 'Si $m$ y $n$ son dos enteros consecutivos tales que $m < n$, entonces $n - m$ es:', opts: ['$0$', '$1$', '$m^2 + m$', '$2m + 1$'], ans: 1, exp: 'Paso 1: $n = m+1$.\nPaso 2: $n - m = 1$.' },
+  { q: 'Javier guarda monedas de 100 pesos en una alcancía. Si le faltan 3 monedas para tener 5.000, ¿a cuántas monedas de 50 equivale el dinero que tiene Javier en la alcancía?', opts: ['$47$', '$94$', '$100$', '$160$'], ans: 1, exp: 'Paso 1: Necesita 50 monedas de &#36;100.\nPaso 2: Tiene 47 monedas → &#36;4.700.\nPaso 3: En monedas de &#36;50: 94.' },
+  { q: '¿Cuál de los siguientes números es primo?', opts: ['$19$', '$51$', '$91$', '$141$'], ans: 0, exp: 'Paso 1: 19 primo.\nPaso 2: 51=3·17, 91=7·13, 141=3·47.' },
+  { q: 'Con $5$ vasos de $250$ ml cada uno, se llena un jarro. ¿Cuántos vasos de $125$ ml se necesitarán para llenar dos jarros de igual capacidad al anterior?', opts: ['$10$', '$15$', '$20$', '$25$'], ans: 2, exp: 'Paso 1: Jarro = 1250 ml.\nPaso 2: Dos jarros = 2500 ml.\nPaso 3: $2500 : 125 = 20$.' },
+  { q: '¿Cuál de los siguientes pares de dígitos podrían ponerse en los espacios vacíos, para que el número $4\\square.\\square12$ sea divisible por $6$?', opts: ['$0$ y $1$', '$1$ y $1$', '$1$ y $2$', '$2$ y $2$'], ans: 1, exp: 'Paso 1: divisible por 2 y 3.\nPaso 2: 41112 cumple.' },
+  { q: 'Si $A$, $B$, $C$ y $D$ son números enteros tales que $A > B$, $C > D$, $B < D$ y $C < A$. El orden decreciente de ellos es:', opts: ['$B D C A$', '$A C D B$', '$A C B D$', '$B D A C$'], ans: 1, exp: 'Paso 1: $A$ mayor.\nPaso 2: $C > D > B$.\nPaso 3: $A > C > D > B$.' },
+  { q: '$M = 1.2C4$ representa un número de $4$ cifras divisible por $6$. ¿Qué valores puede tener el dígito $C$ para que se cumpla la divisibilidad?', opts: ['$\\{4,6,9\\}$', '$\\{3,6,9\\}$', '$\\{2,5,8\\}$', '$\\{5,6,7\\}$'], ans: 2, exp: 'Paso 1: divisible por 2 (termina en 4) y 3.\nPaso 2: suma = $7+C$ múltiplo de 3: C = 2,5,8.' },
+  { q: 'Si $a + b + c = 2d$, en donde $a = 5$, $b = 4$ y $c = -3$, entonces el valor numérico de la expresión $d \\cdot d \\cdot (d - a) \\cdot (d - b) \\cdot (d - c)$ es:', opts: ['$24$', '$84$', '$96$', '$108$'], ans: 3, exp: 'Paso 1: $d=3$.\nPaso 2: $3 \\cdot 3 \\cdot (-2) \\cdot (-1) \\cdot 6 = 108$.' },
+  { q: 'La suma de tres impares consecutivos es siempre divisible por:', opts: ['$15$', '$9$', '$6$', '$3$'], ans: 3, exp: 'Paso 1: $6n+9 = 3(2n+3)$.\nPaso 2: divisible por 3.' },
+  { q: 'Si tenemos cuatro sitios de $70$, $56$, $42$ y $84$ hectáreas cada uno, los cuales queremos subdividir en parcelas con igual superficie. Entonces, cada una de estas parcelas podría tener una superficie máxima de:', opts: ['$2$ hectáreas', '$7$ hectáreas', '$14$ hectáreas', '$28$ hectáreas'], ans: 2, exp: 'Paso 1: MCD(70,56,42,84) = 14.' },
+  { q: 'Si el sucesor de un número es $m + 3$, entonces el doble del antecesor del número es:', opts: ['$m + 1$', '$m + 2$', '$2m + 1$', '$2m + 2$'], ans: 3, exp: 'Paso 1: número = $m+2$.\nPaso 2: antecesor = $m+1$.\nPaso 3: doble = $2m+2$.' },
+  { q: '¿Cuál de las siguientes afirmaciones es verdadera?', opts: ['En los enteros, la sustracción es conmutativa','En los enteros, el inverso multiplicativo de $10$ es $0,1$','En los enteros, el neutro aditivo es el cero','En los enteros, la división es conmutativa'], ans: 2, exp: 'Paso 1: C es la única verdadera.' },
+  { q: 'Si al cuadrado de $-3$ se le resta el doble de $-4$ y al resultado se le agrega el triple de $3$, se obtiene:', opts: ['$26$', '$20$', '$11$', '$10$'], ans: 0, exp: 'Paso 1: $9 - (-8) = 17$.\nPaso 2: $17 + 9 = 26$.' },
+  { q: 'Si $14$ veces $2$ es igual a $M$ y $15$ veces $3$ es igual a $N$, entonces $M + N$ resulta:', opts: ['$15$', '$28$', '$45$', '$73$'], ans: 3, exp: 'Paso 1: $M=28$, $N=45$.\nPaso 2: $M+N=73$.' },
+  { q: 'Si $a$ y $b$ son números primos distintos, ¿cuál de las siguientes opciones podría ser el producto de $a$ y $b$?', opts: ['$4$', '$9$', '$10$', '$16$'], ans: 2, exp: 'Paso 1: $10 = 2 \\cdot 5$.' },
+  { q: 'El producto entre los divisores de $139$ es:', opts: ['$1$', '$9$', '$139$', '$19.321$'], ans: 0, exp: 'Paso 1: 139 primo, divisores 1 y 139.\nPaso 2: producto = 139.' },
+  { q: 'Si $A \\in \\mathbb{Z}$ y $A < -1$, ¿cuál de las siguientes expresiones es siempre mayor que $1$?', opts: ['$A \\cdot A$', '$3A$', '$-2 - A$', '$A + 3$'], ans: 0, exp: 'Paso 1: $A^2 > 1$.' },
+  { q: 'Si $x$ es un número primo, entonces $x^2$ es siempre:', opts: ['Par', 'Primo', 'Compuesto', 'Par y compuesto'], ans: 2, exp: 'Paso 1: $x^2$ tiene divisores 1, x, x².\nPaso 2: compuesto.' },
+  { q: 'Se sabe que $n$ es múltiplo de $2$. Entonces, ¿cuál de las siguientes afirmaciones es verdadera?', opts: ['El sucesor de $n$ es múltiplo de $3$','$n^3$ es múltiplo de $3$','$12n$ es múltiplo de $2$','$n + 5$ es múltiplo de $2$'], ans: 2, exp: 'Paso 1: $12n$ múltiplo de 2.' },
+  { q: 'Si la suma entre el menor y el mayor de cinco números impares consecutivos es $1.854$, ¿cuál es su diferencia positiva?', opts: ['$4$', '$6$', '$8$', '$182$'], ans: 2, exp: 'Paso 1: $a + (a+8) = 1854$.\nPaso 2: diferencia = 8.' },
+  { q: 'Si la suma de tres números enteros consecutivos es $453$, ¿cuál es el producto entre los dos mayores?', opts: ['$21.952$', '$22.650$', '$22.952$', '$22.986$'], ans: 2, exp: 'Paso 1: 150, 151, 152.\nPaso 2: $151 \\cdot 152 = 22.952$.' },
+  { q: 'Si $a$ y $b$ son números enteros y el antecesor de $a$ es $b$ y el sucesor de $a$ es $-9$, entonces $a + b$ es:', opts: ['$-21$', '$-20$', '$-19$', '$ -17$'], ans: 0, exp: 'Paso 1: $a=-10$, $b=-11$.\nPaso 2: $a+b=-21$.' },
+  { q: 'Todo el líquido contenido en una jarra se reparte en $14$ vasos iguales hasta su capacidad máxima. Se quiere verter la misma cantidad de líquido de otra jarra idéntica a la anterior en vasos iguales a los usados, pero solo hasta la mitad de su capacidad. ¿Cuántos vasos más se necesitarán para ello?', opts: ['$7$', '$14$', '$21$', '$28$'], ans: 1, exp: 'Paso 1: mitad de capacidad → doble vasos = 28.\nPaso 2: más = 14.' },
+  { q: 'Si un maestro cobra &#36;400 por cortar verticalmente un tubo en dos partes, ¿cuánto cobrará por cortarlo en 4 partes?', opts: ['&#36;600', '&#36;800', '&#36;1.000', '&#36;1.200'], ans: 3, exp: 'Paso 1: 3 cortes → &#36;1200.' },
+  { q: 'En un juego de cartas un jugador obtiene $27$ puntos a favor y $4$ puntos en contra. Para determinar su puntaje final, a los puntos a favor se le restan el doble de los puntos en contra. ¿Cuál es su puntaje final de juego?', opts: ['$19$', '$23$', '$25$', '$29$'], ans: 0, exp: 'Paso 1: $27 - 8 = 19$.' },
+  { q: 'La suma de cuatro números enteros consecutivos es siempre:', opts: ['Divisible por $2$', 'Divisible por $3$', 'Divisible por $4$', 'Divisible por $6$'], ans: 0, exp: 'Paso 1: $4n+6 = 2(2n+3)$.' },
+  { q: 'Si $n$ es un número entero par y $m$ es un número entero impar, ¿cuál de las siguientes aseveraciones es siempre verdadera?', opts: ['$n^2$ es un número positivo','$m^2$ es un número par','$-m^6$ es un número positivo','$(n - m)^2$ es un número impar positivo'], ans: 0, exp: 'Paso 1: $n^2 > 0$.' },
+  { q: 'Necesitamos comprar un balde que saque el contenido de tres estanques que están llenos, cuyas capacidades son $12$, $18$ y $24$ litros. La idea es hacer el menor número de extracciones, para lograrlo el balde debe llenarse al máximo en cada una. ¿Qué capacidad debe tener este balde para efectuar el menor número de extracciones?', opts: ['$2$ litros', '$3$ litros', '$6$ litros', '$12$ litros'], ans: 2, exp: 'Paso 1: MCD(12,18,24)=6.' },
+  { q: 'Si $a$ es un número par y $b$ es un número impar, ¿cuál de las siguientes expresiones representa un número par?', opts: ['$a + b$', '$2a - b$', '$3a + 3b$', '$5a + 4b$'], ans: 3, exp: 'Paso 1: A tener en consideración que cuando se suman dos pares, se obtiene un par y cuando se suman dos impares, se obtiene un par. Paso 2: Para las multiplicaciones, cuando se multiplica un par por un impar, se tiene un número par.' },
+  { q: 'Dos luces intermitentes se encienden con intervalos de $42$ y $54$ segundos, respectivamente. Si a las $10:00$ horas y $15$ minutos se encuentran ambas encendidas, ¿a qué hora estarán nuevamente ambas encendidas simultáneamente?', opts: ['10 hr · 21 min · 18 seg','10 hr · 21 min · 36 seg','10 hr · 21 min · 42 seg','10 hr · 15 min · 54 seg'], ans: 0, exp: 'Paso 1: mcm(42,54) = 378 s = 6 min 18 s.\nPaso 2: 10:15 + 6:18 = 10:21:18.' },
+  { q: 'Una persona debe reunir $A$ pesos. Primero reúne $B$ pesos y luego gasta $C$ pesos. ¿Cuánto le falta, en pesos, para completar el monto que necesita, si $A > B > C$?', opts: ['$A + B - C$', '$C + A - B$', '$-A - (C - B)$', '$A - (B + C)$'], ans: 3, exp: 'Paso 1: le falta $A - (B-C)$.' },
+  { q: 'Una habitación se encuentra a $7$°C. Si con determinada estufa, la temperatura asciende $2$°C cada $10$ minutos, ¿al cabo de cuánto tiempo la temperatura de la habitación será de $21$°C?', opts: ['$14$ minutos', '$35$ minutos', '$1$ hora y $10$ minutos', '$2$ horas y $20$ minutos'], ans: 2, exp: 'Paso 1: $14/2 = 7$ intervalos.\nPaso 2: $7 \\cdot 10 = 70$ min = 1h 10min.' },
+  { q: 'Victoria tiene 38.000 en efectivo, gasta 4.500 en una entrada al cine, luego saca de su cuenta bancaria 20.000 y compra un regalo a su mamá por un valor de 12.000. ¿Cuál de las siguientes expresiones permite calcular el dinero en efectivo que le queda a Victoria?', opts: ['&#36;38.000 - &#36;4.500 + &#36;20.000','&#36;38.000 - &#36;4.500 - &#36;20.000 - &#36;12.000','&#36;38.000 - &#36;4.500 + &#36;20.000 + &#36;12.000','&#36;38.000 - &#36;4.500 + &#36;20.000 - &#36;12.000'], ans: 3, exp: 'Paso 1: inicia +, gasta -, saca +, compra -.' }
+];
+
+// ============================================================
+// POOL DE PREGUNTAS - EJE ÁLGEBRA Y FUNCIONES (40 preguntas)
+// ============================================================
+const POOL_ALGEBRA = [
+  {
+    q: 'Considera el siguiente gráfico en el que se presenta un modelo para la relación entre la cantidad de kilogramos de lentejas que se venden a granel en un almacén y su monto total a pagar.\n\n¿Cuántos kilogramos de lentejas compró en total una persona que pagó &#36;3300?',
+    // IMAGEN: Extraer de "2024-23-06-22-paes-invierno-oficial-matematica1-p2024.pdf" página 22, el gráfico de lentejas
+    img: 'https://i.ibb.co/Z62202kK/image.png', // <-- Pega aquí la URL de la imagen del gráfico
+    opts: ['2 kg', '2,2 kg', '2,3 kg', '2,5 kg'],
+    ans: 1,
+    exp: 'Paso 1: Del gráfico, el punto (2, 3000) indica 2 kg → &#36;3000.\nPaso 2: Relación lineal: $y = 1500x$.\nPaso 3: Para $y = 3300$: $x = 3300/1500 = 2,2$ kg.'
+  },
+  {
+    q: 'En el siguiente gráfico se representa la rapidez de un automóvil a control remoto a medida que transcurre el tiempo.\n\n¿Cuál de las siguientes afirmaciones se puede deducir del gráfico?',
+    // IMAGEN: Extraer de "2024-23-06-22-paes-invierno-oficial-matematica1-p2024.pdf" página 31, el gráfico rapidez vs tiempo
+    img: 'https://i.ibb.co/35dpGW2Z/image.png', // <-- Pega aquí la URL de la imagen del gráfico
+    opts: [
+      'Entre los 3 s y 7 s el automóvil está detenido.',
+      'El automóvil cambia de dirección cuatro veces.',
+      'La distancia total recorrida por el automóvil es 20 km.',
+      'Entre los 8 s y 10 s el automóvil disminuye su rapidez.'
+    ],
+    ans: 3,
+    exp: 'Paso 1: 3-7 s rapidez constante (no detenido).\nPaso 2: no hay cambios de dirección.\nPaso 3: área bajo curva ≠ 20 km.\nPaso 4: 8-10 s baja de 20 a 0.'
+  },
+  {
+    q: 'La altura que alcanza el salto de un tipo de grillo puede representarse por medio de la siguiente parábola:\n\n¿Cuál de las siguientes afirmaciones se puede deducir del gráfico?',
+    // IMAGEN: Extraer de "2025-24-12-04-paes-regular-matematica1-p2025.pdf" página 33, el gráfico parábola del grillo
+    img: 'https://i.ibb.co/20gznZm6/image.png', // <-- Pega aquí la URL de la imagen del gráfico
+    opts: [
+      'En 0,75 s, el grillo está a 30 cm de altura.',
+      'En 1 s, el grillo alcanza su mayor altura.',
+      'Solo a los 1,5 s, el grillo alcanza una altura de 30 cm.',
+      'A los 3 s, el grillo está bajo tierra.'
+    ],
+    ans: 1,
+    exp: 'Paso 1: vértice en (1, 40).\nPaso 2: a los 1 s alcanza 40 cm (máximo).\nPaso 3: otras opciones falsas.'
+  },
+  {
+    q: 'En la siguiente gráfica se representa la posición de un automóvil en distintos tiempos.\n\n¿Cuánto tiempo estuvo detenido el automóvil?',
+    // IMAGEN: Extraer de "2027-26-06-17-paes-invierno-oficial-matematica1-p2027 (1).pdf" página 30, el gráfico posición vs tiempo
+    img: 'https://i.ibb.co/7dQ4MJbh/image.png', // <-- Pega aquí la URL de la imagen del gráfico
+    opts: ['0,5 horas', '1,5 horas', '3,5 horas', '4 horas'],
+    ans: 1,
+    exp: 'Paso 1: entre 1,5 y 2 h constante → 0,5 h.\nPaso 2: entre 2,5 y 3,5 h constante → 1 h.\nPaso 3: total = 1,5 h.'
+  },
+  {
+    q: 'Dos jóvenes quieren iniciar un emprendimiento de fabricación y venta de helados. Las proyecciones de los gastos y de los ingresos, ambos acumulados, que deberían tener en los primeros 12 meses, se presentan en el siguiente gráfico:\n\n¿Qué representa el punto donde las rectas se intersecan?',
+    // IMAGEN: Extraer de "2026-25-12-03-paes-regular-matematica1-p2026 (1).pdf" página 19, el gráfico ingresos/gastos acumulados
+    img: 'https://i.ibb.co/155gh9k/image.png', // <-- Pega aquí la URL de la imagen del gráfico
+    opts: [
+      'Es el mes donde se obtiene la mayor cantidad de ingresos acumulados.',
+      'Es el mes donde los ingresos acumulados igualan a los gastos acumulados.',
+      'Es el mes desde cuando el emprendimiento no tendrá más gastos acumulados.',
+      'Es el mes donde los ingresos acumulados son iguales a los gastos iniciales del emprendimiento.'
+    ],
+    ans: 1,
+    exp: 'Paso 1: punto de intersección → ingresos = gastos.'
+  },
+  { q: 'Si $x + 5 = 12$, ¿cuál es el valor de $x$?', opts: ['$5$','$7$','$17$','$-7$'], ans: 1, exp: '$x = 12-5 = 7$.' },
+  { q: 'Si $2x - 3 = 9$, ¿cuál es el valor de $x$?', opts: ['$3$','$6$','$9$','$12$'], ans: 1, exp: '$2x=12 \\Rightarrow x=6$.' },
+  { q: '¿Cuál es la solución de la ecuación $3x + 7 = 22$?', opts: ['$3$','$5$','$7$','$15$'], ans: 1, exp: '$3x=15 \\Rightarrow x=5$.' },
+  { q: 'Si $5(x - 2) = 3x + 4$, ¿cuál es el valor de $x$?', opts: ['$3$','$5$','$7$','$9$'], ans: 2, exp: '$5x-10=3x+4 \\Rightarrow 2x=14 \\Rightarrow x=7$.' },
+  { q: '¿Cuál es el valor de $x$ en la ecuación $\\frac{x}{3} + 4 = 10$?', opts: ['$6$','$12$','$18$','$24$'], ans: 2, exp: '$x/3=6 \\Rightarrow x=18$.' },
+  { q: 'Si $2x + 3y = 12$ y $x = 3$, ¿cuál es el valor de $y$?', opts: ['$1$','$2$','$3$','$6$'], ans: 1, exp: '$6+3y=12 \\Rightarrow y=2$.' },
+  { q: '¿Cuál es la solución del sistema $x + y = 10$; $x - y = 4$?', opts: ['$x=3, y=7$','$x=7, y=3$','$x=5, y=5$','$x=6, y=4$'], ans: 1, exp: 'sumando: $2x=14 \\Rightarrow x=7$, $y=3$.' },
+  { q: 'Si $3x - 2y = 8$ y $x + y = 6$, ¿cuál es el valor de $x$?', opts: ['$2$','$4$','$6$','$8$'], ans: 1, exp: '$y=6-x \\Rightarrow 3x-12+2x=8 \\Rightarrow 5x=20 \\Rightarrow x=4$.' },
+  { q: '¿Cuál es la factorización de $x^2 - 9$?', opts: ['$(x-3)(x-3)$','$(x+3)(x+3)$','$(x-3)(x+3)$','$(x-9)(x+1)$'], ans: 2, exp: 'diferencia de cuadrados.' },
+  { q: '¿Cuál es la factorización de $x^2 + 5x + 6$?', opts: ['$(x+2)(x+3)$','$(x+1)(x+6)$','$(x-2)(x-3)$','$(x+5)(x+1)$'], ans: 0, exp: '$2 \\cdot 3 = 6$, $2+3=5$.' },
+  { q: 'Si $f(x) = 2x + 3$, ¿cuál es el valor de $f(5)$?', opts: ['$10$','$13$','$15$','$16$'], ans: 1, exp: '$f(5)=2(5)+3=13$.' },
+  { q: '¿Cuál es la pendiente de la recta $y = -3x + 7$?', opts: ['$-3$','$3$','$7$','$-7$'], ans: 0, exp: 'coeficiente de $x$.' },
+  { q: 'Si $f(x) = x^2 - 4x + 3$, ¿cuál es el valor de $f(2)$?', opts: ['$-1$','$0$','$1$','$3$'], ans: 0, exp: '$4-8+3=-1$.' },
+  { q: '¿Cuál es el vértice de la parábola $y = x^2 - 6x + 5$?', opts: ['$(3, -4)$','$(-3, -4)$','$(3, 4)$','$(6, 5)$'], ans: 0, exp: '$x_v=3$, $y_v=9-18+5=-4$.' },
+  { q: 'Si $x^2 = 49$, ¿cuáles son los valores de $x$?', opts: ['$7$','$-7$','$7$ y $-7$','$49$ y $-49$'], ans: 2, exp: '$x=\\pm 7$.' },
+  { q: '¿Cuál es la solución de $x^2 - 5x + 6 = 0$?', opts: ['$x=2, x=3$','$x=-2, x=-3$','$x=1, x=6$','$x=-1, x=-6$'], ans: 0, exp: '$(x-2)(x-3)=0$.' },
+  { q: 'Si $\\frac{x}{2} = \\frac{6}{4}$, ¿cuál es el valor de $x$?', opts: ['$2$','$3$','$4$','$6$'], ans: 1, exp: '$4x=12 \\Rightarrow x=3$.' },
+  { q: 'Si $3$ obreros construyen un muro en $12$ días, ¿cuántos días tardarán $6$ obreros en construir el mismo muro?', opts: ['$3$','$6$','$12$','$24$'], ans: 1, exp: 'inversa: $3 \\cdot 12 = 6x \\Rightarrow x=6$.' },
+  { q: 'Si $4$ kg de manzanas cuestan &#36;6000, ¿cuánto cuestan 7 kg?', opts: ['&#36;9000','&#36;10500','&#36;12000','&#36;14000'], ans: 1, exp: '$7 \\cdot 1500 = 10500$.' },
+  { q: '¿Cuál es el valor de $x$ en $2(x + 3) = 3(x - 1)$?', opts: ['$3$','$6$','$9$','$12$'], ans: 2, exp: '$2x+6=3x-3 \\Rightarrow x=9$.' },
+  { q: 'Si $f(x) = 3x - 2$, ¿cuál es el valor de $f(-1)$?', opts: ['$-5$','$-1$','$1$','$5$'], ans: 0, exp: '$f(-1)=-3-2=-5$.' },
+  { q: '¿Cuál es la ecuación de la recta que pasa por $(0, 2)$ y tiene pendiente $3$?', opts: ['$y = 3x$','$y = 3x + 2$','$y = 2x + 3$','$y = -3x + 2$'], ans: 1, exp: '$y=mx+b$, $b=2$, $m=3$.' },
+  { q: 'Si $x + y = 8$ y $x - y = 2$, ¿cuál es el valor de $x \\cdot y$?', opts: ['$12$','$15$','$16$','$20$'], ans: 1, exp: '$x=5$, $y=3$, $xy=15$.' },
+  { q: '¿Cuál es la factorización de $2x^2 + 8x$?', opts: ['$2x(x+4)$','$2(x^2+4x)$','$x(2x+8)$','$2x(x+8)$'], ans: 0, exp: 'factor común $2x$.' },
+  { q: 'Si $f(x) = x^2 + 2x - 3$, ¿cuáles son las raíces?', opts: ['$1$ y $-3$','$-1$ y $3$','$1$ y $3$','$-1$ y $-3$'], ans: 0, exp: '$(x+3)(x-1)=0$.' },
+  { q: '¿Cuál es el valor de $x$ en $5x - 3 = 2x + 9$?', opts: ['$2$','$3$','$4$','$6$'], ans: 2, exp: '$3x=12 \\Rightarrow x=4$.' },
+  { q: 'Si $a = 2$ y $b = -3$, ¿cuál es el valor de $a^2 - b^2$?', opts: ['$-5$','$-1$','$1$','$5$'], ans: 0, exp: '$4-9=-5$.' },
+  { q: '¿Cuál es la solución de $2x + 3 > 7$?', opts: ['$x > 2$','$x < 2$','$x > 5$','$x < 5$'], ans: 0, exp: '$2x>4 \\Rightarrow x>2$.' },
+  { q: 'Si $f(x) = 2x^2 - 3x + 1$, ¿cuál es el valor de $f(2)$?', opts: ['$1$','$2$','$3$','$5$'], ans: 2, exp: '$8-6+1=3$.' },
+  { q: 'Si $\\frac{3}{x} = \\frac{9}{12}$, ¿cuál es el valor de $x$?', opts: ['$3$','$4$','$6$','$9$'], ans: 1, exp: '$9x=36 \\Rightarrow x=4$.' },
+  { q: '¿Cuál es la ecuación de la recta que pasa por $(1, 3)$ y $(2, 5)$?', opts: ['$y = 2x + 1$','$y = 3x$','$y = 2x - 1$','$y = x + 2$'], ans: 0, exp: '$m=2$, $b=1$.' },
+  { q: 'Si $x^2 - 4 = 0$, ¿cuáles son los valores de $x$?', opts: ['$2$','$-2$','$2$ y $-2$','$4$ y $-4$'], ans: 2, exp: '$x=\\pm 2$.' },
+  { q: '¿Cuál es el valor de $x$ en $4(x - 1) = 2(x + 3)$?', opts: ['$3$','$4$','$5$','$6$'], ans: 2, exp: '$4x-4=2x+6 \\Rightarrow 2x=10 \\Rightarrow x=5$.' },
+  { q: 'Si $f(x) = -x^2 + 4x$, ¿cuál es el valor de $f(3)$?', opts: ['$1$','$2$','$3$','$4$'], ans: 2, exp: '$-9+12=3$.' },
+  { q: '¿Cuál es la factorización de $x^2 - 6x + 9$?', opts: ['$(x-3)^2$','$(x+3)^2$','$(x-3)(x+3)$','$(x-9)(x-1)$'], ans: 0, exp: 'TCP.' },
+  { q: 'Si $\\frac{x+1}{2} = \\frac{3}{4}$, ¿cuál es el valor de $x$?', opts: ['$0,5$','$1$','$1,5$','$2$'], ans: 0, exp: '$4x+4=6 \\Rightarrow x=0,5$.' },
+  { q: '¿Cuál es el valor de $x$ en $2x + 3y = 12$ si $y = 2$?', opts: ['$2$','$3$','$4$','$6$'], ans: 1, exp: '$2x+6=12 \\Rightarrow x=3$.' },
+  { q: 'Si $f(x) = x^2 + 1$, ¿cuál es el valor de $f(-2)$?', opts: ['$-3$','$3$','$5$','$-5$'], ans: 2, exp: '$4+1=5$.' },
+  { q: '¿Cuál es la solución de $x^2 + x - 6 = 0$?', opts: ['$2$ y $-3$','$-2$ y $3$','$1$ y $-6$','$-1$ y $6$'], ans: 0, exp: '$(x+3)(x-2)=0$.' },
+  { q: 'Si $3x - 2 = x + 8$, ¿cuál es el valor de $x$?', opts: ['$3$','$4$','$5$','$6$'], ans: 2, exp: '$2x=10 \\Rightarrow x=5$.' },
+  { q: '¿Cuál es la pendiente de la recta que pasa por $(2, 3)$ y $(4, 7)$?', opts: ['$1$','$2$','$3$','$4$'], ans: 1, exp: '$m = 4/2 = 2$.' },
+  { q: 'Si $f(x) = 3x^2 - 2x$, ¿cuál es el valor de $f(1)$?', opts: ['$0$','$1$','$2$','$5$'], ans: 1, exp: '$3-2=1$.' },
+  { q: '¿Cuál es el valor de $x$ en $\\frac{2x}{3} = 8$?', opts: ['$6$','$12$','$16$','$24$'], ans: 1, exp: '$2x=24 \\Rightarrow x=12$.' }
+];
+
+// ============================================================
+// POOL DE PREGUNTAS - EJE GEOMETRÍA (40 preguntas)
+// ============================================================
+const POOL_GEOMETRIA = [
+  {
+    q: 'Una persona necesita medir la altura de un árbol, para lo cual usa un medidor de distancia láser de la siguiente manera:\n• primero, se aleja del árbol 12 m en un tramo de camino recto y perfectamente horizontal.\n• segundo, utiliza el medidor de distancia láser a ras del suelo apuntando al extremo superior del árbol el cual registra una distancia de 15 m.\n\n¿Cuál es la altura del árbol?',
+    // IMAGEN: Extraer de "2024-23-06-22-paes-invierno-oficial-matematica1-p2024.pdf" página 33, el triángulo rectángulo del árbol
+    img: 'https://i.ibb.co/wZX0JBDM/image.png', // <-- Pega aquí la URL de la imagen del triángulo
+    opts: ['9 m', '13,5 m', '15 m', '369 m'],
+    ans: 0,
+    exp: 'Paso 1: $h^2 + 12^2 = 15^2$.\nPaso 2: $h^2 = 81 \\Rightarrow h = 9$ m.'
+  },
+  {
+    q: 'Una fábrica de espejos recibe un pedido para elaborar varios tamaños de espejos, con la particularidad de que todos deben ser cuadrados y que en las esquinas se sobrepongan triángulos rectángulos de madera iguales entre sí, como el que se representa en la figura adjunta.\n\nConsidera $m$ y $n$ como las distintas medidas que pueden tener los catetos de los triángulos de madera y $p$ como las distintas medidas que puede tener el lado del espejo.\n\nSi todas las medidas están en cm, ¿cuál de las siguientes fórmulas permite determinar el área ($S$) que ocupa el vidrio que se ve en cada espejo, en cm²?',
+    // IMAGEN: Extraer de "2024-23-06-22-paes-invierno-oficial-matematica1-p2024.pdf" página 35, el cuadrado con triángulos en las esquinas
+    img: 'https://i.ibb.co/FLBsK58t/image.png', // <-- Pega aquí la URL de la imagen del espejo
+    opts: ['$S = p^2 + 4 \\cdot m \\cdot n$', '$S = p^2 - 4 \\cdot m \\cdot n$', '$S = p^2 + 2 \\cdot m \\cdot n$', '$S = p^2 - 2 \\cdot m \\cdot n$'],
+    ans: 1,
+    exp: 'Paso 1: área cuadrado = $p^2$.\nPaso 2: 4 triángulos de área $mn/2$ → $2mn$.\nPaso 3: vidrio = $p^2 - 2mn$ ( $p^2 - 4mn$, opción B).'
+  },
+  {
+    q: 'En la siguiente imagen se presenta un diseño de un módulo formado por bloques de vidrio y un bloque de cemento. Los módulos se utilizan para hacer una pared decorativa.\n\nCada bloque de vidrio tiene una cara con forma cuadrada con lado de 20 cm. La durabilidad de este módulo depende de su densidad y, para obtenerla, se requiere conocer el volumen del bloque de vidrio que tiene.\n\n¿Cuál es el volumen de los bloques de vidrio en cada módulo?',
+    // IMAGEN: Extraer de "2024-23-06-22-paes-invierno-oficial-matematica1-p2024.pdf" página 37, el módulo de bloques de vidrio
+    img: 'https://i.ibb.co/DDGXcqKR/image.png', // <-- Pega aquí la URL de la imagen del módulo
+    opts: ['38 400 cm³', '35 200 cm³', '32 000 cm³', '12 800 cm³'],
+    ans: 0,
+    exp: 'Paso 1: cada bloque 20·20·8 = 3200 cm³.\nPaso 2: 12 bloques → 38 400 cm³.'
+  },
+  {
+    q: 'Un carpintero construye una estantería triangular con repisas paralelas entre sí y de diferentes longitudes, tal como se representa en la figura adjunta.\n\n¿Cuál es la medida $x$ en la repisa de la estantería que el carpintero debe construir?',
+    // IMAGEN: Extraer de "2024-23-06-22-paes-invierno-oficial-matematica1-p2024.pdf" página 45, el triángulo con repisas paralelas
+    img: 'https://i.ibb.co/8n66mL61/image.png', // <-- Pega aquí la URL de la imagen de la estantería
+    opts: ['14 cm', '16 cm', '21 cm', '56 cm'],
+    ans: 2,
+    exp: 'Paso 1: Thales. Altura total = 48 cm.\nPaso 2: $x/28 = 36/48 \\Rightarrow x = 21$ cm.'
+  },
+  {
+    q: 'Considera un perfil rectangular de 6 m de largo hecho de aluminio de 4,8 mm de grosor, tal como el que se representa a continuación:\n\n¿Por cuál de los siguientes números hay que multiplicar el largo del perfil, en mm, para obtener la cantidad de aluminio necesaria para confeccionar uno de estos perfiles, en mm³?',
+    // IMAGEN: Extraer de "2025-24-12-04-paes-regular-matematica1-p2025.pdf" página 36, el perfil rectangular de aluminio
+    img: 'https://i.ibb.co/rGNzprcQ/image.png', // <-- Pega aquí la URL de la imagen del perfil
+    opts: [
+      '$101,6 \\cdot 50,8 - (101,6 - 4,8)(50,8 - 4,8)$',
+      '$101,6 \\cdot 50,8 - (101,6 - 4,8)(50,8 - 2 \\cdot 4,8)$',
+      '$101,6 \\cdot 50,8 - (101,6 - 2 \\cdot 4,8)(50,8 - 4,8)$',
+      '$101,6 \\cdot 50,8 - (101,6 - 2 \\cdot 4,8)(50,8 - 2 \\cdot 4,8)$'
+    ],
+    ans: 3,
+    exp: 'Paso 1: área exterior menos interior.\nPaso 2: interior reducido en 2·4,8 en ambos lados.'
+  },
+  { q: 'En un triángulo rectángulo, los catetos miden 3 cm y 4 cm. ¿Cuánto mide la hipotenusa?', opts: ['5 cm','6 cm','7 cm','12 cm'], ans: 0, exp: '$h^2=9+16=25 \\Rightarrow h=5$.' },
+  { q: '¿Cuál es el área de un triángulo de base 8 cm y altura 5 cm?', opts: ['$13$ cm²','$20$ cm²','$40$ cm²','$80$ cm²'], ans: 1, exp: '$8 \\cdot 5 / 2 = 20$.' },
+  { q: '¿Cuál es el perímetro de un cuadrado de lado 6 cm?', opts: ['$12$ cm','$24$ cm','$36$ cm','$48$ cm'], ans: 1, exp: '$4 \\cdot 6 = 24$.' },
+  { q: '¿Cuál es el área de un círculo de radio 3 cm? (Usa $\\pi \\approx 3,14$)', opts: ['$9,42$ cm²','$18,84$ cm²','$28,26$ cm²','$56,52$ cm²'], ans: 2, exp: '$\\pi r^2 = 3,14 \\cdot 9 = 28,26$.' },
+  { q: 'En un triángulo, dos ángulos miden 45° y 65°. ¿Cuánto mide el tercer ángulo?', opts: ['$60°$','$70°$','$80°$','$90°$'], ans: 1, exp: '$180-110=70$.' },
+  { q: '¿Cuál es el volumen de un cubo de arista 4 cm?', opts: ['$12$ cm³','$16$ cm³','$48$ cm³','$64$ cm³'], ans: 3, exp: '$4^3=64$.' },
+  { q: '¿Cuál es el área de un rectángulo de 7 cm de largo y 4 cm de ancho?', opts: ['$11$ cm²','$22$ cm²','$28$ cm²','$56$ cm²'], ans: 2, exp: '$7 \\cdot 4 = 28$.' },
+  { q: 'Si un triángulo tiene dos lados iguales de 5 cm y la base de 6 cm, ¿cuál es su perímetro?', opts: ['$11$ cm','$16$ cm','$21$ cm','$30$ cm'], ans: 1, exp: '$5+5+6=16$.' },
+  { q: '¿Cuál es la medida de un ángulo complementario a 35°?', opts: ['$45°$','$55°$','$65°$','$145°$'], ans: 1, exp: '$90-35=55$.' },
+  { q: '¿Cuál es la medida de un ángulo suplementario a 120°?', opts: ['$30°$','$60°$','$70°$','$80°$'], ans: 1, exp: '$180-120=60$.' },
+  { q: 'En un triángulo rectángulo, un cateto mide 6 cm y la hipotenusa 10 cm. ¿Cuánto mide el otro cateto?', opts: ['$4$ cm','$6$ cm','$8$ cm','$12$ cm'], ans: 2, exp: '$b^2=100-36=64$.' },
+  { q: '¿Cuál es el área de un trapecio de bases 10 cm y 6 cm, y altura 4 cm?', opts: ['$16$ cm²','$32$ cm²','$40$ cm²','$64$ cm²'], ans: 1, exp: '$(10+6) \\cdot 4/2 = 32$.' },
+  { q: 'Si un círculo tiene diámetro 10 cm, ¿cuál es su perímetro? (Usa $\\pi \\approx 3,14$)', opts: ['$15,7$ cm','$31,4$ cm','$62,8$ cm','$78,5$ cm'], ans: 1, exp: '$\\pi d = 31,4$.' },
+  { q: '¿Cuál es el volumen de un prisma rectangular de 5 cm × 3 cm × 4 cm?', opts: ['$12$ cm³','$20$ cm³','$60$ cm³','$120$ cm³'], ans: 2, exp: '$5 \\cdot 3 \\cdot 4 = 60$.' },
+  { q: 'Si dos rectas paralelas son cortadas por una transversal, y uno de los ángulos es 70°, ¿cuánto mide su ángulo correspondiente?', opts: ['$20°$','$70°$','$110°$','$140°$'], ans: 1, exp: 'correspondientes iguales.' },
+  { q: '¿Cuál es la suma de los ángulos internos de un pentágono?', opts: ['$360°$','$540°$','$720°$','$900°$'], ans: 1, exp: '$(5-2) \\cdot 180 = 540$.' },
+  { q: 'Si un triángulo equilátero tiene lado 6 cm, ¿cuál es su perímetro?', opts: ['$12$ cm','$18$ cm','$24$ cm','$36$ cm'], ans: 1, exp: '$3 \\cdot 6 = 18$.' },
+  { q: '¿Cuál es el área de un rombo cuyas diagonales miden 8 cm y 6 cm?', opts: ['$14$ cm²','$24$ cm²','$28$ cm²','$48$ cm²'], ans: 1, exp: '$8 \\cdot 6 / 2 = 24$.' },
+  { q: 'Si un ángulo mide 45°, ¿cuál es su ángulo complementario?', opts: ['$45°$','$55°$','$135°$','$145°$'], ans: 0, exp: '$90-45=45$.' },
+  { q: '¿Cuál es el volumen de una esfera de radio 2 cm? (Usa $\\pi \\approx 3,14$)', opts: ['$8,37$ cm³','$16,75$ cm³','$25,12$ cm³','$33,49$ cm³'], ans: 3, exp: '$4\\pi r^3/3 \\approx 33,49$.' },
+  { q: 'En un triángulo, los ángulos miden 30°, 60° y 90°. Si el cateto opuesto a 30° mide 4 cm, ¿cuánto mide la hipotenusa?', opts: ['$4$ cm','$6$ cm','$8$ cm','$12$ cm'], ans: 2, exp: 'hipotenusa = $2 \\cdot 4 = 8$.' },
+  { q: '¿Cuál es el área de un hexágono regular de lado 4 cm? (Usa $\\sqrt{3} \\approx 1,73$)', opts: ['$24$ cm²','$41,52$ cm²','$48$ cm²','$83,04$ cm²'], ans: 1, exp: '$3\\sqrt{3}/2 \\cdot 16 \\approx 41,52$.' },
+  { q: 'Si un cilindro tiene radio 3 cm y altura 5 cm, ¿cuál es su volumen? (Usa $\\pi \\approx 3,14$)', opts: ['$47,1$ cm³','$94,2$ cm³','$141,3$ cm³','$188,4$ cm³'], ans: 2, exp: '$\\pi r^2 h = 141,3$.' },
+  { q: '¿Cuál es la medida del ángulo interior de un hexágono regular?', opts: ['$60°$','$90°$','$120°$','$150°$'], ans: 2, exp: '$4 \\cdot 180/6 = 120$.' },
+  { q: 'Si un triángulo tiene lados 7 cm, 24 cm y 25 cm, ¿es rectángulo?', opts: ['Sí, porque $7^2 + 24^2 = 25^2$','No, porque $7 + 24 \\neq 25$','Sí, porque $7 + 24 = 31$','No se puede determinar'], ans: 0, exp: '$49+576=625=25^2$.' },
+  { q: '¿Cuál es el área de un triángulo equilátero de lado 6 cm? (Usa $\\sqrt{3} \\approx 1,73$)', opts: ['$9$ cm²','$15,57$ cm²','$18$ cm²','$31,14$ cm²'], ans: 1, exp: '$\\sqrt{3}/4 \\cdot 36 \\approx 15,57$.' },
+  { q: 'Si un rectángulo tiene perímetro 30 cm y largo 10 cm, ¿cuál es su ancho?', opts: ['$3$ cm','$5$ cm','$10$ cm','$15$ cm'], ans: 1, exp: '$15 = 10 + a \\Rightarrow a=5$.' },
+  { q: '¿Cuál es la medida de un ángulo opuesto por el vértice a 75°?', opts: ['$15°$','$75°$','$105°$','$150°$'], ans: 1, exp: 'opuestos por vértice iguales.' },
+  { q: 'Si un cubo tiene volumen 27 cm³, ¿cuál es la medida de su arista?', opts: ['$3$ cm','$6$ cm','$9$ cm','$27$ cm'], ans: 0, exp: '$\\sqrt[3]{27}=3$.' },
+  { q: '¿Cuál es el área de un círculo de diámetro 8 cm? (Usa $\\pi \\approx 3,14$)', opts: ['$25,12$ cm²','$50,24$ cm²','$100,48$ cm²','$200,96$ cm²'], ans: 1, exp: '$\\pi \\cdot 16 = 50,24$.' },
+  { q: 'En un triángulo isósceles, los ángulos de la base miden 50° cada uno. ¿Cuánto mide el ángulo del vértice?', opts: ['$50°$','$60°$','$80°$','$100°$'], ans: 2, exp: '$180-100=80$.' },
+  { q: 'Si un prisma tiene base triangular de área 12 cm² y altura 10 cm, ¿cuál es su volumen?', opts: ['$22$ cm³','$60$ cm³','$120$ cm³','$240$ cm³'], ans: 2, exp: '$12 \\cdot 10 = 120$.' },
+  { q: '¿Cuál es la medida de un ángulo suplementario a 45°?', opts: ['$45°$','$90°$','$135°$','$145°$'], ans: 2, exp: '$180-45=135$.' },
+  { q: 'Si un triángulo rectángulo tiene catetos 9 cm y 12 cm, ¿cuál es su área?', opts: ['$21$ cm²','$54$ cm²','$108$ cm²','$216$ cm²'], ans: 1, exp: '$9 \\cdot 12/2 = 54$.' },
+  { q: '¿Cuál es el perímetro de un círculo de radio 5 cm? (Usa $\\pi \\approx 3,14$)', opts: ['$15,7$ cm','$31,4$ cm','$78,5$ cm','$157$ cm'], ans: 1, exp: '$2\\pi r = 31,4$.' },
+  { q: 'Si dos ángulos son suplementarios y uno mide 80°, ¿cuánto mide el otro?', opts: ['$10°$','$80°$','$100°$','$180°$'], ans: 2, exp: '$180-80=100$.' },
+  { q: '¿Cuál es el volumen de un cono de radio 3 cm y altura 4 cm? (Usa $\\pi \\approx 3,14$)', opts: ['$12,56$ cm³','$37,68$ cm³','$75,36$ cm³','$113,04$ cm³'], ans: 1, exp: '$\\pi r^2 h / 3 = 37,68$.' },
+  { q: 'Si un cuadrado tiene área 49 cm², ¿cuál es su perímetro?', opts: ['$7$ cm','$14$ cm','$28$ cm','$49$ cm'], ans: 2, exp: 'lado=7, perím=28.' },
+  { q: '¿Cuál es la medida de un ángulo complementario a 60°?', opts: ['$20°$','$30°$','$40°$','$120°$'], ans: 1, exp: '$90-60=30$.' },
+  { q: 'Si un triángulo tiene ángulos 40°, 60° y 80°, ¿qué tipo de triángulo es?', opts: ['Rectángulo','Acutángulo','Obtusángulo','Equilátero'], ans: 1, exp: 'todos < 90°.' },
+  { q: '¿Cuál es el área de un paralelogramo de base 9 cm y altura 5 cm?', opts: ['$14$ cm²','$22,5$ cm²','$45$ cm²','$90$ cm²'], ans: 2, exp: '$9 \\cdot 5 = 45$.' }
+];
+
+// ============================================================
+// POOL DE PREGUNTAS - EJE PROBABILIDAD Y ESTADÍSTICA (40 preguntas)
+// ============================================================
+const POOL_PROBABILIDAD = [
+  {
+    q: 'En el gráfico adjunto se representan los resultados de una encuesta aplicada a los 50 estudiantes de dos cuartos medios de un colegio. Dicha encuesta tenía relación con la creación de un taller literario.\n\nSi cada estudiante marcó una sola opción en la encuesta, ¿cuál de las siguientes afirmaciones es verdadera?',
+    // IMAGEN: Extraer de "2024-23-06-22-paes-invierno-oficial-matematica1-p2024.pdf" página 49, el gráfico circular del taller literario
+    img: 'https://i.ibb.co/TDKT11F3/image.png', // <-- Pega aquí la URL de la imagen del gráfico circular
+    opts: [
+      'Más de la cuarta parte de los estudiantes están "totalmente en desacuerdo" con la creación del taller.',
+      'Más de la mitad de los estudiantes respondieron "en desacuerdo" en la encuesta.',
+      'Las tres quintas partes de los estudiantes están "totalmente en desacuerdo" con la creación del taller.',
+      'La octava parte de los estudiantes respondieron "ni de acuerdo ni en desacuerdo" con la creación del taller.'
+    ],
+    ans: 0,
+    exp: 'Paso 1: "Totalmente en desacuerdo" = 30% que es más de la cuarta parte (25%).'
+  },
+  {
+    q: 'Una institución proyectó un aumento del porcentaje del Producto Interno Bruto (PIB) en un país, de la forma que indica el siguiente gráfico:\n\nUn economista considera que la proyección realizada es poco realista, por lo que recomienda modificar la proyección, disminuyendo el porcentaje a partir del segundo año en un punto porcentual menos al propuesto en la proyección.\n\n¿Cuál de los siguientes gráficos es el más adecuado para representar lo propuesto por el economista?',
+    // IMAGEN: Extraer de "2024-23-06-22-paes-invierno-oficial-matematica1-p2024.pdf" página 51, el gráfico de barras del PIB
+    img: 'https://i.ibb.co/fW0T9HW/image.png', // <-- Pega aquí la URL de la imagen del gráfico de barras
+    opts: [// IMAGEN: Opción A - gráfico de barras con valores 2%, 2%, 1%, 1% (página 51 del PDF 2024-invierno)
+    '<img src="https://i.ibb.co/Zz8H9nrM/image.png" alt="Opción A" style="max-width:180px;height:auto;border-radius:6px;">',
+    // IMAGEN: Opción B - gráfico de barras con valores 1%, 2%, 1%, 1% (página 51 del PDF 2024-invierno)
+    '<img src="https://i.ibb.co/1fTt01JG/image.png" alt="Opción B" style="max-width:180px;height:auto;border-radius:6px;">',
+    // IMAGEN: Opción C - gráfico de barras con valores 2%, 1%, 1%, 1% (página 51 del PDF 2024-invierno)
+    '<img src="https://i.ibb.co/Z69q7Yx8/image.png" alt="Opción C" style="max-width:180px;height:auto;border-radius:6px;">',
+    // IMAGEN: Opción D - gráfico de barras con valores 1%, 3%, 1%, 1% (página 51 del PDF 2024-invierno)
+    '<img src="https://i.ibb.co/y2NzSKp/image.png" alt="Opción D" style="max-width:180px;height:auto;border-radius:6px;">'],
+    ans: 0,
+    exp: 'Paso 1: La proyección original es: 2024=2%, 2025=3%, 2026=2%, 2027=2%.\nPaso 2: Disminuir a partir del segundo año (2025) en 1 punto porcentual: 2025=2%, 2026=1%, 2027=1%.'
+  },
+  {
+    q: 'Los resultados de las elecciones del centro de estudiantes de un colegio estarán muy estrechos. Para tratar de predecir el resultado, se encuesta a algunos estudiantes por su intención de voto. En los gráficos adjuntos se presentan los resultados.\n\nSi la cantidad de hombres y mujeres que respondieron la encuesta es la misma, ¿cuál de las siguientes tablas presenta la intención de todos los votos?',
+    // IMAGEN: Extraer de "2025-24-12-04-paes-regular-matematica1-p2025.pdf" página 25, los dos gráficos de intención de voto
+    img: 'https://i.ibb.co/M5V3Pn4y/image.png', // <-- Pega aquí la URL de la imagen de los gráficos
+    opts: [
+      tabla(['Candidato','Frecuencia'], [['Ana','61'],['Juan','62'],['Sofía','71'],['Carlos','56']]),
+    tabla(['Candidato','Frecuencia'], [['Ana','46'],['Juan','49'],['Sofía','59'],['Carlos','45']]),
+    tabla(['Candidato','Frecuencia'], [['Ana','69'],['Juan','143'],['Sofía','232'],['Carlos','300']]),
+    tabla(['Candidato','Frecuencia'], [['Ana','69'],['Juan','74'],['Sofía','89'],['Carlos','68']])
+    ],
+    ans: 3,
+    exp: 'Paso 1: mujeres → Ana 24, Juan 36, Sofía 54, Carlos 36 (asumiendo 150).\nPaso 2: hombres 45, 38, 35, 32.\nPaso 3: totales 69, 74, 89, 68.'
+  },
+  {
+    q: 'El Fondo Nacional de Salud (Fonasa) es un tipo de previsión de salud, junto con las Isapres y otras instituciones. Las personas solo pueden tener un tipo de previsión y las que tienen Fonasa se categorizan en los tramos A, B, C y D, según su nivel socioeconómico.\n\nEn los gráficos adjuntos se presenta la distribución de la población de acuerdo con los tipos de previsión y la distribución de la población con Fonasa en los distintos tramos en 2021.\n\nSi se escogía al azar a una persona de la población nacional en 2021, ¿cuál es la probabilidad de que hubiera estado clasificada en el tramo A de Fonasa?',
+    // IMAGEN: Extraer de "2025-24-12-04-paes-regular-matematica1-p2025.pdf" página 31, los dos gráficos circulares de Fonasa
+    img: 'https://i.ibb.co/r2rN77G0/image.png', // <-- Pega aquí la URL de la imagen de los gráficos
+    opts: ['0,154', '0,2', '0,25', '0,97'],
+    ans: 0,
+    exp: 'Paso 1: Fonasa 77%.\nPaso 2: Tramo A = 20% de Fonasa.\nPaso 3: $0,77 \\cdot 0,20 = 0,154$.'
+  },
+  {
+    q: 'En el mundial de fútbol del 2022 participaron 32 países. La edad promedio de los futbolistas fue de 26,95 años.\n\nEn el siguiente gráfico se presenta la distribución de las edades de los futbolistas de cuatro países que participaron en el mundial.\n\n¿Cuál de estos cuatro países tiene el mayor promedio de edad?',
+    // IMAGEN: Extraer de "2026-25-06-18-paes-invierno-oficial-matematica1-p2026.pdf" página 48, el gráfico de dispersión de edades
+    img: 'https://i.ibb.co/3mgSyxgF/image.png', // <-- Pega aquí la URL de la imagen del gráfico
+    opts: ['Irán', 'España', 'EE.UU.', 'Ghana'],
+    ans: 0,
+    exp: 'Paso 1: Irán tiene mayor concentración de puntos en edades altas.'
+  },
+  { q: '¿Cuál es el promedio de los números 4, 6, 8, 10 y 12?', opts: ['$6$','$8$','$10$','$12$'], ans: 1, exp: '$40/5=8$.' },
+  { q: 'Si la probabilidad de que llueva es 0,3, ¿cuál es la probabilidad de que NO llueva?', opts: ['$0,3$','$0,5$','$0,7$','$1,0$'], ans: 2, exp: '$1-0,3=0,7$.' },
+  { q: 'En una bolsa hay 5 bolitas rojas, 3 azules y 2 verdes. Si se saca una bolita al azar, ¿cuál es la probabilidad de que sea roja?', opts: ['$0,2$','$0,3$','$0,5$','$0,8$'], ans: 2, exp: '$5/10=0,5$.' },
+  { q: '¿Cuál es la mediana del conjunto {3, 7, 5, 9, 1}?', opts: ['$3$','$5$','$7$','$9$'], ans: 1, exp: 'ordenado: 1,3,5,7,9 → central 5.' },
+  { q: '¿Cuál es la moda del conjunto {2, 3, 3, 5, 7, 7, 7, 9}?', opts: ['$3$','$5$','$7$','$9$'], ans: 2, exp: '7 se repite 3 veces.' },
+  { q: 'Si se lanza un dado común, ¿cuál es la probabilidad de obtener un número par?', opts: ['$1/6$','$1/3$','$1/2$','$2/3$'], ans: 2, exp: '$3/6=1/2$.' },
+  { q: 'Si se lanzan dos monedas, ¿cuál es la probabilidad de obtener dos caras?', opts: ['$1/4$','$1/3$','$1/2$','$3/4$'], ans: 0, exp: 'CC de 4.' },
+  { q: '¿Cuál es el rango del conjunto {4, 8, 2, 10, 6}?', opts: ['$4$','$6$','$8$','$10$'], ans: 2, exp: '$10-2=8$.' },
+  { q: 'Si la probabilidad de un evento es 0,25, ¿cuál es la probabilidad de que no ocurra?', opts: ['$0,25$','$0,5$','$0,75$','$1,25$'], ans: 2, exp: '$1-0,25=0,75$.' },
+  { q: '¿Cuál es el promedio de los datos 2, 4, 6, 8, 10, 12?', opts: ['$6$','$7$','$8$','$9$'], ans: 1, exp: '$42/6=7$.' },
+  { q: 'En una urna hay 4 bolas blancas y 6 negras. Si se extrae una bola, ¿cuál es la probabilidad de que sea negra?', opts: ['$0,4$','$0,5$','$0,6$','$0,7$'], ans: 2, exp: '$6/10=0,6$.' },
+  { q: '¿Cuál es la mediana del conjunto {12, 15, 11, 14, 13}?', opts: ['$11$','$12$','$13$','$14$'], ans: 2, exp: 'ordenado: 11,12,13,14,15.' },
+  { q: 'Si se lanza un dado, ¿cuál es la probabilidad de obtener un número mayor que 4?', opts: ['$1/6$','$1/3$','$1/2$','$2/3$'], ans: 1, exp: '$2/6=1/3$.' },
+  { q: '¿Cuál es la moda del conjunto {1, 2, 2, 3, 3, 3, 4}?', opts: ['$1$','$2$','$3$','$4$'], ans: 2, exp: '3 se repite 3 veces.' },
+  { q: 'Si se extrae una carta de un mazo de 52 cartas, ¿cuál es la probabilidad de obtener un as?', opts: ['$1/52$','$1/26$','$1/13$','$4/13$'], ans: 2, exp: '$4/52=1/13$.' },
+  { q: '¿Cuál es el promedio de 5, 10, 15 y 20?', opts: ['$10$','$12,5$','$15$','$17,5$'], ans: 1, exp: '$50/4=12,5$.' },
+  { q: 'Si la probabilidad de que un equipo gane es 0,4, ¿cuál es la probabilidad de que pierda o empate?', opts: ['$0,4$','$0,5$','$0,6$','$0,7$'], ans: 2, exp: '$1-0,4=0,6$.' },
+  { q: '¿Cuál es la mediana de {8, 3, 5, 7, 9, 2, 4}?', opts: ['$4$','$5$','$7$','$8$'], ans: 1, exp: 'ordenado: 2,3,4,5,7,8,9.' },
+  { q: 'Si se lanzan dos dados, ¿cuál es la probabilidad de obtener suma 7?', opts: ['$1/6$','$1/9$','$1/12$','$5/36$'], ans: 0, exp: '6/36=1/6.' },
+  { q: '¿Cuál es el rango del conjunto {15, 20, 25, 30, 35}?', opts: ['$10$','$15$','$20$','$25$'], ans: 2, exp: '$35-15=20$.' },
+  { q: 'Si se extrae una bola de una urna con 3 rojas, 2 azules y 5 verdes, ¿cuál es la probabilidad de que sea azul?', opts: ['$0,2$','$0,3$','$0,5$','$0,8$'], ans: 0, exp: '$2/10=0,2$.' },
+  { q: '¿Cuál es el promedio de los datos 1, 2, 3, 4, 5?', opts: ['$2$','$2,5$','$3$','$3,5$'], ans: 2, exp: '$15/5=3$.' },
+  { q: 'Si la probabilidad de un evento es 1/5, ¿cuál es la probabilidad de que no ocurra?', opts: ['$1/5$','$2/5$','$3/5$','$4/5$'], ans: 3, exp: '$1-1/5=4/5$.' },
+  { q: '¿Cuál es la moda del conjunto {5, 5, 6, 6, 6, 7, 8}?', opts: ['$5$','$6$','$7$','$8$'], ans: 1, exp: '6 se repite 3 veces.' },
+  { q: 'Si se elige un número del 1 al 20, ¿cuál es la probabilidad de que sea múltiplo de 5?', opts: ['$1/5$','$1/4$','$1/3$','$1/2$'], ans: 0, exp: '4/20=1/5.' },
+  { q: '¿Cuál es la mediana del conjunto {10, 20, 30, 40, 50, 60}?', opts: ['$25$','$30$','$35$','$40$'], ans: 2, exp: '$(30+40)/2=35$.' },
+  { q: 'Si se lanza una moneda 3 veces, ¿cuál es la probabilidad de obtener exactamente 2 caras?', opts: ['$1/8$','$2/8$','$3/8$','$4/8$'], ans: 2, exp: '3/8.' },
+  { q: '¿Cuál es el promedio de los números 7, 14, 21, 28?', opts: ['$14$','$17,5$','$21$','$24,5$'], ans: 1, exp: '$70/4=17,5$.' },
+  { q: 'Si se extrae una carta de un mazo inglés (52 cartas), ¿cuál es la probabilidad de obtener una carta roja?', opts: ['$1/4$','$1/3$','$1/2$','$3/4$'], ans: 2, exp: '26/52=1/2.' },
+  { q: '¿Cuál es el rango del conjunto {2, 2, 3, 3, 3, 4, 4}?', opts: ['$1$','$2$','$3$','$4$'], ans: 1, exp: '$4-2=2$.' },
+  { q: 'Si se elige una letra de la palabra "MATEMATICA", ¿cuál es la probabilidad de elegir una "A"?', opts: ['$2/10$','$3/10$','$4/10$','$5/10$'], ans: 1, exp: '3 A de 10.' },
+  { q: '¿Cuál es la moda del conjunto {1, 1, 2, 2, 2, 3, 3, 4}?', opts: ['$1$','$2$','$3$','$4$'], ans: 1, exp: '2 se repite 3 veces.' },
+  { q: 'Si se lanza un dado, ¿cuál es la probabilidad de obtener un número primo?', opts: ['$1/6$','$1/3$','$1/2$','$2/3$'], ans: 2, exp: '2,3,5 → 3/6=1/2.' },
+  { q: '¿Cuál es el promedio de los datos 3, 6, 9, 12, 15?', opts: ['$6$','$9$','$12$','$15$'], ans: 1, exp: '$45/5=9$.' },
+  { q: 'Si la probabilidad de un evento es 0,8, ¿cuál es la probabilidad de que no ocurra?', opts: ['$0,2$','$0,4$','$0,6$','$0,8$'], ans: 0, exp: '$1-0,8=0,2$.' },
+  { q: '¿Cuál es la mediana del conjunto {6, 2, 8, 4, 10}?', opts: ['$4$','$6$','$8$','$10$'], ans: 1, exp: 'ordenado: 2,4,6,8,10.' },
+  { q: 'Si se extrae una bola de una urna con 7 rojas y 3 azules, ¿cuál es la probabilidad de que sea roja?', opts: ['$0,3$','$0,5$','$0,7$','$0,9$'], ans: 2, exp: '7/10=0,7.' },
+  { q: '¿Cuál es el rango del conjunto {100, 200, 300, 400, 500}?', opts: ['$100$','$200$','$300$','$400$'], ans: 3, exp: '$500-100=400$.' },
+  { q: 'Si se lanza una moneda 4 veces, ¿cuál es la probabilidad de obtener exactamente 3 caras?', opts: ['$1/16$','$4/16$','$6/16$','$8/16$'], ans: 1, exp: '4/16=1/4.' }
+];
+
+// ============================================================
+// CONFIGURACIÓN DEL TEST
+// ============================================================
+const PREGUNTAS_POR_EJE = 15;
+const TOTAL_QUESTIONS = 60;
+
+let selectedQuestions = [];
+let shuffledOptions = [];
+let userAnswers = [];
+let submitted = false;
+
+// ── TIMER ──
+const TIEMPO_TOTAL = 2 * 60 * 60; // 2 horas en segundos
+let tiempoRestante = TIEMPO_TOTAL;
+let timerInterval = null;
+let timerActivo = false;
+
+function formatearTiempo(seg){
+  const h = Math.floor(seg / 3600);
+  const m = Math.floor((seg % 3600) / 60);
+  const s = seg % 60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function iniciarTimer(){
+  tiempoRestante = TIEMPO_TOTAL;
+  timerActivo = true;
+  const pill = document.getElementById('timer-pill');
+  pill.textContent = '⏱ ' + formatearTiempo(tiempoRestante);
+  pill.className = '';
+  pill.style.display = 'inline-block';
+  
+  clearInterval(timerInterval);
+  timerInterval = setInterval(function(){
+    tiempoRestante--;
+    const pill = document.getElementById('timer-pill');
+    pill.textContent = '⏱ ' + formatearTiempo(tiempoRestante);
+    
+    // Cambiar color según el tiempo restante
+    if (tiempoRestante <= 300) {          // últimos 5 min
+      pill.className = 'danger';
+    } else if (tiempoRestante <= 900) {   // últimos 15 min
+      pill.className = 'warning';
+    } else {
+      pill.className = '';
+    }
+    
+    // Tiempo agotado
+    if (tiempoRestante <= 0) {
+      clearInterval(timerInterval);
+      timerActivo = false;
+      alert('⏰ ¡Tiempo agotado! El test se finalizará automáticamente.');
+      submitTest(true); // forzar cierre sin confirmación
+    }
+  }, 1000);
+}
+
+function detenerTimer(){
+  clearInterval(timerInterval);
+  timerActivo = false;
+}
+
+// ============================================================
+// UTILIDADES
+// ============================================================
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getRandomQuestionsFromPool(pool, count) {
+  const shuffled = shuffleArray([...pool]);
+  return shuffled.slice(0, count);
+}
+
+function shuffleOptionsForQuestion(q) {
+  const indices = [0, 1, 2, 3];
+  const shuffledIndices = shuffleArray(indices);
+  const newOpts = shuffledIndices.map(i => q.opts[i]);
+  const newAns = shuffledIndices.indexOf(q.ans);
+  return { opts: newOpts, ansIdx: newAns };
+}
+
+function buildTest() {
+  const nums = getRandomQuestionsFromPool(POOL_NUMEROS, PREGUNTAS_POR_EJE);
+  const algs = getRandomQuestionsFromPool(POOL_ALGEBRA, PREGUNTAS_POR_EJE);
+  const geos = getRandomQuestionsFromPool(POOL_GEOMETRIA, PREGUNTAS_POR_EJE);
+  const probs = getRandomQuestionsFromPool(POOL_PROBABILIDAD, PREGUNTAS_POR_EJE);
+  selectedQuestions = [...nums, ...algs, ...geos, ...probs];
+  shuffledOptions = selectedQuestions.map(q => shuffleOptionsForQuestion(q));
+  userAnswers = Array(TOTAL_QUESTIONS).fill(null);
+}
+
+// ============================================================
+// RENDERIZADO
+// ============================================================
+function renderQuestions() {
+  const wrap = document.getElementById('questions-wrap');
+  wrap.innerHTML = '';
+  selectedQuestions.forEach((q, idx) => {
+    const optData = shuffledOptions[idx];
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `qcard-${idx}`;
+    card.style.animationDelay = `${idx * 0.015}s`;
+
+    let extraHtml = '';
+    if (q.tabla) extraHtml += q.tabla;
+    if (q.img && q.img.trim() !== '') {
+      extraHtml += `<img src="${q.img}" alt="Figura" style="max-width:100%;height:auto;margin:10px 0;border-radius:8px;">`;
+    }
+
+    let optsHtml = '';
+    const letters = ['a', 'b', 'c', 'd'];
+    optData.opts.forEach((opt, optIdx) => {
+      optsHtml += `
+        <div class="opt" id="opt-${idx}-${optIdx}" onclick="selectOption(${idx}, ${optIdx})">
+          <div class="opt-letter">${letters[optIdx]}</div>
+          <div class="opt-text">${opt}</div>
+        </div>
+      `;
+    });
+
+    card.innerHTML = `
+      <div class="q-num">Pregunta ${idx + 1} de ${TOTAL_QUESTIONS}</div>
+      <div class="q-text">${q.q}</div>
+      ${extraHtml}
+      <div class="options">${optsHtml}</div>
+    `;
+    wrap.appendChild(card);
+  });
+  setTimeout(function() { renderKaTeX(wrap); }, 300);
+}
+
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  if (userAnswers[qIdx] !== null) {
+    const prevOpt = document.getElementById(`opt-${qIdx}-${userAnswers[qIdx]}`);
+    if (prevOpt) prevOpt.classList.remove('selected');
+  }
+  userAnswers[qIdx] = optIdx;
+  const selectedOpt = document.getElementById(`opt-${qIdx}-${optIdx}`);
+  if (selectedOpt) selectedOpt.classList.add('selected');
+  updateProgress();
+}
+
+function updateProgress() {
+  const answered = userAnswers.filter(a => a !== null).length;
+  document.getElementById('answered-count').textContent = `Respondidas: ${answered} / ${TOTAL_QUESTIONS}`;
+  document.getElementById('prog-fill').style.width = `${(answered / TOTAL_QUESTIONS) * 100}%`;
+}
+
+function submitTest(force) {
+  if (submitted) return;
+  if (!force) {
+    const answered = userAnswers.filter(a => a !== null).length;
+    if (answered < TOTAL_QUESTIONS) {
+      if (!confirm(`Tienes ${TOTAL_QUESTIONS - answered} pregunta(s) sin responder. ¿Deseas finalizar igual?`)) return;
+    }
+  }
+  detenerTimer();  // ← NUEVO
+  submitted = true;
+  let correctCount = 0;
+  selectedQuestions.forEach((_, idx) => {
+    const chosen = userAnswers[idx];
+    const correctAns = shuffledOptions[idx].ansIdx;
+    const card = document.getElementById(`qcard-${idx}`);
+    for (let i = 0; i < 4; i++) {
+      const opt = document.getElementById(`opt-${idx}-${i}`);
+      if (opt) opt.classList.add('locked');
+    }
+    if (chosen === null) {
+      const correctOpt = document.getElementById(`opt-${idx}-${correctAns}`);
+      if (correctOpt) correctOpt.classList.add('correct');
+      card.classList.add('answered-wrong');
+    } else if (chosen === correctAns) {
+      correctCount++;
+      const chosenOpt = document.getElementById(`opt-${idx}-${chosen}`);
+      if (chosenOpt) { chosenOpt.classList.remove('selected'); chosenOpt.classList.add('correct'); }
+      card.classList.add('answered-correct');
+    } else {
+      const chosenOpt = document.getElementById(`opt-${idx}-${chosen}`);
+      const correctOpt = document.getElementById(`opt-${idx}-${correctAns}`);
+      if (chosenOpt) { chosenOpt.classList.remove('selected'); chosenOpt.classList.add('wrong'); }
+      if (correctOpt) correctOpt.classList.add('correct');
+      card.classList.add('answered-wrong');
+    }
+  });
+  const wrongCount = userAnswers.filter((v, i) => v !== null && v !== shuffledOptions[i].ansIdx).length;
+  const skippedCount = userAnswers.filter(v => v === null).length;
+  const percentage = Math.round((correctCount / TOTAL_QUESTIONS) * 100);
+  document.getElementById('r-score').textContent = correctCount;
+  document.getElementById('r-of').textContent = `/ ${TOTAL_QUESTIONS}`;
+  document.getElementById('r-correct').textContent = correctCount;
+  document.getElementById('r-wrong').textContent = wrongCount;
+  document.getElementById('r-skip').textContent = skippedCount;
+  const gradeBox = document.getElementById('grade-box');
+  gradeBox.className = `grade-box ${correctCount >= 20 ? 'approved' : 'failed'}`;
+  gradeBox.innerHTML = `<strong>${correctCount >= 20 ? '🎉 APROBADO 🎉' : '📖 REPROBADO 📖'}</strong><br>Puntaje: ${correctCount} / ${TOTAL_QUESTIONS} correctas (${percentage}% de logro)`;
+  let title, msg;
+  if (percentage >= 90) { title = '🏆 ¡Excelente!'; msg = 'Dominas el temario con solidez.'; }
+  else if (percentage >= 70) { title = '👍 ¡Muy bien!'; msg = 'Buen dominio. Repasa los temas donde fallaste.'; }
+  else if (percentage >= 50) { title = '📚 Sigue practicando'; msg = 'Vas por buen camino, pero repasa más.'; }
+  else { title = '💪 No te rindas'; msg = 'Revisa los contenidos y vuelve a intentarlo.'; }
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-msg').textContent = msg;
+  const ring = document.querySelector('.score-ring');
+  if (ring) ring.style.borderColor = percentage >= 70 ? 'var(--green)' : percentage >= 50 ? 'var(--gold)' : 'var(--red)';
+  document.getElementById('questions-wrap').style.display = 'none';
+  document.getElementById('submit-bar').style.display = 'none';
+  document.getElementById('results-wrap').style.display = 'block';
+  document.getElementById('prog-fill').style.width = '100%';
+  renderReview();
+  setTimeout(function() { renderKaTeX(document.getElementById('results-wrap')); }, 300);
+  document.getElementById('results-wrap').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderReview() {
+  const reviewWrap = document.getElementById('review-wrap');
+  reviewWrap.innerHTML = '';
+  selectedQuestions.forEach((q, idx) => {
+    const chosen = userAnswers[idx];
+    const correctAns = shuffledOptions[idx].ansIdx;
+    const isCorrect = chosen === correctAns;
+    const letters = ['a', 'b', 'c', 'd'];
+    const reviewCard = document.createElement('div');
+    reviewCard.className = `review-card ${isCorrect ? 'correct' : 'wrong'}`;
+    let answerStatus = '';
+    if (chosen === null) {
+      answerStatus = `<span style="color:var(--gold);">⚪ Sin responder</span> — Respuesta correcta: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    } else if (isCorrect) {
+      answerStatus = `<span style="color:var(--green);">✅ Correcta</span> — Elegiste: <strong>${letters[chosen]}) ${shuffledOptions[idx].opts[chosen]}</strong>`;
+    } else {
+      answerStatus = `<span style="color:var(--red);">❌ Incorrecta</span> — Elegiste: <strong>${letters[chosen]}) ${shuffledOptions[idx].opts[chosen]}</strong> — Respuesta correcta: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    }
+    let extraHtml = '';
+    if (q.tabla) extraHtml += q.tabla;
+    if (q.img && q.img.trim() !== '') {
+      extraHtml += `<img src="${q.img}" alt="Figura" style="max-width:200px;height:auto;margin:8px 0;border-radius:6px;">`;
+    }
+    reviewCard.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+        <strong style="color:var(--primary);">Pregunta ${idx + 1}</strong>
+        <span style="font-size:.7rem;color:var(--gray);">${isCorrect ? '✓ Correcta' : (chosen === null ? '○ Sin responder' : '✗ Incorrecta')}</span>
+      </div>
+      <div style="font-size:.85rem;margin-bottom:8px;">${q.q}</div>
+      ${extraHtml}
+      <div style="font-size:.8rem;margin-bottom:8px;">${answerStatus}</div>
+      <div class="review-explanation">
+        <strong>📝 Explicación paso a paso:</strong><br>
+        ${q.exp ? q.exp.replace(/\n/g, '<br>') : 'Sin explicación disponible.'}
+      </div>
+    `;
+    reviewWrap.appendChild(reviewCard);
+  });
+}
+
+// ============================================================
+// CONTROL
+// ============================================================
+function startTest() {
+  buildTest();
+  submitted = false;
+  document.getElementById('intro-card').style.display = 'none';
+  document.getElementById('results-wrap').style.display = 'none';
+  renderQuestions();
+  document.getElementById('questions-wrap').style.display = 'flex';
+  document.getElementById('submit-bar').style.display = 'flex';
+  updateProgress();
+  iniciarTimer();  // ← NUEVO
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartTest() {
+  buildTest();
+  submitted = false;
+  document.getElementById('results-wrap').style.display = 'none';
+  renderQuestions();
+  document.getElementById('questions-wrap').style.display = 'flex';
+  document.getElementById('submit-bar').style.display = 'flex';
+  updateProgress();
+  iniciarTimer();  // ← NUEVO
+  document.getElementById('intro-card').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelTest() {
+  if (confirm('¿Estás seguro de que quieres cancelar el test? Perderás tu progreso.')) {
+    detenerTimer();  // ← NUEVO
+    document.getElementById('timer-pill').style.display = 'none';  // ← NUEVO
+    document.getElementById('questions-wrap').style.display = 'none';
+    document.getElementById('submit-bar').style.display = 'none';
+    document.getElementById('intro-card').style.display = 'block';
+    document.getElementById('prog-fill').style.width = '0%';
+    submitted = false;
+  }
+}
+
+function renderKaTeX(element) {
+  if (typeof renderMathInElement === 'function') {
+    try {
+      renderMathInElement(element || document.body, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '\\[', right: '\\]', display: true},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+      });
+    } catch(e) { console.warn('KaTeX render error:', e); }
+  }
+}
+
+// ============================================================
+// INSPECTOR DE PREGUNTAS - VER TODAS LAS PREGUNTAS
+// ============================================================
+function tieneProblemaDolar(q) {
+  const matches = (q.q.match(/\$/g) || []).length;
+  if (matches % 2 !== 0) return true;
+  const patron = /\$\d[^$]{20,}\$\d/g;
+  if (patron.test(q.q)) return true;
+  const patron2 = /\$\d+[^$]*\$[a-zA-Záéíóúñ]/g;
+  if (patron2.test(q.q)) return true;
+  return false;
+}
+
+function renderDebug(filtro) {
+  const content = document.getElementById('debug-content');
+  const stats = document.getElementById('debug-stats');
+  content.innerHTML = '';
+  
+  let pools = [];
+  if (filtro === 'all' || filtro === 'numeros') pools.push({nombre: 'NÚMEROS', color: '#1a5a8a', data: POOL_NUMEROS});
+  if (filtro === 'all' || filtro === 'algebra') pools.push({nombre: 'ÁLGEBRA Y FUNCIONES', color: '#1a7a4a', data: POOL_ALGEBRA});
+  if (filtro === 'all' || filtro === 'geometria') pools.push({nombre: 'GEOMETRÍA', color: '#b02a2a', data: POOL_GEOMETRIA});
+  if (filtro === 'all' || filtro === 'probabilidad') pools.push({nombre: 'PROBABILIDAD Y ESTADÍSTICA', color: '#8a4a8a', data: POOL_PROBABILIDAD});
+  
+  let totalProblemas = 0;
+  let totalPreguntas = 0;
+  let resumen = [];
+  
+  pools.forEach(pool => {
+    let problemasPool = 0;
+    const poolDiv = document.createElement('div');
+    poolDiv.style.marginBottom = '30px';
+    poolDiv.innerHTML = `<h3 style="
+      font-family:'Playfair Display',serif;color:${pool.color};
+      font-size:1.3rem;margin-bottom:12px;border-bottom:2px solid ${pool.color};
+      padding-bottom:6px;
+    ">${pool.nombre} (${pool.data.length} preguntas)</h3>`;
+    
+    pool.data.forEach((q, i) => {
+      totalPreguntas++;
+      const tieneProblema = tieneProblemaDolar(q);
+      if (tieneProblema) { problemasPool++; totalProblemas++; }
+      if (filtro === 'problema' && !tieneProblema) return;
+      
+      const card = document.createElement('div');
+      card.style.cssText = `
+        background:#fff;border-radius:10px;padding:16px 18px;
+        margin-bottom:12px;border-left:4px solid ${tieneProblema ? '#b02a2a' : '#1a7a4a'};
+        box-shadow:0 2px 6px rgba(0,0,0,.08);
+      `;
+      
+      let extraHtml = '';
+      if (q.tabla) extraHtml += q.tabla;
+      if (q.img && q.img.trim() !== '') extraHtml += `<img src="${q.img}" style="max-width:300px;display:block;margin:8px 0;border-radius:6px;">`;
+      else if (q.img === '') extraHtml += `<div style="background:#fde8e8;color:#b02a2a;padding:8px 12px;border-radius:6px;font-size:.8rem;margin:8px 0;font-family:'JetBrains Mono',monospace;">⚠ IMAGEN PENDIENTE — Pega la URL en <code>img: ''</code></div>`;
+      
+      card.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+          <span style="
+            font-family:'JetBrains Mono',monospace;font-size:.75rem;
+            color:#5a6a7a;font-weight:700;
+          ">#${i + 1} ${tieneProblema ? '⚠ PROBLEMA $' : '✓ OK'}</span>
+          <span style="
+            background:${tieneProblema ? '#fde8e8' : '#e8f7ef'};
+            color:${tieneProblema ? '#b02a2a' : '#1a7a4a'};
+            padding:2px 10px;border-radius:12px;font-size:.7rem;font-weight:700;
+          ">Respuesta: ${['a','b','c','d'][q.ans]}</span>
+        </div>
+        <div style="font-size:.9rem;font-weight:600;color:#1a2a4a;line-height:1.7;margin-bottom:10px;white-space:pre-wrap;">${q.q}</div>
+        ${extraHtml}
+        <div style="display:flex;flex-direction:column;gap:4px;margin:10px 0;">
+          ${q.opts.map((o, j) => `
+            <div style="
+              font-size:.82rem;padding:6px 10px;border-radius:6px;
+              background:${j === q.ans ? '#e8f7ef' : '#f0f4f8'};
+              border:1px solid ${j === q.ans ? '#1a7a4a' : '#d0dce8'};
+              color:${j === q.ans ? '#0f5c37' : '#1a2a3a'};
+              font-weight:${j === q.ans ? '700' : '400'};
+            ">${['a','b','c','d'][j]}) ${o}</div>
+          `).join('')}
+        </div>
+        <details style="font-size:.82rem;color:#5a6a7a;margin-top:8px;">
+          <summary style="cursor:pointer;font-weight:700;color:#1a5a8a;">📝 Ver explicación</summary>
+          <div style="margin-top:8px;padding:10px;background:#f7f9fc;border-radius:6px;line-height:1.7;">${(q.exp || 'Sin explicación').replace(/\n/g,'<br>')}</div>
+        </details>
+      `;
+      poolDiv.appendChild(card);
+    });
+    
+    resumen.push({nombre: pool.nombre, total: pool.data.length, problemas: problemasPool});
+    content.appendChild(poolDiv);
+  });
+  
+  stats.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
+      ${resumen.map(r => `
+        <div style="background:#f0f4f8;padding:8px 12px;border-radius:8px;">
+          <strong style="color:#1a2a4a;">${r.nombre}</strong><br>
+          Total: ${r.total} | <span style="color:${r.problemas > 0 ? '#b02a2a' : '#1a7a4a'};font-weight:700;">Problemas: ${r.problemas}</span>
+        </div>
+      `).join('')}
+      <div style="background:#1a2a4a;color:#fff;padding:8px 12px;border-radius:8px;">
+        <strong>TOTAL</strong><br>
+        ${totalPreguntas} preguntas | <span style="color:${totalProblemas > 0 ? '#ff8888' : '#88ff88'};font-weight:700;">${totalProblemas} problemas $</span>
+      </div>
+    </div>
+  `;
+  
+  setTimeout(() => renderKaTeX(content), 100);
+}
+
+function toggleDebug() {
+  const panel = document.getElementById('debug-panel');
+  if (panel.style.display === 'none' || panel.style.display === '') {
+    panel.style.display = 'block';
+    renderDebug('all');
+    document.body.style.overflow = 'hidden';
+  } else {
+    panel.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+function filterDebug(filtro) {
+  renderDebug(filtro);
+  document.querySelectorAll('.dbg-filter').forEach(btn => {
+    if (btn.dataset.f === filtro) {
+      btn.style.background = '#d4a84a';
+    } else {
+      btn.style.background = '#fff';
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  setTimeout(function() { renderKaTeX(document.body); }, 500);
+});
+</script>
+</body>
+</html>
