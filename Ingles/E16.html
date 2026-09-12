@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Test de Simulación — Inglés</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#1a2a4a;
+  --primary2:#1e3a6a;
+  --primary3:#1a4a7a;
+  --math-blue:#1a5a8a;
+  --math-blue2:#2a7aaa;
+  --gold:#d4a84a;
+  --gold2:#e8c86a;
+  --white:#ffffff;
+  --light:#f0f4f8;
+  --lighter:#f7f9fc;
+  --green:#1a7a4a;
+  --green2:#e8f7ef;
+  --green3:#0f5c37;
+  --red:#b02a2a;
+  --red2:#fde8e8;
+  --gray:#5a6a7a;
+  --border:#d0dce8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Source Sans 3',sans-serif;
+  background:linear-gradient(160deg,var(--primary) 0%,var(--primary2) 40%,var(--primary3) 100%);
+  min-height:100vh;color:#1a2a3a;
+}
+
+#topbar{
+  position:sticky;top:0;z-index:200;
+  background:var(--primary);border-bottom:3px solid var(--gold);
+  padding:12px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+#topbar h1{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.25rem;font-weight:700;flex:1;
+}
+#topbar h1 span{color:var(--gold);}
+#score-pill{
+  background:rgba(212,168,74,.15);border:1px solid var(--gold);
+  color:var(--gold2);font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;padding:5px 14px;border-radius:20px;white-space:nowrap;
+}
+#timer-pill{
+  background:rgba(212,168,74,.15);
+  border:1px solid var(--gold);
+  color:var(--gold2);
+  font-family:'JetBrains Mono',monospace;
+  font-size:.85rem;
+  font-weight:700;
+  padding:5px 14px;
+  border-radius:20px;
+  white-space:nowrap;
+  transition:all .3s;
+}
+#timer-pill.warning{background:rgba(212,168,74,.35);border-color:#e8c86a;color:#ffffff;}
+#timer-pill.danger{background:rgba(176,42,42,.35);border-color:#ff6b6b;color:#ffffff;animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+
+#prog-wrap{background:rgba(255,255,255,.08);height:6px;}
+#prog-fill{height:100%;background:var(--gold);transition:width .4s;width:0%;}
+
+#main{max-width:820px;margin:0 auto;padding:28px 20px 120px;}
+
+#intro-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.25);
+  animation:fadeUp .5s ease forwards;
+}
+#intro-card h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--primary);margin-bottom:10px;}
+#intro-card p{color:var(--gray);font-size:1rem;line-height:1.7;margin-bottom:24px;}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;}
+.tag{
+  background:var(--light);border:1px solid var(--border);border-radius:20px;
+  padding:4px 14px;font-size:.82rem;color:var(--primary);font-weight:600;
+}
+.info-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;
+  background:var(--light);border-radius:16px;padding:16px;margin-top:16px;
+}
+.info-item{text-align:center;}
+.info-item .num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--primary);}
+.info-item .label{font-size:.75rem;color:var(--gray);}
+
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  border:none;cursor:pointer;border-radius:10px;font-family:'Source Sans 3',sans-serif;
+  font-weight:700;font-size:.95rem;padding:11px 24px;transition:all .2s;
+}
+.btn-gold{background:var(--gold);color:var(--primary);}
+.btn-gold:hover{background:var(--gold2);transform:scale(1.03);}
+.btn-sky{background:var(--math-blue);color:var(--white);}
+.btn-sky:hover{background:var(--math-blue2);transform:scale(1.03);}
+.btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold);}
+.btn-outline:hover{background:rgba(212,168,74,.12);}
+
+#questions-wrap{display:none;flex-direction:column;gap:20px;}
+.q-card{
+  background:var(--white);border-radius:16px;padding:22px 26px;
+  box-shadow:0 4px 16px rgba(0,0,0,.12);
+  border-left:5px solid var(--border);
+  transition:border-color .2s;
+  animation:fadeUp .4s ease both;
+}
+.q-card.answered-correct{border-left-color:var(--green);}
+.q-card.answered-wrong{border-left-color:var(--red);}
+
+.q-num{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  color:var(--gray);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase;
+}
+.q-level{
+  display:inline-block;font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:8px;
+  margin-left:8px;background:#dbe8ff;color:#1a5a8a;
+}
+.q-text{
+  font-size:1rem;font-weight:600;color:var(--primary);line-height:1.8;margin-bottom:14px;
+  white-space:pre-wrap;
+}
+.q-text .reading-text{
+  display:block;background:var(--lighter);padding:14px 18px;
+  border-radius:10px;margin:12px 0;border-left:3px solid var(--math-blue);
+  font-weight:400;font-size:.92rem;line-height:1.75;color:#2a3a4a;
+}
+
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt{
+  display:flex;align-items:center;gap:12px;
+  border:2px solid var(--border);border-radius:10px;
+  padding:10px 14px;cursor:pointer;transition:all .18s;
+  background:var(--light);user-select:none;
+}
+.opt:hover:not(.locked){border-color:var(--math-blue);background:#e8f0fc;}
+.opt.selected{border-color:var(--math-blue);background:#dbe8ff;}
+.opt.correct{border-color:var(--green);background:var(--green2);}
+.opt.wrong{border-color:var(--red);background:var(--red2);}
+.opt.locked{cursor:default;}
+.opt-letter{
+  width:26px;height:26px;border-radius:50%;border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;
+  color:var(--gray);flex-shrink:0;transition:all .18s;background:var(--white);
+}
+.opt.selected .opt-letter{border-color:var(--math-blue);color:var(--math-blue);background:#dbe8ff;}
+.opt.correct .opt-letter{border-color:var(--green);color:var(--green);background:var(--green2);}
+.opt.wrong .opt-letter{border-color:var(--red);color:var(--red);background:var(--red2);}
+.opt-text{font-size:.93rem;color:#1a2a3a;line-height:1.4;}
+
+#submit-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:var(--primary);border-top:2px solid var(--gold);
+  padding:10px 24px;display:flex;align-items:center;gap:14px;
+  justify-content:space-between;flex-wrap:wrap;
+}
+#answered-count{color:#a0b8d0;font-family:'JetBrains Mono',monospace;font-size:.8rem;}
+
+#results-wrap{display:none;animation:fadeUp .5s ease forwards;}
+#results-card{
+  background:var(--white);border-radius:20px;padding:36px 40px;
+  box-shadow:0 12px 40px rgba(0,0,0,.25);margin-bottom:28px;text-align:center;
+}
+.score-ring{
+  width:140px;height:140px;border-radius:50%;margin:0 auto 20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;
+  border:8px solid var(--gold);background:var(--light);
+  transition:border-color .4s;
+}
+.score-ring .score-num{font-size:2.8rem;font-weight:900;color:var(--primary);line-height:1;}
+.score-ring .score-of{font-size:.9rem;color:var(--gray);}
+#result-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--primary);margin-bottom:8px;}
+#result-msg{color:var(--gray);font-size:1rem;line-height:1.6;margin-bottom:24px;}
+.result-stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+.stat-box{background:var(--light);border-radius:12px;padding:12px 22px;text-align:center;border:1px solid var(--border);}
+.stat-box .sv{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;}
+.stat-box .sl{font-size:.78rem;color:var(--gray);margin-top:2px;}
+.stat-box.ok .sv{color:var(--green);}
+.stat-box.err .sv{color:var(--red);}
+.stat-box.skip .sv{color:var(--gold);}
+
+.grade-box{
+  font-size:1.2rem;text-align:center;padding:12px;
+  border-radius:40px;margin-top:16px;font-weight:700;
+}
+.approved{background:var(--green2);color:var(--green3);border:2px solid var(--green);}
+.failed{background:var(--red2);color:var(--red);border:2px solid var(--red);}
+
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px;}
+
+#review-wrap{display:flex;flex-direction:column;gap:16px;}
+.review-title{
+  font-family:'Playfair Display',serif;color:var(--white);
+  font-size:1.3rem;font-weight:700;margin-bottom:6px;
+}
+.review-card{
+  background:var(--white);border-radius:16px;padding:16px 20px;
+  border-left:4px solid var(--border);
+}
+.review-card.correct{border-left-color:var(--green);}
+.review-card.wrong{border-left-color:var(--red);}
+.review-explanation{
+  margin-top:10px;padding:12px;background:var(--lighter);
+  border-radius:10px;font-size:.85rem;line-height:1.7;
+  color:#2a3a4a;border:1px solid var(--border);
+}
+.review-explanation strong{color:var(--primary);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:600px){
+  #main{padding:16px 12px 100px;}
+  #intro-card,#results-card{padding:24px 18px;}
+  .result-actions{flex-direction:column;}
+  .btn{justify-content:center;}
+  .q-card{padding:16px;}
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <h1>Test de Simulación <span>— Inglés</span></h1>
+  <div id="timer-pill" style="display:none;">⏱ 60:00</div>
+  <div id="score-pill">50 preguntas · 1 punto cada pregunta</div>
+</div>
+<div id="prog-wrap"><div id="prog-fill"></div></div>
+
+<div id="main">
+
+  <div id="intro-card">
+    <h2>Test de Simulación — Inglés</h2>
+    <p>Este test selecciona <strong>50 preguntas aleatorias</strong> de un banco de 160 preguntas, distribuidas por niveles MCER: 13 de A1, 13 de A2, 13 de B1 y 11 de B2. Al finalizar verás tu puntaje y una revisión completa con explicaciones.</p>
+    <div class="tag-row">
+      <span class="tag">📗 A1 — Beginner</span>
+      <span class="tag">📘 A2 — Elementary</span>
+      <span class="tag">📙 B1 — Intermediate</span>
+      <span class="tag">📕 B2 — Upper Intermediate</span>
+    </div>
+    <div class="info-grid">
+      <div class="info-item"><div class="num">160</div><div class="label">Preguntas en banco</div></div>
+      <div class="info-item"><div class="num">50</div><div class="label">Preguntas por test</div></div>
+      <div class="info-item"><div class="num">60 min</div><div class="label">Tiempo límite</div></div>
+    </div>
+    <button class="btn btn-gold" onclick="startTest()">🚀 Iniciar Test</button>
+    <button class="btn btn-outline" style="margin-left:10px; display:none" onclick="toggleDebug()">🔍 Ver todas las preguntas</button>
+  </div>
+
+  <div id="questions-wrap"></div>
+
+  <div id="results-wrap">
+    <div id="results-card">
+      <div class="score-ring">
+        <div class="score-num" id="r-score">0</div>
+        <div class="score-of" id="r-of">/ 50</div>
+      </div>
+      <div id="result-title"></div>
+      <div id="result-msg"></div>
+      <div class="result-stats">
+        <div class="stat-box ok"><div class="sv" id="r-correct">0</div><div class="sl">✅ Correctas</div></div>
+        <div class="stat-box err"><div class="sv" id="r-wrong">0</div><div class="sl">❌ Incorrectas</div></div>
+        <div class="stat-box skip"><div class="sv" id="r-skip">0</div><div class="sl">⚪ Sin responder</div></div>
+      </div>
+      <div class="grade-box" id="grade-box"></div>
+      <div class="result-actions">
+        <button class="btn btn-gold" onclick="restartTest()">🔄 Nuevo Test</button>
+        <button class="btn btn-sky" onclick="window.location.href='index.html'">📘 Volver al curso</button>
+      </div>
+    </div>
+    <div class="review-title">📋 Revisión de Respuestas</div>
+    <div id="review-wrap"></div>
+  </div>
+
+</div>
+
+<div id="submit-bar" style="display:none">
+  <div id="answered-count">Respondidas: 0 / 50</div>
+  <div style="display:flex;gap:10px">
+    <button class="btn btn-outline" onclick="cancelTest()">← Cancelar</button>
+    <button class="btn btn-gold" onclick="submitTest()">Finalizar Test ✓</button>
+  </div>
+</div>
+
+<!-- PANEL INSPECTOR -->
+<div id="debug-panel" style="
+  display:none;position:fixed;top:0;left:0;right:0;bottom:0;
+  z-index:600;background:#f0f4f8;overflow-y:auto;
+  padding:20px;
+">
+  <div style="
+    position:sticky;top:0;background:#1a2a4a;color:#fff;
+    padding:14px 20px;margin:-20px -20px 20px -20px;
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+    border-bottom:3px solid #d4a84a;z-index:10;
+  ">
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;flex:1;color:#fff;">
+      🔍 Inspector de Preguntas — Banco Completo
+    </h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button onclick="filterDebug('all')" class="dbg-filter" data-f="all" style="background:#d4a84a;color:#1a2a4a;border:none;padding:6px 12px;border-radius:6px;font-weight:700;cursor:pointer;font-size:.8rem;">Todas</button>
+      <button onclick="filterDebug('A1')" class="dbg-filter" data-f="A1" style="background:#fff;color:#1a2a4a;border:none;padding:6px 12px;border-radius:6px;font-weight:700;cursor:pointer;font-size:.8rem;">A1</button>
+      <button onclick="filterDebug('A2')" class="dbg-filter" data-f="A2" style="background:#fff;color:#1a2a4a;border:none;padding:6px 12px;border-radius:6px;font-weight:700;cursor:pointer;font-size:.8rem;">A2</button>
+      <button onclick="filterDebug('B1')" class="dbg-filter" data-f="B1" style="background:#fff;color:#1a2a4a;border:none;padding:6px 12px;border-radius:6px;font-weight:700;cursor:pointer;font-size:.8rem;">B1</button>
+      <button onclick="filterDebug('B2')" class="dbg-filter" data-f="B2" style="background:#fff;color:#1a2a4a;border:none;padding:6px 12px;border-radius:6px;font-weight:700;cursor:pointer;font-size:.8rem;">B2</button>
+      <button onclick="toggleDebug()" style="background:#b02a2a;color:#fff;border:none;padding:6px 14px;border-radius:6px;font-weight:700;cursor:pointer;">✕ Cerrar</button>
+    </div>
+  </div>
+  <div id="debug-stats" style="
+    background:#fff;padding:14px 18px;border-radius:10px;
+    margin-bottom:16px;font-family:'JetBrains Mono',monospace;
+    font-size:.85rem;line-height:1.8;
+  "></div>
+  <div id="debug-content"></div>
+</div>
+
+<script>
+
+// ============================================================
+// POOL A1 (40 preguntas)
+// ============================================================
+const POOL_A1 = [
+  { q: 'A: ___? B: No, he\'s on holiday.', opts: ['Is Simon working', 'Is working Simon', 'Does Simon work', 'Does work Simon'], ans: 0, exp: 'Present continuous question: "Is + subject + verb-ing?"' },
+  { q: 'A: ___ do you go to work? B: On foot.', opts: ['Why', 'Who', 'When', 'How'], ans: 3, exp: '"How" pregunta por el modo o manera.' },
+  { q: 'My mom is pretty young. She ___ 35 years old.', opts: ['is', 'has', 'does', 'turns'], ans: 0, exp: 'Verb "to be" para edad: "She is 35 years old".' },
+  { q: 'I ___ a student.', opts: ['is', 'am', 'are', 'be'], ans: 1, exp: 'Verb "to be" en 1ra persona singular = "am".' },
+  { q: 'She ___ from Chile.', opts: ['am', 'is', 'are', 'be'], ans: 1, exp: '3ra persona singular = "is".' },
+  { q: 'They ___ my friends.', opts: ['is', 'am', 'are', 'be'], ans: 2, exp: 'Plural = "are".' },
+  { q: 'There ___ a book on the table.', opts: ['is', 'are', 'am', 'be'], ans: 0, exp: 'Singular = "is".' },
+  { q: 'There ___ two cats in the garden.', opts: ['is', 'are', 'am', 'be'], ans: 1, exp: 'Plural = "are".' },
+  { q: 'This is ___ apple.', opts: ['a', 'an', 'the', '—'], ans: 1, exp: '"an" antes de sonido vocálico.' },
+  { q: 'I have ___ dog.', opts: ['a', 'an', 'the', '—'], ans: 0, exp: '"a" antes de sonido consonántico.' },
+  { q: '___ is your name?', opts: ['What', 'Who', 'Where', 'When'], ans: 0, exp: '"What" para preguntar el nombre.' },
+  { q: '___ old are you?', opts: ['What', 'How', 'Who', 'Where'], ans: 1, exp: '"How old" pregunta la edad.' },
+  { q: '___ is your birthday?', opts: ['When', 'Who', 'What', 'How'], ans: 0, exp: '"When" pregunta por tiempo/fecha.' },
+  { q: '___ is that girl? She is my sister.', opts: ['What', 'Who', 'Where', 'When'], ans: 1, exp: '"Who" pregunta por persona.' },
+  { q: '___ are you from?', opts: ['What', 'Who', 'Where', 'When'], ans: 2, exp: '"Where" pregunta por lugar.' },
+  { q: 'I ___ coffee every morning.', opts: ['drink', 'drinks', 'drinking', 'drank'], ans: 0, exp: 'Present simple 1ra persona = "drink".' },
+  { q: 'She ___ to school every day.', opts: ['go', 'goes', 'going', 'went'], ans: 1, exp: 'Present simple 3ra persona = verbo + s.' },
+  { q: 'He ___ TV in the evening.', opts: ['watch', 'watches', 'watching', 'watched'], ans: 1, exp: '"watches" por terminación -ch.' },
+  { q: 'We ___ football on Sundays.', opts: ['play', 'plays', 'playing', 'played'], ans: 0, exp: '1ra persona plural = "play".' },
+  { q: 'My brother ___ English very well.', opts: ['speak', 'speaks', 'speaking', 'spoke'], ans: 1, exp: '3ra persona singular = "speaks".' },
+  { q: 'I get up ___ 7 o\'clock.', opts: ['in', 'on', 'at', 'to'], ans: 2, exp: '"at" para horas.' },
+  { q: 'My birthday is ___ May.', opts: ['in', 'on', 'at', 'to'], ans: 0, exp: '"in" para meses.' },
+  { q: 'The class starts ___ Monday.', opts: ['in', 'on', 'at', 'to'], ans: 1, exp: '"on" para días.' },
+  { q: 'See you ___ the weekend.', opts: ['in', 'on', 'at', 'to'], ans: 2, exp: '"at the weekend" expresión fija.' },
+  { q: 'This is my sister. ___ name is Ana.', opts: ['His', 'Her', 'Its', 'Their'], ans: 1, exp: 'Posesivo femenino = "Her".' },
+  { q: 'That is my father. ___ name is Juan.', opts: ['His', 'Her', 'Its', 'Their'], ans: 0, exp: 'Posesivo masculino = "His".' },
+  { q: 'We love ___ house.', opts: ['us', 'our', 'ours', 'we'], ans: 1, exp: 'Posesivo = "our".' },
+  { q: 'The cat is playing with ___ toy.', opts: ['his', 'her', 'its', 'their'], ans: 2, exp: 'Para animales/objetos = "its".' },
+  { q: 'A: How are you? B: ___', opts: ['I\'m fine, thanks', 'I\'m 20 years old', 'My name is Ana', 'I live in Chile'], ans: 0, exp: 'Respuesta típica a "How are you?".' },
+  { q: 'A: Nice to meet you. B: ___', opts: ['Nice to meet you too', 'Goodbye', 'See you later', 'I\'m sorry'], ans: 0, exp: 'Respuesta simétrica.' },
+  { q: 'A: Thank you very much. B: ___', opts: ['You\'re welcome', 'I\'m sorry', 'Excuse me', 'Good night'], ans: 0, exp: 'Respuesta a agradecimiento.' },
+  { q: 'A: What\'s your phone number? B: ___', opts: ['It\'s 555-1234', 'I\'m 20', 'At 7 pm', 'On Monday'], ans: 0, exp: 'Respuesta a número telefónico.' },
+  { q: 'A: How do you spell your name? B: ___', opts: ['A-N-A', 'I\'m Ana', 'Ana', 'Yes, Ana'], ans: 0, exp: 'Deletreo.' },
+  { q: 'A: Where do you live? B: ___', opts: ['In Santiago', 'At 7', 'On Monday', 'My name is Ana'], ans: 0, exp: 'Respuesta a "Where".' },
+  { q: 'A: Can I help you? B: ___', opts: ['Yes, please', 'No, thanks', 'You\'re welcome', 'Both are correct (Yes,please/No thanks)'], ans: 3, exp: 'Ambas son respuestas válidas.' },
+  { q: 'A: Have a nice day! B: ___', opts: ['You too', 'I\'m sorry', 'Excuse me', 'Goodbye'], ans: 0, exp: 'Respuesta típica.' },
+  { q: 'A: What time is it? B: ___', opts: ['It\'s 3 o\'clock', 'On Monday', 'In May', 'At home'], ans: 0, exp: 'Respuesta a la hora.' },
+  { q: 'A: How old is your brother? B: ___', opts: ['He is 10', 'He is fine', 'In Santiago', 'At 7'], ans: 0, exp: 'Respuesta a "How old".' },
+  { q: 'A: What\'s the weather like? B: ___', opts: ['It\'s sunny', 'At 7', 'In Santiago', 'On Monday'], ans: 0, exp: 'Respuesta a "weather".' },
+  { q: 'A: Good morning! B: ___', opts: ['Good morning', 'Good night', 'Goodbye', 'See you'], ans: 0, exp: 'Respuesta simétrica.' }
+];
+
+// ============================================================
+// POOL A2 (40 preguntas)
+// ============================================================
+const POOL_A2 = [
+  { q: 'Last week, Debby and Melissa ___ in a hotel in Rome.', opts: ['have stayed', 'staying', 'had stayed', 'stayed'], ans: 3, exp: 'Past simple con "last week".' },
+  { q: 'The next meeting is ___ October 28th.', opts: ['in', 'on', 'to', 'at'], ans: 1, exp: '"on" para fechas específicas.' },
+  { q: 'The teacher spoke very ___ so that everyone could understand.', opts: ['clearly', 'fast', 'quietly', 'loud'], ans: 0, exp: '"clearly" adverbio de manera positivo.' },
+  { q: 'A: One of my workmates suffers from lung cancer. B: ___', opts: ['What an ugly workmate!', 'Oh, that\'s terrific.', 'I\'m sorry to hear that.', 'How wonderful idea!'], ans: 2, exp: 'Respuesta empática.' },
+  { q: 'A: We are planning to travel to Europe. B: ___', opts: ['When will that be?', 'Why are you staying home?', 'Where did you go?', 'What were you doing in summer?'], ans: 0, exp: 'Pregunta lógica sobre el viaje.' },
+  { q: 'She is ___ person to talk to when you need advice.', opts: ['the more patient', 'the most patience', 'the most patient', 'the patientest'], ans: 2, exp: 'Superlativo de "patient" = "the most patient".' },
+  { q: 'I ___ to the cinema yesterday.', opts: ['go', 'goes', 'went', 'gone'], ans: 2, exp: 'Past simple de "go" = "went".' },
+  { q: 'She ___ a beautiful dress at the party.', opts: ['wear', 'wears', 'wore', 'worn'], ans: 2, exp: 'Past simple de "wear" = "wore".' },
+  { q: 'They ___ dinner at 8 pm last night.', opts: ['have', 'has', 'had', 'having'], ans: 2, exp: 'Past simple de "have" = "had".' },
+  { q: 'He ___ me the truth yesterday.', opts: ['tell', 'tells', 'told', 'telling'], ans: 2, exp: 'Past simple de "tell" = "told".' },
+  { q: 'I ___ my keys this morning.', opts: ['lose', 'loses', 'lost', 'losing'], ans: 2, exp: 'Past simple de "lose" = "lost".' },
+  { q: 'She is ___ than her sister.', opts: ['tall', 'taller', 'tallest', 'the tallest'], ans: 1, exp: 'Comparativo = "taller".' },
+  { q: 'This book is ___ than the other one.', opts: ['interesting', 'more interesting', 'most interesting', 'the most interesting'], ans: 1, exp: 'Comparativo de adjetivo largo = "more interesting".' },
+  { q: 'He is the ___ student in the class.', opts: ['good', 'better', 'best', 'the best'], ans: 2, exp: 'Superlativo irregular de "good" = "best".' },
+  { q: 'I ___ visit my grandmother next weekend.', opts: ['will', 'am', 'do', 'have'], ans: 0, exp: '"will" para futuro simple.' },
+  { q: 'She ___ going to study medicine.', opts: ['is', 'are', 'am', 'be'], ans: 0, exp: '"is going to" para intenciones.' },
+  { q: 'I have ___ been to Japan.', opts: ['ever', 'never', 'yet', 'already'], ans: 1, exp: '"never" = nunca (experiencia negativa).' },
+  { q: 'Have you ___ eaten sushi?', opts: ['never', 'ever', 'yet', 'already'], ans: 1, exp: '"ever" en preguntas de experiencia.' },
+  { q: 'She has ___ finished her homework.', opts: ['yet', 'already', 'ever', 'never'], ans: 1, exp: '"already" = ya (afirmativo).' },
+  { q: 'I love ___ in the ocean.', opts: ['swim', 'swimming', 'to swim', 'swam'], ans: 1, exp: '"love + verb-ing".' },
+  { q: 'He hates ___ early in the morning.', opts: ['get up', 'getting up', 'to get up', 'got up'], ans: 1, exp: '"hate + verb-ing".' },
+  { q: 'I like coffee, ___ I don\'t like tea.', opts: ['and', 'but', 'because', 'or'], ans: 1, exp: '"but" para contraste.' },
+  { q: 'She stayed home ___ she was sick.', opts: ['and', 'but', 'because', 'or'], ans: 2, exp: '"because" para causa.' },
+  { q: 'I want to buy a car, ___ I need to save money.', opts: ['but', 'so', 'because', 'or'], ans: 1, exp: '"so" para consecuencia.' },
+  { q: 'A: Would you like some tea? B: ___', opts: ['Yes, please', 'I\'m sorry', 'You\'re welcome', 'At 7'], ans: 0, exp: 'Aceptar oferta.' },
+  { q: 'A: Could you open the window? B: ___', opts: ['Sure, no problem', 'I\'m sorry', 'You\'re welcome', 'At 7'], ans: 0, exp: 'Aceptar petición.' },
+  { q: 'A: What did you do last weekend? B: ___', opts: ['I went to the beach', 'I go to the beach', 'I will go to the beach', 'I am going to the beach'], ans: 0, exp: 'Past simple.' },
+  { q: 'A: Can I borrow your pen? B: ___', opts: ['Of course, here you are', 'I\'m sorry', 'You\'re welcome', 'At 7'], ans: 0, exp: 'Conceder permiso.' },
+  { q: 'A: How was your weekend? B: ___', opts: ['It was great!', 'It is great!', 'It will be great!', 'It has been great!'], ans: 0, exp: 'Past simple para evento pasado.' },
+  { q: 'A: Would you like to come to my party? B: ___', opts: ['I\'d love to', 'I\'m sorry', 'You\'re welcome', 'At 7'], ans: 0, exp: 'Aceptar invitación.' },
+  { q: 'A: Excuse me, where is the bank? B: ___', opts: ['It\'s next to the supermarket', 'At 7', 'On Monday', 'Yes, please'], ans: 0, exp: 'Indicar ubicación.' },
+  { q: 'A: What\'s the matter? B: ___', opts: ['I have a headache', 'At 7', 'On Monday', 'Yes, please'], ans: 0, exp: 'Describir síntoma.' },
+  { q: 'A: How much is it? B: ___', opts: ['It\'s $10', 'At 7', 'On Monday', 'Yes, please'], ans: 0, exp: 'Precio.' },
+  { q: 'A: Can you help me, please? B: ___', opts: ['Sure', 'I\'m sorry', 'You\'re welcome', 'At 7'], ans: 0, exp: 'Aceptar ayuda.' },
+  { q: 'A: What are you going to do this summer? B: ___', opts: ['I\'m going to travel', 'I travel', 'I traveled', 'I will have traveled'], ans: 0, exp: '"going to" para planes.' },
+  { q: 'A: I failed my exam. B: ___', opts: ['I\'m sorry to hear that', 'Congratulations!', 'Well done!', 'How wonderful!'], ans: 0, exp: 'Respuesta empática.' },
+  { q: 'A: Happy birthday! B: ___', opts: ['Thank you', 'I\'m sorry', 'You\'re welcome', 'At 7'], ans: 0, exp: 'Agradecer felicitación.' },
+  { q: 'A: How do you get to work? B: ___', opts: ['By bus', 'At 7', 'On Monday', 'Yes, please'], ans: 0, exp: 'Medio de transporte.' },
+  { q: 'A: What\'s your favorite food? B: ___', opts: ['Pizza', 'At 7', 'On Monday', 'Yes, please'], ans: 0, exp: 'Respuesta a preferencia.' }
+];
+
+// ============================================================
+// POOL B1 (40 preguntas)
+// ============================================================
+const POOL_B1 = [
+  { q: '___ for a part-time job?', opts: ['Have ever you applied', 'Ever you have applied', 'You applied ever', 'Have you ever applied'], ans: 3, exp: 'Present perfect question: "Have + subject + ever + past participle?"' },
+  { q: 'When ___?', opts: ['were built these houses', 'were these houses built', 'was built these houses', 'was these houses built'], ans: 1, exp: 'Passive voice question: "When + were + subject + past participle?"' },
+  { q: 'I\'m interested in ___ in community work.', opts: ['participating', 'to participate', 'to participating', 'participate'], ans: 0, exp: '"interested in + verb-ing".' },
+  { q: 'I visited a museum ___ was designed by a famous architect.', opts: ['whom', 'which', 'where', 'who'], ans: 1, exp: '"which" para cosas.' },
+  { q: 'If you go abroad, you ___ carry your passport with you.', opts: ['can', 'may', 'should', 'might'], ans: 2, exp: '"should" para recomendación.' },
+  { q: 'Read the text and answer:\n<span class="reading-text">"Karina spends all day studying and needs help to relax her mind. She doesn\'t like sports but enjoys working with her hands and wants to make things she can actually wear or use."</span>\nWhich activity best works for her?', opts: ['Bowling League', 'Community garden', 'Lap Swimming', 'Pottery classes'], ans: 3, exp: 'Trabajar con las manos y crear cosas útiles = pottery.' },
+  { q: 'She has been working here ___ 2015.', opts: ['for', 'since', 'from', 'during'], ans: 1, exp: '"since" con punto específico en el tiempo.' },
+  { q: 'I have lived in London ___ five years.', opts: ['for', 'since', 'from', 'during'], ans: 0, exp: '"for" con período de tiempo.' },
+  { q: 'Have you finished your homework ___?', opts: ['already', 'yet', 'just', 'ever'], ans: 1, exp: '"yet" en preguntas negativas/interrogativas.' },
+  { q: 'She has ___ arrived.', opts: ['yet', 'already', 'ever', 'never'], ans: 1, exp: '"already" en afirmativo.' },
+  { q: 'I have ___ seen that movie.', opts: ['already', 'yet', 'just', 'since'], ans: 2, exp: '"just" = acabar de.' },
+  { q: 'If it rains tomorrow, we ___ at home.', opts: ['stay', 'stays', 'will stay', 'stayed'], ans: 2, exp: 'First conditional: if + present, will + verb.' },
+  { q: 'You ___ smoke here. It\'s forbidden.', opts: ['mustn\'t', 'don\'t have to', 'shouldn\'t', 'can\'t'], ans: 0, exp: '"mustn\'t" = prohibición.' },
+  { q: 'You ___ bring your own towel; we provide them.', opts: ['mustn\'t', 'don\'t have to', 'shouldn\'t', 'can\'t'], ans: 1, exp: '"don\'t have to" = no es necesario.' },
+  { q: '___ I use your phone, please?', opts: ['Must', 'Should', 'May', 'Would'], ans: 2, exp: '"May I...?" para pedir permiso formal.' },
+  { q: 'She was reading a book ___ I arrived.', opts: ['when', 'while', 'as', 'so'], ans: 0, exp: '"when" con past simple.' },
+  { q: '___ I was cooking, the phone rang.', opts: ['When', 'While', 'As', 'So'], ans: 1, exp: '"while" con past continuous.' },
+  { q: 'This book is ___ interesting as the other one.', opts: ['so', 'as', 'more', 'most'], ans: 1, exp: '"as ... as" para comparar igualdad.' },
+  { q: 'She is not ___ tall as her brother.', opts: ['so', 'as', 'more', 'most'], ans: 1, exp: '"not as ... as" para desigualdad.' },
+  { q: 'That\'s the man ___ helped me yesterday.', opts: ['which', 'who', 'whose', 'whom'], ans: 1, exp: '"who" para personas en sujeto.' },
+  { q: 'This is the book ___ I told you about.', opts: ['who', 'which', 'whose', 'whom'], ans: 1, exp: '"which" para cosas.' },
+  { q: 'She\'s the girl ___ father is a doctor.', opts: ['who', 'which', 'whose', 'whom'], ans: 2, exp: '"whose" para posesión.' },
+  { q: 'I enjoy ___ books in my free time.', opts: ['read', 'reading', 'to read', 'reads'], ans: 1, exp: '"enjoy + verb-ing".' },
+  { q: 'He decided ___ a new car.', opts: ['buy', 'buying', 'to buy', 'buys'], ans: 2, exp: '"decide + to + verb".' },
+  { q: 'They want ___ to the party.', opts: ['come', 'coming', 'to come', 'comes'], ans: 2, exp: '"want + to + verb".' },
+  { q: 'You\'re from Chile, ___?', opts: ['aren\'t you', 'isn\'t it', 'don\'t you', 'isn\'t he'], ans: 0, exp: 'Question tag con "you are" → "aren\'t you".' },
+  { q: 'She doesn\'t like coffee, ___?', opts: ['does she', 'isn\'t she', 'doesn\'t she', 'is she'], ans: 0, exp: 'Question tag negativo → positivo.' },
+  { q: 'Read the text and answer:\n<span class="reading-text">"Climate change is a global issue that affects people all around the world. In some countries, temperatures are rising, and this can lead to long periods of drought. When there is not enough water, farmers cannot grow food, and some families may need to move to another area. Governments are trying to find solutions, but individuals can also help by saving energy at home. Turning off lights, using public transport, and buying local products are small actions that can make a positive difference."</span>\nWhat happens when there is drought?', opts: ['Farmers cannot grow food', 'Temperatures drop', 'Governments stop helping', 'People use more energy'], ans: 0, exp: 'El texto lo menciona explícitamente.' },
+  { q: 'Read the text and answer:\n<span class="reading-text">"Climate change is a global issue that affects people all around the world. In some countries, temperatures are rising, and this can lead to long periods of drought. When there is not enough water, farmers cannot grow food, and some families may need to move to another area. Governments are trying to find solutions, but individuals can also help by saving energy at home. Turning off lights, using public transport, and buying local products are small actions that can make a positive difference."</span>\nWhat is the main idea?', opts: ['Climate change only affects farmers', 'Everyone can help fight climate change', 'Governments are the only solution', 'Drought is not a problem'], ans: 1, exp: 'El texto enfatiza la acción individual.' },
+  { q: 'She has been studying English ___ she was a child.', opts: ['for', 'since', 'during', 'from'], ans: 1, exp: '"since" con punto de inicio.' },
+  { q: 'If I had more money, I ___ travel around the world.', opts: ['will', 'would', 'am', 'have'], ans: 1, exp: 'Second conditional: if + past, would + verb.' },
+  { q: 'You ___ study harder if you want to pass.', opts: ['should', 'must not', 'don\'t have to', 'may not'], ans: 0, exp: '"should" para consejo.' },
+  { q: '___ you help me with this exercise?', opts: ['Could', 'Must', 'Should', 'May not'], ans: 0, exp: '"Could you...?" para petición cortés.' },
+  { q: 'That\'s the house ___ I was born.', opts: ['which', 'who', 'where', 'whose'], ans: 2, exp: '"where" para lugares.' },
+  { q: 'I remember ___ my grandmother every summer.', opts: ['visit', 'visiting', 'to visit', 'visits'], ans: 1, exp: '"remember + verb-ing" para memoria.' },
+  { q: 'She forgot ___ the door.', opts: ['lock', 'locking', 'to lock', 'locked'], ans: 2, exp: '"forget + to + verb" para tarea pendiente.' },
+  { q: 'It\'s important ___ regular exercise.', opts: ['do', 'doing', 'to do', 'does'], ans: 2, exp: '"It\'s important + to + verb".' },
+  { q: 'A: I passed my exam! B: ___', opts: ['Congratulations!', 'I\'m sorry', 'You\'re welcome', 'At 7'], ans: 0, exp: 'Felicitar.' },
+  { q: 'A: Would you mind closing the door? B: ___', opts: ['Not at all', 'I\'m sorry', 'You\'re welcome', 'At 7'], ans: 0, exp: 'Respuesta a "Would you mind".' },
+  { q: 'A: I think we should leave now. B: ___', opts: ['I agree with you', 'I\'m sorry', 'You\'re welcome', 'At 7'], ans: 0, exp: 'Expresar acuerdo.' }
+];
+
+// ============================================================
+// POOL B2 (40 preguntas)
+// ============================================================
+const POOL_B2 = [
+  { q: 'The robber ___ the house when the police arrived.', opts: ['was left', 'were leaving', 'has left', 'had left'], ans: 3, exp: 'Past perfect: acción anterior a otra pasada.' },
+  { q: 'A: It\'s raining, so we can\'t go hiking. B: ___', opts: ['I wish it wasn\'t raining', 'I wish it didn\'t rain tomorrow', 'I wish it wasn\'t raining yesterday', 'I wish it hasn\'t rained'], ans: 0, exp: '"I wish + past" para deseo presente.' },
+  { q: 'The judge decided to give him a light ___ because it was his first offence.', opts: ['crime', 'guilt', 'permission', 'sentence'], ans: 3, exp: '"light sentence" = condena leve.' },
+  { q: 'By the time we arrived, the movie ___.', opts: ['already started', 'has already started', 'had already started', 'was already starting'], ans: 2, exp: 'Past perfect para acción anterior.' },
+  { q: 'She said she ___ the report the day before.', opts: ['finished', 'has finished', 'had finished', 'was finishing'], ans: 2, exp: 'Reported speech: past perfect.' },
+  { q: 'He asked me where I ___.', opts: ['live', 'lived', 'do live', 'am living'], ans: 1, exp: 'Reported speech: retroceso de tiempo.' },
+  { q: 'The thief ___ by the police yesterday.', opts: ['caught', 'was caught', 'has caught', 'is catching'], ans: 1, exp: 'Passive voice en pasado.' },
+  { q: 'The house ___ built in 1990.', opts: ['is', 'was', 'has', 'had'], ans: 1, exp: 'Passive voice pasado.' },
+  { q: 'I need to get my car ___.', opts: ['repair', 'repairing', 'repaired', 'to repair'], ans: 2, exp: 'Causative: get + object + past participle.' },
+  { q: 'She had her hair ___ yesterday.', opts: ['cut', 'cutting', 'to cut', 'cuts'], ans: 0, exp: 'Causative: have + object + past participle.' },
+  { q: 'If I ___ known, I would have helped.', opts: ['have', 'had', 'would', 'will'], ans: 1, exp: 'Third conditional: if + had + past participle.' },
+  { q: 'If she ___ harder, she would have passed.', opts: ['studied', 'had studied', 'studies', 'would study'], ans: 1, exp: 'Third conditional.' },
+  { q: 'I wish I ___ more time yesterday.', opts: ['have', 'had', 'had had', 'would have'], ans: 2, exp: '"I wish + past perfect" para lamentar el pasado.' },
+  { q: 'By next year, I ___ my degree.', opts: ['will finish', 'will have finished', 'finish', 'am finishing'], ans: 1, exp: 'Future perfect.' },
+  { q: 'This time next week, I ___ on the beach.', opts: ['will lie', 'will be lying', 'lie', 'am lying'], ans: 1, exp: 'Future continuous.' },
+  { q: 'She ___ working here for five years.', opts: ['is', 'has been', 'was', 'had'], ans: 1, exp: 'Present perfect continuous.' },
+  { q: 'I ___ waiting for two hours.', opts: ['am', 'have been', 'was', 'had'], ans: 1, exp: 'Present perfect continuous.' },
+  { q: 'Read the text and answer:\n<span class="reading-text">"The invention of the printing press in the 15th century revolutionized the spread of knowledge in Europe. Before Gutenberg, books were copied by hand, making them rare and expensive. Only wealthy individuals and institutions could afford them. With the printing press, books became more accessible, and literacy rates began to rise. This technological breakthrough laid the foundation for the Renaissance, the Reformation, and the Scientific Revolution. It is difficult to overstate the impact of this invention on modern society."</span>\nWhat was the main consequence of the printing press?', opts: ['Books became more expensive', 'Literacy rates decreased', 'Knowledge became more accessible', 'Only the wealthy could read'], ans: 2, exp: 'El texto menciona que los libros se volvieron más accesibles.' },
+  { q: 'Read the text and answer:\n<span class="reading-text">"The invention of the printing press in the 15th century revolutionized the spread of knowledge in Europe. Before Gutenberg, books were copied by hand, making them rare and expensive. Only wealthy individuals and institutions could afford them. With the printing press, books became more accessible, and literacy rates began to rise. This technological breakthrough laid the foundation for the Renaissance, the Reformation, and the Scientific Revolution. It is difficult to overstate the impact of this invention on modern society."</span>\nWhat can be inferred about books before the printing press?', opts: ['They were common', 'They were cheap', 'They were rare and expensive', 'They were digital'], ans: 2, exp: 'El texto lo indica explícitamente.' },
+  { q: 'Read the text and answer:\n<span class="reading-text">"Despite advances in technology, many people still struggle with digital literacy. Governments and NGOs have launched programs to teach basic computer skills to adults, but progress has been slow. Some experts argue that the digital divide is widening, not narrowing, as new technologies emerge faster than people can learn them. This has serious implications for employment, education, and social inclusion."</span>\nWhat is the author\'s main concern?', opts: ['Technology is improving too slowly', 'The digital divide is widening', 'Governments are spending too much', 'Adults don\'t want to learn'], ans: 1, exp: 'El autor enfatiza que la brecha digital se amplía.' },
+  { q: 'Read the text and answer:\n<span class="reading-text">"Despite advances in technology, many people still struggle with digital literacy. Governments and NGOs have launched programs to teach basic computer skills to adults, but progress has been slow. Some experts argue that the digital divide is widening, not narrowing, as new technologies emerge faster than people can learn them. This has serious implications for employment, education, and social inclusion."</span>\nWhat does the phrase "digital divide" refer to?', opts: ['A type of computer', 'The gap between those with and without digital skills', 'A new technology', 'A government program'], ans: 1, exp: 'Inferencia del contexto.' },
+  { q: 'The company is said ___ in financial trouble.', opts: ['to be', 'being', 'be', 'been'], ans: 0, exp: 'Passive reporting: "is said to be".' },
+  { q: 'He is believed ___ the money.', opts: ['to steal', 'to have stolen', 'stealing', 'steal'], ans: 1, exp: '"is believed to have stolen" para pasado.' },
+  { q: 'It\'s high time we ___ something about it.', opts: ['do', 'did', 'will do', 'have done'], ans: 1, exp: '"It\'s high time + past subjunctive".' },
+  { q: 'I\'d rather you ___ now.', opts: ['leave', 'left', 'will leave', 'leaving'], ans: 1, exp: '"I\'d rather + past subjunctive".' },
+  { q: 'She suggested ___ the meeting.', opts: ['postpone', 'postponing', 'to postpone', 'postponed'], ans: 1, exp: '"suggest + verb-ing".' },
+  { q: 'The manager insisted on ___ the report.', opts: ['see', 'seeing', 'to see', 'saw'], ans: 1, exp: '"insist on + verb-ing".' },
+  { q: 'Hardly ___ when the phone rang.', opts: ['I had arrived', 'had I arrived', 'I arrived', 'did I arrive'], ans: 1, exp: 'Inversión con "hardly".' },
+  { q: 'Not only ___ late, but he also forgot the documents.', opts: ['he was', 'was he', 'he is', 'is he'], ans: 1, exp: 'Inversión con "not only".' },
+  { q: 'A: The service here is terrible. B: ___', opts: ['I couldn\'t agree more', 'I\'m sorry', 'You\'re welcome', 'At 7'], ans: 0, exp: 'Expresar acuerdo total.' },
+  { q: 'A: I\'m afraid I can\'t come to the meeting. B: ___', opts: ['That\'s a shame', 'Congratulations!', 'Well done!', 'How wonderful!'], ans: 0, exp: 'Expresar decepción.' },
+  { q: 'A: Would you mind if I opened the window? B: ___', opts: ['Not at all', 'Yes, please', 'You\'re welcome', 'At 7'], ans: 0, exp: 'Respuesta a "Would you mind if...".' },
+  { q: 'A: I should have studied more. B: ___', opts: ['You\'re right, but it\'s too late now', 'Yes, please', 'At 7', 'You\'re welcome'], ans: 0, exp: 'Expresar arrepentimiento compartido.' },
+  { q: 'A: The meeting has been postponed. B: ___', opts: ['Oh, I didn\'t know that', 'Congratulations!', 'Well done!', 'How wonderful!'], ans: 0, exp: 'Expresar desconocimiento.' },
+  { q: 'If I ___ you, I would apologize.', opts: ['am', 'was', 'were', 'be'], ans: 2, exp: 'Second conditional: "If I were you".' },
+  { q: 'I wish I ___ taller.', opts: ['am', 'was', 'were', 'be'], ans: 2, exp: '"I wish + past subjunctive".' },
+  { q: 'She behaved as if she ___ everything.', opts: ['knows', 'knew', 'had known', 'know'], ans: 1, exp: '"as if + past subjunctive".' },
+  { q: 'By the time she arrived, we ___ for hours.', opts: ['waited', 'have waited', 'had been waiting', 'were waiting'], ans: 2, exp: 'Past perfect continuous.' }
+];
+
+// ============================================================
+// CONFIGURACIÓN DEL TEST
+// ============================================================
+const SEL_A1 = 13;
+const SEL_A2 = 13;
+const SEL_B1 = 13;
+const SEL_B2 = 11;
+const TOTAL_QUESTIONS = 50;
+
+let selectedQuestions = [];
+let shuffledOptions = [];
+let userAnswers = [];
+let submitted = false;
+
+// ── TIMER ──
+const TIEMPO_TOTAL = 60 * 60; // 60 minutos
+let tiempoRestante = TIEMPO_TOTAL;
+let timerInterval = null;
+let timerActivo = false;
+
+function formatearTiempo(seg){
+  const h = Math.floor(seg / 3600);
+  const m = Math.floor((seg % 3600) / 60);
+  const s = seg % 60;
+  return h > 0
+    ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`
+    : `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function iniciarTimer(){
+  tiempoRestante = TIEMPO_TOTAL;
+  timerActivo = true;
+  const pill = document.getElementById('timer-pill');
+  pill.textContent = '⏱ ' + formatearTiempo(tiempoRestante);
+  pill.className = '';
+  pill.style.display = 'inline-block';
+  
+  clearInterval(timerInterval);
+  timerInterval = setInterval(function(){
+    tiempoRestante--;
+    const pill = document.getElementById('timer-pill');
+    pill.textContent = '⏱ ' + formatearTiempo(tiempoRestante);
+    
+    if (tiempoRestante <= 300) {
+      pill.className = 'danger';
+    } else if (tiempoRestante <= 600) {
+      pill.className = 'warning';
+    } else {
+      pill.className = '';
+    }
+    
+    if (tiempoRestante <= 0) {
+      clearInterval(timerInterval);
+      timerActivo = false;
+      alert('⏰ ¡Tiempo agotado! El test se finalizará automáticamente.');
+      submitTest(true);
+    }
+  }, 1000);
+}
+
+function detenerTimer(){
+  clearInterval(timerInterval);
+  timerActivo = false;
+}
+
+// ============================================================
+// UTILIDADES
+// ============================================================
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getRandomQuestionsFromPool(pool, count) {
+  const shuffled = shuffleArray([...pool]);
+  return shuffled.slice(0, count);
+}
+
+function shuffleOptionsForQuestion(q) {
+  const indices = [0, 1, 2, 3];
+  const shuffledIndices = shuffleArray(indices);
+  const newOpts = shuffledIndices.map(i => q.opts[i]);
+  const newAns = shuffledIndices.indexOf(q.ans);
+  return { opts: newOpts, ansIdx: newAns };
+}
+
+function buildTest() {
+  const a1 = getRandomQuestionsFromPool(POOL_A1, SEL_A1).map(q => ({...q, nivel: 'A1'}));
+  const a2 = getRandomQuestionsFromPool(POOL_A2, SEL_A2).map(q => ({...q, nivel: 'A2'}));
+  const b1 = getRandomQuestionsFromPool(POOL_B1, SEL_B1).map(q => ({...q, nivel: 'B1'}));
+  const b2 = getRandomQuestionsFromPool(POOL_B2, SEL_B2).map(q => ({...q, nivel: 'B2'}));
+  selectedQuestions = [...a1, ...a2, ...b1, ...b2];
+  shuffledOptions = selectedQuestions.map(q => shuffleOptionsForQuestion(q));
+  userAnswers = Array(TOTAL_QUESTIONS).fill(null);
+}
+
+// ============================================================
+// RENDERIZADO
+// ============================================================
+function renderQuestions() {
+  const wrap = document.getElementById('questions-wrap');
+  wrap.innerHTML = '';
+  selectedQuestions.forEach((q, idx) => {
+    const optData = shuffledOptions[idx];
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `qcard-${idx}`;
+    card.style.animationDelay = `${idx * 0.01}s`;
+
+    let optsHtml = '';
+    const letters = ['a', 'b', 'c', 'd'];
+    optData.opts.forEach((opt, optIdx) => {
+      optsHtml += `
+        <div class="opt" id="opt-${idx}-${optIdx}" onclick="selectOption(${idx}, ${optIdx})">
+          <div class="opt-letter">${letters[optIdx]}</div>
+          <div class="opt-text">${opt}</div>
+        </div>
+      `;
+    });
+
+    card.innerHTML = `
+      <div class="q-num">Pregunta ${idx + 1} de ${TOTAL_QUESTIONS}<span class="q-level">${q.nivel}</span></div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">${optsHtml}</div>
+    `;
+    wrap.appendChild(card);
+  });
+}
+
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  if (userAnswers[qIdx] !== null) {
+    const prevOpt = document.getElementById(`opt-${qIdx}-${userAnswers[qIdx]}`);
+    if (prevOpt) prevOpt.classList.remove('selected');
+  }
+  userAnswers[qIdx] = optIdx;
+  const selectedOpt = document.getElementById(`opt-${qIdx}-${optIdx}`);
+  if (selectedOpt) selectedOpt.classList.add('selected');
+  updateProgress();
+}
+
+function updateProgress() {
+  const answered = userAnswers.filter(a => a !== null).length;
+  document.getElementById('answered-count').textContent = `Respondidas: ${answered} / ${TOTAL_QUESTIONS}`;
+  document.getElementById('prog-fill').style.width = `${(answered / TOTAL_QUESTIONS) * 100}%`;
+}
+
+function submitTest(force) {
+  if (submitted) return;
+  if (!force) {
+    const answered = userAnswers.filter(a => a !== null).length;
+    if (answered < TOTAL_QUESTIONS) {
+      if (!confirm(`Tienes ${TOTAL_QUESTIONS - answered} pregunta(s) sin responder. ¿Deseas finalizar igual?`)) return;
+    }
+  }
+  detenerTimer();
+  submitted = true;
+  let correctCount = 0;
+  selectedQuestions.forEach((_, idx) => {
+    const chosen = userAnswers[idx];
+    const correctAns = shuffledOptions[idx].ansIdx;
+    const card = document.getElementById(`qcard-${idx}`);
+    for (let i = 0; i < 4; i++) {
+      const opt = document.getElementById(`opt-${idx}-${i}`);
+      if (opt) opt.classList.add('locked');
+    }
+    if (chosen === null) {
+      const correctOpt = document.getElementById(`opt-${idx}-${correctAns}`);
+      if (correctOpt) correctOpt.classList.add('correct');
+      card.classList.add('answered-wrong');
+    } else if (chosen === correctAns) {
+      correctCount++;
+      const chosenOpt = document.getElementById(`opt-${idx}-${chosen}`);
+      if (chosenOpt) { chosenOpt.classList.remove('selected'); chosenOpt.classList.add('correct'); }
+      card.classList.add('answered-correct');
+    } else {
+      const chosenOpt = document.getElementById(`opt-${idx}-${chosen}`);
+      const correctOpt = document.getElementById(`opt-${idx}-${correctAns}`);
+      if (chosenOpt) { chosenOpt.classList.remove('selected'); chosenOpt.classList.add('wrong'); }
+      if (correctOpt) correctOpt.classList.add('correct');
+      card.classList.add('answered-wrong');
+    }
+  });
+  const wrongCount = userAnswers.filter((v, i) => v !== null && v !== shuffledOptions[i].ansIdx).length;
+  const skippedCount = userAnswers.filter(v => v === null).length;
+  const percentage = Math.round((correctCount / TOTAL_QUESTIONS) * 100);
+  document.getElementById('r-score').textContent = correctCount;
+  document.getElementById('r-of').textContent = `/ ${TOTAL_QUESTIONS}`;
+  document.getElementById('r-correct').textContent = correctCount;
+  document.getElementById('r-wrong').textContent = wrongCount;
+  document.getElementById('r-skip').textContent = skippedCount;
+  const gradeBox = document.getElementById('grade-box');
+  gradeBox.className = `grade-box ${correctCount >= 25 ? 'approved' : 'failed'}`;
+  gradeBox.innerHTML = `<strong>${correctCount >= 25 ? '🎉 APROBADO 🎉' : '📖 REPROBADO 📖'}</strong><br>Puntaje: ${correctCount} / ${TOTAL_QUESTIONS} correctas (${percentage}% de logro)`;
+  let title, msg;
+  if (percentage >= 90) { title = '🏆 ¡Excelente!'; msg = 'Dominas el inglés con solidez.'; }
+  else if (percentage >= 70) { title = '👍 ¡Muy bien!'; msg = 'Buen dominio. Repasa los temas donde fallaste.'; }
+  else if (percentage >= 50) { title = '📚 Sigue practicando'; msg = 'Vas por buen camino, pero repasa más.'; }
+  else { title = '💪 No te rindas'; msg = 'Revisa los contenidos y vuelve a intentarlo.'; }
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-msg').textContent = msg;
+  const ring = document.querySelector('.score-ring');
+  if (ring) ring.style.borderColor = percentage >= 70 ? 'var(--green)' : percentage >= 50 ? 'var(--gold)' : 'var(--red)';
+  document.getElementById('questions-wrap').style.display = 'none';
+  document.getElementById('submit-bar').style.display = 'none';
+  document.getElementById('results-wrap').style.display = 'block';
+  document.getElementById('prog-fill').style.width = '100%';
+  renderReview();
+  document.getElementById('results-wrap').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderReview() {
+  const reviewWrap = document.getElementById('review-wrap');
+  reviewWrap.innerHTML = '';
+  selectedQuestions.forEach((q, idx) => {
+    const chosen = userAnswers[idx];
+    const correctAns = shuffledOptions[idx].ansIdx;
+    const isCorrect = chosen === correctAns;
+    const letters = ['a', 'b', 'c', 'd'];
+    const reviewCard = document.createElement('div');
+    reviewCard.className = `review-card ${isCorrect ? 'correct' : 'wrong'}`;
+    let answerStatus = '';
+    if (chosen === null) {
+      answerStatus = `<span style="color:var(--gold);">⚪ Sin responder</span> — Respuesta correcta: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    } else if (isCorrect) {
+      answerStatus = `<span style="color:var(--green);">✅ Correcta</span> — Elegiste: <strong>${letters[chosen]}) ${shuffledOptions[idx].opts[chosen]}</strong>`;
+    } else {
+      answerStatus = `<span style="color:var(--red);">❌ Incorrecta</span> — Elegiste: <strong>${letters[chosen]}) ${shuffledOptions[idx].opts[chosen]}</strong> — Respuesta correcta: <strong>${letters[correctAns]}) ${shuffledOptions[idx].opts[correctAns]}</strong>`;
+    }
+    reviewCard.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+        <strong style="color:var(--primary);">Pregunta ${idx + 1}</strong>
+        <span class="q-level">${q.nivel}</span>
+        <span style="font-size:.7rem;color:var(--gray);">${isCorrect ? '✓ Correcta' : (chosen === null ? '○ Sin responder' : '✗ Incorrecta')}</span>
+      </div>
+      <div style="font-size:.85rem;margin-bottom:8px;">${q.q}</div>
+      <div style="font-size:.8rem;margin-bottom:8px;">${answerStatus}</div>
+      <div class="review-explanation">
+        <strong>📝 Explicación:</strong><br>
+        ${q.exp || 'Sin explicación disponible.'}
+      </div>
+    `;
+    reviewWrap.appendChild(reviewCard);
+  });
+}
+
+// ============================================================
+// CONTROL
+// ============================================================
+function startTest() {
+  buildTest();
+  submitted = false;
+  document.getElementById('intro-card').style.display = 'none';
+  document.getElementById('results-wrap').style.display = 'none';
+  renderQuestions();
+  document.getElementById('questions-wrap').style.display = 'flex';
+  document.getElementById('submit-bar').style.display = 'flex';
+  updateProgress();
+  iniciarTimer();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartTest() {
+  buildTest();
+  submitted = false;
+  document.getElementById('results-wrap').style.display = 'none';
+  renderQuestions();
+  document.getElementById('questions-wrap').style.display = 'flex';
+  document.getElementById('submit-bar').style.display = 'flex';
+  updateProgress();
+  iniciarTimer();
+  document.getElementById('intro-card').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelTest() {
+  if (confirm('¿Estás seguro de que quieres cancelar el test? Perderás tu progreso.')) {
+    detenerTimer();
+    document.getElementById('timer-pill').style.display = 'none';
+    document.getElementById('questions-wrap').style.display = 'none';
+    document.getElementById('submit-bar').style.display = 'none';
+    document.getElementById('intro-card').style.display = 'block';
+    document.getElementById('prog-fill').style.width = '0%';
+    submitted = false;
+  }
+}
+
+// ============================================================
+// INSPECTOR DE PREGUNTAS
+// ============================================================
+function renderDebug(filtro) {
+  const content = document.getElementById('debug-content');
+  const stats = document.getElementById('debug-stats');
+  content.innerHTML = '';
+  
+  let pools = [];
+  if (filtro === 'all' || filtro === 'A1') pools.push({nombre: 'A1 — BEGINNER', color: '#1a5a8a', data: POOL_A1});
+  if (filtro === 'all' || filtro === 'A2') pools.push({nombre: 'A2 — ELEMENTARY', color: '#1a7a4a', data: POOL_A2});
+  if (filtro === 'all' || filtro === 'B1') pools.push({nombre: 'B1 — INTERMEDIATE', color: '#d4a84a', data: POOL_B1});
+  if (filtro === 'all' || filtro === 'B2') pools.push({nombre: 'B2 — UPPER INTERMEDIATE', color: '#b02a2a', data: POOL_B2});
+  
+  let totalPreguntas = 0;
+  let resumen = [];
+  
+  pools.forEach(pool => {
+    const poolDiv = document.createElement('div');
+    poolDiv.style.marginBottom = '30px';
+    poolDiv.innerHTML = `<h3 style="
+      font-family:'Playfair Display',serif;color:${pool.color};
+      font-size:1.3rem;margin-bottom:12px;border-bottom:2px solid ${pool.color};
+      padding-bottom:6px;
+    ">${pool.nombre} (${pool.data.length} preguntas)</h3>`;
+    
+    pool.data.forEach((q, i) => {
+      totalPreguntas++;
+      const card = document.createElement('div');
+      card.style.cssText = `
+        background:#fff;border-radius:10px;padding:16px 18px;
+        margin-bottom:12px;border-left:4px solid ${pool.color};
+        box-shadow:0 2px 6px rgba(0,0,0,.08);
+      `;
+      card.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:#5a6a7a;font-weight:700;">#${i + 1}</span>
+          <span style="background:${pool.color};color:#fff;padding:2px 10px;border-radius:12px;font-size:.7rem;font-weight:700;">Respuesta: ${['a','b','c','d'][q.ans]}</span>
+        </div>
+        <div style="font-size:.9rem;font-weight:600;color:#1a2a4a;line-height:1.7;margin-bottom:10px;white-space:pre-wrap;">${q.q}</div>
+        <div style="display:flex;flex-direction:column;gap:4px;margin:10px 0;">
+          ${q.opts.map((o, j) => `
+            <div style="font-size:.82rem;padding:6px 10px;border-radius:6px;background:${j === q.ans ? '#e8f7ef' : '#f0f4f8'};border:1px solid ${j === q.ans ? '#1a7a4a' : '#d0dce8'};color:${j === q.ans ? '#0f5c37' : '#1a2a3a'};font-weight:${j === q.ans ? '700' : '400'};">${['a','b','c','d'][j]}) ${o}</div>
+          `).join('')}
+        </div>
+        <details style="font-size:.82rem;color:#5a6a7a;margin-top:8px;">
+          <summary style="cursor:pointer;font-weight:700;color:#1a5a8a;">📝 Ver explicación</summary>
+          <div style="margin-top:8px;padding:10px;background:#f7f9fc;border-radius:6px;line-height:1.7;">${q.exp || 'Sin explicación'}</div>
+        </details>
+      `;
+      poolDiv.appendChild(card);
+    });
+    resumen.push({nombre: pool.nombre, total: pool.data.length});
+    content.appendChild(poolDiv);
+  });
+  
+  stats.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
+      ${resumen.map(r => `
+        <div style="background:#f0f4f8;padding:8px 12px;border-radius:8px;">
+          <strong style="color:#1a2a4a;">${r.nombre}</strong><br>
+          Total: ${r.total} preguntas
+        </div>
+      `).join('')}
+      <div style="background:#1a2a4a;color:#fff;padding:8px 12px;border-radius:8px;">
+        <strong>TOTAL</strong><br>${totalPreguntas} preguntas en el banco
+      </div>
+    </div>
+  `;
+}
+
+function toggleDebug() {
+  const panel = document.getElementById('debug-panel');
+  if (panel.style.display === 'none' || panel.style.display === '') {
+    panel.style.display = 'block';
+    renderDebug('all');
+    document.body.style.overflow = 'hidden';
+  } else {
+    panel.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+function filterDebug(filtro) {
+  renderDebug(filtro);
+  document.querySelectorAll('.dbg-filter').forEach(btn => {
+    if (btn.dataset.f === filtro) {
+      btn.style.background = '#d4a84a';
+    } else {
+      btn.style.background = '#fff';
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function() {});
+</script>
+</body>
+</html>
