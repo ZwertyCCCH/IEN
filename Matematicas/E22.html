@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Ensayo PAES Matemática M1 | Preparación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<!-- KaTeX CSS y JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --deep-green: #0a2f1f;
+  --pine: #145c33;
+  --mint: #2a7f49;
+  --lime: #9bcd6c;
+  --gold-soft: #d4b87a;
+  --green-light: #e8f5e9;
+  --green-bg: #f1f8f0;
+  --white: #ffffff;
+  --dark-text: #1a2e22;
+  --gray: #5a6e5e;
+  --border: #c8e0cf;
+  --accent: #3c9e5c;
+  --red: #c0392b;
+  --orange: #e67e22;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Source Sans 3',sans-serif;
+  background: linear-gradient(135deg, var(--deep-green) 0%, var(--pine) 50%, var(--mint) 100%);
+  min-height:100vh;
+}
+
+/* ── HEADER ── */
+.header{
+  background:var(--deep-green);
+  border-bottom:3px solid var(--lime);
+  padding:16px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.header h1{
+  font-family:'Playfair Display',serif;
+  color:var(--white);
+  font-size:1.3rem;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.header h1 span{color:var(--lime);}
+.timer{
+  background:rgba(0,0,0,0.3);
+  padding:8px 20px;
+  border-radius:40px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:1.2rem;
+  font-weight:700;
+  color:var(--lime);
+}
+.timer.timer-naranja{color:var(--orange);}
+.timer.timer-rojo{color:var(--red);}
+.timer.timer-urgente{animation:pulse 1s infinite;}
+
+@keyframes pulse{
+  0%,100%{opacity:1;}
+  50%{opacity:0.6;}
+}
+
+/* ── PROGRESS BAR ── */
+.progress-container{
+  background:rgba(0,0,0,0.3);
+  height:6px;
+}
+.progress-bar{
+  height:100%;
+  background:var(--lime);
+  width:0%;
+  transition:width .3s;
+}
+
+/* ── MAIN CONTAINER ── */
+.main-container{
+  max-width:900px;
+  margin:0 auto;
+  padding:28px 20px 100px;
+}
+
+/* ── QUESTION CARD ── */
+.question-card{
+  background:var(--white);
+  border-radius:24px;
+  padding:28px 32px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.2);
+  margin-bottom:24px;
+}
+.question-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  padding-bottom:12px;
+  border-bottom:2px solid var(--border);
+}
+.question-number{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;
+  color:var(--gray);
+  letter-spacing:.1em;
+}
+.question-status{
+  font-size:.7rem;
+  padding:4px 10px;
+  border-radius:20px;
+  background:var(--green-light);
+  color:var(--pine);
+}
+.question-text{
+  font-size:1rem;
+  line-height:1.6;
+  color:var(--dark-text);
+  margin-bottom:24px;
+}
+.question-text .math-expr{font-family:'JetBrains Mono',monospace;background:var(--green-light);padding:2px 6px;border-radius:6px;}
+.question-text .fraction{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;}
+.question-text .fraction .num{border-bottom:1px solid var(--dark-text);padding:0 4px;}
+.question-text .fraction .den{padding:0 4px;}
+.question-text .table{font-size:.85rem;margin:10px auto;}
+.question-text img{max-width:100%;border-radius:12px;margin:10px 0;}
+
+/* ── OPTIONS ── */
+.options{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.option{
+  background:var(--green-light);
+  border:2px solid var(--border);
+  border-radius:16px;
+  padding:14px 20px;
+  cursor:pointer;
+  transition:all .2s;
+  font-size:.95rem;
+  color:var(--dark-text);
+}
+.option:hover:not(.locked){
+  border-color:var(--accent);
+  background:#d4efdf;
+  transform:translateX(4px);
+}
+.option.selected{
+  border-color:var(--accent);
+  background:#c8e6d5;
+}
+.option.locked{cursor:default;opacity:0.9;}
+.option.correct{
+  border-color:var(--accent);
+  background:var(--green-light);
+}
+.option.wrong{
+  border-color:var(--red);
+  background:#fdeaea;
+}
+.option img{max-width:200px;border-radius:8px;vertical-align:middle;}
+
+/* ── NAV BUTTONS ── */
+.nav-buttons{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  margin-top:16px;
+}
+.nav-btn{
+  background:var(--pine);
+  color:var(--white);
+  border:none;
+  border-radius:40px;
+  padding:12px 28px;
+  font-family:'Source Sans 3',sans-serif;
+  font-weight:700;
+  font-size:.9rem;
+  cursor:pointer;
+  transition:all .2s;
+}
+.nav-btn:hover:not(:disabled){
+  background:var(--mint);
+  transform:scale(1.02);
+}
+.nav-btn:disabled{
+  background:var(--gray);
+  cursor:not-allowed;
+  opacity:0.5;
+}
+.nav-btn.next{background:var(--accent);}
+.nav-btn.next:hover:not(:disabled){background:#2d7a45;}
+
+/* ─── RESULTS ─── */
+.results-container{
+  background:var(--white);
+  border-radius:24px;
+  padding:32px;
+  margin-bottom:24px;
+}
+.score-display{
+  text-align:center;
+  padding:24px;
+  background:linear-gradient(135deg, var(--green-light), var(--white));
+  border-radius:20px;
+  margin-bottom:24px;
+}
+.score-number{
+  font-family:'Playfair Display',serif;
+  font-size:3.5rem;
+  font-weight:900;
+  color:var(--pine);
+}
+.score-description{
+  color:var(--gray);
+  font-size:.9rem;
+  margin-top:8px;
+}
+.excluded-questions{
+  background:var(--green-light);
+  padding:16px 20px;
+  border-radius:16px;
+  margin-bottom:24px;
+  border-left:4px solid var(--gold-soft);
+}
+.results-list{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.result-item{
+  background:var(--green-light);
+  border-radius:16px;
+  padding:16px 20px;
+}
+.result-item.correct{border-left:4px solid var(--accent);}
+.result-item.incorrect{border-left:4px solid var(--red);}
+.result-item.excluded{border-left:4px solid var(--gold-soft);opacity:0.8;}
+.result-item .q-title{
+  font-weight:700;
+  color:var(--deep-green);
+  margin-bottom:8px;
+}
+.result-item .answer{
+  font-size:.85rem;
+  color:var(--gray);
+  margin-top:6px;
+}
+.restart-btn{
+  background:var(--accent);
+  color:var(--white);
+  border:none;
+  border-radius:40px;
+  padding:14px 32px;
+  font-size:1rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .2s;
+  display:block;
+  margin:20px auto 0;
+}
+.restart-btn:hover{
+  background:#2d7a45;
+  transform:scale(1.02);
+}
+
+/* ── UTILS ── */
+.hidden{display:none;}
+.text-center{text-align:center;}
+
+@media(max-width:600px){
+  .header{padding:12px 16px;}
+  .header h1{font-size:1rem;}
+  .timer{font-size:.9rem;padding:4px 12px;}
+  .question-card{padding:20px;}
+  .option{padding:10px 16px;}
+  .nav-btn{padding:8px 20px;}
+}
+/* ── RETROALIMENTACIÓN MEJORADA ── */
+.result-item {
+  background: var(--green-light);
+  border-radius: 16px;
+  padding: 18px 22px;
+  border-left: 5px solid var(--gray);
+}
+.result-item.correct   { border-left-color: var(--accent); background: #eefaf1; }
+.result-item.incorrect { border-left-color: var(--red);    background: #fdf0ef; }
+.result-item.excluded  { border-left-color: var(--gold-soft); opacity: 0.85; }
+.result-item.unanswered{ border-left-color: var(--gray);   background: #f4f6f5; }
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.q-title { font-weight: 700; color: var(--deep-green); }
+
+.q-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+}
+.q-badge.correct   { background: #c8e6d5; color: #1b5e20; }
+.q-badge.incorrect { background: #f5c6c0; color: #8b1e12; }
+.q-badge.excluded  { background: #f3e6c4; color: #7a5c1e; }
+.q-badge.unanswered{ background: #e0e6e2; color: #4a5a4e; }
+
+.q-statement {
+  font-size: 0.95rem;
+  color: var(--dark-text);
+  line-height: 1.55;
+  margin-bottom: 14px;
+}
+.q-statement img { max-width: 100%; border-radius: 10px; margin: 8px 0; }
+.q-statement table { margin: 10px auto; }
+
+.answer-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px dashed var(--border);
+  padding-top: 12px;
+}
+.answer-line {
+  display: flex;
+  gap: 8px;
+  font-size: 0.9rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.answer-line.ok  { color: #1b5e20; }
+.answer-line.bad { color: #8b1e12; text-decoration: line-through; text-decoration-color: rgba(139,30,18,.4); }
+.answer-label { font-weight: 700; min-width: 140px; color: var(--gray); }
+.answer-line.ok  .answer-label { color: #2e7d32; }
+.answer-line.bad .answer-label { color: #c0392b; }
+.answer-value { flex: 1; }
+.answer-note {
+  font-size: 0.8rem;
+  color: #7a5c1e;
+  font-style: italic;
+  margin-top: 4px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📐 Ensayo PAES <span>Matemática M1</span></h1>
+  <div class="timer" id="timer">02:20:00</div>
+</div>
+<div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+
+<div class="main-container" id="mainContainer">
+  <div id="quizContent"></div>
+  <div class="nav-buttons" id="navButtons">
+    <button class="nav-btn" id="prevBtn" onclick="previousQuestion()">← Anterior</button>
+    <button class="nav-btn next" id="nextBtn" onclick="nextQuestion()">Siguiente →</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// POOL DE PREGUNTAS - 65 preguntas
+// ============================================================
+const questions = [
+// 1. 2026R - Imagen: Si - Tabla: No - Resp: B
+{
+    pregunta: `En un juego hay dos tipos de cartas, unas tienen una estrella y las otras tienen un corazón, todas con un número.<br><br>
+    El puntaje de cada jugador se calcula de la siguiente forma:<br><br>
+    • Primero se extrae una carta al azar (carta inicial) y su valor se considera como puntaje inicial.<br><br>
+    • Luego, se extrae otra carta:<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;o si esta tiene una estrella, le debe restar el valor de la carta a su puntaje;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;o si esta tiene un corazón, le debe sumar el valor de la carta a su puntaje.<br><br>
+    • El puntaje final se obtiene al repetir el procedimiento anterior, hasta tener diez cartas.<br><br>
+    Un jugador extrae las siguientes cartas, en este orden:<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/3mxvBKCq/image.png" alt="Cartas extraídas" style="max-width: 100%;"></p>
+    ¿Cuál es el puntaje final del jugador?`,
+    opciones: ["-14", "-4", "3", "11"],
+    correcta: 1
+},
+// 2. 2026R - Imagen: No - Tabla: Si - Resp: D
+{
+    pregunta: `Para preparar una receta, una persona necesita 700 g de carne picada, 1 kg de champiñones y 2 cebollas.<br><br>
+    Para comprar los ingredientes la persona considera los siguientes precios:<br><br>
+    <table class='table' style='border-collapse: collapse; width: 80%; margin: 10px auto; text-align: center;'>
+        <thead>
+            <tr style='background-color: #f2f2f2;'>
+                <th style='border: 1px solid #999; padding: 8px;'>Producto</th>
+                <th style='border: 1px solid #999; padding: 8px;'>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>100 g de carne picada</td><td style='border: 1px solid #999; padding: 8px;'>$900</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>0,5 kg de champiñón</td><td style='border: 1px solid #999; padding: 8px;'>$3500</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>1 cebolla</td><td style='border: 1px solid #999; padding: 8px;'>$200</td></tr>
+        </tbody>
+    </table>
+    ¿Cuánto dinero necesita la persona para comprar los ingredientes para esta receta?`,
+    opciones: ["$4600", "$8100", "$10000", "$13700"],
+    correcta: 3
+},
+// 3. 2026R - Imagen: No - Tabla: No - Resp: D
+{
+    pregunta: `Un auto recorre 5 km para ir de la ciudad A a la ciudad B y recorre 25 km para ir de la ciudad B a la ciudad C.<br><br>
+    Si este auto rinde 10 kilómetros por litro, es decir, recorre 10 km con 1 litro de bencina, ¿cuál es la cantidad de litros de bencina que se necesitan para hacer el recorrido de la ciudad A hasta la ciudad C de ida y vuelta, pasando ambas veces por la ciudad B?`,
+    opciones: ["2", "3", "4", "6"],
+    correcta: 3
+},
+// 4. 2027I - Imagen: No - Tabla: No - Resp: C
+{
+    pregunta: `Considera el siguiente modelo que permite estimar la estatura, en centímetros, que tendrán niñas y niños cuando terminen su desarrollo.<br><br>
+    <p style='text-align: center;'>\\( \\frac{\\text{Estatura del padre } (\\text{cm}) + \\text{estatura de la madre } (\\text{cm}) + 13 \\cdot P}{2} \\)</p><br>
+    tal que:<br><br>
+    • \\(P = 1\\), si su sexo es masculino.<br>
+    • \\(P = -1\\), si su sexo es femenino.<br><br>
+    ¿Cuál será la estatura estimada de un niño de sexo masculino cuando termine su desarrollo si su madre mide 159 cm y su padre mide 168 cm?`,
+    opciones: ["157 cm", "163,5 cm", "170 cm", "176,5 cm"],
+    correcta: 2
+},
+// 5. 2026I - Imagen: Si - Tabla: No - Resp: B
+{
+    pregunta: `En el gráfico adjunto se representa la percepción ciudadana en relación con los atributos de un candidato. Esta percepción se presenta en un puntaje que va de -20 a 20 puntos.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/7Jkx7vM0/image.png" alt="Gráfico de percepción ciudadana" style="max-width: 100%;"></p>
+    ¿Cuál de los atributos presentó una mayor variación en su puntaje según la percepción ciudadana, entre agosto y noviembre?`,
+    opciones: ["Liderazgo", "Cercanía", "Honestidad", "Capacidad de diálogo"],
+    correcta: 1
+},
+// 6. 2026I - Imagen: Si - Tabla: No - Resp: B
+{
+    pregunta: `En un juego, en cada partida un jugador debe responder 10 preguntas de cultura general y tiene la opción de no contestar en 4 oportunidades.<br><br>
+    • Cuando el jugador da una respuesta correcta gana una ficha blanca que vale 1 punto,<br>
+    • y cuando da una respuesta incorrecta gana una ficha negra que vale -1 punto.<br><br>
+    Luego de tres partidas completas, una persona que jugó este juego, quedó con las siguientes fichas:<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/WWjWq1Nc/image.png" alt="Fichas obtenidas en las tres partidas" style="max-width: 100%;"></p>
+    ¿Cuál de las siguientes expresiones representa el puntaje final de este jugador luego de estas tres partidas?`,
+    opciones: [
+        "\\((5 \\cdot 1 - (5 \\cdot -1)) + (5 \\cdot 1 - (4 \\cdot -1)) + (4 \\cdot 1 - (2 \\cdot -1))\\)",
+        "\\((5 \\cdot 1 + 5 \\cdot -1) + (5 \\cdot 1 + 4 \\cdot -1) + (4 \\cdot 1 + 2 \\cdot -1)\\)",
+        "\\((5 \\cdot -1 + 5 \\cdot 1) + (5 \\cdot -1 + 4 \\cdot 1) + (4 \\cdot -1 + 2 \\cdot 1)\\)",
+        "\\((5 \\cdot 1 + 5 \\cdot 1) + (5 \\cdot 1 + 4 \\cdot 1) + (4 \\cdot 1 + 2 \\cdot 1)\\)"
+    ],
+    correcta: 1
+},
+// 7. 2027I - Imagen: No - Tabla: No - Resp: A
+{
+    pregunta: `¿Cuál es el valor de \\(2 \\cdot (2\\sqrt{3}) \\cdot \\sqrt{3}\\)?`,
+    opciones: ["12", "\\(4\\sqrt{18}\\)", "\\(12\\sqrt{3}\\)", "24"],
+    correcta: 0
+},
+// 8. 2027I - Imagen: Si - Tabla: No - Resp: C
+{
+    pregunta: `Considera las siguientes botellas de agua y sus respectivas capacidades en L.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/BVFLm1fh/image.png" alt="Botellas de agua" style="max-width: 300px;"></p>
+    ¿Cuál de las siguientes expresiones representa la diferencia de capacidad entre ambas botellas, en litros?`,
+    opciones: [
+        "\\((2 - 1) - \\left(\\frac{1}{4} + \\frac{1}{8}\\right)\\)",
+        "\\((2 - 1) + \\left(\\frac{1}{4} - \\frac{1}{8}\\right)\\)",
+        "\\((2 - 1) + \\left(\\frac{1}{8} - \\frac{1}{4}\\right)\\)",
+        "\\((2 + 1) - \\left(\\frac{1}{8} + \\frac{1}{4}\\right)\\)"
+    ],
+    correcta: 2
+},
+// 9. 2026I - Imagen: Si - Tabla: No - Resp: C
+{
+    pregunta: `La masa molar de un compuesto químico se calcula sumando las masas molares de todos los átomos que lo conforman.<br><br>
+    Considera el compuesto denominado ácido sulfúrico y la información que se presenta a continuación:<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/nMYrhRPP/image.png" alt="Composición del ácido sulfúrico" style="max-width: 300px;"></p>
+    <table class='table' style='border-collapse: collapse; width: 40%; margin: 10px auto; text-align: center;'>
+        <thead>
+            <tr style='background-color: #f2f2f2;'>
+                <th style='border: 1px solid #999; padding: 8px;'>Átomo</th>
+                <th style='border: 1px solid #999; padding: 8px;'>Masa molar (g/mol)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>H</td><td style='border: 1px solid #999; padding: 8px;'>1</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>S</td><td style='border: 1px solid #999; padding: 8px;'>32</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>O</td><td style='border: 1px solid #999; padding: 8px;'>16</td></tr>
+        </tbody>
+    </table>
+    ¿Cuál de las siguientes expresiones representa la masa molar del ácido sulfúrico?`,
+    opciones: [
+        "\\((1 + 32 + 16)\\text{ g/mol}\\)",
+        "\\((2 + 4) \\cdot (32 + 16)\\text{ g/mol}\\)",
+        "\\((2 \\cdot 1 + 1 \\cdot 32 + 4 \\cdot 16)\\text{ g/mol}\\)",
+        "\\((1 + 2 + 4) \\cdot (1 + 32 + 16)\\text{ g/mol}\\)"
+    ],
+    correcta: 2
+},
+// 10. 2027I - Imagen: No - Tabla: No - Resp: D
+{
+    pregunta: `Para calcular el monto final de dinero que se tendrá por medio de un interés simple mensual del \\(i\\%\\), después de una cantidad \\(n\\) de meses, se utiliza la siguiente expresión:<br><br>
+    \\(C_f = C_i \\left(1 + \\frac{i \\cdot n}{100}\\right)\\)<br><br>
+    tal que \\(C_f\\) es el monto final de dinero y \\(C_i\\) es el monto inicial de dinero.<br><br>
+    Considera una inversión con un monto inicial de $100 000 al que se le aplica un interés simple mensual del 20%.<br><br>
+    ¿Cuánto dinero se tendrá transcurridos 5 meses?`,
+    opciones: ["$102 000", "$110 000", "$120 000", "$200 000"],
+    correcta: 3
+},
+// 11. 2026R - Imagen: No - Tabla: No - Resp: C
+{
+    pregunta: `La escalera de un edificio tiene 20 peldaños entre piso y piso. La altura de cada uno de estos peldaños es de 15 cm.<br><br>
+    Una persona empieza a subir por la escalera de este edificio, desde el primer peldaño del primer piso.<br><br>
+    Si \\(n\\) es la cantidad de peldaños que la persona ha subido, ¿cuál de las siguientes condiciones garantiza que la persona llegó a un nuevo piso?`,
+    opciones: [
+        "Que \\(15 \\cdot n\\) es divisible por 20.",
+        "Que \\(15 + n\\) es divisible por 20.",
+        "Que \\(15 \\cdot n\\) es divisible por 300.",
+        "Que \\(15 + n\\) es divisible por 300."
+    ],
+    correcta: 2
+},
+// 12. 2027I - Imagen: No - Tabla: No - Resp: A
+{
+    pregunta: `En la entrada de una obra de teatro, hay una persona encargada de recibir los tickets de entrada de los asistentes.<br><br>
+    Si se estima que la persona encargada recibe 15 tickets cada 60 segundos, ¿cuál de las siguientes expresiones permite estimar la cantidad de tickets que recibe cada \\(t\\) minutos?`,
+    opciones: ["\\(15t\\)", "\\(900t\\)", "\\(4t\\)", "\\(\\frac{t}{900}\\)"],
+    correcta: 0
+},
+// 13. 2026I - Imagen: Si - Tabla: No - Resp: C
+{
+    pregunta: `Existen estándares para las medidas de las casillas de un tablero de ajedrez y sus piezas. Uno de estos es la relación entre la base circular de la pieza llamada rey y el tamaño de las casillas. El diámetro de la base debe medir entre un 75% y un 80% del lado de la casilla.<br><br>
+    El tablero y la pieza del rey se representa en la siguiente figura:<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/5X88VRGn/image.png" alt="Rey de ajedrez sobre tablero" style="max-width: 300px;"></p>
+    Si en un tablero de ajedrez las casillas tienen de lado 5 cm y se quieren seguir los estándares, ¿cuánto debe medir el diámetro de la base del rey?`,
+    opciones: [
+        "Entre 15 cm y 16 cm",
+        "Entre 4,2 cm y 4,25 cm",
+        "Entre 3,75 cm y 4 cm",
+        "Entre 1,875 cm y 2 cm"
+    ],
+    correcta: 2
+},
+// 14. 2026R - Imagen: No - Tabla: No - Resp: D
+{
+    pregunta: `Una persona realiza el siguiente procedimiento para factorizar \\(12 + 20\\), cometiendo un error.<br><br>
+    Paso 1: escribe cada sumando como el producto de dos números, obteniendo \\(4 \\cdot 3 + 4 \\cdot 5\\).<br>
+    Paso 2: descompone cada factor en números primos, obteniendo \\(2 \\cdot 2 \\cdot 3 + 2 \\cdot 2 \\cdot 5\\).<br>
+    Paso 3: escribe las potencias correspondientes, obteniendo \\(2^2 \\cdot 3 + 2^2 \\cdot 5\\).<br>
+    Paso 4: factoriza la suma, obteniendo \\(2^4(3 + 5)\\).<br><br>
+    ¿En cuál de los pasos la persona cometió el error?`,
+    opciones: ["En el Paso 1", "En el Paso 2", "En el Paso 3", "En el Paso 4"],
+    correcta: 3
+},
+// 15. 2026R - Imagen: Si - Tabla: No - Resp: A
+{
+    pregunta: `Leonardo juega el siguiente juego:<br><br>
+    Se elige un número y luego se extraen dos tarjetas con operaciones: la primera de un mazo de color blanco y la segunda de un mazo de color gris. La operación de la tarjeta blanca se aplica sobre el número elegido y la operación de la tarjeta gris sobre el resultado obtenido.<br><br>
+    Leonardo extrae las siguientes tarjetas:<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/BVqnGPYp/image.png" alt="Tarjetas de operaciones" style="max-width: 300px;"></p>
+    Si eligió el número 2, ¿cuál de las siguientes expresiones corresponde a la correcta aplicación de las instrucciones de las tarjetas en el orden en que las sacó?`,
+    opciones: ["\\((2 - 5)^3\\)", "\\(3 \\cdot (2 - 5)\\)", "\\(3 \\cdot (5 - 2)\\)", "\\((5 - 2)^3\\)"],
+    correcta: 0
+},
+// 16. 2027I - Imagen: Si (alternativas) - Tabla: Si - Resp: A
+{
+    pregunta: `Se realizó una encuesta a un grupo de personas respecto a su legumbre preferida y cada persona eligió solo una opción. Los resultados se presentan en la siguiente tabla:<br><br>
+    <table class='table' style='border-collapse: collapse; width: 60%; margin: 10px auto; text-align: center;'>
+        <thead>
+            <tr style='background-color: #f2f2f2;'>
+                <th style='border: 1px solid #999; padding: 8px;'>Tipo de legumbre</th>
+                <th style='border: 1px solid #999; padding: 8px;'>Porcentaje de preferencia</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Lentejas (L)</td><td style='border: 1px solid #999; padding: 8px;'>20%</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Garbanzos (G)</td><td style='border: 1px solid #999; padding: 8px;'>10%</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Porotos (P)</td><td style='border: 1px solid #999; padding: 8px;'>45%</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Otra legumbre (O)</td><td style='border: 1px solid #999; padding: 8px;'>25%</td></tr>
+        </tbody>
+    </table>
+    ¿Cuál de los siguientes gráficos representa mejor esta información?`,
+    opciones: [
+        "<img src='https://i.ibb.co/pj7sxV3L/image.png' alt='Gráfico A' style='max-width: 100%;'>",
+        "<img src='https://i.ibb.co/b5pM4Sk7/image.png' alt='Gráfico B' style='max-width: 100%;'>",
+        "<img src='https://i.ibb.co/LXYDsPBH/image.png' alt='Gráfico C' style='max-width: 100%;'>",
+        "<img src='https://i.ibb.co/pvXcHvrW/image.png' alt='Gráfico D' style='max-width: 100%;'>"
+    ],
+    correcta: 0
+},
+// 17. 2026I - Imagen: No - Tabla: No - Resp: C
+{
+    pregunta: `Una persona tiene un emprendimiento de bizcochuelos. Para prepararlos compra 5 cajas de huevos, tal que cada caja contiene 6 bandejas y cada bandeja tiene 30 huevos.<br><br>
+    Producto de la mala manipulación de las cajas se quebraron el 1% de los huevos comprados, los cuales no se utilizarán en la preparación de bizcochuelos.<br><br>
+    Si para cada bizcochuelo la persona ocupa 6 huevos, ¿cuántos de estos bizcochuelos puede preparar con los huevos que le quedaron?`,
+    opciones: ["150", "149", "148", "135"],
+    correcta: 2
+},
+// 18. 2026R - Imagen: No - Tabla: No - Resp: D
+{
+    pregunta: `Si \\(p\\) es el 25% de \\(k\\), ¿cuál de las siguientes expresiones representa el valor de \\(k\\)?`,
+    opciones: ["\\(\\frac{1 \\cdot p}{25}\\)", "\\(\\frac{1 \\cdot p}{75}\\)", "\\(\\frac{100 \\cdot p}{75}\\)", "\\(\\frac{100 \\cdot p}{25}\\)"],
+    correcta: 3
+},
+// 19. 2026R - Imagen: No - Tabla: No - Resp: C
+{
+    pregunta: `¿Cuánto es el 75% del 75% de 100?`,
+    opciones: ["5625", "150", "56,25", "1,5"],
+    correcta: 2
+},
+// 20. 2026I - Imagen: No - Tabla: No - Resp: A
+{
+    pregunta: `¿Cuál es el valor de \\(\\frac{2^3 \\cdot 3^4}{2 \\cdot 9}\\)?`,
+    opciones: ["36", "72", "625", "1296"],
+    correcta: 0
+},
+// 21. 2026I - Imagen: No - Tabla: No - Resp: D
+{
+    pregunta: `¿Cuál es el valor de \\((-2)^6\\)?`,
+    opciones: ["-64", "-12", "12", "64"],
+    correcta: 3
+},
+// 22. 2026R - Imagen: No - Tabla: No - Resp: B
+{
+    pregunta: `Se estimó que en el 2022 la cantidad de personas que les gustaba jugar videojuegos era de 3000 millones.<br><br>
+    Si en el 2023 la cantidad de personas que les gustaba jugar videojuegos aumentó en 120 millones respecto al año anterior, ¿cuál es el porcentaje de aumento de ese año, respecto del año anterior?`,
+    opciones: ["2,5%", "4%", "25%", "40%"],
+    correcta: 1
+},
+// 23. 2026R - Imagen: Si - Tabla: No - Resp: B
+{
+    pregunta: `En el siguiente gráfico se presenta la electricidad total generada por diferentes tecnologías en Chile durante 2021.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/G3GC7vrP/image.png" alt="Gráfico de electricidad generada" style="max-width: 400px;"></p>
+    ¿Cuál de las siguientes expresiones corresponde a la electricidad total generada durante 2020?`,
+    opciones: [
+        "\\(\\frac{80\\,155\\text{ GWh}}{104,5}\\)",
+        "\\(\\frac{80\\,155 \\cdot 100\\text{ GWh}}{104,5}\\)",
+        "\\(\\frac{80\\,155 \\cdot 104,5\\text{ GWh}}{100}\\)",
+        "\\(\\frac{80\\,155\\text{ GWh}}{104,5 \\cdot 100}\\)"
+    ],
+    correcta: 1
+},
+// 24. 2026R - Imagen: No - Tabla: No - Resp: C
+{
+    pregunta: `Una tienda vendía un producto a $25 000. Como no se vendía lo suficiente, la tienda rebajó su precio un 20%. Sin embargo, el precio rebajado no aumentó lo suficiente las ventas, por lo que rebajaron un 25% el precio ya rebajado.<br><br>
+    ¿Cuál de las siguientes expresiones representa el precio del producto luego de los dos descuentos, en pesos?`,
+    opciones: [
+        "\\(0,2 \\cdot 0,25 \\cdot 25\\,000\\)",
+        "\\((0,2 + 0,25) \\cdot 25\\,000\\)",
+        "\\(0,8 \\cdot 0,75 \\cdot 25\\,000\\)",
+        "\\((0,8 + 0,75) \\cdot 25\\,000\\)"
+    ],
+    correcta: 2
+},
+// 25. 2026R - Imagen: No - Tabla: No - Resp: B
+{
+    pregunta: `El sueldo líquido mensual de una persona es de $M. Todos los meses, gasta las tres quintas partes y el resto lo ahorra.<br><br>
+    Si el sueldo líquido de la persona se mantiene fijo durante doce meses, ¿cuál de las siguientes expresiones representa el ahorro, en pesos, de la persona en ese periodo de tiempo?`,
+    opciones: ["\\(\\frac{2}{5}M\\)", "\\(\\frac{24}{5}M\\)", "\\(\\frac{36}{5}M\\)", "\\(\\frac{57}{5}M\\)"],
+    correcta: 1
+},
+// 26. 2026R - Imagen: No - Tabla: No - Resp: A
+{
+    pregunta: `El ingreso y la ganancia de una empresa, ambos en pesos, se modelan con respecto a la cantidad de artículos producidos (\\(x\\)) de la siguiente manera:<br><br>
+    • Ingreso: \\(I(x) = 1000x + 600\\,000\\)<br>
+    • Ganancia: \\(G(x) = 750x + 450\\,000\\)<br><br>
+    Considera que la ganancia al producir \\(x\\) artículos se puede calcular como \\(G(x) = I(x) - C(x)\\), tal que \\(C\\) es la función de costo.<br><br>
+    ¿Cuál es la función costo de la empresa?`,
+    opciones: [
+        "\\(C(x) = 250x + 150\\,000\\)",
+        "\\(C(x) = 250x - 150\\,000\\)",
+        "\\(C(x) = 1750x - 1\\,050\\,000\\)",
+        "\\(C(x) = 1750x + 1\\,050\\,000\\)"
+    ],
+    correcta: 0
+},
+// 27. 2026R - Imagen: No - Tabla: No - Resp: A
+{
+    pregunta: `Una pista de baile de forma rectangular tiene dimensiones de \\((3x + 4)\\) metros de largo y \\((2x - 9)\\) metros de ancho. Se cuenta con \\((20x + 20)\\) metros de una cinta luminosa para demarcar el borde de la pista de baile.<br><br>
+    ¿Cuántos metros de cinta luminosa sobran luego de demarcar el borde de la pista?`,
+    opciones: ["\\((10x + 30)\\) metros", "\\((10x + 10)\\) metros", "\\((15x + 15)\\) metros", "\\((15x + 25)\\) metros"],
+    correcta: 0
+},
+// 28. 2026R - Imagen: No - Tabla: No - Resp: A
+{
+    pregunta: `Una persona descubrió que para lograr el color que le gusta para el glaseado de galletas, debe mezclar gotas del colorante rojo con gotas del colorante amarillo en la razón 3 : 5, respectivamente.<br><br>
+    Si la persona usa 30 gotas de colorante amarillo para preparar el glaseado que le gusta, ¿cuántas gotas de color rojo deberá agregar para obtener el color que le gusta?`,
+    opciones: ["18", "28", "30", "32"],
+    correcta: 0
+},
+// 29. 2026I - Imagen: No - Tabla: Si - Resp: A
+{
+    pregunta: `En un estacionamiento se cobra de manera proporcional al tiempo en que un vehículo se encuentra estacionado. Algunos valores se presentan en la tabla adjunta.<br><br>
+    <table class='table' style='border-collapse: collapse; width: 60%; margin: 10px auto; text-align: center;'>
+        <thead>
+            <tr style='background-color: #f2f2f2;'>
+                <th style='border: 1px solid #999; padding: 8px;'>Tiempo en minutos</th>
+                <th style='border: 1px solid #999; padding: 8px;'>Precio en pesos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>1</td><td style='border: 1px solid #999; padding: 8px;'>12</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>2</td><td style='border: 1px solid #999; padding: 8px;'>24</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>3</td><td style='border: 1px solid #999; padding: 8px;'>36</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>4</td><td style='border: 1px solid #999; padding: 8px;'>48</td></tr>
+        </tbody>
+    </table>
+    ¿Cuál de las siguientes expresiones representa el precio por pagar, en pesos, de un vehículo que está estacionado \\(x\\) minutos?`,
+    opciones: ["\\(12x\\)", "\\(\\frac{12}{x}\\)", "\\(x + 11\\)", "\\(x + 12\\)"],
+    correcta: 0
+},
+// 30. 2026R - Imagen: No - Tabla: No - Resp: A
+{
+    pregunta: `Para cierta marca de alimentos, la cantidad \\(p\\) de kilogramos de comida que debe comer un perro adulto, durante el día, se modela mediante la expresión \\(p = m \\cdot 0,025\\), tal que \\(m\\) es la masa del perro, en kilogramos.<br><br>
+    ¿Cómo se puede interpretar 0,025 en el modelo anterior?`,
+    opciones: [
+        "Que el perro adulto debe consumir 25 gramos de alimento por cada kilogramo de su masa.",
+        "Que el perro adulto debe consumir 250 gramos de alimento por cada kilogramo de su masa.",
+        "Que la masa de un perro adulto es 25 veces la cantidad de alimento que debe consumir.",
+        "Que la masa de un perro adulto es 250 veces la cantidad de alimento que debe consumir."
+    ],
+    correcta: 0
+},
+// 31. 2026R - Imagen: No - Tabla: No - Resp: B
+{
+    pregunta: `En la información nutricional de un paquete de galletas se indica que una porción de 4 galletas contiene 180 kilocalorías.<br><br>
+    Para calcular cuántas kilocalorías \\(K\\) se ingieren al consumir este tipo de galletas se puede utilizar la fórmula <p style="text-align: center;">\\(K = \\frac{180x}{4}\\)</p><br>, tal que \\(x\\) es la cantidad de galletas consumidas.<br><br>
+    Una persona consumió una cantidad de galletas de este tipo junto a un vaso de jugo que contiene 90 kilocalorías, ingiriendo en total 405 kilocalorías.<br><br>
+    ¿Cuántas galletas consumió esta persona?`,
+    opciones: ["2", "7", "9", "11"],
+    correcta: 1
+},
+// 32. 2027I - Imagen: Si - Tabla: No - Resp: A
+{
+    pregunta: `Considera la siguiente oferta:<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/TBD8PkLj/image.png" alt="Oferta tomate" style="max-width: 200px;"></p>
+    Una persona tiene  10 000 pesos para comprar un paquete de tallarines de 800 pesos y la máxima cantidad de kilogramos de tomates posible.<br><br>
+    ¿Cuál de las siguientes inecuaciones permite determinar la máxima cantidad \\(x\\) de kilogramos de tomates que puede comprar la persona?`,
+    opciones: [
+        "\\(10\\,000 - 800 \\geq 1800x\\)",
+        "\\(10\\,000 - 800 \\geq 1800\\)",
+        "\\(10\\,000 + 800 \\geq 1800x\\)",
+        "\\(10\\,000 + 800 \\geq 1800\\)"
+    ],
+    correcta: 0
+},
+// 33. 2027I - Imagen: No - Tabla: No - Resp: D
+{
+    pregunta: `Para la celebración de un evento familiar, una persona compró velas blancas y amarillas. En total, compró 14 velas y pagó 60 000 pesos. Si por cada vela blanca pagó 3000 pesos y por cada vela amarilla pagó 6000 pesos, ¿cuántas velas blancas compró en total la persona?`,
+    opciones: ["2", "3", "7", "8"],
+    correcta: 3
+},
+// 34. 2027I - Imagen: No - Tabla: No - Resp: C
+{
+    pregunta: `Si \\((p - 3)^2 - 36 = 0\\), ¿cuál de los siguientes valores puede ser un valor de \\(p\\)?`,
+    opciones: ["-15", "-9", "9", "15"],
+    correcta: 2
+},
+// 35. 2026R - Imagen: No - Tabla: No - Resp: D
+{
+    pregunta: `Una persona gasta 13 500 pesos en la compra de 8 kg de fruta entre manzanas y peras, pagando 1500 pesos por el kilogramo de manzanas y 1800 pesos por el kilogramo de peras.<br><br>
+    El siguiente sistema de ecuaciones modela la situación anterior:<br><br>
+    <p style='text-align: center;'>\\(1500x + 1800y = 13500\\)<br>\\(x + y = 8\\)</p>
+    ¿Qué representa la variable \\(x\\) en este sistema?`,
+    opciones: [
+        "La cantidad de peras compradas",
+        "La cantidad de manzanas compradas",
+        "La cantidad de kilogramos de peras compradas",
+        "La cantidad de kilogramos de manzanas compradas"
+    ],
+    correcta: 3
+},
+// 36. 2026I - Imagen: No - Tabla: No - Resp: A
+{
+    pregunta: `Una empresa dedicada a la venta de poleras ofrece a sus clientes dos opciones de diseño: personalizado o de catálogo.<br><br>
+    El precio por polera con diseño personalizado es 8500 pesos y con diseño de catálogo es 7500 pesos. Adicionalmente, se hace un cobro por envío a domicilio de 2500 pesos.<br><br>
+    En un día de trabajo se vendió un total de 18 poleras en diez envíos y se recaudó 146 000 pesos solo por las poleras.<br><br>
+    La persona encargada de verificar las ventas debe determinar la cantidad de poleras con diseño personalizado que se vendieron. Para calcular, realiza el siguiente procedimiento, cometiendo un error.<br><br>
+    Paso 1: representa con la letra \\(x\\) la cantidad de poleras con diseño personalizado y con la letra \\(y\\) la cantidad de poleras con diseño de catálogo. Luego, establece el sistema<br><br>
+    <p style='text-align: center;'>\\(x + y = 18\\)<br>\\(8500x + 7500y = 146\\,000 + 25\\,000\\)</p>
+    Paso 2: despeja la variable \\(y\\) de la primera ecuación, obteniendo \\(y = 18 - x\\).<br><br>
+    Paso 3: reemplaza \\(y\\) en la segunda ecuación, obteniendo<br><br>
+    <p style='text-align: center;'>\\(8500x - 7500x = 146\\,000 + 25\\,000 - 7500 \\cdot 18\\).</p>
+    Paso 4: resuelve la igualdad anterior y determina que la cantidad de poleras con diseño personalizado es 36.<br><br>
+    ¿En cuál de los pasos la persona cometió el error?`,
+    opciones: ["En el Paso 1", "En el Paso 2", "En el Paso 3", "En el Paso 4"],
+    correcta: 0
+},
+// 37. 2026I - Imagen: No - Tabla: No - Resp: B
+{
+    pregunta: `Considera la función \\(g\\) definida por \\(g(x) = 8x - 5\\), con dominio el conjunto de los números reales. Si \\(g(x) = 35\\), ¿cuál es el valor de \\(x\\)?`,
+    opciones: ["15", "5", "240", "275"],
+    correcta: 1
+},
+// 38. 2026I - Imagen: Si (alternativas) - Tabla: No - Resp: B
+{
+    pregunta: `Para pintar las líneas blancas de una carretera se utilizaron máquinas idénticas que pintan una misma cantidad de kilómetros de la línea cada hora. El trabajo se realizó en 6 horas, las primeras 4 horas trabajó solo una máquina, pero durante las 2 horas siguientes trabajaron dos máquinas en forma simultánea.<br><br>
+    ¿Cuál de los siguientes gráficos representa mejor la relación entre el tiempo en que trabajaron las máquinas y la cantidad de kilómetros de la línea pintada?`,
+    opciones: [
+        "<img src='https://i.ibb.co/gLDcGryr/image.png' alt='Gráfico A' style='max-width: 100%;'>",
+        "<img src='https://i.ibb.co/SD7hL87j/image.png' alt='Gráfico B' style='max-width: 100%;'>",
+        "<img src='https://i.ibb.co/JRqMY7cW/image.png' alt='Gráfico C' style='max-width: 100%;'>",
+        "<img src='https://i.ibb.co/mrskKMKX/image.png' alt='Gráfico D' style='max-width: 100%;'>"
+    ],
+    correcta: 1
+},
+// 39. 2026I - Imagen: No - Tabla: No - Resp: B
+{
+    pregunta: `En una imprenta ofrecen un servicio de empastado para tesis universitarias, cobrando un valor de 115 pesos por página, más una tarifa fija de 27 000 pesos por el servicio. ¿Cuál de las siguientes funciones modela el precio, en pesos, que debe pagar una persona por empastar su tesis de \\(x\\) páginas?`,
+    opciones: [
+        "\\(f(x) = 115x\\)",
+        "\\(g(x) = 115x + 27\\,000\\)",
+        "\\(h(x) = (115 + 27\\,000)x\\)",
+        "\\(k(x) = 115 + 27\\,000x\\)"
+    ],
+    correcta: 1
+},
+// 40. 2027I - Imagen: Si - Tabla: No - Resp: B
+{
+    pregunta: `Un proyector de imágenes tiene una proporción de 9 : 16 entre la altura y el ancho de su proyección rectangular, siendo su altura el lado menor. Al situar el proyector a cierta distancia de la pared, la longitud de la diagonal del rectángulo de proyección será de 100 pulgadas, tal como se representa en la siguiente imagen:<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/bjrT287s/image.png" alt="Proyección rectangular con diagonal de 100 pulgadas" style="max-width: 300px;"></p>
+    Para calcular la altura de este rectángulo de proyección, se utiliza el siguiente modelo:<br><br>
+    <p style='text-align: center;'>\\((9x)^2 + (16x)^2 = 100^2\\)</p>
+    ¿Qué representa \\(16x\\) en el modelo?`,
+    opciones: [
+        "El factor de proporcionalidad",
+        "El ancho del rectángulo de proyección",
+        "La altura del rectángulo de proyección",
+        "La distancia desde el proyector hasta la pared"
+    ],
+    correcta: 1
+},
+// 41. 2027I - Imagen: Si - Tabla: No - Resp: C
+{
+    pregunta: `En la parte superior de un poste de 3 metros de altura perpendicular al suelo, se atan dos cuerdas de manera tensa, quedando de 4 metros cada una, tal como se representa en la figura adjunta.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/G35d56Xg/image.png" alt="Poste con cuerdas" style="max-width: 300px;"></p>
+    Para determinar la distancia \\(x\\) con respecto al poste, se realiza el siguiente procedimiento, cometiéndose un error.<br><br>
+    Paso 1: para calcular la longitud \\(x\\) se decide utilizar el teorema de Pitágoras, por lo que se reemplazan los valores, obteniéndose \\(x^2 + 3^2 = 4^2\\).<br>
+    Paso 2: se calculan las potencias en la ecuación anterior, obteniéndose \\(x^2 + 9 = 16\\).<br>
+    Paso 3: se despeja \\(x\\), obteniéndose \\(x = \\sqrt{16 + 9}\\).<br>
+    Paso 4: se calcula la raíz cuadrada del paso anterior, obteniéndose la distancia de 5 metros.<br><br>
+    ¿En cuál de los pasos se cometió el error?`,
+    opciones: ["En el Paso 1", "En el Paso 2", "En el Paso 3", "En el Paso 4"],
+    correcta: 2
+},
+// 42. 2027I - Imagen: No - Tabla: No - Resp: B
+{
+    pregunta: `Las diagonales de un rombo miden 24 cm y 30 cm. ¿Cuál es su área?`,
+    opciones: ["180 cm²", "360 cm²", "720 cm²", "1440 cm²"],
+    correcta: 1
+},
+// 43. 2027I - Imagen: Si - Tabla: No - Resp: B
+{
+    pregunta: `Una empresa que vende cajas de cereales decide ofrecer una oferta que implica un nuevo diseño de caja. Esta es un 10% más alta que el diseño original, tal como se representa a continuación:<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/mC0tbZww/image.png" alt="Caja de cereal" style="max-width: 300px;"></p>
+    ¿Cuál es el volumen de la caja con oferta si sus medidas originales eran de 20 cm de largo, 5 cm de fondo y 30 cm de alto?`,
+    opciones: ["300 cm³", "3300 cm³", "3993 cm³", "4000 cm³"],
+    correcta: 1
+},
+// 44. 2026I - Imagen: No - Tabla: No - Resp: B
+{
+    pregunta: `Una malla rectangular está formada por cuadrados de lado 2 cm. La malla tiene 100 cuadrados de alto y 200 cuadrados de largo.<br><br>
+    ¿Cuál es el perímetro de la malla?`,
+    opciones: ["600 cm", "1200 cm", "40 000 cm", "160 000 cm"],
+    correcta: 1
+},
+// 45. 2026R - Imagen: Si - Tabla: No - Resp: B
+{
+    pregunta: `En la figura adjunta se representa un trapecio rectángulo de área 0,76 m².<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/jkVBsqX4/image.png" alt="Trapecio rectángulo con base mayor 1,3 m y base menor 0,6 m" style="max-width: 300px;"></p>
+    ¿Cuál es la medida de su altura?`,
+    opciones: ["1,444 m", "0,80 m", "0,722 m", "0,40 m"],
+    correcta: 1
+},
+// 46. 2027I - Imagen: Si - Tabla: No - Resp: D
+{
+    pregunta: `En un plano cartesiano se proyecta la sombra de la cara de un gato, como se representa a continuación:<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/Q3WnvygP/image.png" alt="Sombra de gato en plano cartesiano" style="max-width: 400px;"></p>
+    ¿Cuál de los siguientes puntos pertenece a la sombra de la cara del gato?`,
+    opciones: ["(2, 4)", "(5, 5)", "(7, -4)", "(-1, 3)"],
+    correcta: 3
+},
+// 47. 2026R - Imagen: Si (2 imágenes) - Tabla: No - Resp: B
+{
+    pregunta: `En la siguiente imagen se presenta una red de un cubo.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/Hf9sYRnw/image.png" alt="Red de un cubo" style="max-width: 300px;"></p>
+    Se construye el siguiente cuerpo usando algunos cubos como el anterior.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/VW67vdf8/image.png" alt="Cuerpo construido con cubos" style="max-width: 300px;"></p>
+    ¿Cuántos cubos se utilizaron en total para construir el cuerpo anterior?`,
+    opciones: ["6", "7", "8", "9"],
+    correcta: 1
+},
+// 48. 2026I - Imagen: Si(2 imágenes + alternativas) - Tabla: No - Resp: C
+{
+    pregunta: `Considera la siguiente técnica para hacer figuras con una hoja de papel:<br><br>
+    • Se dobla la hoja de papel a la mitad.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/4ZY7rM6d/image.png" alt="Doblado de hoja a la mitad" style="max-width: 300px;"></p>
+    • Se marca la mitad de la figura, se recorta y por último se desdobla el papel.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/zWBprdJM/image.png" alt="Recorte y desdoblado de la hoja" style="max-width: 300px;"></p>
+    ¿Cuál de las siguientes figuras se puede hacer utilizando esta técnica?`,
+    opciones: [
+        "<img src='https://i.ibb.co/MkLM0TPf/image.png' alt='Opción A: Letra F' style='max-width: 100%;'>",
+        "<img src='https://i.ibb.co/xSZmLvzj/image.png' alt='Opción B: Letra J' style='max-width: 100%;'>",
+        "<img src='https://i.ibb.co/gZ1Yj3p2/image.png' alt='Opción C: Letra M' style='max-width: 100%;'>",
+        "<img src='https://i.ibb.co/BHJhwfGk/image.png' alt='Opción D: Letra Z' style='max-width: 100%;'>"
+    ],
+    correcta: 2
+},
+// 49. 2026I - Imagen: Si - Tabla: No - Resp: A
+{
+    pregunta: `Un barco que inicia un recorrido realiza los siguientes movimientos:<br><br>
+    ■ 5 kilómetros al oeste<br>
+    ■ 4 kilómetros al norte<br>
+    ■ 3 kilómetros al este<br>
+    ■ 9 kilómetros al sur<br>
+    ■ 6 kilómetros al oeste<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/1J2hYr2Q/image.png" alt="Rosa de los vientos: Norte, Sur, Este, Oeste" style="max-width: 150px;"></p>
+    ¿Cuál es la ubicación final del barco con respecto a su ubicación inicial?`,
+    opciones: [
+        "8 kilómetros al oeste y 5 kilómetros al sur",
+        "14 kilómetros al oeste y 13 kilómetros al norte",
+        "8 kilómetros al este y 5 kilómetros al norte",
+        "14 kilómetros al este y 13 kilómetros al sur"
+    ],
+    correcta: 0
+},
+// 50. 2026R - Imagen: Si - Tabla: No - Resp: B
+{
+    pregunta: `En el plano cartesiano de la figura adjunta se representan los puntos cardinales.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/SwT60KhV/image.png" alt="Plano cartesiano con puntos cardinales y flecha negra apuntando al noreste" style="max-width: 300px;"></p>
+    ¿En cuál de las siguientes opciones las transformaciones isométricas aplicadas a la flecha negra permite que la imagen obtenida sea una flecha que apunta al oeste?`,
+    opciones: [
+        "Una reflexión con respecto al eje X y luego, una reflexión con respecto a la recta \\(y = x\\).",
+        "Una reflexión con respecto al origen del plano cartesiano y luego, una rotación en 45° en sentido horario con centro el origen del plano cartesiano.",
+        "Una reflexión con respecto al eje Y.",
+        "Una traslación según el vector \\((-3, -3)\\)."
+    ],
+    correcta: 1
+},
+// 51. 2027I - Imagen: Si - Tabla: No - Resp: D
+{
+    pregunta: `En la siguiente figura se representa un cuadrilátero cuyas medidas están en centímetros.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/qMst5jgF/image.png" alt="Cuadrilátero" style="max-width: 300px;"></p>
+    ¿Cuál de las siguientes expresiones corresponde al perímetro del cuadrilátero?`,
+    opciones: ["22 cm", "\\((\\sqrt{6} + 15)\\) cm", "20 cm", "\\((\\sqrt{29} + 15)\\) cm"],
+    correcta: 3
+},
+// 52. 2026R - Imagen: Si - Tabla: No - Resp: A
+{
+    pregunta: `En la cuadrícula de la figura se representa el plano de un videojuego. En ella se ubica un tesoro y los pies de una persona, ambos al centro de las casillas.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/27hnNM3r/image.png" alt="Plano de videojuego con persona y tesoro" style="max-width: 300px;"></p>
+    ¿Cuál de los siguientes vectores lleva a la persona sobre la casilla del tesoro?`,
+    opciones: ["(8, -4)", "(-4, 2)", "(10, -6)", "(2, -2)"],
+    correcta: 0
+},
+// 53. 2026R - Imagen: Si - Tabla: No - Resp: D
+{
+    pregunta: `Un tipo de migración exterior corresponde al cambio de residencia hacia un país diferente, por ejemplo, la migración desde Chile hacia España. A aquellas personas migrantes que llegan a habitar un país son considerados inmigrantes, mientras que a aquellas personas que abandonan un país, se les considera emigrantes.<br><br>
+    En el siguiente gráfico se presenta información de las migraciones exteriores en España desde el 2011 hasta el 2021.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/HpMP5Q5p/image.png" alt="Gráfico de evolución de las migraciones exteriores" style="max-width: 400px;"></p>
+    ¿En qué año hubo mayor cantidad de migrantes exteriores en España?`,
+    opciones: ["2013", "2015", "2018", "2019"],
+    correcta: 3
+},
+// 54. 2026R - Imagen: No - Tabla: Si - Resp: D
+{
+    pregunta: `El encargado del personal de una empresa extrae de la ficha de contratación las edades de las personas que trabajan en esta empresa. Luego, resume la distribución de las edades en la siguiente tabla:<br><br>
+    <table class='table' style='border-collapse: collapse; width: 60%; margin: 10px auto; text-align: center;'>
+        <thead>
+            <tr style='background-color: #f2f2f2;'>
+                <th style='border: 1px solid #999; padding: 8px;'>Edad en años</th>
+                <th style='border: 1px solid #999; padding: 8px;'>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>18 - 24</td><td style='border: 1px solid #999; padding: 8px;'>5</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>25 - 34</td><td style='border: 1px solid #999; padding: 8px;'>7</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>35 - 44</td><td style='border: 1px solid #999; padding: 8px;'>14</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>45 - 54</td><td style='border: 1px solid #999; padding: 8px;'>11</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>55 o más</td><td style='border: 1px solid #999; padding: 8px;'>13</td></tr>
+        </tbody>
+    </table>
+    La empresa dará un beneficio educacional según la información de la tabla a los trabajadores cuya edad no supere los 34 años.<br><br>
+    ¿Cuál es la mayor cantidad de trabajadores que podría acceder a ese beneficio?`,
+    opciones: ["6", "7", "9", "12"],
+    correcta: 3
+},
+// 55. 2026R - Imagen: Si - Tabla: No - Resp: B
+{
+    pregunta: `Una persona está jugando un nuevo juego en línea en el cual se pueden escoger distintos personajes. Cada personaje tiene cinco habilidades, con un puntaje de 0 a 100 en cada habilidad.<br><br>
+    En el siguiente diagrama se representan las habilidades de uno de los personajes.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/M5VKNz9b/image.png" alt="Diagrama radial de habilidades del personaje" style="max-width: 400px;"></p>
+    ¿Cuál es la habilidad más débil de este personaje?`,
+    opciones: ["Fuerza mágica", "Defensa mágica", "Defensa física", "Fuerza física"],
+    correcta: 1
+},
+// 56. 2026R - Imagen: No - Tabla: Si - Resp: D
+{
+    pregunta: `Se realizó una encuesta a los estudiantes de IV° medio de un establecimiento educacional, sobre la cantidad de años que llevan en dicho establecimiento. En la siguiente tabla se presentan los datos de dicha encuesta.<br><br>
+    <table class='table' style='border-collapse: collapse; width: 60%; margin: 10px auto; text-align: center;'>
+        <thead>
+            <tr style='background-color: #f2f2f2;'>
+                <th style='border: 1px solid #999; padding: 8px;'>Cantidad de años</th>
+                <th style='border: 1px solid #999; padding: 8px;'>Cantidad de estudiantes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>1</td><td style='border: 1px solid #999; padding: 8px;'>2</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>2</td><td style='border: 1px solid #999; padding: 8px;'>4</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>3</td><td style='border: 1px solid #999; padding: 8px;'>5</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>4</td><td style='border: 1px solid #999; padding: 8px;'>8</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>5</td><td style='border: 1px solid #999; padding: 8px;'>12</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>6</td><td style='border: 1px solid #999; padding: 8px;'>2</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>7</td><td style='border: 1px solid #999; padding: 8px;'>1</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>8</td><td style='border: 1px solid #999; padding: 8px;'>9</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>9 o más</td><td style='border: 1px solid #999; padding: 8px;'>16</td></tr>
+        </tbody>
+    </table>
+    ¿Cuántos estudiantes encuestados llevan 5 años o más en el establecimiento educacional?`,
+    opciones: ["12", "35", "68", "80"],
+    correcta: 3
+},
+// 57. 2027I - Imagen: Si - Tabla: No - Resp: C
+{
+    pregunta: `En los siguientes pictogramas se representa la cantidad de personas que hay en cinco grupos, tal que cada <img src="https://i.ibb.co/n8M1jSsy/image.png" alt="Pictograma persona" style="max-width: 10px;"> corresponde a una persona.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/hFs5gjLG/image.png" alt="Pictogramas" style="max-width: 400px;"></p>
+    ¿En cuál de los pictogramas hay un mayor promedio de personas por grupo?`,
+    opciones: [
+        "En el pictograma 1",
+        "En el pictograma 2",
+        "En el pictograma 3",
+        "En el pictograma 4"
+    ],
+    correcta: 2
+},
+// 58. 2026I - Imagen: Si - Tabla: No - Resp: A
+{
+    pregunta: `En el mundial de fútbol del 2022 participaron 32 países. La edad promedio de los futbolistas fue de 26,95 años.<br><br>
+    En el siguiente gráfico se presenta la distribución de las edades de los futbolistas de cuatro países que participaron en el mundial.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/zVwkPBWJ/image.png" alt="Gráfico de distribución de edades por país" style="max-width: 500px;"></p>
+    ¿Cuál de estos cuatro países tiene el mayor promedio de edad?`,
+    opciones: ["Irán", "España", "EE.UU.", "Ghana"],
+    correcta: 0
+},
+// 59. 2026R - Imagen: No - Tabla: Si - Resp: C
+{
+    pregunta: `Considera la siguiente tabla:<br><br>
+    <table class='table' style='border-collapse: collapse; width: 40%; margin: 10px auto; text-align: center;'>
+        <thead>
+            <tr style='background-color: #f2f2f2;'>
+                <th style='border: 1px solid #999; padding: 8px;'>Valor</th>
+                <th style='border: 1px solid #999; padding: 8px;'>Frecuencia</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>0</td><td style='border: 1px solid #999; padding: 8px;'>P</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>1</td><td style='border: 1px solid #999; padding: 8px;'>Q</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>2</td><td style='border: 1px solid #999; padding: 8px;'>R</td></tr>
+        </tbody>
+    </table>
+    ¿Cuál de las siguientes expresiones permite determinar el promedio de los valores?`,
+    opciones: [
+        "\\(\\frac{P + Q + 2R}{P + Q + R}\\)",
+        "\\(\\frac{R}{P + Q + R}\\)",
+        "\\(\\frac{0 \\cdot P + 1 \\cdot Q + 2 \\cdot R}{P + Q + R}\\)",
+        "\\(\\frac{2R}{P + Q + R}\\)"
+    ],
+    correcta: 2
+},
+// 60. 2026R - Imagen: Si - Tabla: No - Resp: B
+{
+    pregunta: `Una persona plantó un brote de dos centímetros y lo fotografió durante cinco semanas para dejar registro de su crecimiento, tal como se representa a continuación:<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/pjGc3kVK/image.png" alt="Crecimiento del brote" style="max-width: 500px;"></p>
+    ¿Cuántos centímetros, en promedio, creció el brote por semana?`,
+    opciones: ["2 cm", "2,4 cm", "3 cm", "7,5 cm"],
+    correcta: 1
+},
+// 61. 2026R - Imagen: Si - Tabla: No - Resp: A
+{
+    pregunta: `En el siguiente gráfico se representa la distribución de la cantidad de horas extras realizadas por 140 trabajadores durante el mes de mayor demanda productiva de una empresa.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/ym5HcLH8/image.png" alt="Gráfico de horas extras" style="max-width: 400px;"></p>
+    Por cada hora extra se paga $15 000. ¿Cuál fue el pago más frecuente que realizó la empresa por concepto de horas extras en ese mes?`,
+    opciones: ["$15 000", "$30 000", "$45 000", "$60 000"],
+    correcta: 0
+},
+// 62. 2027I - Imagen: Si - Tabla: No - Resp: C
+{
+    pregunta: `Para una tarea de Estadística, una estudiante tiene que representar un conjunto de datos a través de un diagrama de cajón. Los datos que se presentan a continuación corresponden a la cantidad de anotaciones positivas que tuvieron los amigos de esta estudiante el semestre anterior.<br><br>
+    <p style='text-align: center;'>4 - 0 - 0 - 2 - 3 - 3 - 1 - 0 - 3</p>
+    Para construir el diagrama de cajón, ella realiza los siguientes pasos, cometiendo un error.<br><br>
+    Paso 1: ordena los datos de menor a mayor y determina que el dato central es 2.<br>
+    Paso 2: identifica los valores mínimo y máximo, obteniendo 0 y 4 respectivamente.<br>
+    Paso 3: determina el primer cuartil como 1, ya que se encuentra entre 0 y 2, y el tercer cuartil como 3, ya que se encuentra entre 2 y 4.<br>
+    Paso 4: construye el diagrama de cajón, obteniendo:<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/qMGWZC3L/image.png" alt="Diagrama de cajón" style="max-width: 300px;"></p>
+    ¿En cuál de los pasos la estudiante cometió el error?`,
+    opciones: ["En el Paso 1", "En el Paso 2", "En el Paso 3", "En el Paso 4"],
+    correcta: 2
+},
+// 63. 2026I - Imagen: No - Tabla: No - Resp: C
+{
+    pregunta: `Un grupo de personas está jugando a un juego que consiste en:<br><br>
+    • escoger un número entre el 2 y el 12, ambos valores incluidos,<br>
+    • después debe lanzar dos dados comunes y calcular la suma de los puntos en los dados.<br><br>
+    Si la suma obtenida coincide con el número escogido, entonces se obtiene un punto. Finalmente, gana el juego la persona que primero consiga 20 puntos.<br><br>
+    ¿Cuál de los siguientes números debería escoger una persona para tener mayor probabilidad de ganar el juego?`,
+    opciones: ["12", "10", "7", "6"],
+    correcta: 2
+},
+// 64. 2026R - Imagen: Si - Tabla: No - Resp: B
+{
+    pregunta: `El memorice es un juego que está compuesto por varias tarjetas. Cada una de estas tiene una figura que está repetida una sola vez en otra tarjeta, de tal manera que se forman pares de cada una de estas figuras.<br><br>
+    Para jugar, las tarjetas se deben disponer sobre una superficie de manera que ninguna de las figuras de las tarjetas sea visible. Luego, la persona que juega debe voltear una tarjeta y, después, debe dar vuelta una segunda tarjeta con la finalidad de encontrar el par de la primera.<br><br>
+    Una persona dispone sobre la mesa 20 tarjetas de este juego y voltea por primera vez una de las tarjetas, en la cual aparece un rayo, tal como se presenta en la siguiente imagen.<br><br>
+    <p style='text-align: center;'><img src="https://i.ibb.co/HLyVmW7d/image.png" alt="Tablero de memorice con un rayo visible" style="max-width: 300px;"></p>
+    Si esta persona no conoce la figura de ninguna de las otras tarjetas dispuestas, ¿cuál es la probabilidad de que esta persona encuentre el segundo rayo al dar vuelta al azar la segunda tarjeta?`,
+    opciones: ["\\(\\frac{1}{20}\\)", "\\(\\frac{1}{19}\\)", "\\(\\frac{2}{20}\\)", "\\(\\frac{2}{19}\\)"],
+    correcta: 1
+},
+// 65. 2027I - Imagen: No - Tabla: Si (2 tablas) - Resp: B
+{
+    pregunta: `De acuerdo al estudio "Profundización de Ocupaciones 2024" de la Subsecretaría del Trabajo, la cantidad de guías de turismo que se han registrado en Chile y en la Región de Valparaíso son:<br><br>
+    <table class='table' style='border-collapse: collapse; width: 60%; margin: 10px auto; text-align: center;'>
+        <thead>
+            <tr style='background-color: #f2f2f2;'>
+                <th style='border: 1px solid #999; padding: 8px;'>Guías de turismo</th>
+                <th style='border: 1px solid #999; padding: 8px;'>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>en Chile</td><td style='border: 1px solid #999; padding: 8px;'>3621</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>en la Región de Valparaíso</td><td style='border: 1px solid #999; padding: 8px;'>441</td></tr>
+        </tbody>
+    </table>
+    Además, las comunas de la Región de Valparaíso con más guías de turismo son:<br><br>
+    <table class='table' style='border-collapse: collapse; width: 60%; margin: 10px auto; text-align: center;'>
+        <thead>
+            <tr style='background-color: #f2f2f2;'>
+                <th style='border: 1px solid #999; padding: 8px;'>Comuna</th>
+                <th style='border: 1px solid #999; padding: 8px;'>Cantidad de guías de turismo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Rapa Nui</td><td style='border: 1px solid #999; padding: 8px;'>172</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Valparaíso</td><td style='border: 1px solid #999; padding: 8px;'>64</td></tr>
+            <tr><td style='border: 1px solid #999; padding: 8px;'>Viña del Mar</td><td style='border: 1px solid #999; padding: 8px;'>51</td></tr>
+        </tbody>
+    </table>
+    Si se escoge al azar a un guía de turismo de la Región de Valparaíso, ¿cuál de las siguientes expresiones representa la probabilidad de que esté registrado en la comuna de Valparaíso o en la de Viña del Mar?`,
+    opciones: [
+        "\\(\\frac{64}{64+51}\\)",
+        "\\(\\frac{64 + 51}{441}\\)",
+        "\\(\\frac{441}{3621}\\)",
+        "\\(\\frac{64 + 51}{3621}\\)"
+    ],
+    correcta: 1
+}
+];
+
+const paesScores = [100, 170, 194, 216, 236, 256, 275, 292, 307, 320, 334, 349, 365, 380, 393, 403, 412, 421, 432, 446, 460, 474, 486, 495, 502, 508, 516, 526, 539, 553, 567, 579, 587, 595, 601, 609, 618, 631, 645, 660, 672, 682, 690, 699, 710, 723, 738, 753, 767, 780, 793, 807, 824, 842, 861, 880, 900, 923, 948, 975, 1000];
+
+// ============================================================
+// CONFIGURACIÓN
+// ============================================================
+let currentQuestion = 0;
+let userAnswers = {};
+let excludedQuestions = [];
+let startTime;
+let timerInterval;
+let totalSeconds = 0;
+let submitted = false;
+let shuffledOptions = [];
+
+const MAX_TIME_SECONDS = 140 * 60;
+
+// ============================================================
+// UTILIDADES
+// ============================================================
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function selectRandomExcludedQuestions() {
+  const indices = Array.from({ length: questions.length }, (_, i) => i);
+  const shuffled = shuffleArray(indices);
+  excludedQuestions = shuffled.slice(0, 5).sort((a, b) => a - b);
+}
+
+function shuffleOptionsForQuestion(q) {
+  const indices = [0, 1, 2, 3];
+  const shuffledIndices = shuffleArray(indices);
+  const newOpts = shuffledIndices.map(i => q.opciones[i]);
+  const newAns = shuffledIndices.indexOf(q.correcta);
+  return { opts: newOpts, ansIdx: newAns };
+}
+
+function buildTest() {
+  shuffledOptions = questions.map(q => shuffleOptionsForQuestion(q));
+  userAnswers = {};
+  currentQuestion = 0;
+  submitted = false;
+}
+
+// ============================================================
+// TIMER
+// ============================================================
+function startTimer() {
+  startTime = new Date();
+  totalSeconds = 0;
+  timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+  if (submitted) return;
+  totalSeconds = Math.floor((new Date() - startTime) / 1000);
+  const tiempoRestante = MAX_TIME_SECONDS - totalSeconds;
+  const timerEl = document.getElementById('timer');
+
+  if (tiempoRestante <= 0) {
+    clearInterval(timerInterval);
+    timerEl.textContent = '00:00';
+    timerEl.className = 'timer timer-rojo timer-urgente';
+    showResults();
+    return;
+  }
+
+  const hours = Math.floor(tiempoRestante / 3600);
+  const minutes = Math.floor((tiempoRestante % 3600) / 60);
+  const seconds = tiempoRestante % 60;
+  
+  if (hours > 0) {
+    timerEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  } else {
+    timerEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
+
+  if (tiempoRestante <= 300) {
+    timerEl.className = 'timer timer-rojo timer-urgente';
+  } else if (tiempoRestante <= 900) {
+    timerEl.className = 'timer timer-naranja';
+  } else {
+    timerEl.className = 'timer';
+  }
+}
+
+function formatTime(seconds) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+  if (hours > 0) return `${hours}h ${minutes}m ${secs}s`;
+  if (minutes > 0) return `${minutes}m ${secs}s`;
+  return `${secs}s`;
+}
+
+// ============================================================
+// RENDERIZADO
+// ============================================================
+function renderQuestion() {
+  const q = questions[currentQuestion];
+  const optData = shuffledOptions[currentQuestion];
+  const progress = ((currentQuestion + 1) / questions.length) * 100;
+  document.getElementById('progressBar').style.width = `${progress}%`;
+
+  let optionsHtml = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  optData.opts.forEach((opt, idx) => {
+    const isSelected = userAnswers[currentQuestion] === idx;
+    optionsHtml += `
+      <div class="option ${isSelected ? 'selected' : ''}" onclick="selectOption(${idx})">
+        <strong>${letters[idx]}.</strong> ${opt}
+      </div>
+    `;
+  });
+
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-card">
+      <div class="question-header">
+        <div class="question-number">PREGUNTA ${currentQuestion + 1} de ${questions.length}</div>
+        <div class="question-status">${userAnswers[currentQuestion] !== undefined ? '✓ Respondida' : '⚪ Sin responder'}</div>
+      </div>
+      <div class="question-text">${q.pregunta}</div>
+      <div class="options">${optionsHtml}</div>
+    </div>
+  `;
+  
+  updateNavigationButtons();
+  setTimeout(() => {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.getElementById('quizContent'), {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '\\[', right: '\\]', display: true},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+      });
+    }
+  }, 50);
+}
+
+function selectOption(index) {
+  if (submitted) return;
+  userAnswers[currentQuestion] = index;
+  renderQuestion();
+}
+
+function updateNavigationButtons() {
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  prevBtn.disabled = currentQuestion === 0;
+  nextBtn.textContent = currentQuestion === questions.length - 1 ? 'Ver Resultados' : 'Siguiente →';
+}
+
+function previousQuestion() {
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    renderQuestion();
+  }
+}
+
+function nextQuestion() {
+  if (currentQuestion === questions.length - 1) {
+    showResults();
+  } else {
+    currentQuestion++;
+    renderQuestion();
+  }
+}
+
+// ============================================================
+// RESULTADOS
+// ============================================================
+function showResults() {
+  if (submitted) return;
+  submitted = true;
+  clearInterval(timerInterval);
+
+  let correct = 0;
+  let resultsHtml = '';
+
+  questions.forEach((question, index) => {
+    const isExcluded = excludedQuestions.includes(index);
+    if (!isExcluded && userAnswers[index] === shuffledOptions[index].ansIdx) {
+      correct++;
+    }
+  });
+
+  // Escalar el puntaje PAES según preguntas consideradas (55)
+  const considered = questions.length - excludedQuestions.length;
+  const scoreIndex = Math.round((correct / considered) * (paesScores.length - 1));
+  const paesScore = paesScores[Math.min(scoreIndex, paesScores.length - 1)];
+
+  // Preguntas excluidas
+  let excludedHtml = `
+    <div class="excluded-questions">
+      <strong>⚠️ Preguntas NO consideradas para el puntaje:</strong><br>
+      Las siguientes ${excludedQuestions.length} preguntas fueron seleccionadas aleatoriamente y no afectan tu puntaje:
+      <ul style="margin-top:8px; margin-left:20px;">
+  `;
+  excludedQuestions.forEach(i => {
+    excludedHtml += `<li>Pregunta ${i + 1}</li>`;
+  });
+  excludedHtml += `</ul></div>`;
+
+  const letters = ['A', 'B', 'C', 'D'];
+
+  // Detalle de TODAS las preguntas
+  questions.forEach((question, index) => {
+    const userAnswer = userAnswers[index];
+    const isExcluded = excludedQuestions.includes(index);
+    const optData = shuffledOptions[index];
+    const isCorrect = userAnswer === optData.ansIdx;
+    const answered = userAnswer !== undefined;
+
+    const userAnswerText = answered
+      ? `${letters[userAnswer]}) ${optData.opts[userAnswer]}`
+      : '<em>Sin respuesta</em>';
+
+    const correctAnswerText = `${letters[optData.ansIdx]}) ${optData.opts[optData.ansIdx]}`;
+
+    // Determinar clase de estado
+    let stateClass, stateLabel;
+    if (isExcluded) {
+      stateClass = 'excluded';
+      stateLabel = '⚪ NO CONSIDERADA';
+    } else if (!answered) {
+      stateClass = 'unanswered';
+      stateLabel = '⚫ SIN RESPONDER';
+    } else if (isCorrect) {
+      stateClass = 'correct';
+      stateLabel = '✅ CORRECTA';
+    } else {
+      stateClass = 'incorrect';
+      stateLabel = '❌ INCORRECTA';
+    }
+
+    // Mostrar el enunciado COMPLETO (sin truncar)
+    resultsHtml += `
+      <div class="result-item ${stateClass}">
+        <div class="result-header">
+          <div class="q-title">Pregunta ${index + 1}</div>
+          <span class="q-badge ${stateClass}">${stateLabel}</span>
+        </div>
+        <div class="q-statement">${question.pregunta}</div>
+        <div class="answer-block">
+          <div class="answer-line ${isCorrect && !isExcluded ? 'ok' : (answered && !isExcluded ? 'bad' : '')}">
+            <span class="answer-label">Tu respuesta:</span>
+            <span class="answer-value">${userAnswerText}</span>
+          </div>
+          <div class="answer-line ok">
+            <span class="answer-label">Respuesta correcta:</span>
+            <span class="answer-value">${correctAnswerText}</span>
+          </div>
+          ${isExcluded ? `<div class="answer-note">⚠️ Esta pregunta no se consideró para el cálculo del puntaje</div>` : ''}
+        </div>
+      </div>
+    `;
+  });
+
+  document.getElementById('quizContent').innerHTML = `
+    <div class="results-container">
+      <div class="score-display">
+        <h3>📊 Tu Puntaje PAES</h3>
+        <div class="score-number">${paesScore} puntos</div>
+        <div class="score-description">✅ Correctas: ${correct} de ${considered} preguntas consideradas</div>
+        <div class="score-description">⏱️ Tiempo total: ${formatTime(totalSeconds)}</div>
+      </div>
+      ${excludedHtml}
+      <div class="results-list">${resultsHtml}</div>
+      <button class="restart-btn" onclick="restartExam()">🔄 Reiniciar Ensayo</button>
+    </div>
+  `;
+
+  document.getElementById('navButtons').style.display = 'none';
+  document.getElementById('progressBar').style.width = '100%';
+
+  setTimeout(() => {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.getElementById('quizContent'), {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '\\[', right: '\\]', display: true},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+      });
+    }
+  }, 50);
+}
+
+function restartExam() {
+  clearInterval(timerInterval);
+  selectRandomExcludedQuestions();
+  buildTest();
+  currentQuestion = 0;
+  submitted = false;
+  startTimer();
+  renderQuestion();
+  document.getElementById('navButtons').style.display = 'flex';
+  document.getElementById('progressBar').style.width = '0%';
+}
+
+// ============================================================
+// INICIALIZACIÓN
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  selectRandomExcludedQuestions();
+  buildTest();
+  startTimer();
+  renderQuestion();
+  setTimeout(() => {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.getElementById('quizContent'), {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '\\[', right: '\\]', display: true},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+      });
+    }
+  }, 100);
+});
+</script>
+</body>
+</html>
